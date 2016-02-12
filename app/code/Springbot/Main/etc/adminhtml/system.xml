@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="springbot" translate="label" sortOrder="300">
+            <label>Springbot</label>
+        </tab>
+        <section id="springbot" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Configuration</label>
+            <tab>springbot</tab>
+            <resource>Springbot_Main::main</resource>
+            <group id="configuration" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>System Configuration</label>
+                <field id="php_exec" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>PHP Executable</label>
+                    <comment>Use this to define the PHP executable (including any runtime options) that you wish Springbot to use. If you don't know what this means, leave it blank!</comment>
+                </field>
+                <field id="segment_size" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Segment Size</label>
+                    <comment>Defines the maximum segment inspected during harvest.</comment>
+                </field>
+                <field id="ignore_store_list" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Ignore Store List</label>
+                    <comment>Comma-separated list of stores to ignore. Leave blank to harvest all stores.</comment>
+                </field>
+                <field id="define_store_list" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Explicitly Define Stores to Harvest</label>
+                    <comment>Comma-separated list of stores to harvest. Leave blank to harvest all stores. Ignores will supercede the values in this list.</comment>
+                </field>
+                <field id="account_email" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Springbot Username</label>
+                </field>
+                <field id="account_password" translate="label" type="password" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Springbot Password</label>
+                </field>
+                <field id="remote_update" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Remote Update</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="stability" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Minimum Acceptable Stability</label>
+                    <source_model>Springbot\Main\Model\Config\Source\Stability</source_model>
+                </field>
+                <field id="show_notifications" translate="label" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="email_selector" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Javascript Selector Classes</label>
+                    <comment>Comma separated list of Classes for the frontend field where a user enters their email address.</comment>
+                </field>
+                <field id="security_token" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Springbot Security Token</label>
+                    <comment>No touchy.</comment>
+                </field>
+            </group>
+            <group id="images" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Images</label>
+                <field id="use_cached_images" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Cached Images</label>
+                    <comment>Selecting yes will generate a cached image on your server. Clearing image cache will require a full reharvest. If you do not know what this means, this should be left off.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="debug" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Debug</label>
+                <field id="log_http" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log HTTP Requests</label>
+                    <comment>&lt;strong style="color:red"&gt;Warning!&lt;/strong&gt; Please monitor disk space if setting to Debug level, filesize may grow rapidly.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="log_level" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Level</label>
+                    <comment>&lt;strong style="color:red"&gt;Warning!&lt;/strong&gt; For debugging purposes only! It will create very large log files quickly on a busy site.</comment>
+                    <source_model>Springbot\Main\Model\Config\Source\LogLevel</source_model>
+                </field>
+                <field id="log_format" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Format</label>
+                    <source_model>Springbot\Main\Model\Config\Source\LogFormat</source_model>
+                </field>
+                <field id="expire_time_days" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Delete Log Files After X Days</label>
+                </field>
+                <field id="filesize_limit" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Filesize Limit</label>
+                    <comment>Filesize limit in bytes for when to roll log files over.</comment>
+                </field>
+            </group>
+            <group id="advanced" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Advanced Config</label>
+                <field id="harvester_type" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Harvester Type</label>
+                    <source_model>Springbot\Main\Model\Config\Source\HarvesterType</source_model>
+                </field>
+                <field id="max_jobs" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Max Cron Jobs to Run Per Instance</label>
+                    <comment>This is the maximum number of jobs the cron worker will attempt to run each time it is called. Leave blank for unlimited.</comment>
+                </field>
+                <field id="nohup" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Nohup</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="nice" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Nice</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="worker_count" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Worker Count</label>
+                </field>
+                <field id="sleep_interval" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sleep Interval</label>
+                </field>
+                <field id="extended_config" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Extended Configuration</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="product_url_type" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product URL Type</label>
+                    <source_model>Springbot\Main\Model\Config\Source\ProductUrlType</source_model>
+                </field>
+                <field id="send_inventory" translate="label" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Inventory Data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="max_job_time" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Max Job Execution Time</label>
+                </field>
+            </group>
+            <group id="cart_restore" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Restore Carts</label>
+                <field id="do_restore" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Restore Carts</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="retain_coupon" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Restore Coupons</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
