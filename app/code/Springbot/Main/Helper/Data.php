@@ -52,7 +52,7 @@ class Data extends AbstractHelper
     public function getStoreGuid()
     {
         $storeId = $this->_storeManager->getStore()->getId();
-        $guid = $this->scopeConfig->getValue('springbot/config/store_guid_' . $storeId);
+        $guid = $this->scopeConfig->getValue('springbot/configuration/store_guid_' . $storeId);
         if (empty($guid)) {
             $charid = strtoupper(md5(uniqid(rand(), true)));
             $guid = substr($charid, 0, 8) . '-'
