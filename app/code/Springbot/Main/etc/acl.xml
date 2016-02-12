@@ -4,6 +4,14 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Springbot_Main::config_main" title="Springbot Configuration"/>
+                        </resource>
+                    </resource>
+                </resource>
+
                 <resource id="Springbot_Main::main" title="Springbot" sortOrder="10">
                     <resource id="Springbot_Main::index" title="Springbot Login" sortOrder="10"/>
                 </resource>
