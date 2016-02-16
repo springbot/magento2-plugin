@@ -8,20 +8,28 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Index extends Action
 {
-    protected $resultsPageFactory;
+    protected $resultPageFactory;
 
     public function __construct(
         Context $context,
-        PageFactory $resultsPageFactory
+        PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
-        $this->resultsPageFactory = $resultsPageFactory;
+        $this->resultPageFactory = $resultPageFactory;
     }
 
     public function execute() {
-        $resultsPage = $this->resultsPageFactory->create();
+        /**
+         * @var \Magento\Backend\Model\View\Result\Page $resultPage
+         */
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->setActiveMenu('Springbot_Main::main');
+        $resultPage->getConfig()->getTitle()->prepend(__('Springbot'));
+        return $resultPage;
+    }
 
-        $resultsPage->setHeader('title', 'Springbot Dashboard');
-        return $resultsPage;
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Springbot_Main::main');
     }
 }

@@ -6,7 +6,6 @@ use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreManagerInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class Data
@@ -17,37 +16,35 @@ class Data extends AbstractHelper
 {
     const SPRINGBOT_REGISTRATION_URL = 'https://api.springbot.com/api/registration/login/';
 
+    /**
+     * @var Config
+     */
     private $_config;
     /**
      * @var StoreManagerInterface
      */
     private $_storeManager;
-    /**
-     * @var LoggerInterface
-     */
-    private $_loggerInterface;
 
     /**
      * Data constructor.
      *
      * @param Context $context
-     * @param LoggerInterface $loggerInterface
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Config $config,
         Context $context,
-        LoggerInterface $loggerInterface,
         StoreManagerInterface $storeManager
     ) {
         $this->_config = $config;
-        $this->_loggerInterface = $loggerInterface;
         $this->_storeManager = $storeManager;
         parent::__construct($context);
     }
 
     /**
-     * Get Store GUID
+     * Check for GUID and if not found, generate it.
+     *
+     * @return string
      */
     public function getStoreGuid()
     {

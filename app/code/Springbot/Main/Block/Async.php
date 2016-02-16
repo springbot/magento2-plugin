@@ -21,25 +21,13 @@ class Async extends Template
     /**
      * @param Context $context
      * @param SpringbotHelper $springbotHelper
-     * @param array $data
      */
     public function __construct(
         Context $context,
-        SpringbotHelper $springbotHelper,
-        array $data = []
+        SpringbotHelper $springbotHelper
     ) {
         $this->_springbotHelper = $springbotHelper;
-        parent::__construct($context, $data);
-    }
-
-    /**
-     * Render Springbot async scripts
-     *
-     * @return string
-     */
-    protected function _toHtml()
-    {
-        return parent::_toHtml();
+        parent::__construct($context);
     }
 
     /**
@@ -49,7 +37,7 @@ class Async extends Template
      */
     public function getAssetsDomain()
     {
-        return "d2z0bn1jv8xwtk.cloudflare.com";
+        return 'd2z0bn1jv8xwtk.cloudflare.com';
     }
 
     /**
