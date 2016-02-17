@@ -9,9 +9,23 @@ class IndexTest extends \PHPUnit_Framework_TestCase
      */
     private $indexControllerMock;
 
+    /**
+     * @var \Magento\Framework\AuthorizationInterface
+     */
+    protected $authorization;
+
+    /**
+     * @var \Magento\Framework\TestFramework\Unit\Helper\ObjectManager
+     */
+    protected $objectManager;
+
     public function setUp()
     {
         $this->indexControllerMock = $this->getControllerIndexMock(['getResultPageFactory']);
+        $this->authorization = $this->getMockBuilder('Magento\Framework\AuthorizationInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
     }
 
     /**
@@ -47,6 +61,39 @@ class IndexTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($configMock));
 
         $this->indexControllerMock->execute();
+    }
+
+    /**
+     * @dataProvider isAllowedDataProvider
+     * @param $isAllowed
+     */
+    public function testIsAllowed($isAllowed)
+    {
+        $this->authorization->expects($this->any())
+            ->method('isAllowed')
+            ->will($this->returnValue($isAllowed));
+        $model = $this->objectManager->getObject(
+            'Springbot\Main\Block\Adminhtml\Main',
+            ['authorization' => $this->authorization]
+        );
+        switch ($isAllowed) {
+            case true:
+                $this->assertEquals('select', $model->getType());
+                $this->assertNull($model->getClass());
+                break;
+            case false:
+                $this->assertEquals('hidden', $model->getType());
+                $this->assertContains('hidden', $model->getClass());
+                break;
+        }
+    }
+
+    public function isAllowedDataProvider()
+    {
+        return [
+            [true],
+            [false],
+        ];
     }
 
     /**
