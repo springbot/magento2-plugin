@@ -3,8 +3,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Springbot\Main\Block\Adminhtml\Main" name="springbot.main" as="springbot.main"
-                   template="main/index.phtml"/>
+            <block class="Springbot\Main\Block\Adminhtml\Dashboard" template="dashboard/index.phtml"/>
         </referenceContainer>
     </body>
 </page>

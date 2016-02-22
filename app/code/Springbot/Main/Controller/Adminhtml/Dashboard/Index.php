@@ -1,6 +1,6 @@
 <?php
 
-namespace Springbot\Main\Controller\Adminhtml\Index;
+namespace Springbot\Main\Controller\Adminhtml\Dashboard;
 
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
@@ -8,7 +8,7 @@ use Magento\Framework\View\Result\PageFactory;
 
 /**
  * Class Index
- * @package Springbot\Main\Controller\Adminhtml\Index
+ * @package Springbot\Main\Controller\Adminhtml\Dashboard
  */
 class Index extends Action
 {
@@ -58,6 +58,6 @@ class Index extends Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Springbot_Main::main');
+        return $this->_authorization->isAllowed('Springbot_Main::index');
     }
 }
