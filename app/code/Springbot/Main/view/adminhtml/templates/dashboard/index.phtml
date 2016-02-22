@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var $block Springbot\Main\Block\Adminhtml\Dashboard
+ */
+?>
+<div class="springbot-login-wrapper">
+    <h2>Login to Springbot</h2>
+
+    <form action="<?php echo $this->getUrl('*/dashboard/login') ?>">
+        <input name="form_key" type="hidden" value="<?php echo $block->getFormKey() ?>" />
+        <div class="springbot-form-field">
+            <label for="springbot-email">Email Address</label>
+            <input type="email" id="springbot-email" name="springbot-email" placeholder="example: user@springbot.com"
+                   required>
+        </div><!-- .springbot-form-field -->
+
+        <div class="springbot-form-field">
+            <label for="springbot-password">Password</label>
+            <input type="password" id="springbot-password" name="springbot-password" required>
+        </div><!-- springbot-form-field -->
+
+        <div class="springbot-form-field">
+            <button>Submit</button>
+        </div><!-- .springbot-form-field -->
+    </form>
+</div><!-- .springbot-login-wrapper -->

@@ -2,9 +2,11 @@
 
 namespace Springbot\Main\Controller\Adminhtml\Dashboard;
 
-use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\App\Helper\Context as HelperContext;
+use Magento\Framework\Message\ManagerInterface;
 
 /**
  * Class Index
@@ -18,16 +20,37 @@ class Index extends Action
     protected $resultPageFactory;
 
     /**
+     * @var HelperContext
+     */
+    protected $helperContext;
+
+    /**
+     * @var ManagerInterface
+     */
+    protected $managerInterface;
+
+
+    /**
+     * @var string
+     */
+    protected $securityToken;
+
+    /**
      * Index constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
     public function __construct(
         Context $context,
+        HelperContext $helperContext,
+        ManagerInterface $managerInterface,
         PageFactory $resultPageFactory
     ) {
-        parent::__construct($context);
+        $this->helperContext = $helperContext;
+        $this->managerInterface = $managerInterface;
         $this->resultPageFactory = $resultPageFactory;
+        $this->securityToken = $this->helperContext->getScopeConfig()->getValue('springbot/configuration/security_token');
+        parent::__construct($context);
     }
 
     /**
@@ -35,6 +58,20 @@ class Index extends Action
      */
     public function execute()
     {
+        /**
+         * Check to see if security token is set. If so, redirect to Springbot App.
+         */
+        if ($this->securityToken !== null) {
+            $this->_redirect('https://app.springbot.com');
+        }
+
+        /**
+         * Checks if the submission was invalid. If so, displays an error to the user.
+         */
+        if ($this->getRequest()->getParam(0) === 'unauthorized') {
+            $this->managerInterface->addError(__('Incorrect username or password. Please try again.'));
+        }
+
         /**
          * @var \Magento\Backend\Model\View\Result\Page $resultPage
          */
