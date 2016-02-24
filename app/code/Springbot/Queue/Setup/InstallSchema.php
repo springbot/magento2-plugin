@@ -38,11 +38,11 @@ class InstallSchema implements InstallSchemaInterface
                 ['nullable' => false],
                 'Type ID')
             ->addColumn(
-                'store_id',
-                Table::TYPE_INTEGER,
-                11,
-                [],
-                'SKU')
+                'class',
+                Table::TYPE_TEXT,
+                null,
+                ['nullable' => false],
+                'Class To Instantiate')
             ->addColumn(
                 'command_hash',
                 Table::TYPE_TEXT,
