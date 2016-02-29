@@ -6,7 +6,6 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\App\Helper\Context as HelperContext;
-use Magento\Framework\Message\ManagerInterface;
 
 /**
  * Class Index
@@ -25,12 +24,6 @@ class Index extends Action
     protected $helperContext;
 
     /**
-     * @var ManagerInterface
-     */
-    protected $managerInterface;
-
-
-    /**
      * @var string
      */
     protected $securityToken;
@@ -43,11 +36,9 @@ class Index extends Action
     public function __construct(
         Context $context,
         HelperContext $helperContext,
-        ManagerInterface $managerInterface,
         PageFactory $resultPageFactory
     ) {
         $this->helperContext = $helperContext;
-        $this->managerInterface = $managerInterface;
         $this->resultPageFactory = $resultPageFactory;
         $this->securityToken = $this->helperContext->getScopeConfig()->getValue('springbot/configuration/security_token');
         parent::__construct($context);
@@ -69,7 +60,7 @@ class Index extends Action
          * Checks if the submission was invalid. If so, displays an error to the user.
          */
         if ($this->getRequest()->getParam(0) === 'unauthorized') {
-            $this->managerInterface->addError(__('Incorrect username or password. Please try again.'));
+            $this->messageManager->addError(__('Incorrect username or password. Please try again.'));
         }
 
         /**

@@ -6,7 +6,7 @@ use Magento\Catalog\Model\ProductFactory;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Psr\Log\LoggerInterface;
 
-class HarvestProducts extends AbstractHelper
+class QueueProductChanges extends AbstractHelper
 {
     protected $_productFactory;
 
@@ -20,10 +20,11 @@ class HarvestProducts extends AbstractHelper
         $this->_productFactory = $productFactory;
     }
 
-    public function updateProduct($storeId, $productId)
+    public function updateProduct($storeId, $productId, $attributes)
     {
         $product = $this->_productFactory->create();
         $product->load($productId);
-        $this->_logger->debug($product->getData('name'));
+        $jsonData = json_encode($product->getData());
+        $this->_logger->debug($jsonData);
     }
 }

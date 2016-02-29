@@ -4,7 +4,6 @@ namespace Springbot\Queue\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
-use Springbot\Main\Helper\HarvestProducts as HarvestProductsHelper;
 use Springbot\Queue\Helper\Data as SpringbotHelper;
 
 /**
@@ -46,22 +45,15 @@ class HarvestProductObserver implements ObserverInterface
     private $_springbotHelper;
 
     /**
-     * @var HarvestProductsHelper
-     */
-    protected $_harvestProductsHelper;
-
-    /**
      * HarvestProductObserver constructor.
      *
      * @param LoggerInterface $loggerInterface
      * @param SpringbotHelper $springbotHelper
      */
     public function __construct(
-        HarvestProductsHelper $harvestProductsHelper,
         LoggerInterface $loggerInterface,
         SpringbotHelper $springbotHelper
     ) {
-        $this->_harvestProductsHelper = $harvestProductsHelper;
         $this->_logger = $loggerInterface;
         $this->_springbotHelper = $springbotHelper;
     }
@@ -80,10 +72,27 @@ class HarvestProductObserver implements ObserverInterface
         $product = $observer->getEvent()->getProduct();
 
         /**
-         * If the attributes we care about have changed, queue it up in the database
+         * Get the store Id
          */
-        if ($product->dataHasChangedFor('name'))
-            $this->_springbotHelper->scheduleJob('updateProduct', ["1", "1"], 'Springbot\Main\Helper\HarvestProducts', 'listener', 5);
-            $this->_harvestProductsHelper->updateProduct(1, 1);
+        $storeId = $product->getStoreId();
+
+        /**
+         * Grab the product Id
+         */
+        $productId = $product->getId();
+
+        /**
+         * Schedule the job
+         */
+        $changedAttributes = [];
+
+        if ($product->hasDataChanges()) {
+            foreach ($this->_attributes as $attribute) {
+                if ($product->dataHasChangedFor($attribute)) {
+                    $changedAttributes[] = $attribute;
+                }
+            }
+            $this->_springbotHelper->scheduleJob('updateProduct', [$storeId, $productId, $changedAttributes], 'Springbot\Main\Helper\HarvestProducts', 'listener', 5);
         }
+    }
 }
