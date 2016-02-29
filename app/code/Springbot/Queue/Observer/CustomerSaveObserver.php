@@ -7,10 +7,10 @@ use Psr\Log\LoggerInterface;
 use Springbot\Queue\Helper\Data as SpringbotHelper;
 
 /**
- * Class CategoryDeleteObserver
+ * Class CustomerSaveObserver
  * @package Springbot\Queue\Observer
  */
-class CategoryDeleteObserver implements ObserverInterface
+class CustomerSaveObserver implements ObserverInterface
 {
     /**
      * @var LoggerInterface
@@ -23,7 +23,7 @@ class CategoryDeleteObserver implements ObserverInterface
     private $_springbotHelper;
 
     /**
-     * CategoryDeleteObserver constructor.
+     * CustomerSaveObserver constructor.
      *
      * @param LoggerInterface $loggerInterface
      * @param SpringbotHelper $springbotHelper
@@ -37,7 +37,7 @@ class CategoryDeleteObserver implements ObserverInterface
     }
 
     /**
-     * Queue up category changes
+     * Queue up customer changes
      *
      * @param \Magento\Framework\Event\Observer $observer
      * @return void
@@ -45,24 +45,24 @@ class CategoryDeleteObserver implements ObserverInterface
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         /**
-         * Grab the category from the event
+         * Grab the customer from the event
          */
-        $category = $observer->getEvent()->getCategory();
+        $customer = $observer->getEvent()->getCustomer();
 
         /**
          * Get the store Id
          */
-        $storeId = $category->getStoreId();
+        $storeId = $customer->getStoreId();
 
         /**
-         * Grab the Category Id
+         * Grab the Customer Id
          */
-        $categoryId = $category->getId();
+        $customerId = $customer->getId();
 
         /**
          * Schedule the job
          */
-        $this->_springbotHelper->scheduleJob('deleteCategory', [$storeId, $categoryId],
-            'Springbot\Main\Helper\QueueCategoryChanges', 'listener', 5);
+        $this->_springbotHelper->scheduleJob('updateCustomer', [$storeId, $customerId],
+            'Springbot\Main\Helper\QueueCustomerChanges', 'listener', 5);
     }
 }

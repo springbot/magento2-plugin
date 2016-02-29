@@ -23,7 +23,7 @@ class CategorySaveObserver implements ObserverInterface
     private $_springbotHelper;
 
     /**
-     * HarvestProductObserver constructor.
+     * CategorySaveObserver constructor.
      *
      * @param LoggerInterface $loggerInterface
      * @param SpringbotHelper $springbotHelper
@@ -37,7 +37,7 @@ class CategorySaveObserver implements ObserverInterface
     }
 
     /**
-     * Queue up product changes
+     * Queue up category changes
      *
      * @param \Magento\Framework\Event\Observer $observer
      * @return void
@@ -45,7 +45,7 @@ class CategorySaveObserver implements ObserverInterface
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         /**
-         * Grab the product from the event
+         * Grab the category from the event
          */
         $category = $observer->getEvent()->getCategory();
 
@@ -55,7 +55,7 @@ class CategorySaveObserver implements ObserverInterface
         $storeId = $category->getStoreId();
 
         /**
-         * Grab the product Id
+         * Grab the category Id
          */
         $categoryId = $category->getId();
 

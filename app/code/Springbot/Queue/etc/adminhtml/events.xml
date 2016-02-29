@@ -13,4 +13,10 @@
     <event name="catalog_category_delete_after">
         <observer name="springbot_queue_catalog_category_delete_after" instance="Springbot\Queue\Observer\CategoryDeleteObserver"/>
     </event>
+    <event name="customer_save_after">
+        <observer name="springbot_queue_customer_save_after" instance="Springbot\Queue\Observer\CustomerSaveObserver"/>
+    </event>
+    <event name="customer_delete_after">
+        <observer name="springbot_queue_customer_delete_after" instance="Springbot\Queue\Observer\CustomerDeleteObserver"/>
+    </event>
 </config>
