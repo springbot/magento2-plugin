@@ -51,7 +51,7 @@ class ProcessQueue extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $this->springbotHelper->updateProduct(1, 1, ["sku", "price", "name"]);
+            $this->springbotHelper->deleteProduct(1, 1);
             $output->writeln("Queue Processed.");
         } catch (\Exception $e) {
             $output->writeln("Could not do the thing: " . $e->getMessage());

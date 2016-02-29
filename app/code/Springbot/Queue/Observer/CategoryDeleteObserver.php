@@ -7,10 +7,10 @@ use Psr\Log\LoggerInterface;
 use Springbot\Queue\Helper\Data as SpringbotHelper;
 
 /**
- * Class ProductDeleteObserver
+ * Class CategoryDeleteObserver
  * @package Springbot\Queue\Observer
  */
-class ProductDeleteObserver implements ObserverInterface
+class CategoryDeleteObserver implements ObserverInterface
 {
     /**
      * @var LoggerInterface
@@ -47,22 +47,22 @@ class ProductDeleteObserver implements ObserverInterface
         /**
          * Grab the product from the event
          */
-        $product = $observer->getEvent()->getProduct();
+        $category = $observer->getEvent()->getCategory();
 
         /**
          * Get the store Id
          */
-        $storeId = $product->getStoreId();
+        $storeId = $category->getStoreId();
 
         /**
          * Grab the product Id
          */
-        $productId = $product->getId();
+        $categoryId = $category->getId();
 
         /**
          * Schedule the job
          */
-        $this->_springbotHelper->scheduleJob('deleteProduct', [$storeId, $productId],
-            'Springbot\Main\Helper\QueueProductChanges', 'listener', 5);
+        $this->_springbotHelper->scheduleJob('deleteCategory', [$storeId, $categoryId],
+            'Springbot\Main\Helper\QueueCategoryChanges', 'listener', 5);
     }
 }
