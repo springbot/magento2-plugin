@@ -7,10 +7,10 @@ use Psr\Log\LoggerInterface;
 use Springbot\Queue\Helper\Data as SpringbotHelper;
 
 /**
- * Class QueueProductObserver
+ * Class ProductSaveObserver
  * @package Springbot\Queue\Observer
  */
-class QueueProductObserver implements ObserverInterface
+class ProductSaveObserver implements ObserverInterface
 {
     /**
      * Attributes we care about
@@ -84,17 +84,23 @@ class QueueProductObserver implements ObserverInterface
         $productId = $product->getId();
 
         /**
-         * Schedule the job
+         * Schedule the job to be processed
          */
         $changedAttributes = [];
 
+        // Check to see if the data we care about has changed. If so, add it to the array for hasing purposes.
         if ($product->hasDataChanges()) {
             foreach ($this->_attributes as $attribute) {
                 if ($product->dataHasChangedFor($attribute)) {
                     $changedAttributes[] = $attribute;
                 }
             }
-            $this->_springbotHelper->scheduleJob('updateProduct', [$storeId, $productId, $changedAttributes], 'Springbot\Main\Helper\HarvestProducts', 'listener', 5);
+
+            // Queue the job to send to the ETL
+            if (count($changedAttributes) !== 0) {
+                $this->_springbotHelper->scheduleJob('updateProduct', [$storeId, $productId, $changedAttributes],
+                    'Springbot\Main\Helper\QueueProductChanges', 'listener', 5);
+            }
         }
     }
 }
