@@ -2,6 +2,6 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="catalog_product_save_after">
-        <observer name="springbot_queue_catalog_product_save_after" instance="Springbot\Queue\Observer\HarvestProductObserver"/>
+        <observer name="springbot_queue_catalog_product_save_after" instance="Springbot\Queue\Observer\QueueProductObserver"/>
     </event>
 </config>

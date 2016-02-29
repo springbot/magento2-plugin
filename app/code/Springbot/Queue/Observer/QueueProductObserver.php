@@ -7,12 +7,14 @@ use Psr\Log\LoggerInterface;
 use Springbot\Queue\Helper\Data as SpringbotHelper;
 
 /**
- * Class HarvestProductObserver
+ * Class QueueProductObserver
  * @package Springbot\Queue\Observer
  */
-class HarvestProductObserver implements ObserverInterface
+class QueueProductObserver implements ObserverInterface
 {
     /**
+     * Attributes we care about
+     *
      * @var array
      */
     private $_attributes = [
