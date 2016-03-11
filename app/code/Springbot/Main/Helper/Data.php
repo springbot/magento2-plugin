@@ -2,14 +2,14 @@
 
 namespace Springbot\Main\Helper;
 
-use Magento\Checkout\Model\ResourceModel\Cart;
-use Magento\Config\Model\ResourceModel\Config;
+use Magento\Checkout\Model\Cart;
+use Magento\Checkout\Model\Session;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Store\Model\StoreManagerInterface;
 use Magento\Quote\Model\QuoteFactory;
-use Magento\Checkout\Helper\Cart as CartHelper;
-use Magento\Checkout\Model\Session;
+use Magento\Store\Model\StoreManagerInterface;
+use Springbot\Main\Model\Api;
 
 /**
  * Class Data
@@ -21,9 +21,14 @@ class Data extends AbstractHelper
     const SPRINGBOT_REGISTRATION_URL = 'https://api.springbot.com/api/registration/login/';
 
     /**
-     * @var Config
+     * @var ScopeConfigInterface
      */
     private $_config;
+
+    /**
+     * @var Api
+     */
+    private $_api;
 
     /**
      * @var StoreManagerInterface
@@ -41,7 +46,7 @@ class Data extends AbstractHelper
     private $_session;
 
     /**
-     * @var CartHelper
+     * @var Cart
      */
     private $_cartHelper;
 
@@ -52,13 +57,15 @@ class Data extends AbstractHelper
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        CartHelper $cartHelper,
-        Config $config,
+        Api $api,
+        Cart $cartHelper,
+        ScopeConfigInterface $config,
         Context $context,
         QuoteFactory $quoteFactory,
         Session $session,
         StoreManagerInterface $storeManager
     ) {
+        $this->_api = $api;
         $this->_cartHelper = $cartHelper;
         $this->_config = $config;
         $this->_quoteFactory = $quoteFactory;
@@ -112,5 +119,21 @@ class Data extends AbstractHelper
                 }
             }
         }
+    }
+
+    public function apiPostWrapped($model, $struct, $arrayWrap = false)
+    {
+        if ($arrayWrap) {
+            $struct = [$struct];
+        }
+
+        $payload = $this->_api->wrap($model, $struct);
+
+        return $this->_api->reinit()->call($model, $payload);
+    }
+
+    public function getSecurityToken()
+    {
+        return $this->_config->getValue('springbot/configuration/security_token');
     }
 }

@@ -19,4 +19,10 @@
     <event name="customer_delete_after">
         <observer name="springbot_queue_customer_delete_after" instance="Springbot\Queue\Observer\CustomerDeleteObserver"/>
     </event>
+    <event name="newsletter_subscriber_save_after">
+        <observer name="springbot_queue_newsletter_subscriber_save_after" instance="Springbot\Queue\Observer\SubscriberSaveObserver"/>
+    </event>
+    <event name="eav_entity_attribute_save_commit_after">
+        <observer name="springbot_queue_eav_entity_attribute_save_commit_after" instance="Springbot\Queue\Observer\AttributeSaveObserver"/>
+    </event>
 </config>
