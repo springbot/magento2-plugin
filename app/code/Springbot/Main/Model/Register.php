@@ -7,8 +7,10 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
+use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Springbot\Main\Helper\Data;
+use Magento\Sales\Model\Order\Config as OrderConfig;
 
 /**
  * Class Register
@@ -17,6 +19,11 @@ use Springbot\Main\Helper\Data;
 class Register extends AbstractModel
 {
     const API_CLASS = 'stores';
+
+    /**
+     * @var Api
+     */
+    private $_api;
 
     /**
      * @var Data
@@ -28,6 +35,8 @@ class Register extends AbstractModel
      */
     private $_config;
 
+    private $_orderConfig;
+
     /**
      * @var ScopeConfigInterface
      */
@@ -38,22 +47,30 @@ class Register extends AbstractModel
      */
     private $_storeManager;
 
+    private $_urlInterface;
+
     /**
      * @param Data $data
      */
     public function __construct(
+        Api $api,
         Config $config,
         Context $context,
         Data $data,
+        OrderConfig $orderConfig,
         Registry $registry,
         ScopeConfigInterface $scopeConfigInterface,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        UrlInterface $urlInterface
     )
     {
+        $this->_api = $api;
         $this->_config = $config;
         $this->_scopeConfigInterface = $scopeConfigInterface;
         $this->_helper = $data;
+        $this->_orderConfig = $orderConfig;
         $this->_storeManager = $storeManager;
+        $this->_urlInterface = $urlInterface;
         parent::__construct($context, $registry);
     }
 
@@ -102,10 +119,10 @@ class Register extends AbstractModel
                 'store_code' => $store->getCode(),
                 'store_active' => $store->getIsActive(),
                 'store_url' => $storeUrl,
-                'media_url' => $store->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA),
-                'store_mail_address' => $this->getStoreAddress(),
-                'store_custsrv_email' => $this->_scopeConfigInterface('trans_email/ident_support/email'),
-                'store_statuses' => $this->getStoreStatuses($this->getId())
+                'media_url' => $this->_urlInterface->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA),
+                'store_mail_address' => $this->_getStoreAddress(),
+                'store_custsrv_email' => $this->_scopeConfigInterface->getValue('trans_email/ident_support/email'),
+                'store_statuses' => $this->_orderConfig->getStatuses()
             ]
         ];
 
@@ -121,6 +138,11 @@ class Register extends AbstractModel
         }
     }
 
+    protected function _getStoreAddress()
+    {
+        return str_replace(array("\n","\r"),"|", $this->_scopeConfigInterface->getValue('general/store_information/address'));
+    }
+
     protected function makeConfigKey($dataClass, $storeId = '')
     {
         $configKey = 'springbot/configuration/' . $dataClass;
@@ -133,6 +155,6 @@ class Register extends AbstractModel
 
     protected function query($guid, $storeMetaData)
     {
-        return $this->_helper->apiPostWrapped(self::API_CLASS, [$guid => $storeMetaData]);
+        return $this->_api->apiPostWrapped(self::API_CLASS, [$guid => $storeMetaData]);
     }
 }

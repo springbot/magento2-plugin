@@ -2,17 +2,18 @@
 
 namespace Springbot\Main\Console\Command;
 
+use Magento\Framework\App\State;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Springbot\Main\Model\Oauth;
 
 /**
- * Class GenerateOauthToken
+ * Class GenerateOauthTokenCommand
  *
  * @package Springbot\Main\Console\Command
  */
-class GenerateOauthToken extends Command
+class GenerateOauthTokenCommand extends Command
 {
     /**
      * @var Oauth
@@ -20,10 +21,19 @@ class GenerateOauthToken extends Command
     private $_oauth;
 
     /**
+     * @var State
+     */
+    private $_state;
+
+    /**
      * @param Oauth $oauth
      */
-    public function __construct(Oauth $oauth)
+    public function __construct(
+        Oauth $oauth,
+        State $state
+    )
     {
+        $this->_state = $state;
         $this->_oauth = $oauth;
         parent::__construct();
     }
@@ -45,6 +55,8 @@ class GenerateOauthToken extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->_state->setAreaCode('adminhtml');
+
         $this->_oauth->create();
         $output->writeln("Oauth token successfully generated");
     }

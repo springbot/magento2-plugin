@@ -190,6 +190,17 @@ class Api extends AbstractModel
         return;
     }
 
+    public function apiPostWrapped($model, $struct, $arrayWrap = false)
+    {
+        if ($arrayWrap) {
+            $struct = [$struct];
+        }
+
+        $payload = $this->wrap($model, $struct);
+
+        return $this->reinit()->call($model, $payload);
+    }
+
     public function hasToken()
     {
         $token = $this->_scopeConfig->getValue('springbot/config/security_token');

@@ -7,6 +7,8 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Config\Model\ResourceModel\Config;
 use Springbot\Main\Helper\Data as SpringbotHelper;
+use Springbot\Main\Model\Register;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Login
@@ -18,6 +20,10 @@ class Login extends Action
      * @var Config
      */
     private $_config;
+
+    private $_register;
+
+    private $_logger;
 
     /**
      * @var PageFactory
@@ -31,10 +37,14 @@ class Login extends Action
     public function __construct(
         Config $config,
         Context $context,
-        PageFactory $pageFactory
+        LoggerInterface $logger,
+        PageFactory $pageFactory,
+        Register $register
     ) {
+        $this->_logger = $logger;
         $this->_config = $config;
         $this->resultPageFactory = $pageFactory;
+        $this->_register = $register;
         parent::__construct($context);
     }
 
@@ -59,6 +69,7 @@ class Login extends Action
             $client->setHeaders('Content-Type: application/json');
             $response = $client->request('POST');
             $result = json_decode($response->getBody(), true);
+
             /**
              * If response comes back 'unauthorized', redirect to the index page.
              */
@@ -71,6 +82,9 @@ class Login extends Action
                 $api_token = $result['token'];
                 $this->_config->saveConfig('springbot/configuration/security_token', $api_token, 'default', 0);
             }
+
+            $this->_register->registerStores();
+
         } catch (\Exception $e) {
             $e->getMessage();
         }

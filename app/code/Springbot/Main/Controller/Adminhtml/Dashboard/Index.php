@@ -52,9 +52,9 @@ class Index extends Action
         /**
          * Check to see if security token is set. If so, redirect to Springbot App.
          */
-        if ($this->securityToken !== null) {
-            $this->_redirect('https://app.springbot.com');
-        }
+//        if ($this->securityToken !== null) {
+//            $this->_redirect('https://app.springbot.com');
+//        }
 
         /**
          * Checks if the submission was invalid. If so, displays an error to the user.

@@ -4,12 +4,12 @@ namespace Springbot\Main\Helper;
 
 use Magento\Checkout\Model\Cart;
 use Magento\Checkout\Model\Session;
+use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Store\Model\StoreManagerInterface;
-use Springbot\Main\Model\Api;
 
 /**
  * Class Data
@@ -23,12 +23,9 @@ class Data extends AbstractHelper
     /**
      * @var ScopeConfigInterface
      */
-    private $_config;
+    private $_scopeConfig;
 
-    /**
-     * @var Api
-     */
-    private $_api;
+    private $_config;
 
     /**
      * @var StoreManagerInterface
@@ -57,17 +54,17 @@ class Data extends AbstractHelper
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        Api $api,
         Cart $cartHelper,
-        ScopeConfigInterface $config,
+        ScopeConfigInterface $scopeConfig,
         Context $context,
         QuoteFactory $quoteFactory,
+        Config $config,
         Session $session,
         StoreManagerInterface $storeManager
     ) {
-        $this->_api = $api;
         $this->_cartHelper = $cartHelper;
         $this->_config = $config;
+        $this->_scopeConfig = $scopeConfig;
         $this->_quoteFactory = $quoteFactory;
         $this->_session = $session;
         $this->_storeManager = $storeManager;
@@ -92,6 +89,7 @@ class Data extends AbstractHelper
                 . substr($charid, 20, 12);
             $this->_config->saveConfig('springbot/configuration/store_guid_' . $storeId, $guid, 'default', 0);
         }
+
         return str_replace('-', '', $guid);
     }
 
@@ -119,17 +117,6 @@ class Data extends AbstractHelper
                 }
             }
         }
-    }
-
-    public function apiPostWrapped($model, $struct, $arrayWrap = false)
-    {
-        if ($arrayWrap) {
-            $struct = [$struct];
-        }
-
-        $payload = $this->_api->wrap($model, $struct);
-
-        return $this->_api->reinit()->call($model, $payload);
     }
 
     public function getSecurityToken()
