@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "be914cf63345036c4182d17c9c3d77aa",
-    "content-hash": "2796f8e79cf5c9ac51095206645a4ccc",
+    "hash": "b23b1e51a3145b4a2e7331afdfdb06c3",
+    "content-hash": "00dc4605692660aa0bb3949aa2936b46",
     "packages": [
         {
             "name": "springbot/magento2-queue",
