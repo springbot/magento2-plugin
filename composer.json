@@ -12,10 +12,6 @@
             "url": "https://github.com/springbot/magento2-queue"
         }
     ],
-    "dist": {
-        "url": "git@github.com:springbot/magento2-plugin.git",
-        "type": "git"
-    },
     "require": {
         "springbot/magento2-queue": "dev-master"
     },
