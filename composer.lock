@@ -1,0 +1,53 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "be914cf63345036c4182d17c9c3d77aa",
+    "content-hash": "2796f8e79cf5c9ac51095206645a4ccc",
+    "packages": [
+        {
+            "name": "springbot/magento2-queue",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:springbot/magento2-queue.git",
+                "reference": "7edb475b71361296f4f9fb2d4c7057ff43be3d3b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/springbot/magento2-queue/zipball/7edb475b71361296f4f9fb2d4c7057ff43be3d3b",
+                "reference": "7edb475b71361296f4f9fb2d4c7057ff43be3d3b",
+                "shasum": ""
+            },
+            "type": "magento2-module",
+            "extra": {
+                "map": [
+                    [
+                        "*"
+                    ]
+                ]
+            },
+            "license": [
+                "OSL-3.0"
+            ],
+            "description": "A generic job queuing package for Magento 2",
+            "support": {
+                "source": "https://github.com/springbot/magento2-queue/tree/master",
+                "issues": "https://github.com/springbot/magento2-queue/issues"
+            },
+            "time": "2016-03-13 19:31:52"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "springbot/magento2-queue": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
