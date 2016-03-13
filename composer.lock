@@ -4,29 +4,27 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "78879353204d9d534ed35dacb4f0fe0c",
-    "content-hash": "08dc0a319126ac18413dfb3160b3eb19",
+    "hash": "257153e6f55bcbe293b7342bc69843d3",
+    "content-hash": "e47d3b37e31d80a788daf9e310ab6725",
     "packages": [
         {
             "name": "springbot/magento2-queue",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/springbot/magento2-queue.git",
-                "reference": "5d08c28463e2f343a7a8c33d842e46796d2b8521"
+                "reference": "8b7a990c1e03020b1ddb0a8f4951a02a3aa38a01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/springbot/magento2-queue/zipball/5d08c28463e2f343a7a8c33d842e46796d2b8521",
-                "reference": "5d08c28463e2f343a7a8c33d842e46796d2b8521",
+                "url": "https://api.github.com/repos/springbot/magento2-queue/zipball/8b7a990c1e03020b1ddb0a8f4951a02a3aa38a01",
+                "reference": "8b7a990c1e03020b1ddb0a8f4951a02a3aa38a01",
                 "shasum": ""
             },
             "type": "magento2-module",
-            "extra": {
-                "map": [
-                    [
-                        "*"
-                    ]
+            "autoload": {
+                "files": [
+                    "registration.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -34,7 +32,7 @@
                 "OSL-3.0"
             ],
             "description": "A generic job queuing package for Magento 2",
-            "time": "2016-03-13 21:09:52"
+            "time": "2016-03-13 22:56:28"
         }
     ],
     "packages-dev": [],
