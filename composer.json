@@ -2,18 +2,11 @@
     "name": "springbot/magento2-plugin",
     "description": "Springbot integration for Magento 2",
     "type": "magento2-module",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "license": [
         "OSL-3.0"
     ],
     "require": {
         "springbot/magento2-queue": "~1.0.0"
-    },
-    "extra": {
-        "map": [
-            [
-                "*"
-            ]
-        ]
     }
 }

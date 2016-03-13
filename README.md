@@ -8,4 +8,4 @@ Auto-update hooks are currently configured with packagist.org. Please tag your c
 
 * git commit -m "My Changes"
 * git tag 1.0.0
-* git push origin
+* git push origin --tags
