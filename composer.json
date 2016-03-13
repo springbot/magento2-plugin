@@ -6,19 +6,14 @@
     "license": [
         "OSL-3.0"
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/springbot/magento2-queue"
-        }
-    ],
     "require": {
         "springbot/magento2-queue": "dev-master"
     },
     "extra": {
         "map": [
             [
-                "*"
+                "*",
+                "Springbot/Main"
             ]
         ]
     }
