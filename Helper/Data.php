@@ -18,39 +18,21 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Data extends AbstractHelper
 {
-    const SPRINGBOT_REGISTRATION_URL = 'https://api.springbot.com/api/registration/login/';
 
-    /**
-     * @var ScopeConfigInterface
-     */
     private $_scopeConfig;
-
     private $_config;
-
-    /**
-     * @var StoreManagerInterface
-     */
     private $_storeManager;
-
-    /**
-     * @var QuoteFactory
-     */
     private $_quoteFactory;
-
-    /**
-     * @var Session
-     */
-    private $_session;
-
-    /**
-     * @var Cart
-     */
     private $_cartHelper;
+
 
     /**
      * Data constructor.
-     *
+     * @param Cart $cartHelper
+     * @param ScopeConfigInterface $scopeConfig
      * @param Context $context
+     * @param QuoteFactory $quoteFactory
+     * @param Config $config
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
@@ -59,14 +41,12 @@ class Data extends AbstractHelper
         Context $context,
         QuoteFactory $quoteFactory,
         Config $config,
-        Session $session,
         StoreManagerInterface $storeManager
     ) {
         $this->_cartHelper = $cartHelper;
         $this->_config = $config;
         $this->_scopeConfig = $scopeConfig;
         $this->_quoteFactory = $quoteFactory;
-        $this->_session = $session;
         $this->_storeManager = $storeManager;
         parent::__construct($context);
     }
@@ -89,7 +69,6 @@ class Data extends AbstractHelper
                 . substr($charid, 20, 12);
             $this->_config->saveConfig('springbot/configuration/store_guid_' . $storeId, $guid, 'default', 0);
         }
-
         return str_replace('-', '', $guid);
     }
 
@@ -121,6 +100,9 @@ class Data extends AbstractHelper
 
     public function getSecurityToken()
     {
+        /*
         return $this->_config->getValue('springbot/configuration/security_token');
+        */
+        return '';
     }
 }
