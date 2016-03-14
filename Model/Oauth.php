@@ -15,19 +15,9 @@ use Magento\Framework\Registry;
  */
 class Oauth extends AbstractModel
 {
-    /**
-     * @var IntegrationService
-     */
+
     protected $_integrationService;
-
-    /**
-     * @var OauthService
-     */
     protected $_oauthService;
-
-    /**
-     * @var array
-     */
     protected $_integrationData = [];
 
     /**
@@ -53,6 +43,14 @@ class Oauth extends AbstractModel
     }
 
     /**
+     * @return OauthService
+     */
+    public function oauthService()
+    {
+        return $this->_oauthService;
+    }
+
+    /**
      * Generate the Springbot Oauth keys
      *
      * @throws \Exception
@@ -61,7 +59,16 @@ class Oauth extends AbstractModel
      */
     public function create()
     {
-        $integration = $this->_integrationService->create($this->_integrationData);
-        $this->_oauthService->createAccessToken($integration->getConsumerId());
+        $integration = $this->_integrationService->findByName('Springbot');
+        if (!$integration) {
+            $integration = $this->_integrationService->create($this->_integrationData);
+        }
+        $accessToken =  $this->oauthService()->getAccessToken($integration->getConsumerId());
+
+        $accessToken->get(1);
+        $accessToken->save();
+        print_r($this->oauthService()->ci);
+        die;
+        return $accessToken;
     }
 }
