@@ -15,21 +15,26 @@ use Springbot\Main\Model\Register;
  */
 class RegisterStoresCommand extends Command
 {
-    /**
-     * @var Register
-     */
+
     private $_register;
 
     /**
+     * RegisterStoresCommand constructor.
      * @param Register $register
+     * @param State $state
      */
-    public function __construct(
-        Register $register,
-        State $state
-    )
+    public function __construct(Register $register, State $state)
     {
         $this->_register = $register;
         parent::__construct();
+    }
+
+    /**
+     * @return Register
+     */
+    public function register()
+    {
+        return $this->_register;
     }
 
     /**
