@@ -8,6 +8,7 @@
                 <stability>stable</stability>
                 <show_notifications>1</show_notifications>
                 <email_selector>billing:email,login-email,newsletter</email_selector>
+                <api_url>http://localhost:8080</api_url>
             </configuration>
             <images>
                 <use_cached_images>0</use_cached_images>
