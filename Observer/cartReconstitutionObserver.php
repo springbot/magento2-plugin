@@ -18,25 +18,10 @@ use Springbot\Main\Helper\Data as SpringbotHelper;
  */
 class cartReconstitutionObserver implements ObserverInterface
 {
-    /**
-     * @var Session
-     */
     private $_checkoutSession;
-    /**
-     * @var Action
-     */
     private $_action;
-    /**
-     * @var ManagerInterface
-     */
     private $_messageManager;
-    /**
-     * @var SpringbotHelper
-     */
     private $_springbotHelper;
-    /**
-     * @var LoggerInterface
-     */
     private $_loggerInterface;
 
     /**
