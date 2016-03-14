@@ -9,6 +9,9 @@ use Magento\Config\Model\ResourceModel\Config;
 use Springbot\Main\Helper\Data as SpringbotHelper;
 use Springbot\Main\Model\Register;
 use Psr\Log\LoggerInterface;
+use Springbot\Main\Model\Oauth;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+
 
 /**
  * Class Login
@@ -16,23 +19,42 @@ use Psr\Log\LoggerInterface;
  */
 class Login extends Action
 {
-    /**
-     * @var Config
-     */
     private $_config;
-
     private $_register;
-
     private $_logger;
+    private $_resultPageFactory;
 
     /**
-     * @var PageFactory
+     * @return Config
      */
-    private $resultPageFactory;
+    public function config()
+    {
+        $this->_config;
+    }
 
     /**
+     * @return Register
+     */
+    public function register()
+    {
+        return $this->_register;
+    }
+
+    /**
+     * @return \Magento\Framework\View\Result\PageFactory
+     */
+    public function getResultPageFactory()
+    {
+        return $this->_resultPageFactory;
+    }
+
+    /**
+     * Login constructor.
      * @param Config $config
      * @param Context $context
+     * @param LoggerInterface $logger
+     * @param PageFactory $pageFactory
+     * @param Register $register
      */
     public function __construct(
         Config $config,
@@ -43,67 +65,34 @@ class Login extends Action
     ) {
         $this->_logger = $logger;
         $this->_config = $config;
-        $this->resultPageFactory = $pageFactory;
+        $this->_resultPageFactory = $pageFactory;
         $this->_register = $register;
         parent::__construct($context);
     }
 
     /**
-     * Page execution
+     * Page execute
+     *
+     * @return \Magento\Backend\Model\View\Result\Page
      */
     public function execute()
     {
-        /**
-         * Pull values from the customer form for transit back to Springbot
-         */
+        // Pull values from the customer form for transit back to Springbot
         $springbotEmail = $this->getRequest()->getParam('springbot-email');
         $springbotPassword = $this->getRequest()->getParam('springbot-password');
-        $url = SpringbotHelper::SPRINGBOT_REGISTRATION_URL;
+        $registered = $this->register()->registerStores($springbotEmail, $springbotPassword);
 
-        /**
-         * Send the params to the Springbot API and get an API token
-         */
-        try {
-            $client = new \Zend_Http_Client($url);
-            $client->setRawData('{"user_id":"' . $springbotEmail . '", "password":"' . $springbotPassword . '"}');
-            $client->setHeaders('Content-Type: application/json');
-            $response = $client->request('POST');
-            $result = json_decode($response->getBody(), true);
-
-            /**
-             * If response comes back 'unauthorized', redirect to the index page.
-             */
-            if ($result['status'] === 'unauthorized') {
-                $this->_redirect('*/dashboard', ['unauthorized']);
-            } else {
-                /**
-                 * Save returned token into the core_config_data table.
-                 */
-                $api_token = $result['token'];
-                $this->_config->saveConfig('springbot/configuration/security_token', $api_token, 'default', 0);
-            }
-
-            $this->_register->registerStores();
-
-        } catch (\Exception $e) {
-            $e->getMessage();
+        if ($registered) {
+            $resultPage = $this->getResultPageFactory()->create();
+            $resultPage->setActiveMenu('Springbot_Main::main');
+            $resultPage->addBreadcrumb(__('Springbot'), __('Springbot'));
+            $resultPage->getConfig()->getTitle()->prepend(__('Springbot'));
+            return $resultPage;
         }
-
-        /**
-         * @var \Magento\Backend\Model\View\Result\Page $resultPage
-         */
-        $resultPage = $this->getResultPageFactory()->create();
-        $resultPage->setActiveMenu('Springbot_Main::main');
-        $resultPage->addBreadcrumb(__('Springbot'), __('Springbot'));
-        $resultPage->getConfig()->getTitle()->prepend(__('Springbot'));
-        return $resultPage;
+        else {
+            // If response comes back 'unauthorized', redirect to the index page.
+            $this->_redirect('*/dashboard', ['unauthorized']);
+        }
     }
 
-    /**
-     * @return \Magento\Framework\View\Result\PageFactory
-     */
-    public function getResultPageFactory()
-    {
-        return $this->resultPageFactory;
-    }
 }

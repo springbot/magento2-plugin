@@ -13,24 +13,15 @@ use Magento\Framework\App\Helper\Context as HelperContext;
  */
 class Index extends Action
 {
-    /**
-     * @var PageFactory
-     */
     protected $resultPageFactory;
-
-    /**
-     * @var HelperContext
-     */
     protected $helperContext;
-
-    /**
-     * @var string
-     */
     protected $securityToken;
 
     /**
      * Index constructor.
+     *
      * @param Context $context
+     * @param HelperContext $helperContext
      * @param PageFactory $resultPageFactory
      */
     public function __construct(
@@ -49,9 +40,7 @@ class Index extends Action
      */
     public function execute()
     {
-        /**
-         * Check to see if security token is set. If so, redirect to Springbot App.
-         */
+          // Check to see if security token is set. If so, redirect to Springbot App.
 //        if ($this->securityToken !== null) {
 //            $this->_redirect('https://app.springbot.com');
 //        }
@@ -63,9 +52,7 @@ class Index extends Action
             $this->messageManager->addError(__('Incorrect username or password. Please try again.'));
         }
 
-        /**
-         * @var \Magento\Backend\Model\View\Result\Page $resultPage
-         */
+        /* @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->getResultPageFactory()->create();
         $resultPage->setActiveMenu('Springbot_Main::main');
         $resultPage->addBreadcrumb(__('Springbot'), __('Springbot'));
