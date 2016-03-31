@@ -1,0 +1,35 @@
+.springbot-form-field {
+  max-width: 30%;
+  padding: .5em 0;
+
+  button {
+    background-color: #3eb049;
+    border: none;
+    color: #fff;
+    padding: .5em 1em;
+    text-transform: uppercase;
+    transition: background-color 0.5s ease-in-out;
+
+    &:hover {
+      background-color: lighten(#3eb049, 10%);
+    }
+  }
+
+  input {
+    background-color: #efefef;
+    border: none;
+    padding: .5em 1em;
+    width: 100%;
+  }
+
+  label {
+    display: inline-block;
+    margin-bottom: .4em;
+  }
+}
+
+.clear:before, .clear:after {
+  content: '';
+  clear: both;
+  display: table;
+}
