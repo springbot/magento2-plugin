@@ -9,4 +9,7 @@
     <event name="controller_action_predispatch_checkout_cart_index">
         <observer name="cartReconstitution" instance="Springbot\Main\Observer\cartReconstitutionObserver" />
     </event>
+    <event name="sales_order_place_after">
+        <observer name="sb_sales_order_place_after" instance="Springbot\Main\Observer\FrontendPurchasePlaceAfterObserver"/>
+    </event>
 </config>
