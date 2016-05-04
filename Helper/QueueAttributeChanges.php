@@ -52,5 +52,4 @@ class QueueAttributeChanges extends AbstractHelper
         $jsonData = json_encode($category->getData());
         $this->_logger->debug($jsonData);
     }
-
 }

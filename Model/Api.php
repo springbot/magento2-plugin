@@ -128,6 +128,4 @@ class Api extends AbstractModel
     {
         return self::ETL_URL . $subpath;
     }
-
-
 }

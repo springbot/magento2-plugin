@@ -11,7 +11,6 @@ use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 use Springbot\Main\Helper\Data as SpringbotHelper;
 
-
 /**
  * Class cartReconstitutionObserver
  * @package Springbot\Main\Observer

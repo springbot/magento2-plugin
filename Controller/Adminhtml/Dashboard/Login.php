@@ -12,7 +12,6 @@ use Psr\Log\LoggerInterface;
 use Springbot\Main\Model\Oauth;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
-
 /**
  * Class Login
  * @package Springbot\Main\Controller\Adminhtml\Dashboard
@@ -88,11 +87,9 @@ class Login extends Action
             $resultPage->addBreadcrumb(__('Springbot'), __('Springbot'));
             $resultPage->getConfig()->getTitle()->prepend(__('Springbot'));
             return $resultPage;
-        }
-        else {
+        } else {
             // If response comes back 'unauthorized', redirect to the index page.
             $this->_redirect('*/dashboard', ['unauthorized']);
         }
     }
-
 }

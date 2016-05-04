@@ -31,8 +31,7 @@ class GenerateOauthTokenCommand extends Command
     public function __construct(
         Oauth $oauth,
         State $state
-    )
-    {
+    ) {
         $this->_state = $state;
         $this->_oauth = $oauth;
         parent::__construct();

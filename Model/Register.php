@@ -41,8 +41,7 @@ class Register extends AbstractModel
         ScopeConfigInterface $scopeConfigInterface,
         StoreManagerInterface $storeManager,
         UrlInterface $urlInterface
-    )
-    {
+    ) {
         $this->_api = $api;
         $this->_config = $config;
         $this->_scopeConfigInterface = $scopeConfigInterface;
@@ -92,8 +91,7 @@ class Register extends AbstractModel
                 $this->commitVars($vars);
                 $this->_cacheManager->clean();
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         } catch (\Exception $e) {
@@ -127,13 +125,11 @@ class Register extends AbstractModel
             'store_custsrv_email' => $this->_scopeConfigInterface->getValue('trans_email/ident_support/email'),
             'store_statuses' => $this->_orderConfig->getStatuses()
         ];
-
     }
 
     protected function commitVars($vars)
     {
-        foreach ($vars as $key => $value)
-        {
+        foreach ($vars as $key => $value) {
             $configKey = $this->makeConfigKey($key, $this->_storeManager->getStore()->getId());
             $this->_config->saveConfig($configKey, $value, 'default', 0);
         }
@@ -141,7 +137,7 @@ class Register extends AbstractModel
 
     protected function _getStoreAddress()
     {
-        return str_replace(array("\n","\r"),"|", $this->_scopeConfigInterface->getValue('general/store_information/address'));
+        return str_replace(array("\n", "\r"), "|", $this->_scopeConfigInterface->getValue('general/store_information/address'));
     }
 
     protected function makeConfigKey($dataClass, $storeId = '')
@@ -153,5 +149,4 @@ class Register extends AbstractModel
 
         return $configKey;
     }
-
 }

@@ -40,7 +40,7 @@ class Index extends Action
      */
     public function execute()
     {
-          // Check to see if security token is set. If so, redirect to Springbot App.
+        // Check to see if security token is set. If so, redirect to Springbot App.
 //        if ($this->securityToken !== null) {
 //            $this->_redirect('https://app.springbot.com');
 //        }
