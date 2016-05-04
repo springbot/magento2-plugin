@@ -83,11 +83,11 @@ class Register extends AbstractModel
             if ($responseArray = json_decode($response->getBody(), true)) {
                 foreach ($storesArray as $guid => $storeArray) {
 
-                    if ($returnedStoreArray = $responseArray[$guid]) {
+                    if ($returnedStoreArray = $responseArray['stores'][$guid]) {
                         $vars = [
                             'store_guid' => $guid,
-                            'store_id' => $responseArray['springbot_store_id'],
-                            'security_token' => $responseArray['security_token']
+                            'store_id' => $returnedStoreArray['springbot_store_id'],
+                            'security_token' => $returnedStoreArray['security_token']
                         ];
                         $this->commitVars($vars);
                     }
