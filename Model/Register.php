@@ -29,7 +29,15 @@ class Register extends AbstractModel
     private $_urlInterface;
 
     /**
+     * @param Api $api
+     * @param Config $config
+     * @param Context $context
      * @param Data $data
+     * @param OrderConfig $orderConfig
+     * @param Registry $registry
+     * @param ScopeConfigInterface $scopeConfigInterface
+     * @param StoreManagerInterface $storeManager
+     * @param UrlInterface $urlInterface
      */
     public function __construct(
         Api $api,
@@ -53,15 +61,7 @@ class Register extends AbstractModel
     }
 
     /**
-     * @return Api
-     */
-    public function api()
-    {
-        return $this->_api;
-    }
-
-    /**
-     * Register all stores with the Springbot app
+     * Register all stores with Springbot via the ETL.
      *
      * @param $email
      * @param $password
@@ -70,25 +70,29 @@ class Register extends AbstractModel
     public function registerStores($email, $password)
     {
         try {
-            $guid = $this->_helper->getStoreGuid();
-            $url = $this->api()->getApiUrl(Api::STORE_REGISTRATION_URL);
-            $response = $this->api()->post($url, json_encode([
+            $url = $this->_api->getApiUrl(Api::STORE_REGISTRATION_URL);
+            $storesArray = $this->getStoresArray();
+            $response = $this->_api->post($url, json_encode([
+                'stores' => $this->getStoresArray(),
                 'credentials' => [
                     'email' => $email,
                     'password' => $password
-                ],
-                'store' => $this->getStoreArray($guid)
+                ]
             ]));
 
             if ($responseArray = json_decode($response->getBody(), true)) {
-                $springbotStoreId = array_search($guid, $response['stores']);
-                $vars = [
-                    'store_guid' => $guid,
-                    'store_id' => $springbotStoreId,
-                    'security_token' => $this->_scopeConfigInterface->getValue('springbot/configuration/security_token')
-                ];
+                foreach ($storesArray as $guid => $storeArray) {
 
-                $this->commitVars($vars);
+                    if ($returnedStoreArray = $responseArray[$guid]) {
+                        $vars = [
+                            'store_guid' => $guid,
+                            'store_id' => $responseArray['springbot_store_id'],
+                            'security_token' => $responseArray['security_token']
+                        ];
+                        $this->commitVars($vars);
+                    }
+                }
+
                 $this->_cacheManager->clean();
                 return true;
             } else {
@@ -100,33 +104,42 @@ class Register extends AbstractModel
     }
 
     /**
-     * @param $guid
+     * Returns an array of all stores on the instance with the necessary data to register the store with Springbot.
+     *
      * @return array
      */
-    public function getStoreArray($guid)
+    public function getStoresArray()
     {
-        $storeUrl = $this->_scopeConfigInterface->getValue('web/unsecure/base_url');
-        $store = $this->_storeManager->getStore();
+        $storesArray = [];
+        foreach ($this->_storeManager->getStores() as $store) {
 
-        return [
-            'guid' => $guid,
-            'url' => $storeUrl,
-            'name' => $store->getName(),
-            'logo_src' => $this->_scopeConfigInterface->getValue('design/header/logo_src'),
-            'logo_alt_tag' => $this->_scopeConfigInterface->getValue('design/header/logo_atl'),
-            'web_id' => $store->getWebsiteId(),
-            'store_id' => $this->getId(),
-            'store_name' => $store->getName(),
-            'store_code' => $store->getCode(),
-            'store_active' => $store->getIsActive(),
-            'store_url' => $storeUrl,
-            'media_url' => $this->_urlInterface->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA),
-            'store_mail_address' => $this->_getStoreAddress(),
-            'store_custsrv_email' => $this->_scopeConfigInterface->getValue('trans_email/ident_support/email'),
-            'store_statuses' => $this->_orderConfig->getStatuses()
-        ];
+            $guid = $this->_helper->getStoreGuid();
+            $storesArray[$guid] = [
+                'guid' => $guid,
+                'url' => $store->getBaseUrl(),
+                'name' => $store->getName(),
+                'logo_src' => $this->_scopeConfigInterface->getValue('design/header/logo_src'),
+                'logo_alt_tag' => $this->_scopeConfigInterface->getValue('design/header/logo_atl'),
+                'web_id' => $store->getWebsiteId(),
+                'store_id' => $this->getId(),
+                'store_name' => $store->getName(),
+                'store_code' => $store->getCode(),
+                'store_active' => $store->getIsActive(),
+                'store_url' => $store->getBaseUrl(),
+                'media_url' => $this->_urlInterface->getBaseUrl(UrlInterface::URL_TYPE_MEDIA),
+                'store_mail_address' => $this->_getStoreAddress(),
+                'store_custsrv_email' => $this->_scopeConfigInterface->getValue('trans_email/ident_support/email'),
+                'store_statuses' => $this->_orderConfig->getStatuses()
+            ];
+        }
+        return $storesArray;
     }
 
+    /**
+     * Takes an associative array of variables which will be
+     *
+     * @param array $vars
+     */
     protected function commitVars($vars)
     {
         foreach ($vars as $key => $value) {
