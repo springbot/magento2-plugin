@@ -12,4 +12,28 @@
     <event name="sales_order_place_after">
         <observer name="sb_sales_order_place_after" instance="Springbot\Main\Observer\FrontendPurchasePlaceAfterObserver"/>
     </event>
+    <event name="catalog_product_save_after">
+        <observer name="springbot_queue_catalog_product_save_after" instance="Springbot\Queue\Observer\ProductSaveObserver"/>
+    </event>
+    <event name="catalog_product_delete_after">
+        <observer name="springbot_queue_catalog_product_delete_after" instance="Springbot\Queue\Observer\ProductDeleteObserver"/>
+    </event>
+    <event name="catalog_category_save_after">
+        <observer name="springbot_queue_catalog_category_save_after" instance="Springbot\Queue\Observer\CategorySaveObserver"/>
+    </event>
+    <event name="catalog_category_delete_after">
+        <observer name="springbot_queue_catalog_category_delete_after" instance="Springbot\Queue\Observer\CategoryDeleteObserver"/>
+    </event>
+    <event name="customer_save_after">
+        <observer name="springbot_queue_customer_save_after" instance="Springbot\Queue\Observer\CustomerSaveObserver"/>
+    </event>
+    <event name="customer_delete_after">
+        <observer name="springbot_queue_customer_delete_after" instance="Springbot\Queue\Observer\CustomerDeleteObserver"/>
+    </event>
+    <event name="newsletter_subscriber_save_after">
+        <observer name="springbot_queue_newsletter_subscriber_save_after" instance="Springbot\Queue\Observer\SubscriberSaveObserver"/>
+    </event>
+    <event name="eav_entity_attribute_save_commit_after">
+        <observer name="springbot_queue_eav_entity_attribute_save_commit_after" instance="Springbot\Queue\Observer\AttributeSaveObserver"/>
+    </event>
 </config>
