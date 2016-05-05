@@ -82,7 +82,6 @@ class Register extends AbstractModel
 
             if ($responseArray = json_decode($response->getBody(), true)) {
                 foreach ($storesArray as $guid => $storeArray) {
-
                     if ($returnedStoreArray = $responseArray['stores'][$guid]) {
                         $vars = [
                             'store_guid' => $guid,

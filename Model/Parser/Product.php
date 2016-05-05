@@ -1,0 +1,59 @@
+<?php
+
+namespace Springbot\Main\Model\Parser;
+
+use Magento\Catalog\Model\Product as MagentoProduct;
+
+/**
+ * Class Api
+ * @package Springbot\Main\Model
+ */
+class Product
+{
+
+    /**
+     * @param MagentoProduct $product
+     * @param $dataSource
+     * @return array
+     */
+    public function parse(MagentoProduct $product, $dataSource)
+    {
+        return [
+            'store_id' => $product->getStore()->getId(),
+            'entity_id' => $product->getEntityId(),
+            'sku' => $product->getSku(),
+            'sku_fulfillment' => $product->getSku(),
+            'category_ids' => $product->getCategoryIds(),
+            'root_category_ids' => $product->getCategoryIds(),      // TODO
+            'all_category_ids' => $product->getCategoryIds(),
+            'full_description' => '',                               // TODO
+            'short_description' => '',                              // TODO
+            'image_url' => $product->getImage(),
+            'landing_url' => $product->getProductUrl(),
+            'name' => $product->getName(),
+            'url_key' => $product->getUrlKey(),
+            'is_deleted' => false,
+            'status' => $product->getStatus(),
+            'created_at' => $product->getCreatedAt(),
+            'updated_at' => $product->getUpdatedAt(),
+            'catalog_created_at' => $product->getCreatedAt(),
+            'catalog_updated_at' => $product->getUpdatedAt(),
+            'json_data' => [
+                'unit_price' => $product->getPrice(),
+                'msrp' => 0,                                        // TODO
+                'sale_price' => $product->getSpecialPrice(),
+                'unit_cost' => 0,                                   // TODO
+                'image_label' => '',                                // TODO
+                'unit_wgt' => $product->getWeight(),
+                'type' => $product->getTypeId(),
+                'visibility' => $product->getVisibility(),
+                'cat_id_list' => '',                                // TODO
+            ],
+            'custom_attribute_set_id' => $product->getAttributeSetId(),
+            'custom_attributes' => [],                              // TODO
+            'deleted' => false,
+            'data_source' => $dataSource
+        ];
+    }
+
+}

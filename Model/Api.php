@@ -16,6 +16,8 @@ use Springbot\Main\Helper\Data;
 class Api extends AbstractModel
 {
     const ETL_URL = 'http://localhost:8080/';
+    const ETL_API_PATH = 'api/';
+    const WEBHOOKS_PATH = 'webhooks/v1';
     const STORE_REGISTRATION_URL = 'webhooks/v1/stores';
 
     const SUCCESSFUL_RESPONSE = 'ok';
@@ -23,7 +25,6 @@ class Api extends AbstractModel
     const TOTAL_POST_FAIL_LIMIT = 32;
     const RETRY_LIMIT = 3;
 
-    private $_retries;
     private $_springbotHelper;
     private $_scopeConfig;
     private $_client;
@@ -59,15 +60,6 @@ class Api extends AbstractModel
     }
 
     /**
-     * @return $this
-     */
-    public function reinit()
-    {
-        $this->_retries = 0;
-        return $this;
-    }
-
-    /**
      * @param $url
      * @param $body
      * @param array $headers
@@ -86,6 +78,25 @@ class Api extends AbstractModel
         } catch (\Exception $e) {
             throw new \Exception("HTTP POST failed with code: {$e->getMessage()}");
         }
+    }
+
+    /**
+     * @param $springbotStoreId
+     * @param $apiToken
+     * @param $apiPath
+     * @param $entitiesName
+     * @param array $entitiesData
+     * @return \Zend_Http_Response
+     * @throws \Exception
+     */
+    public function postEntities($springbotStoreId, $apiToken, $apiPath, $entitiesName, array $entitiesData)
+    {
+        $body = json_encode([$entitiesName => $entitiesData]);
+        $headers = [
+            'X-AUTH-TOKEN' => $apiToken,
+            'Content-Type' => 'application/json'
+        ];
+        return $this->post($this->getApiUrl('v1') . $springbotStoreId . "/{$apiPath}", $body, $headers);
     }
 
     /**
@@ -126,6 +137,10 @@ class Api extends AbstractModel
      */
     public function getApiUrl($subpath = '')
     {
-        return self::ETL_URL . $subpath;
+        $url = self::ETL_URL . self::ETL_API_PATH;
+        if ($subpath) {
+            $url .= $subpath . '/';
+        }
+        return $url;
     }
 }
