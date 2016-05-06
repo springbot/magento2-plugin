@@ -12,10 +12,10 @@ use Psr\Log\LoggerInterface;
 use Springbot\Main\Helper\Data as SpringbotHelper;
 
 /**
- * Class cartReconstitutionObserver
+ * Class CartReconstitutionObserver
  * @package Springbot\Main\Observer
  */
-class cartReconstitutionObserver implements ObserverInterface
+class CartReconstitutionObserver implements ObserverInterface
 {
     private $_checkoutSession;
     private $_action;

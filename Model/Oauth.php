@@ -67,8 +67,6 @@ class Oauth extends AbstractModel
 
         $accessToken->get(1);
         $accessToken->save();
-        print_r($this->oauthService()->ci);
-        die;
         return $accessToken;
     }
 }

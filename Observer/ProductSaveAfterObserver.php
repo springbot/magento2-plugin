@@ -2,40 +2,51 @@
 
 namespace Springbot\Main\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
+use Springbot\Main\Model\Handler\Product as ProductHandler;
+use Magento\Catalog\Model\Product as MagentoProduct;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Springbot\Queue\Model\Queue;
+use Exception;
 
 class ProductSaveAfterObserver implements ObserverInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
+    private $_logger;
+    private $_queue;
 
     /**
      * ProductSaveAfterObserver constructor
      * 
      * @param LoggerInterface $loggerInterface
+     * @param Queue $queue
      */
-    public function __construct(LoggerInterface $loggerInterface)
+    public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->logger = $loggerInterface;
+        $this->_logger = $loggerInterface;
+        $this->_queue = $queue;
     }
 
     /**
      * Pull the product data from the event
      *
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return void
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         try {
             $product = $observer->getEvent()->getProduct();
-            $this->logger->debug("Created/Updated Product ID: " . $product->getId());
-        } catch (\Exception $e) {
-            $this->logger->debug($e->getMessage());
+            /* @var MagentoProduct $product */
+
+            foreach ($product->getStoreIds() as $storeId) {
+
+                // Enqueue a job to sync this product for every store it belongs to
+                $this->_queue->scheduleJob(ProductHandler::class, 'handle', [$product->getStoreId(), $product->getId()], 1);
+                $this->_logger->debug("Scheduled sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
+            }
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
         }
     }
 }

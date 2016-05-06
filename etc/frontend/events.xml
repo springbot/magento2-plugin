@@ -7,10 +7,10 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="controller_action_predispatch_checkout_cart_index">
-        <observer name="cartReconstitution" instance="Springbot\Main\Observer\cartReconstitutionObserver" />
+        <observer name="cart_reconstitution" instance="Springbot\Main\Observer\CartReconstitutionObserver" />
     </event>
     <event name="sales_order_place_after">
-        <observer name="sb_sales_order_place_after" instance="Springbot\Main\Observer\FrontendPurchasePlaceAfterObserver"/>
+        <observer name="sb_sales_order_place_after" instance="Springbot\Main\Observer\FrontendOrderPlaceAfterObserver"/>
     </event>
     <event name="catalog_product_save_after">
         <observer name="springbot_queue_catalog_product_save_after" instance="Springbot\Queue\Observer\ProductSaveObserver"/>

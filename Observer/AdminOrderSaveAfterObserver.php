@@ -4,12 +4,12 @@ namespace Springbot\Main\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Sales\Model\Order as MagentoOrder;
+use Springbot\Main\Model\Handler\Order as OrderHandler;
 use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
-use Magento\Catalog\Model\Category as MagentoCategory;
-use Springbot\Main\Model\Handler\Category as CategoryHandler;
 
-class CategorySaveAfterObserver implements ObserverInterface
+class AdminOrderSaveAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
@@ -27,7 +27,7 @@ class CategorySaveAfterObserver implements ObserverInterface
     }
 
     /**
-     * Pull the category data from the event
+     * Pull the order data from the event
      *
      * @param Observer $observer
      * @return void
@@ -35,12 +35,10 @@ class CategorySaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $category = $observer->getEvent()->getCategory();
-            /* @var MagentoCategory $category */
-            foreach ($category->getStoreIds() as $storeId) {
-                $this->_queue->scheduleJob(CategoryHandler::class, 'handle', [$storeId, $category->getId()], 1);
-                $this->_logger->debug("Created/Updated Category ID: " . $category->getEntityId());
-            }
+            $order = $observer->getEvent()->getOrder();
+            /* @var MagentoOrder $order */
+            $this->_queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $order->getId()], 1);
+            $this->_logger->debug("Scheduled sync job for product ID: {$order->getId()}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

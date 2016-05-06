@@ -25,6 +25,6 @@
         <observer name="sb_catalog_product_delete_after" instance="Springbot\Main\Observer\ProductDeleteAfterObserver"/>
     </event>
     <event name="sales_order_save_after">
-        <observer name="sb_sales_order_save_after" instance="Springbot\Main\Observer\AdminPurchaseSaveAfterObserver"/>
+        <observer name="sb_sales_order_save_after" instance="Springbot\Main\Observer\AdminOrderSaveAfterObserver"/>
     </event>
 </config>
