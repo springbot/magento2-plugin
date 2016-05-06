@@ -22,31 +22,22 @@ class Data extends AbstractHelper
     private $_scopeConfig;
     private $_config;
     private $_storeManager;
-    private $_quoteFactory;
-    private $_cartHelper;
-
 
     /**
      * Data constructor.
-     * @param Cart $cartHelper
      * @param ScopeConfigInterface $scopeConfig
      * @param Context $context
-     * @param QuoteFactory $quoteFactory
      * @param Config $config
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        Cart $cartHelper,
         ScopeConfigInterface $scopeConfig,
         Context $context,
-        QuoteFactory $quoteFactory,
         Config $config,
         StoreManagerInterface $storeManager
     ) {
-        $this->_cartHelper = $cartHelper;
         $this->_config = $config;
         $this->_scopeConfig = $scopeConfig;
-        $this->_quoteFactory = $quoteFactory;
         $this->_storeManager = $storeManager;
         parent::__construct($context);
     }
