@@ -37,7 +37,7 @@ class AttributeSaveAfterObserver implements ObserverInterface
         try {
             $attribute = $observer->getEvent()->getAttribute();
             /* @var MagentoAttribute $attribute */
-            $this->_queue->scheduleJob(AttributeSetHandler::class, 'handle', [1, $attribute->getAttributeSetId()], 1);  // TODO: Figure out how to determine store_id
+            $this->_queue->scheduleJob(AttributeSetHandler::class, 'handle', [1, $attribute->getAttributeSetId()]);  // TODO: Figure out how to determine store_id
             $this->_logger->debug("Created/Updated Attribute ID: " . $attribute->getAttributeId());
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());

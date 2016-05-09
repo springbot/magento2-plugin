@@ -38,11 +38,10 @@ class ProductSaveAfterObserver implements ObserverInterface
         try {
             $product = $observer->getEvent()->getProduct();
             /* @var MagentoProduct $product */
-
             foreach ($product->getStoreIds() as $storeId) {
 
                 // Enqueue a job to sync this product for every store it belongs to
-                $this->_queue->scheduleJob(ProductHandler::class, 'handle', [$product->getStoreId(), $product->getId()], 1);
+                $this->_queue->scheduleJob(ProductHandler::class, 'handle', [$storeId, $product->getId()]);
                 $this->_logger->debug("Scheduled sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
             }
         } catch (Exception $e) {

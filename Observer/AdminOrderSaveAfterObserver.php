@@ -37,7 +37,7 @@ class AdminOrderSaveAfterObserver implements ObserverInterface
         try {
             $order = $observer->getEvent()->getOrder();
             /* @var MagentoOrder $order */
-            $this->_queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $order->getId()], 1);
+            $this->_queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $order->getId()]);
             $this->_logger->debug("Scheduled sync job for product ID: {$order->getId()}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());

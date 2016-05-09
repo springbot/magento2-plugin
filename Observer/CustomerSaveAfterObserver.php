@@ -37,7 +37,7 @@ class CustomerSaveAfterObserver implements ObserverInterface
         try {
             $customer = $observer->getEvent()->getCustomer();
             /* @var MagentoCustomer $customer */
-            $this->_queue->scheduleJob(CustomerHandler::class, 'handle', [$customer->getStoreId(), $customer->getId()], 1);
+            $this->_queue->scheduleJob(CustomerHandler::class, 'handle', [$customer->getStoreId(), $customer->getId()]);
             $this->_logger->debug("Created/Updated Customer ID: " . $customer->getId());
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());

@@ -22,11 +22,10 @@ class Register extends AbstractModel
 
     private $_api;
     private $_helper;
-    private $_config;
     private $_orderConfig;
-    private $_scopeConfigInterface;
     private $_storeManager;
     private $_urlInterface;
+    private $_storeConfig;
 
     /**
      * @param Api $api
@@ -38,6 +37,7 @@ class Register extends AbstractModel
      * @param ScopeConfigInterface $scopeConfigInterface
      * @param StoreManagerInterface $storeManager
      * @param UrlInterface $urlInterface
+     * @param StoreConfiguration $storeConfig
      */
     public function __construct(
         Api $api,
@@ -48,7 +48,8 @@ class Register extends AbstractModel
         Registry $registry,
         ScopeConfigInterface $scopeConfigInterface,
         StoreManagerInterface $storeManager,
-        UrlInterface $urlInterface
+        UrlInterface $urlInterface,
+        StoreConfiguration $storeConfig
     ) {
         $this->_api = $api;
         $this->_config = $config;
@@ -57,6 +58,7 @@ class Register extends AbstractModel
         $this->_orderConfig = $orderConfig;
         $this->_storeManager = $storeManager;
         $this->_urlInterface = $urlInterface;
+        $this->_storeConfig = $storeConfig;
         parent::__construct($context, $registry);
     }
 
@@ -82,13 +84,12 @@ class Register extends AbstractModel
 
             if ($responseArray = json_decode($response->getBody(), true)) {
                 foreach ($storesArray as $guid => $storeArray) {
-                    if ($returnedStoreArray = $responseArray['stores'][$guid]) {
-                        $vars = [
-                            'store_guid' => $guid,
+                    if ($returnedStoreArray = $responseArray['stores'][$storeArray['store_id']]) {
+                        $this->_storeConfig->saveValues($storeArray['store_id'], [
+                            'store_guid' => $returnedStoreArray['guid'],
                             'store_id' => $returnedStoreArray['springbot_store_id'],
                             'security_token' => $returnedStoreArray['security_token']
-                        ];
-                        $this->commitVars($vars);
+                        ]);
                     }
                 }
 
@@ -134,31 +135,9 @@ class Register extends AbstractModel
         return $storesArray;
     }
 
-    /**
-     * Takes an associative array of variables which will be
-     *
-     * @param array $vars
-     */
-    protected function commitVars($vars)
-    {
-        foreach ($vars as $key => $value) {
-            $configKey = $this->makeConfigKey($key, $this->_storeManager->getStore()->getId());
-            $this->_config->saveConfig($configKey, $value, 'default', 0);
-        }
-    }
-
     protected function _getStoreAddress()
     {
-        return str_replace(array("\n", "\r"), "|", $this->_scopeConfigInterface->getValue('general/store_information/address'));
+        return str_replace(["\n", "\r"], "|", $this->_scopeConfigInterface->getValue('general/store_information/address'));
     }
 
-    protected function makeConfigKey($dataClass, $storeId = '')
-    {
-        $configKey = 'springbot/configuration/' . $dataClass;
-        if ($storeId != '') {
-            $configKey = $configKey . '_' . $storeId;
-        }
-
-        return $configKey;
-    }
 }

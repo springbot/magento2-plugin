@@ -29,6 +29,7 @@ class Api extends AbstractModel
     private $_scopeConfig;
     private $_client;
     private $_encrypt;
+    private $_stores;
 
     /**
      * Api constructor.
@@ -37,17 +38,20 @@ class Api extends AbstractModel
      * @param ScopeConfigInterface $scopeConfig
      * @param Context $context
      * @param Registry $registry
+     * @param Stores $stores
      */
     public function __construct(
         Data $springbotHelper,
         EncryptorInterface $encryptorInterface,
         ScopeConfigInterface $scopeConfig,
         Context $context,
-        Registry $registry
+        Registry $registry,
+        Stores $stores
     ) {
         $this->_encrypt = $encryptorInterface;
         $this->_springbotHelper = $springbotHelper;
         $this->_scopeConfig = $scopeConfig;
+        $this->_stores = $stores;
         parent::__construct($context, $registry);
     }
 
@@ -81,22 +85,22 @@ class Api extends AbstractModel
     }
 
     /**
-     * @param $springbotStoreId
-     * @param $apiToken
+     * @param $storeId
      * @param $apiPath
      * @param $entitiesName
      * @param array $entitiesData
-     * @return \Zend_Http_Response
-     * @throws \Exception
      */
-    public function postEntities($springbotStoreId, $apiToken, $apiPath, $entitiesName, array $entitiesData)
+    public function postEntities($storeId, $apiPath, $entitiesName, array $entitiesData)
     {
+        // TODO: Get springbot_store_id and api_token from store_id
+        /*
         $body = json_encode([$entitiesName => $entitiesData]);
         $headers = [
             'X-AUTH-TOKEN' => $apiToken,
             'Content-Type' => 'application/json'
         ];
         return $this->post($this->getApiUrl('v1') . $springbotStoreId . "/{$apiPath}", $body, $headers);
+        */
     }
 
     /**

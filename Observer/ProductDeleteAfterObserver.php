@@ -42,7 +42,7 @@ class ProductDeleteAfterObserver implements ObserverInterface
             foreach ($product->getStoreIds() as $storeId) {
 
                 // Enqueue a job to sync this product for every store it belongs to
-                $this->_queue->scheduleJob(ProductHandler::class, 'handleDelete', [$product->getStoreId(), $product->getId()], 1);
+                $this->_queue->scheduleJob(ProductHandler::class, 'handleDelete', [$product->getStoreId(), $product->getId()]);
                 $this->_logger->debug("Scheduled deleted sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
             }
         } catch (Exception $e) {
