@@ -60,13 +60,17 @@ class Oauth extends AbstractModel
     public function create()
     {
         $integration = $this->_integrationService->findByName('Springbot');
-        if (!$integration) {
+        if ($integration->isEmpty()) {
             $integration = $this->_integrationService->create($this->_integrationData);
         }
-        $accessToken =  $this->oauthService()->getAccessToken($integration->getConsumerId());
 
-        $accessToken->get(1);
-        $accessToken->save();
-        return $accessToken;
+        if ($consumerId = $integration->getConsumerId()) {
+            $this->oauthService()->createAccessToken($integration->getConsumerId());
+            $accessToken = $this->oauthService()->getAccessToken($integration->getConsumerId());
+            if (!$accessToken->isEmpty()) {
+                return $accessToken->getToken();
+            }
+        }
+        return false;
     }
 }
