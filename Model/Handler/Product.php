@@ -34,10 +34,11 @@ class Product extends Handler
 
         $array = json_decode($product->toJson(), true);
         $array['landing_url'] = $product->getUrlInStore();
+        print_r($array);
 
-        $api = $objectManager->get('Springbot\Main\Model\Api');
+        //$api = $objectManager->get('Springbot\Main\Model\Api');
         /* @var Api $api */
-        $api->postEntities($storeId, 'products', 'products', [$array]);
+        //$api->postEntities($storeId, 'products', 'products', [$array]);
 
         //echo $api->getApiUrl();
         throw new \Exception('xxx');

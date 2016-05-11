@@ -21,12 +21,20 @@ class Order extends Handler
     public function handle($storeId, $orderId)
     {
         $objectManager = ObjectManager::getInstance();
-        $Order = $objectManager->get('Magento\Catalog\Model\Order')->load($orderId);
+        $order = $objectManager->get('Magento\Sales\Model\Order')->load($orderId);
+        /* @var MagentoOrder $order */
+        foreach ($order->getAllItems() as $item) {
+            $array = json_decode($item->toJson(), true);
+            print_r($array);
+        }
+        $array = json_decode($order->toJson(), true);
+        print_r($array);
 
-        $parsed = $this->parse($Order, self::DATA_SOURCE_BH);
-        $api = $objectManager->get('Springbot\Main\Model\Api');
+        //$api = $objectManager->get('Springbot\Main\Model\Api');
         /* @var Api $api */
-        $api->getApiUrl();
+        //$api->postEntities($storeId, 'products', 'products', [$array]);
+        //echo $api->getApiUrl();
+        throw new \Exception('xxx');
     }
 
     public function handleDelete($storeId, $orderId)
