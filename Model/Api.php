@@ -29,7 +29,6 @@ class Api extends AbstractModel
     private $_scopeConfig;
     private $_client;
     private $_encrypt;
-    private $_stores;
 
     /**
      * Api constructor.
@@ -38,20 +37,17 @@ class Api extends AbstractModel
      * @param ScopeConfigInterface $scopeConfig
      * @param Context $context
      * @param Registry $registry
-     * @param Stores $stores
      */
     public function __construct(
         Data $springbotHelper,
         EncryptorInterface $encryptorInterface,
         ScopeConfigInterface $scopeConfig,
         Context $context,
-        Registry $registry,
-        Stores $stores
+        Registry $registry
     ) {
         $this->_encrypt = $encryptorInterface;
         $this->_springbotHelper = $springbotHelper;
         $this->_scopeConfig = $scopeConfig;
-        $this->_stores = $stores;
         parent::__construct($context, $registry);
     }
 
