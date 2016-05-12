@@ -5,10 +5,10 @@
             <configuration>
                 <segment_size>10</segment_size>
                 <remote_update>0</remote_update>
-                <stability>stable</stability>
                 <show_notifications>1</show_notifications>
                 <email_selector>billing:email,login-email,newsletter</email_selector>
                 <api_url>http://localhost:8080</api_url>
+                <assets_domain>d2z0bn1jv8xwtk.cloudflare.com</assets_domain>
             </configuration>
             <images>
                 <use_cached_images>0</use_cached_images>
