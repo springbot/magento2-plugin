@@ -27,4 +27,10 @@
     <event name="sales_order_save_after">
         <observer name="sb_sales_order_save_after" instance="Springbot\Main\Observer\AdminOrderSaveAfterObserver"/>
     </event>
+    <event name="store_save_after">
+        <observer name="sb_store_save_after" instance="Springbot\Main\Observer\StoreSaveAfterObserver"/>
+    </event>
+    <event name="store_delete_after">
+        <observer name="sb_store_delete_after" instance="Springbot\Main\Observer\StoreDeleteAfterObserver"/>
+    </event>
 </config>
