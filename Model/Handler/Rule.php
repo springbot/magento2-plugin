@@ -2,7 +2,6 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Springbot\Main\Model\Api;
 use Magento\Sales\Model\Order as MagentoOrder;
 use Springbot\Main\Model\Handler;
 use Magento\Framework\App\ObjectManager;
@@ -18,25 +17,26 @@ class Rule extends Handler
     const API_PATH = 'promotions';
     const ENTITIES_NAME = 'promotions';
 
-    public function handle($storeId, $cartId)
+    /**
+     * @param $storeId
+     * @param $ruleId
+     * @throws \Exception
+     */
+    public function handle($storeId, $ruleId)
     {
-
-    }
-
-    public function handleDelete($storeId, $cartId)
-    {
-
+        $rule = $this->objectManager->get('Magento\SalesRule\Model\Rule');
+        /* @var MagentoRule $rule */
+        $rule->load($ruleId);
+        $array = $rule->toArray();
+        $this->api->postEntities($storeId, self::API_PATH, self::ENTITIES_NAME, [$array]);
     }
 
     /**
-     * @param MagentoRule $rule
-     * @param $dataSource
-     * @return array
+     * @param $storeId
+     * @param $ruleId
      */
-    public function parse(MagentoRule $rule, $dataSource)
+    public function handleDelete($storeId, $ruleId)
     {
-
-        return [];
+        $this->api->deleteEntity($storeId, self::API_PATH, self::ENTITIES_NAME, ['id' => $ruleId]);
     }
-
 }

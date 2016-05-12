@@ -2,7 +2,6 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Springbot\Main\Model\Api;
 use Magento\Sales\Model\Order as MagentoOrder;
 use Springbot\Main\Model\Handler;
 use Magento\Framework\App\ObjectManager;
@@ -18,25 +17,22 @@ class Quote extends Handler
     const API_PATH = 'carts';
     const ENTITIES_NAME = 'carts';
 
-    public function handle($storeId, $cartId)
-    {
-
-    }
-
-    public function handleDelete($storeId, $cartId)
-    {
-
-    }
-
     /**
-     * @param MagentoQuote $quote
-     * @param $dataSource
-     * @return array
+     * @param $storeId
+     * @param $quoteId
+     * @throws \Exception
      */
-    public function parse(MagentoQuote $quote, $dataSource)
+    public function handle($storeId, $quoteId)
     {
-        $quote->getAllItems();
-        return [];
+        $quote = $this->objectManager->get('Magento\Quote\Model\Quote');
+        /* @var MagentoQuote $quote */
+        $quote->load($quoteId);
+        $array = $quote->toArray();
+        $this->api->postEntities($storeId, self::API_PATH, self::ENTITIES_NAME, [$array]);
     }
 
+    public function handleDelete($storeId, $quoteId)
+    {
+        $this->api->deleteEntity($storeId, self::API_PATH, self::ENTITIES_NAME, ['id' => $quoteId]);
+    }
 }
