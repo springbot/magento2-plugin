@@ -62,38 +62,4 @@ class Data extends AbstractHelper
         }
         return str_replace('-', '', $guid);
     }
-
-    public function setQuote($quoteId, $suppliedSecurityHash)
-    {
-        // Instantiate Quote object and load the correct quote
-        $quote = $this->_quoteFactory->create();
-        $quote->load($quoteId);
-        // Check to make sure the cart is allowed to be restored
-        if ($this->scopeConfig->getValue('springbot/cart_restore/do_restore') == 1) {
-            if ($quote) {
-                // Get the current cart count
-                $cartCount = $this->_cartHelper->getSummaryCount();
-                if ($cartCount == 0) {
-                    $quote->setIsActive(true)->save();
-                    $token = $this->scopeConfig->getValue('springbot/configuration/security_token');
-                    $correctSecurityHash = sha1($quoteId . $token);
-                    if ($suppliedSecurityHash == $correctSecurityHash) {
-                        if ($this->scopeConfig->getValue('springbot/cart_restore/retain_coupon') === 0) {
-                            $quote->setCouponCode('');
-                            $quote->save();
-                        }
-                        $this->_session->setQuoteId($quoteId);
-                    }
-                }
-            }
-        }
-    }
-
-    public function getSecurityToken()
-    {
-        /*
-        return $this->_config->getValue('springbot/configuration/security_token');
-        */
-        return '';
-    }
 }

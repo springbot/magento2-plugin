@@ -29,7 +29,8 @@ class GenerateOauthTokenCommand extends Command
      * @param Oauth $oauth
      * @param State $state
      */
-    public function __construct(Oauth $oauth, State $state) {
+    public function __construct(Oauth $oauth, State $state)
+    {
         $this->_state = $state;
         $this->_oauth = $oauth;
         parent::__construct();
@@ -55,8 +56,7 @@ class GenerateOauthTokenCommand extends Command
         $this->_state->setAreaCode('adminhtml');
         if ($token = $this->_oauth->create()) {
             $output->writeln($token);
-        }
-        else {
+        } else {
             $output->writeln("Unable to generate Oauth token");
         }
     }

@@ -112,7 +112,6 @@ class Register extends AbstractModel
     {
         $storesArray = [];
         foreach ($this->_storeManager->getStores() as $store) {
-
             $guid = $this->_helper->getStoreGuid();
             $storesArray[$guid] = [
                 'guid' => $guid,
@@ -139,5 +138,4 @@ class Register extends AbstractModel
     {
         return str_replace(["\n", "\r"], "|", $this->_scopeConfigInterface->getValue('general/store_information/address'));
     }
-
 }
