@@ -8,6 +8,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Helper\Data;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class Api
@@ -15,48 +16,38 @@ use Springbot\Main\Helper\Data;
  */
 class Api extends AbstractModel
 {
-    const ETL_URL = 'http://localhost:8080/';
     const ETL_API_PATH = 'api/';
     const WEBHOOKS_PATH = 'webhooks/v1';
     const STORE_REGISTRATION_URL = 'webhooks/v1/stores';
 
     const SUCCESSFUL_RESPONSE = 'ok';
-    const HTTP_CONTENT_TYPE = 'Content-type: application/json';
     const TOTAL_POST_FAIL_LIMIT = 32;
     const RETRY_LIMIT = 3;
 
     private $_springbotHelper;
     private $_scopeConfig;
+    private $_storeConfig;
     private $_client;
-    private $_encrypt;
 
     /**
      * Api constructor.
      * @param Data $springbotHelper
-     * @param EncryptorInterface $encryptorInterface
      * @param ScopeConfigInterface $scopeConfig
+     * @param StoreConfiguration $storeConfig
      * @param Context $context
      * @param Registry $registry
      */
     public function __construct(
         Data $springbotHelper,
-        EncryptorInterface $encryptorInterface,
         ScopeConfigInterface $scopeConfig,
+        StoreConfiguration $storeConfig,
         Context $context,
         Registry $registry
     ) {
-        $this->_encrypt = $encryptorInterface;
         $this->_springbotHelper = $springbotHelper;
         $this->_scopeConfig = $scopeConfig;
+        $this->_storeConfig = $storeConfig;
         parent::__construct($context, $registry);
-    }
-
-    /**
-     * @return EncryptorInterface
-     */
-    public function encryptor()
-    {
-        return $this->_encrypt;
     }
 
     /**
@@ -85,18 +76,45 @@ class Api extends AbstractModel
      * @param $apiPath
      * @param $entitiesName
      * @param array $entitiesData
+     * @throws \Exception
      */
     public function postEntities($storeId, $apiPath, $entitiesName, array $entitiesData)
     {
-        // TODO: Get springbot_store_id and api_token from store_id
-        /*
-        $body = json_encode([$entitiesName => $entitiesData]);
-        $headers = [
+        $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($storeId);
+        $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
+        if ($springbotStoreId && $springbotApiToken) {
+            $body = json_encode([$entitiesName => $entitiesData]);
+            $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}", $body, $this->_getAuthHeaders($springbotApiToken));
+        }
+    }
+
+    /**
+     * @param $storeId
+     * @param $apiPath
+     * @param $entitiesName
+     * @param $entityId
+     * @throws \Exception
+     */
+    public function deleteEntity($storeId, $apiPath, $entitiesName, $entityId)
+    {
+        $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($storeId);
+        $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
+        if ($springbotStoreId && $springbotApiToken) {
+            $body = json_encode([$entitiesName => ['id' => $entityId, 'is_deleted' => true]]);
+            $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}", $body, $this->_getAuthHeaders($springbotApiToken));
+        }
+    }
+
+    /**
+     * @param $apiToken
+     * @return array
+     */
+    private function _getAuthHeaders($apiToken)
+    {
+        return [
             'X-AUTH-TOKEN' => $apiToken,
             'Content-Type' => 'application/json'
         ];
-        return $this->post($this->getApiUrl('v1') . $springbotStoreId . "/{$apiPath}", $body, $headers);
-        */
     }
 
     /**
@@ -127,7 +145,6 @@ class Api extends AbstractModel
     {
         $this->_client = new \Zend_Http_Client();
         $this->_client->setMethod($method);
-        $this->_client->setHeaders(self::HTTP_CONTENT_TYPE);
         return $this->_client;
     }
 
@@ -137,9 +154,9 @@ class Api extends AbstractModel
      */
     public function getApiUrl($subpath = '')
     {
-        $url = self::ETL_URL . self::ETL_API_PATH;
+        $url = $this->_scopeConfig->getValue('springbot/configuration/api_url') . '/' . self::ETL_API_PATH;
         if ($subpath) {
-            $url .= $subpath . '/';
+            $url .= '/' . $subpath;
         }
         return $url;
     }
