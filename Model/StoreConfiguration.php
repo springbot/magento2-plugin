@@ -42,7 +42,7 @@ class StoreConfiguration extends AbstractModel
 
     public function getApiToken($storeId)
     {
-        return $this->_scopeConfig->getValue($this->_makeConfigKey('api_token', $storeId));
+        return $this->_scopeConfig->getValue($this->_makeConfigKey('security_token', $storeId));
     }
 
     /**
@@ -72,5 +72,4 @@ class StoreConfiguration extends AbstractModel
         }
         return $configKey;
     }
-
 }
