@@ -9,11 +9,12 @@ use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Springbot\Main\Helper\Data;
 use Magento\Sales\Model\Order\Config as OrderConfig;
+use Springbot\Main\Helper\Data;
 
 /**
  * Class Register
+ *
  * @package Springbot\Main\Model
  */
 class Register extends AbstractModel
@@ -29,7 +30,6 @@ class Register extends AbstractModel
 
     /**
      * @param Api $api
-     * @param Config $config
      * @param Context $context
      * @param Data $data
      * @param OrderConfig $orderConfig
@@ -41,7 +41,6 @@ class Register extends AbstractModel
      */
     public function __construct(
         Api $api,
-        Config $config,
         Context $context,
         Data $data,
         OrderConfig $orderConfig,
@@ -52,7 +51,6 @@ class Register extends AbstractModel
         StoreConfiguration $storeConfig
     ) {
         $this->_api = $api;
-        $this->_config = $config;
         $this->_scopeConfigInterface = $scopeConfigInterface;
         $this->_helper = $data;
         $this->_orderConfig = $orderConfig;

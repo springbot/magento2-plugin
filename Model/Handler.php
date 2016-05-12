@@ -10,6 +10,7 @@ use Magento\Framework\App\State;
 
 /**
  * Class Handler
+ *
  * @package Springbot\Main\Model
  */
 abstract class Handler extends AbstractModel

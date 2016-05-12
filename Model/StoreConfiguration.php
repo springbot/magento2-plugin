@@ -9,7 +9,8 @@ use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
 
 /**
- * Class Register
+ * Class StoreConfiguration
+ *
  * @package Springbot\Main\Model
  */
 class StoreConfiguration extends AbstractModel
@@ -43,6 +44,11 @@ class StoreConfiguration extends AbstractModel
     public function getApiToken($storeId)
     {
         return $this->_scopeConfig->getValue($this->_makeConfigKey('security_token', $storeId));
+    }
+
+    public function getGuid($storeId)
+    {
+        return $this->_scopeConfig->getValue($this->_makeConfigKey('store_guid', $storeId));
     }
 
     /**

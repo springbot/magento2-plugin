@@ -43,14 +43,6 @@ class Oauth extends AbstractModel
     }
 
     /**
-     * @return OauthService
-     */
-    public function oauthService()
-    {
-        return $this->_oauthService;
-    }
-
-    /**
      * Generate the Springbot Oauth keys
      *
      * @throws \Exception
@@ -65,8 +57,8 @@ class Oauth extends AbstractModel
         }
 
         if ($consumerId = $integration->getConsumerId()) {
-            $this->oauthService()->createAccessToken($integration->getConsumerId());
-            $accessToken = $this->oauthService()->getAccessToken($integration->getConsumerId());
+            $this->_oauthService->createAccessToken($integration->getConsumerId());
+            $accessToken = $this->_oauthService->getAccessToken($integration->getConsumerId());
             if (!$accessToken->isEmpty()) {
                 return $accessToken->getToken();
             }

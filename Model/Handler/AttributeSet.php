@@ -28,7 +28,6 @@ class AttributeSet extends Handler
         $attributeSet = $this->objectManager->get('Magento\Eav\Model\Entity\Attribute\Set')->load($attributeSetId);
         /* @var MagentoAttributeSet $attributeSet */
         $array = $attributeSet->toArray();
-
         $attributeCollection = $this->objectManager->create(AttributeCollection::class);
         /* @var AttributeCollection $attributeCollection */
         $attributeCollection->setAttributeSetFilter($attributeSetId);

@@ -12,6 +12,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class Api
+ *
  * @package Springbot\Main\Model
  */
 class Api extends AbstractModel
