@@ -4,24 +4,29 @@ namespace Springbot\Main\Block;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Element\Template\Context;
+use Magento\Catalog\Block\Product\Context;
+use Magento\Catalog\Block\Product\AbstractProduct;
 use Springbot\Main\Helper\Data as SpringbotHelper;
+use Magento\Framework\UrlInterface;
+use Magento\Framework\App\ObjectManager;
 
 /**
  * Class Async
  *
  * @package Springbot\Main\Block
  */
-class Async extends Template
+class ViewPixel extends AbstractProduct
 {
 
     protected $springbotHelper;
     protected $scopeConfig;
+    protected $urlInterface;
 
     /**
      * @param ScopeConfigInterface $scopeConfig
      * @param Context $context
      * @param SpringbotHelper $springbotHelper
+     * @param UrlInterface $urlInterface
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -30,17 +35,37 @@ class Async extends Template
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->springbotHelper = $springbotHelper;
+        $this->urlInterface = ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
         parent::__construct($context);
     }
 
     /**
-     * Default domain that serves our JS script
+     * Return the URL to the Magento2 API (ETL)
      *
      * @return string
      */
-    public function getAssetsDomain()
+    public function getApiUrl()
     {
-        return $this->scopeConfig->getValue('springbot/configuration/assets_domain');
+        return $this->scopeConfig->getValue('springbot/configuration/api_url');
+    }
+
+    public function getCurrentUrl()
+    {
+        return $this->urlInterface->getCurrentUrl();
+    }
+
+    /**
+     * Return the URL to the Magento2 API (ETL)
+     *
+     * @return string
+     */
+    public function getSku()
+    {
+        if ($product = $this->getProduct()) {
+            return $product->getSku();
+        } else {
+            return '';
+        }
     }
 
     /**

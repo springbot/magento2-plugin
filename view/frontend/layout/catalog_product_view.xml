@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="before.body.end">
-            <block class="Springbot\Main\Block\Async" name="springbot_async" as="springbot_async" template="main/async.phtml"/>
+            <block class="Springbot\Main\Block\ViewPixel" name="springbot_view_pixel" template="main/view_pixel.phtml" />
         </referenceContainer>
     </body>
 </page>
