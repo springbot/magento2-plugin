@@ -10,4 +10,6 @@
             </argument>
         </arguments>
     </type>
+
+    <preference for="Springbot\Main\Api\CountsInterface" type="Springbot\Main\Helper\Api\Counts"/>
 </config>
