@@ -11,6 +11,9 @@ use Magento\Framework\App\State;
 /**
  * Class Handler
  *
+ * Handlers are classes intended to be run from the job queue. They are responsible for loading a given entity based
+ * on its id and sending it to the Springbot API.
+ *
  * @package Springbot\Main\Model
  */
 abstract class Handler extends AbstractModel
@@ -24,8 +27,8 @@ abstract class Handler extends AbstractModel
     protected $objectManager;
     protected $api;
 
-    abstract public function handle($storeId, $productId);
-    abstract public function handleDelete($storeId, $productId);
+    abstract public function handle($storeId, $id);
+    abstract public function handleDelete($storeId, $id);
 
     public function __construct(
         StoreConfiguration $storeConfig,

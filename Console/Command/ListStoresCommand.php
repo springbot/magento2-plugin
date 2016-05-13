@@ -3,7 +3,7 @@
 namespace Springbot\Main\Console\Command;
 
 use Magento\Framework\App\State;
-use Magento\Store\Model\StoreManager;
+use Magento\Store\Model\StoreManagerInterface as StoreManager;
 use Springbot\Main\Model\StoreConfiguration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,17 +26,14 @@ class ListStoresCommand extends Command
 
     /**
      * @param Oauth $oauth
-     * @param State $state
      * @param StoreManager $storeManager
      * @param StoreConfiguration $storeConfig
      */
     public function __construct(
         Oauth $oauth,
-        State $state,
         StoreManager $storeManager,
         StoreConfiguration $storeConfig
     ) {
-        $this->_state = $state;
         $this->_oauth = $oauth;
         $this->_storeManager = $storeManager;
         $this->_storeConfig = $storeConfig;
@@ -60,7 +57,6 @@ class ListStoresCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->_state->setAreaCode('adminhtml');
         $table = new TextTable([
             'columnWidths' => [25, 10, 20, 36],
             'decorator' => 'ascii',

@@ -3,7 +3,8 @@
 namespace Springbot\Main\Console\Command;
 
 use Magento\Framework\App\State;
-use Magento\Store\Model\StoreManager;
+use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\StoreManagerInterface as StoreManager;
 use Springbot\Main\Model\StoreConfiguration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -72,19 +73,56 @@ class RegisterStoresCommand extends Command
         ]);
 
         $table->appendRow(['store_name', 'store_id', 'springbot_store_id', 'action']);
+        $storesToRegister = [];
+
+        // Iterate all stores and output them if they're registered, otherwise set them to be registered
         foreach ($this->_storeManager->getStores() as $store) {
-            $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($store->getId());
-            $springbotGuid = strtolower($this->_storeConfig->getGuid($store->getId()));
-            if ($springbotStoreId && $springbotGuid) {
-                $table->appendRow([substr($store->getName(), 0, 23), $store->getId(), $springbotStoreId, 'Already registered, no action taken']);
-            }
-            else {
-                // $this->_register->registerStores($email, $password)
+            $registered = $this->_addToTable($table, $store, 'Already registered, no action taken');
+            if (!$registered) {
+                $storesToRegister[] = $store;
             }
         }
 
-        $output->writeln($table->render());
+        // Register any stores that were not already
+        if ($storesToRegister) {
+            $successful = $this->_register->registerStores(
+                $input->getArgument(self::EMAIL_ARGUMENT),
+                $input->getArgument(self::PASSWORD_ARGUMENT),
+                $storesToRegister
+            );
 
+            if ($successful) {
+                $message = 'Store registered successfully!';
+            }
+            else {
+                $message = 'Failed to register store.';
+            }
+
+            foreach ($storesToRegister as $store) {
+                $this->_addToTable($table, $store, $message, true);
+            }
+        }
+
+        // Render and output the table
+        $output->writeln($table->render());
+    }
+
+    /**
+     * @param TextTable $table
+     * @param StoreInterface $store
+     * @param $message
+     * @param bool|false $appendIfUnregistered
+     * @return bool
+     */
+    private function _addToTable(TextTable $table, StoreInterface $store, $message, $appendIfUnregistered = false)
+    {
+        $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($store->getId());
+        $springbotGuid = strtolower($this->_storeConfig->getGuid($store->getId()));
+        if (($springbotStoreId && $springbotGuid) || $appendIfUnregistered) {
+            $table->appendRow([substr($store->getName(), 0, 23), $store->getId(), $springbotStoreId, $message]);
+            return true;
+        }
+        return false;
     }
 
 }

@@ -19,7 +19,7 @@ class Api extends AbstractModel
 {
     const ETL_API_PATH = 'api/';
     const WEBHOOKS_PATH = 'webhooks/v1';
-    const STORE_REGISTRATION_URL = 'webhooks/v1/stores';
+    const STORE_REGISTRATION_URL = self::WEBHOOKS_PATH . '/stores';
 
     const SUCCESSFUL_RESPONSE = 'ok';
     const TOTAL_POST_FAIL_LIMIT = 32;

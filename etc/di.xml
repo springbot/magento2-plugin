@@ -10,4 +10,7 @@
             </argument>
         </arguments>
     </type>
+    <preference for="Springbot\Main\Api\ConfigInterface" type="Springbot\Main\Model\Config"/>
+    <preference for="Springbot\Main\Api\ProductRepositoryInterface" type="Springbot\Main\Model\Entity\ProductRepository"/>
+    <preference for="Springbot\Main\Api\Data\ProductInterface" type="Springbot\Main\Model\Entity\Product"/>
 </config>

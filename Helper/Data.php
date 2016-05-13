@@ -8,7 +8,6 @@ use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Quote\Model\QuoteFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
@@ -62,4 +61,6 @@ class Data extends AbstractHelper
         }
         return str_replace('-', '', $guid);
     }
+
+
 }

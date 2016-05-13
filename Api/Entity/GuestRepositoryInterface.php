@@ -1,0 +1,26 @@
+<?php
+
+namespace Springbot\Main\Api\Entity;
+
+/**
+ * Interface GuestRepositoryInterface
+ * @package Springbot\Main\Api
+ */
+interface GuestRepositoryInterface
+{
+    /**
+     * Get store configuration
+     *
+     * @param int $storeId
+     * @return \Springbot\Main\Api\Data\GuestInterface[]
+     */
+    public function getList($storeId);
+
+    /**
+     * @param int $storeId
+     * @param int $guestId
+     * @return \Springbot\Main\Api\Data\GuestInterface
+     */
+    public function getFromId($storeId, $guestId);
+
+}

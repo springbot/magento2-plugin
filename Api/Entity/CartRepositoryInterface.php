@@ -1,0 +1,26 @@
+<?php
+
+namespace Springbot\Main\Api\Entity;
+
+/**
+ * Interface CartRepositoryInterface
+ * @package Springbot\Main\Api
+ */
+interface CartRepositoryInterface
+{
+    /**
+     * Get store configuration
+     *
+     * @param int $storeId
+     * @return \Springbot\Main\Api\Data\CartInterface[]
+     */
+    public function getList($storeId);
+
+    /**
+     * @param int $storeId
+     * @param int $cartId
+     * @return \Springbot\Main\Api\Data\CartInterface
+     */
+    public function getFromId($storeId, $cartId);
+
+}

@@ -61,19 +61,30 @@ class Register extends AbstractModel
     }
 
     /**
+     * @param $email
+     * @param $password
+     */
+    public function registerAllStores($email, $password)
+    {
+        $stores = $this->_storeManager->getStores();
+        $this->registerStores($email, $password, $stores);
+    }
+
+    /**
      * Register all stores with Springbot via the ETL.
      *
      * @param $email
      * @param $password
+     * @param \Magento\Store\Api\Data\StoreInterface[]
      * @return bool
      */
-    public function registerStores($email, $password)
+    public function registerStores($email, $password, $stores)
     {
         try {
             $url = $this->_api->getApiUrl(Api::STORE_REGISTRATION_URL);
-            $storesArray = $this->getStoresArray();
+            $storesArray = $this->getStoresArray($stores);
             $response = $this->_api->post($url, json_encode([
-                'stores' => $this->getStoresArray(),
+                'stores' => $storesArray,
                 'credentials' => [
                     'email' => $email,
                     'password' => $password
@@ -106,10 +117,10 @@ class Register extends AbstractModel
      *
      * @return array
      */
-    public function getStoresArray()
+    public function getStoresArray($stores)
     {
         $storesArray = [];
-        foreach ($this->_storeManager->getStores() as $store) {
+        foreach ($stores as $store) {
             $guid = $this->_helper->getStoreGuid();
             $storesArray[$guid] = [
                 'guid' => $guid,

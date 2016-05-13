@@ -21,11 +21,10 @@ class Store extends Handler
 
     public function handle($storeId)
     {
-        $parser = new StoreParser();
+
         $objectManager = ObjectManager::getInstance();
         $store = $objectManager->get('Magento\Store\Model\Store')->load($storeId);
 
-        $parsed = $parser->parse($store, self::DATA_SOURCE_BH);
         $api = $objectManager->get('Springbot\Main\Model\Api');
         /* @var Api $api */
         echo $api->getApiUrl();
@@ -36,14 +35,5 @@ class Store extends Handler
 
     }
 
-    /**
-     * @param MagentoStore $store
-     * @param $dataSource
-     * @return array
-     */
-    public function parse(MagentoStore $store, $dataSource)
-    {
-        return [];
-    }
 
 }

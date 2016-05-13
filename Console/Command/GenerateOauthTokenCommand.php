@@ -15,23 +15,14 @@ use Springbot\Main\Model\Oauth;
  */
 class GenerateOauthTokenCommand extends Command
 {
-    /**
-     * @var Oauth
-     */
+
     private $_oauth;
 
     /**
-     * @var State
-     */
-    private $_state;
-
-    /**
      * @param Oauth $oauth
-     * @param State $state
      */
-    public function __construct(Oauth $oauth, State $state)
+    public function __construct(Oauth $oauth)
     {
-        $this->_state = $state;
         $this->_oauth = $oauth;
         parent::__construct();
     }
@@ -53,7 +44,6 @@ class GenerateOauthTokenCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->_state->setAreaCode('adminhtml');
         if ($token = $this->_oauth->create()) {
             $output->writeln($token);
         } else {
