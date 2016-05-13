@@ -4,8 +4,12 @@ namespace Springbot\Main\Helper\Api;
 
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection
+    as ProductAttributeSets;
 use Magento\CatalogRule\Model\Rule as CatalogRule;
 use Magento\Customer\Model\Customer;
+use Magento\Customer\Model\ResourceModel\Attribute\Collection
+    as CustomerAttributeSets;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Model\AbstractModel;
@@ -30,15 +34,17 @@ class Counts extends AbstractHelper
     /**
      * Counts constructor.
      *
-     * @param Context     $context
-     * @param SalesRule   $salesRules
-     * @param CatalogRule $catalogRules
-     * @param Coupon      $coupons
-     * @param Quote       $carts
-     * @param Order       $orders
-     * @param Customer    $customers
-     * @param Category    $categories
-     * @param Product     $products
+     * @param Context               $context
+     * @param SalesRule             $salesRules
+     * @param CatalogRule           $catalogRules
+     * @param Coupon                $coupons
+     * @param Quote                 $carts
+     * @param Order                 $orders
+     * @param Customer              $customers
+     * @param Category              $categories
+     * @param Product               $products
+     * @param CustomerAttributeSets $customerAttributeSets
+     * @param ProductAttributeSets  $productAttributeSets
      */
     public function __construct(
         Context $context,
@@ -49,7 +55,9 @@ class Counts extends AbstractHelper
         Order $orders,
         Customer $customers,
         Category $categories,
-        Product $products
+        Product $products,
+        ProductAttributeSets $productAttributeSets,
+        CustomerAttributeSets $customerAttributeSets
     )
     {
         $this->_salesRules = $salesRules;
@@ -60,6 +68,8 @@ class Counts extends AbstractHelper
         $this->_customers = $customers;
         $this->_categories = $categories;
         $this->_products = $products;
+        $this->_customerAttributeSets = $customerAttributeSets;
+        $this->_productAttributeSets = $productAttributeSets;
         parent::__construct($context);
     }
 
@@ -87,8 +97,12 @@ class Counts extends AbstractHelper
                 "customers"      => self::getEntityCount($this->_customers),
                 "categories"     => self::getEntityCount($this->_categories),
                 "attribute_sets" => [
-                    "customer_attribute_sets" => null,
-                    "product_attribute_sets"  => null
+                    "customer_attribute_sets" => self::getAttributeCount(
+                        'customer'
+                    ),
+                    "product_attribute_sets"  => self::getAttributeCount(
+                        'products'
+                    )
                 ],
                 "products"       => [
                     "simple"       => self::getProductCount('simple'),
@@ -124,6 +138,21 @@ class Counts extends AbstractHelper
         }
         // Return sales array count
         return count($array);
+    }
+
+    protected function getAttributeCount($entityType)
+    {
+        if ($entityType === 'customer') {
+            $attributes = $this->_customerAttributeSets->getItems();
+            return count($attributes);
+        } else {
+            if ($entityType === 'products') {
+                $attributes = $this->_productAttributeSets->getItems();
+                return count($attributes);
+            }
+        }
+
+        return false;
     }
 
     protected function getProductCount($typeId)
