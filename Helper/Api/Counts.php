@@ -2,16 +2,17 @@
 
 namespace Springbot\Main\Helper\Api;
 
+use Magento\Catalog\Model\Category;
+use Magento\Catalog\Model\Product;
 use Magento\CatalogRule\Model\Rule as CatalogRule;
+use Magento\Customer\Model\Customer;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Quote\Model\Quote;
+use Magento\Sales\Model\Order;
 use Magento\SalesRule\Model\Coupon;
 use Magento\SalesRule\Model\Rule as SalesRule;
-use Magento\Sales\Model\Order;
-use Magento\Customer\Model\Customer;
-use Magento\Catalog\Model\Category;
 
 class Counts extends AbstractHelper
 {
@@ -24,11 +25,7 @@ class Counts extends AbstractHelper
     protected $_categories;
     protected $_customerAttributeSets;
     protected $_productAttributeSets;
-    protected $_simpleProducts;
-    protected $_configurableProducts;
-    protected $_bundledProducts;
-    protected $_groupedProducts;
-    protected $_virtualProducts;
+    protected $_products;
 
     /**
      * Counts constructor.
@@ -36,6 +33,12 @@ class Counts extends AbstractHelper
      * @param Context     $context
      * @param SalesRule   $salesRules
      * @param CatalogRule $catalogRules
+     * @param Coupon      $coupons
+     * @param Quote       $carts
+     * @param Order       $orders
+     * @param Customer    $customers
+     * @param Category    $categories
+     * @param Product     $products
      */
     public function __construct(
         Context $context,
@@ -45,7 +48,8 @@ class Counts extends AbstractHelper
         Quote $carts,
         Order $orders,
         Customer $customers,
-        Category $categories
+        Category $categories,
+        Product $products
     )
     {
         $this->_salesRules = $salesRules;
@@ -55,6 +59,7 @@ class Counts extends AbstractHelper
         $this->_orders = $orders;
         $this->_customers = $customers;
         $this->_categories = $categories;
+        $this->_products = $products;
         parent::__construct($context);
     }
 
@@ -72,7 +77,9 @@ class Counts extends AbstractHelper
             "counts" => [
                 "rules"          => [
                     "sales_rules"   => self::getEntityCount($this->_salesRules),
-                    "catalog_rules" => self::getEntityCount($this->_catalogRules)
+                    "catalog_rules" => self::getEntityCount(
+                        $this->_catalogRules
+                    )
                 ],
                 "coupons"        => self::getEntityCount($this->_coupons),
                 "carts"          => self::getEntityCount($this->_carts),
@@ -84,11 +91,11 @@ class Counts extends AbstractHelper
                     "product_attribute_sets"  => null
                 ],
                 "products"       => [
-                    "simple"       => null,
-                    "configurable" => null,
-                    "bundled"      => null,
-                    "grouped"      => null,
-                    "virtual"      => null
+                    "simple"       => self::getProductCount('simple'),
+                    "configurable" => self::getProductCount('configurable'),
+                    "bundled"      => self::getProductCount('bundled'),
+                    "grouped"      => self::getProductCount('grouped'),
+                    "virtual"      => self::getProductCount('virtual')
                 ]
             ]
         ];
@@ -105,7 +112,7 @@ class Counts extends AbstractHelper
      *
      * @return int
      */
-    protected function getEntityCount(AbstractModel $entity)
+    protected function getEntityCount($entity)
     {
         // Initialize empty array
         $array = [];
@@ -116,6 +123,22 @@ class Counts extends AbstractHelper
             $array[] = $item;
         }
         // Return sales array count
+        return count($array);
+    }
+
+    protected function getProductCount($typeId)
+    {
+        // Initialize empty array
+        $array = [];
+        // Get Product collection
+        $collection = $this->_products->getCollection();
+        // Filter by type
+        $collection->addAttributeToFilter('type_id', $typeId);
+        // Iterate through the collection and add it to the array
+        foreach ($collection as $product) {
+            $array[] = $product;
+        }
+        // Return Product array count
         return count($array);
     }
 }
