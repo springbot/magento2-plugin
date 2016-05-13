@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <route url="/V1/springbot/main/config" method="GET">
+        <service class="Springbot\Main\Api\ConfigInterface" method="getConfig"/>
+        <resources>
+            <resource ref="Springbot_Main::config"/>
+        </resources>
+    </route>
+
+    <route url="/V1/springbot/main/config" method="GET">
+        <service class="Springbot\Main\Api\ConfigInterface" method="getConfig"/>
+        <resources>
+            <resource ref="Springbot_Main::config"/>
+        </resources>
+    </route>
+
+    <route url="/V1/springbot/main/entities/:storeId/products" method="GET">
+        <service class="Springbot\Main\Api\ProductRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::products" />
+        </resources>
+    </route>
+
+    <route url="/V1/springbot/main/entities/:storeId/products/:productId" method="GET">
+        <service class="Springbot\Main\Api\ProductRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+
+</routes>
