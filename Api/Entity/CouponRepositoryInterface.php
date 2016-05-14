@@ -12,14 +12,14 @@ interface CouponRepositoryInterface
      * Get store configuration
      *
      * @param int $storeId
-     * @return \Springbot\Main\Api\Data\CouponInterface[]
+     * @return \Springbot\Main\Api\Entity\Data\CouponInterface[]
      */
     public function getList($storeId);
 
     /**
      * @param int $storeId
      * @param int $couponId
-     * @return \Springbot\Main\Api\Data\CouponInterface
+     * @return \Springbot\Main\Api\Entity\Data\CouponInterface
      */
     public function getFromId($storeId, $couponId);
 

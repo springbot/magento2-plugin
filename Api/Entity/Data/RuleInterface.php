@@ -1,10 +1,10 @@
 <?php
 
-namespace Springbot\Main\Api\Data;
+namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface RuleInterface
- * @package Springbot\Main\Api\Data
+ * @package Springbot\Main\Api\Entity\Data
  */
 interface RuleInterface extends \Magento\SalesRule\Api\Data\RuleInterface
 {

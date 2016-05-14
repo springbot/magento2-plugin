@@ -12,14 +12,14 @@ interface InventoryRepositoryInterface
      * Get store configuration
      *
      * @param int $storeId
-     * @return \Springbot\Main\Api\Data\InventoryInterface[]
+     * @return \Springbot\Main\Api\Entity\Data\InventoryInterface[]
      */
     public function getList($storeId);
 
     /**
      * @param int $storeId
      * @param int $inventoryId
-     * @return \Springbot\Main\Api\Data\InventoryInterface
+     * @return \Springbot\Main\Api\Entity\Data\InventoryInterface
      */
     public function getFromId($storeId, $inventoryId);
 

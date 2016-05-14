@@ -1,6 +1,6 @@
 <?php
 
-namespace Springbot\Main\Api\Data;
+namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface ProductInterface

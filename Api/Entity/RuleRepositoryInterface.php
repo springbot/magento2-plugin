@@ -12,14 +12,14 @@ interface RuleRepositoryInterface
      * Get store configuration
      *
      * @param int $storeId
-     * @return \Springbot\Main\Api\Data\RuleInterface[]
+     * @return \Springbot\Main\Api\Entity\Data\RuleInterface[]
      */
     public function getList($storeId);
 
     /**
      * @param int $storeId
      * @param int $ruleId
-     * @return \Springbot\Main\Api\Data\RuleInterface
+     * @return \Springbot\Main\Api\Entity\Data\RuleInterface
      */
     public function getFromId($storeId, $ruleId);
 

@@ -12,14 +12,14 @@ interface ProductRepositoryInterface
      * Get store configuration
      *
      * @param int $storeId
-     * @return \Springbot\Main\Api\Data\ProductInterface[]
+     * @return \Springbot\Main\Api\Entity\Data\ProductInterface[]
      */
     public function getList($storeId);
 
     /**
      * @param int $storeId
      * @param int $productId
-     * @return \Springbot\Main\Api\Data\ProductInterface
+     * @return \Springbot\Main\Api\Entity\Data\ProductInterface
      */
     public function getFromId($storeId, $productId);
 

@@ -2,7 +2,7 @@
 
 namespace Springbot\Main\Model\Entity;
 
-use Springbot\Main\Api\ProductRepositoryInterface;
+use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Magento\Framework\App\Request\Http as HttpRequest;
 
 /**
@@ -15,25 +15,25 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
     private $_springbotProductFactory;
 
     /**
-     * @param ProductFactory $productFactory
+     * @param Data\ProductFactory $productFactory
      * @param HttpRequest $request
      */
-    public function __construct(ProductFactory $productFactory, HttpRequest $request)
-    {
-        $this->_springbotProductFactory = $productFactory;
+    public function __construct(Data\ProductFactory $productFactory, HttpRequest $request)
+{
+    $this->_springbotProductFactory = $productFactory;
         parent::__construct($request);
     }
 
     public function getFromId($storeId, $productId)
-    {
-        $product = $this->_springbotProductFactory->create();
+{
+    $product = $this->_springbotProductFactory->create();
         $product->load($productId);
         return $product;
     }
 
     public function getList($storeId)
-    {
-        $factory = $this->_springbotProductFactory;
+{
+    $factory = $this->_springbotProductFactory;
         $product = $factory->create();
         $collection = $product->getCollection();
         $collection->addStoreFilter($storeId);

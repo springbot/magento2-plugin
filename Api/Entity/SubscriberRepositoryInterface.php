@@ -12,14 +12,14 @@ interface SubscriberRepositoryInterface
      * Get store configuration
      *
      * @param int $storeId
-     * @return \Springbot\Main\Api\Data\SubscriberInterface[]
+     * @return \Springbot\Main\Api\Entity\Data\SubscriberInterface[]
      */
     public function getList($storeId);
 
     /**
      * @param int $storeId
      * @param int $subscriberId
-     * @return \Springbot\Main\Api\Data\SubscriberInterface
+     * @return \Springbot\Main\Api\Entity\Data\SubscriberInterface
      */
     public function getFromId($storeId, $subscriberId);
 

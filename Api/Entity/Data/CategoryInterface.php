@@ -1,10 +1,10 @@
 <?php
 
-namespace Springbot\Main\Api\Data;
+namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface CategoryInterface
- * @package Springbot\Main\Api\Data
+ * @package Springbot\Main\Api\Entity\Data
  */
 interface CategoryInterface extends \Magento\Catalog\Api\Data\CategoryInterface
 {

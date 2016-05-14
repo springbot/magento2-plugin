@@ -12,14 +12,14 @@ interface CategoryRepositoryInterface
      * Get store configuration
      *
      * @param int $storeId
-     * @return \Springbot\Main\Api\Data\CategoryInterface[]
+     * @return \Springbot\Main\Api\Entity\Data\CategoryInterface[]
      */
     public function getList($storeId);
 
     /**
      * @param int $storeId
      * @param int $categoryId
-     * @return \Springbot\Main\Api\Data\CategoryInterface
+     * @return \Springbot\Main\Api\Entity\Data\CategoryInterface
      */
     public function getFromId($storeId, $categoryId);
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Springbot\Main\Model\Entity;
+namespace Springbot\Main\Model\Entity\Data;
 
-use Springbot\Main\Api\dATA\ProductInterface;
+use Springbot\Main\Api\Entity\Data\ProductInterface;
 
 /**
  * Class Order
@@ -14,8 +14,7 @@ class Product extends \Magento\Catalog\Model\Product implements ProductInterface
     public function getUrlIdPath()
     {
         return 'xxx';
-        // TODO: Implement getUrlIdPath() method.
     }
-
-
 }
+
+

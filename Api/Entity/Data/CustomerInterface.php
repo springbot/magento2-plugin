@@ -1,10 +1,10 @@
 <?php
 
-namespace Springbot\Main\Api\Data;
+namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface CustomerInterface
- * @package Springbot\Main\Api\Data
+ * @package Springbot\Main\Api\Entity\Data
  */
 interface CustomerInterface extends \Magento\Customer\Api\Data\CustomerInterface
 {

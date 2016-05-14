@@ -3,7 +3,7 @@
 namespace Springbot\Main\Model\Entity;
 
 use Magento\Framework\Data\Collection;
-use Springbot\Main\Api\ProductRepositoryInterface;
+use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Magento\Framework\App\Request\Http as HttpRequest;
 
 /**
