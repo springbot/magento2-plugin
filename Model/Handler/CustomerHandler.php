@@ -8,14 +8,12 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Customer\Model\Customer as MagentoCustomer;
 
 /**
- * Class Order
- *
+ * Class CustomerHandler
  * @package Springbot\Main\Model\Handler
  */
-class Customer extends Handler
+class CustomerHandler extends Handler
 {
     const API_PATH = 'customers';
-    const ENTITIES_NAME = 'customers';
 
     /**
      * @param $storeId
@@ -24,14 +22,14 @@ class Customer extends Handler
      */
     public function handle($storeId, $customerId)
     {
-        $customer = $this->objectManager->get('Magento\Customer\Model\Customer')->load($customerId);
-        /* @var MagentoOrder $customer */
-        $array = $customer->toArray();
-        $this->api->postEntities($storeId, self::API_PATH, self::ENTITIES_NAME, [$array]);
+        $customer = $this->objectManager->get('Springbot\Main\Api\Entity\Data\CouponInterface')->load($customerId);
+        /* @var \Springbot\Main\Model\Entity\Data\Customer $customer */
+        $data = $customer->toArray();
+        $this->api->postEntities($storeId, self::API_PATH, [$data]);
     }
 
     public function handleDelete($storeId, $customerId)
     {
-        $this->api->deleteEntity($storeId, self::API_PATH, self::ENTITIES_NAME, ['id' => $customerId]);
+        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $customerId]);
     }
 }

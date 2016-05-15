@@ -8,14 +8,12 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Catalog\Model\Category as MagentoCategory;
 
 /**
- * Class Order
- *
+ * Class CategoryHandler
  * @package Springbot\Main\Model\Handler
  */
-class Category extends Handler
+class CategoryHandler extends Handler
 {
     const API_PATH = 'categories';
-    const ENTITIES_NAME = 'categories';
 
     /**
      * @param $storeId
@@ -24,14 +22,14 @@ class Category extends Handler
      */
     public function handle($storeId, $categoryId)
     {
-        $category = $this->objectManager->get('Magento\Catalog\Model\Category')->load($categoryId);
-        /* @var MagentoCategory $category */
-        $array = $category->toArray();
-        $this->api->postEntities($storeId, self::API_PATH, self::ENTITIES_NAME, [$array]);
+        $category = $this->objectManager->get('Springbot\Main\Api\Entity\Data\CategoryInterface')->load($categoryId);
+        /* @var \Springbot\Main\Model\Entity\Data\Category $category */
+        $data = $category->toArray();
+        $this->api->postEntities($storeId, self::API_PATH, [$data]);
     }
 
     public function handleDelete($storeId, $categoryId)
     {
-        $this->api->deleteEntity($storeId, self::API_PATH, self::ENTITIES_NAME, ['id' => $categoryId]);
+        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $categoryId]);
     }
 }
