@@ -37,7 +37,7 @@
     <preference for="Springbot\Main\Api\Entity\Data\OrderInterface" type="Springbot\Main\Model\Entity\Order"/>
 
     <preference for="Springbot\Main\Api\Entity\ProductRepositoryInterface" type="Springbot\Main\Model\Entity\ProductRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\ProductInterface" type="Springbot\Main\Model\Entity\Product"/>
+    <preference for="Springbot\Main\Api\Entity\Data\ProductInterface" type="Springbot\Main\Model\Entity\Data\Product"/>
 
     <preference for="Springbot\Main\Api\Entity\RuleRepositoryInterface" type="Springbot\Main\Model\Entity\RuleRepository"/>
     <preference for="Springbot\Main\Api\Entity\Data\RuleInterface" type="Springbot\Main\Model\Entity\Rule"/>
