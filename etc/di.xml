@@ -10,7 +10,9 @@
             </argument>
         </arguments>
     </type>
+    
     <preference for="Springbot\Main\Api\ConfigInterface" type="Springbot\Main\Model\Config"/>
+    <preference for="Springbot\Main\Api\CountsInterface" type="Springbot\Main\Model\Counts"/>
 
     <preference for="Springbot\Main\Api\Entity\AttributeSetRepositoryInterface" type="Springbot\Main\Model\Entity\AttributeSetRepository"/>
     <preference for="Springbot\Main\Api\Entity\Data\AttributeSetInterface" type="Springbot\Main\Model\Entity\AttributeSet"/>
@@ -44,4 +46,5 @@
 
     <preference for="Springbot\Main\Api\Entity\SubscriberRepositoryInterface" type="Springbot\Main\Model\Entity\SubscriberRepository"/>
     <preference for="Springbot\Main\Api\Entity\Data\SubscriberInterface" type="Springbot\Main\Model\Entity\Subscriber"/>
+
 </config>
