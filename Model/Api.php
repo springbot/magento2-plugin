@@ -15,7 +15,7 @@ use Springbot\Main\Helper\Data;
  */
 class Api extends AbstractModel
 {
-    const ETL_API_PATH = 'api/';
+    const ETL_API_PATH = 'api/v1';
     const WEBHOOKS_PATH = 'webhooks/v1';
     const STORE_REGISTRATION_PATH = 'stores';
 
