@@ -10,7 +10,7 @@ use Springbot\Main\Model\Handler\Store as StoreHandler;
 use Magento\Catalog\Model\Product as MagentoProduct;
 use Exception;
 
-class ProductDeleteAfterObserver implements ObserverInterface
+class StoreDeleteAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;

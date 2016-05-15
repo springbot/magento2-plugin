@@ -8,5 +8,4 @@ namespace Springbot\Main\Api\Entity\Data;
  */
 interface CartInterface extends \Magento\Quote\Api\Data\CartInterface
 {
-
 }

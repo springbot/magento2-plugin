@@ -8,5 +8,4 @@ namespace Springbot\Main\Api\Entity\Data;
  */
 interface RuleInterface extends \Magento\SalesRule\Api\Data\RuleInterface
 {
-
 }

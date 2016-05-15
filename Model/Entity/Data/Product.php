@@ -16,7 +16,4 @@ class Product extends \Magento\Catalog\Model\Product implements ProductInterface
     {
         return 'xxx';
     }
-
 }
-
-

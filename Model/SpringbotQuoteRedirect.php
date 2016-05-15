@@ -38,7 +38,5 @@ class SpringbotQuoteRedirect extends AbstractModel
 
     public function getRedirectIds($quoteId)
     {
-
     }
-
 }

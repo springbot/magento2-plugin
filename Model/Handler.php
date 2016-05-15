@@ -62,6 +62,4 @@ abstract class Handler extends AbstractModel
         $this->api = $api;
         parent::__construct($context, $registry);
     }
-
-
 }

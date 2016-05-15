@@ -30,5 +30,4 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Order');
     }
-
 }

@@ -2,13 +2,11 @@
 
 namespace Springbot\Main\Model;
 
-use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Helper\Data;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class Api
@@ -80,9 +78,6 @@ class Api extends AbstractModel
      */
     public function postEntities($storeId, $apiPath, array $entitiesData)
     {
-        $body = json_encode([$apiPath => $entitiesData]);
-        die('xxx' . $body);
-
         $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($storeId);
         $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
@@ -105,18 +100,6 @@ class Api extends AbstractModel
             $body = json_encode([$apiPath => ['id' => $entityId, 'is_deleted' => true]]);
             $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}", $body, $this->_getAuthHeaders($springbotApiToken));
         }
-    }
-
-    /**
-     * @param $apiToken
-     * @return array
-     */
-    private function _getAuthHeaders($apiToken)
-    {
-        return [
-            'X-AUTH-TOKEN' => $apiToken,
-            'Content-Type' => 'application/json'
-        ];
     }
 
     /**
@@ -161,5 +144,17 @@ class Api extends AbstractModel
             $url .= '/' . $subpath;
         }
         return $url;
+    }
+
+    /**
+     * @param $apiToken
+     * @return array
+     */
+    private function _getAuthHeaders($apiToken)
+    {
+        return [
+            'X-AUTH-TOKEN' => $apiToken,
+            'Content-Type' => 'application/json'
+        ];
     }
 }

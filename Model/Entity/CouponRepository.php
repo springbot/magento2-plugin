@@ -30,6 +30,4 @@ class CouponRepository extends AbstractRepository implements CouponRepositoryInt
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Coupon');
     }
-
-
 }

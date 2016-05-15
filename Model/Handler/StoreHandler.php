@@ -28,6 +28,4 @@ class StoreHandler extends Handler
     {
         $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $storeId]);
     }
-
-
 }

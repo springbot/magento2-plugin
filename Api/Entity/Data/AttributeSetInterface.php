@@ -13,5 +13,4 @@ interface AttributeSetInterface extends \Magento\Eav\Api\Data\AttributeSetInterf
      * @return \Magento\Eav\Model\Entity\Attribute[]
      */
     public function getAttributes();
-
 }

@@ -6,9 +6,7 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\RuleRepositoryInterface;
 use Magento\Framework\App\Request\Http as HttpRequest;
-
 use Magento\SalesRule\Model\Rule;
-
 
 /**
  *  RuleRepository
@@ -34,6 +32,4 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Rule');
     }
-
-
 }

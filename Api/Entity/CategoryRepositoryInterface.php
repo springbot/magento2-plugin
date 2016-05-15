@@ -22,5 +22,4 @@ interface CategoryRepositoryInterface
      * @return \Springbot\Main\Api\Entity\Data\CategoryInterface
      */
     public function getFromId($storeId, $categoryId);
-
 }

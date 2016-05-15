@@ -58,8 +58,7 @@ class Counts extends AbstractHelper
         Product $products,
         ProductAttributeSets $productAttributeSets,
         CustomerAttributeSets $customerAttributeSets
-    )
-    {
+    ) {
         $this->_salesRules = $salesRules;
         $this->_catalogRules = $catalogRules;
         $this->_coupons = $coupons;
@@ -116,7 +115,6 @@ class Counts extends AbstractHelper
 
         // Return our array for display via the REST API
         return $array;
-
     }
 
     /**

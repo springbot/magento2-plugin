@@ -35,5 +35,4 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Subscriber');
     }
-
 }

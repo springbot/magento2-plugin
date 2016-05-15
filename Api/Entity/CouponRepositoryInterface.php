@@ -22,5 +22,4 @@ interface CouponRepositoryInterface
      * @return \Springbot\Main\Api\Entity\Data\CouponInterface
      */
     public function getFromId($storeId, $couponId);
-
 }

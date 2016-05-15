@@ -8,5 +8,4 @@ namespace Springbot\Main\Api\Entity\Data;
  */
 interface InventoryInterface extends \Magento\CatalogInventory\Api\Data\StockItemInterface
 {
-
 }

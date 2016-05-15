@@ -34,7 +34,6 @@ class StoreSaveAfterObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-
         try {
             $stores = $observer->getEvent()->getStores();
 

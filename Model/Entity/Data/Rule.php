@@ -8,5 +8,4 @@ namespace Springbot\Main\Model\Entity\Data;
  */
 class Rule extends \Magento\SalesRule\Model\Rule
 {
-
 }

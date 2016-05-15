@@ -8,5 +8,4 @@ namespace Springbot\Main\Api\Entity\Data;
  */
 interface CouponInterface extends \Magento\SalesRule\Api\Data\CouponInterface
 {
-
 }

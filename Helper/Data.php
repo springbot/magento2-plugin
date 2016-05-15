@@ -31,8 +31,7 @@ class Data extends AbstractHelper
         Context $context,
         Config $config,
         StoreManagerInterface $storeManager
-    )
-    {
+    ) {
         $this->_config = $config;
         $this->_storeManager = $storeManager;
         parent::__construct($context);
@@ -62,6 +61,4 @@ class Data extends AbstractHelper
         }
         return str_replace('-', '', $guid);
     }
-
-
 }

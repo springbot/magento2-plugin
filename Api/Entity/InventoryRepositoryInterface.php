@@ -22,5 +22,4 @@ interface InventoryRepositoryInterface
      * @return \Springbot\Main\Api\Entity\Data\InventoryInterface
      */
     public function getFromId($storeId, $inventoryId);
-
 }

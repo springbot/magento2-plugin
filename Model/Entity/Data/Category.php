@@ -8,5 +8,4 @@ namespace Springbot\Main\Model\Entity\Data;
  */
 class Category extends \Magento\Catalog\Model\Category
 {
-
 }

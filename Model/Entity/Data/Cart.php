@@ -8,5 +8,4 @@ namespace Springbot\Main\Model\Entity\Data;
  */
 class Cart extends \Magento\Quote\Model\Quote
 {
-
 }

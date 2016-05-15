@@ -73,5 +73,4 @@ class ListStoresCommand extends Command
 
         $output->writeln($table->render());
     }
-
 }

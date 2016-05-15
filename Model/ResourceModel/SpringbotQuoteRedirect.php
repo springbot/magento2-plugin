@@ -18,5 +18,4 @@ class SpringbotQuoteRedirect extends AbstractDb
     {
         $this->_init('springbot_quote_redirect', 'id');
     }
-
 }

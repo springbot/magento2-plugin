@@ -8,5 +8,4 @@ namespace Springbot\Main\Model\Entity\Data;
  */
 class Coupon extends \Magento\SalesRule\Model\Coupon
 {
-
 }

@@ -38,5 +38,4 @@ class Config extends AbstractModel implements ConfigInterface
     {
         return $this->_scopeConfig->getValue('springbot');
     }
-
 }

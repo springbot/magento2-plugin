@@ -38,7 +38,5 @@ class SpringbotOrderRedirect extends AbstractModel
 
     public function getRedirectIds($orderId)
     {
-
     }
-
 }

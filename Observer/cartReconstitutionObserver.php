@@ -17,7 +17,7 @@ use Springbot\Main\Helper\Data as SpringbotHelper;
  * Class CartReconstitutionObserver
  * @package Springbot\Main\Observer
  */
-class CartReconstitutionObserver implements ObserverInterface
+class cartReconstitutionObserver implements ObserverInterface
 {
     private $_session;
     private $_action;

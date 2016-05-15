@@ -59,5 +59,4 @@ abstract class AbstractRepository implements ProductRepositoryInterface
     {
         return $this->objectManager->create(Store::class);
     }
-
 }

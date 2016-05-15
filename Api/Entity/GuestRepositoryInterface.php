@@ -22,5 +22,4 @@ interface GuestRepositoryInterface
      * @return \Springbot\Main\Api\Entity\Data\GuestInterface
      */
     public function getFromId($storeId, $guestId);
-
 }

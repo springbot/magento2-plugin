@@ -30,6 +30,4 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Customer');
     }
-
-
 }

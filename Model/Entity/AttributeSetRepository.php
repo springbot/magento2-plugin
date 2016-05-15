@@ -35,6 +35,4 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\AttributeSet');
     }
-
-
 }

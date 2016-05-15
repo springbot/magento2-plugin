@@ -22,5 +22,4 @@ interface OrderRepositoryInterface
      * @return \Springbot\Main\Api\Entity\Data\OrderInterface
      */
     public function getFromId($storeId, $orderId);
-
 }

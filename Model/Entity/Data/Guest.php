@@ -12,5 +12,4 @@ namespace Springbot\Main\Model\Entity\Data;
  */
 class Guest extends \Magento\Sales\Model\Order
 {
-
 }

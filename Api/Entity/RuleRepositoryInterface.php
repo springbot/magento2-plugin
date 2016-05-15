@@ -22,5 +22,4 @@ interface RuleRepositoryInterface
      * @return \Springbot\Main\Api\Entity\Data\RuleInterface
      */
     public function getFromId($storeId, $ruleId);
-
 }

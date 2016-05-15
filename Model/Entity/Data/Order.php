@@ -8,5 +8,4 @@ namespace Springbot\Main\Model\Entity\Data;
  */
 class Order extends \Magento\Sales\Model\Order
 {
-
 }

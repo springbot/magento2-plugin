@@ -22,5 +22,4 @@ interface SubscriberRepositoryInterface
      * @return \Springbot\Main\Api\Entity\Data\SubscriberInterface
      */
     public function getFromId($storeId, $subscriberId);
-
 }

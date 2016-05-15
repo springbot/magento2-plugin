@@ -93,8 +93,7 @@ class RegisterStoresCommand extends Command
 
             if ($successful) {
                 $message = 'Store registered successfully!';
-            }
-            else {
+            } else {
                 $message = 'Failed to register store.';
             }
 
@@ -124,5 +123,4 @@ class RegisterStoresCommand extends Command
         }
         return false;
     }
-
 }

@@ -30,6 +30,4 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Cart');
     }
-
-
 }

@@ -18,6 +18,4 @@ interface ProductInterface extends \Magento\Catalog\Api\Data\ProductInterface
      * @return string
      */
     public function getUrlIdPath();
-
-
 }

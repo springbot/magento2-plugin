@@ -33,8 +33,7 @@ class GuestRepository extends AbstractRepository implements GuestRepositoryInter
      */
     public function getSpringbotModel()
     {
-        return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Guest');;
+        return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Guest');
+        ;
     }
-
-
 }

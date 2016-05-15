@@ -18,5 +18,4 @@ class SpringbotOrderRedirect extends AbstractDb
     {
         $this->_init('springbot_order_redirect', 'id');
     }
-
 }

@@ -10,7 +10,7 @@
             </argument>
         </arguments>
     </type>
-    
+
     <preference for="Springbot\Main\Api\ConfigInterface" type="Springbot\Main\Model\Config"/>
     <preference for="Springbot\Main\Api\CountsInterface" type="Springbot\Main\Model\Counts"/>
 

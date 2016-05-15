@@ -22,5 +22,4 @@ interface AttributeSetRepositoryInterface
      * @return \Springbot\Main\Api\Entity\Data\AttributeSetInterface
      */
     public function getFromId($storeId, $categoryId);
-
 }

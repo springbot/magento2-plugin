@@ -8,5 +8,4 @@ namespace Springbot\Main\Model\Entity\Data;
  */
 class Customer extends \Magento\Customer\Model\Customer
 {
-
 }

@@ -12,5 +12,4 @@ namespace Springbot\Main\Api\Entity\Data;
  */
 interface GuestInterface extends \Magento\Sales\Api\Data\OrderInterface
 {
-
 }

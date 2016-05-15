@@ -22,5 +22,4 @@ class AttributeSet extends MagentoAttributeSet implements AttributeSetInterface
         $attributes = $attributeCollection->toArray();
         return $attributes['items'];
     }
-
 }
