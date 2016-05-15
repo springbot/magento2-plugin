@@ -3,10 +3,10 @@
 namespace Springbot\Main\Model\Entity\Data;
 
 /**
- *  Inventory
- * @package Springbot\Main\Api\Data
+ * Class Inventory
+ * @package Springbot\Main\Model\Entity\Data
  */
-class Inventory extends \Magento\CatalogInventory\Api\Data\Stock
+class Inventory extends \Magento\CatalogInventory\Model\Stock\Item
 {
 
 }

@@ -1,22 +1,24 @@
 <?php
 
-namespace Springbot\Main\Api\Entity {
+namespace Springbot\Main\Model\Entity;
 
-}
+use Magento\Framework\Model\AbstractModel;
+use Springbot\Main\Api\Entity\SubscriberRepositoryInterface;
+use Magento\Framework\App\Request\Http as HttpRequest;
 
 /**
  *  SubscriberRepository
  * @package Springbot\Main\Api
  */
-class SubscriberRepository
+class SubscriberRepository extends AbstractRepository implements SubscriberRepositoryInterface
 {
-    /**
-     * @param int $storeId
-     * @return \Springbot\Main\Model\Entity\Data\Subscriber[]
-     */
+
     public function getList($storeId)
     {
-
+        $collection = $this->getSpringbotModel()->getCollection();
+        $this->filterResults($collection);
+        $rules = $collection->toArray();
+        return $rules['items'];
     }
 
     /**
@@ -26,7 +28,12 @@ class SubscriberRepository
      */
     public function getFromId($storeId, $subscriberId)
     {
+        return $this->getSpringbotModel()->load($subscriberId);
+    }
 
+    public function getSpringbotModel()
+    {
+        return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Subscriber');
     }
 
 }

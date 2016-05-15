@@ -2,6 +2,8 @@
 
 namespace Springbot\Main\Model\Entity;
 
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Magento\Framework\App\Request\Http as HttpRequest;
 
@@ -12,37 +14,27 @@ use Magento\Framework\App\Request\Http as HttpRequest;
 class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
 {
 
-    private $_springbotProductFactory;
-
-    /**
-     * @param Data\ProductFactory $productFactory
-     * @param HttpRequest $request
-     */
-    public function __construct(Data\ProductFactory $productFactory, HttpRequest $request)
-{
-    $this->_springbotProductFactory = $productFactory;
-        parent::__construct($request);
-    }
-
-    public function getFromId($storeId, $productId)
-{
-    $product = $this->_springbotProductFactory->create();
-        $product->load($productId);
-        return $product;
-    }
-
     public function getList($storeId)
-{
-    $factory = $this->_springbotProductFactory;
-        $product = $factory->create();
-        $collection = $product->getCollection();
+    {
+        $collection = $this->getSpringbotModel()->getCollection();
         $collection->addStoreFilter($storeId);
         $this->filterResults($collection);
         $ret = [];
-        foreach ($collection->getAllIds() as $id) {
-            $ret[] = $this->getFromId($storeId, $id);
+        foreach ($collection as $item) {
+            $ret[] = $this->getFromId($storeId, $item->getId());
         }
         return $ret;
     }
+
+    public function getFromId($storeId, $productId)
+    {
+        return $this->getSpringbotModel()->load($productId);
+    }
+
+    public function getSpringbotModel()
+    {
+        return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Product');;
+    }
+
 
 }

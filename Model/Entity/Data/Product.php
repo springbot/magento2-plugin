@@ -11,10 +11,12 @@ use Springbot\Main\Api\Entity\Data\ProductInterface;
  */
 class Product extends \Magento\Catalog\Model\Product implements ProductInterface
 {
+
     public function getUrlIdPath()
     {
         return 'xxx';
     }
+
 }
 
 

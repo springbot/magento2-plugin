@@ -3,10 +3,10 @@
 namespace Springbot\Main\Model\Entity\Data;
 
 /**
- *  Category
- * @package Springbot\Main\Api\Data
+ * Class Category
+ * @package Springbot\Main\Model\Entity\Data
  */
-class Category extends \Magento\Catalog\Api\Data\Category
+class Category extends \Magento\Catalog\Model\Category
 {
 
 }

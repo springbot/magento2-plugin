@@ -3,10 +3,10 @@
 namespace Springbot\Main\Model\Entity\Data;
 
 /**
- *  Coupon
- * @package Springbot\Main\Api\Data
+ * Class Coupon
+ * @package Springbot\Main\Model\Entity\Data
  */
-class Coupon extends \Magento\SalesRule\Api\Data\Coupon
+class Coupon extends \Magento\SalesRule\Model\Coupon
 {
 
 }

@@ -10,7 +10,7 @@ namespace Springbot\Main\Model\Entity\Data;
  *
  * @package Springbot\Main\Api\Data
  */
-class Guest extends \Magento\Sales\Api\Data\Order
+class Guest extends \Magento\Sales\Model\Order
 {
 
 }

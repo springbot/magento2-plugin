@@ -1,30 +1,35 @@
 <?php
 
-namespace Springbot\Main\Api\Entity;
+namespace Springbot\Main\Model\Entity;
+
+use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\Model\AbstractModel;
+use Springbot\Main\Api\Entity\CustomerRepositoryInterface;
 
 /**
  *  CustomerRepository
  * @package Springbot\Main\Api
  */
-class CustomerRepository
+class CustomerRepository extends AbstractRepository implements CustomerRepositoryInterface
 {
-    /**
-     * @param int $storeId
-     * @return \Springbot\Main\Model\Entity\Data\Customer[]
-     */
+
     public function getList($storeId)
     {
-
+        $collection = $this->getSpringbotModel()->getCollection();
+        $this->filterResults($collection);
+        $array = $collection->toArray();
+        return $array['items'];
     }
 
-    /**
-     * @param int $storeId
-     * @param int $customerId
-     * @return \Springbot\Main\Model\Entity\Data\Customer
-     */
     public function getFromId($storeId, $customerId)
     {
-
+        return $this->getSpringbotModel()->load($customerId);
     }
+
+    public function getSpringbotModel()
+    {
+        return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Customer');
+    }
+
 
 }

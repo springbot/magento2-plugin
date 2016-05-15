@@ -2,9 +2,12 @@
 
 namespace Springbot\Main\Model\Entity;
 
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Data\Collection;
 use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\Model\AbstractModel;
+use Magento\Store\Model\Store;
 
 /**
  * Class ProductRepository
@@ -13,15 +16,27 @@ use Magento\Framework\App\Request\Http as HttpRequest;
 abstract class AbstractRepository implements ProductRepositoryInterface
 {
     protected $request;
+    protected $objectManager;
 
     /**
+     * @return AbstractModel
+     */
+    abstract public function getSpringbotModel();
+
+    /**
+     * AbstractRepository constructor.
      * @param HttpRequest $request
      */
     public function __construct(HttpRequest $request)
     {
         $this->request = $request;
+        $this->objectManager = ObjectManager::getInstance();
     }
 
+    /**
+     * @param Collection $collection
+     * @throws \Exception
+     */
     public function filterResults(Collection $collection)
     {
         $page = $this->request->getQuery('page', 1);
@@ -35,6 +50,14 @@ abstract class AbstractRepository implements ProductRepositoryInterface
         }
 
         $collection->getSelect()->limitPage((int)$page, (int)$limit);
+    }
+
+    /**
+     * @return Store
+     */
+    public function getStoreModel()
+    {
+        return $this->objectManager->create(Store::class);
     }
 
 }

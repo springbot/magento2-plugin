@@ -3,10 +3,10 @@
 namespace Springbot\Main\Model\Entity\Data;
 
 /**
- *  Cart
- * @package Springbot\Main\Api\Data
+ * Class Cart
+ * @package Springbot\Main\Model\Entity\Data
  */
-class Cart extends \Magento\Quote\Api\Data\Cart
+class Cart extends \Magento\Quote\Model\Quote
 {
 
 }

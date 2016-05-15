@@ -1,32 +1,39 @@
 <?php
 
-namespace Springbot\Main\Api\Entity {
+namespace Springbot\Main\Model\Entity;
 
-}
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Model\AbstractModel;
+use Springbot\Main\Api\Entity\RuleRepositoryInterface;
+use Magento\Framework\App\Request\Http as HttpRequest;
+
+use Magento\SalesRule\Model\Rule;
+
 
 /**
  *  RuleRepository
  * @package Springbot\Main\Api
  */
-class RuleRepository
+class RuleRepository extends AbstractRepository implements RuleRepositoryInterface
 {
-    /**
-     * @param int $storeId
-     * @return \Springbot\Main\Model\Entity\Data\Rule[]
-     */
+
     public function getList($storeId)
     {
-
+        $collection = $this->getSpringbotModel()->getCollection();
+        $this->filterResults($collection);
+        $rules = $collection->toArray();
+        return $rules['items'];
     }
 
-    /**
-     * @param int $storeId
-     * @param int $ruleId
-     * @return \Springbot\Main\Model\Entity\Data\Rule
-     */
     public function getFromId($storeId, $ruleId)
     {
-
+        return $this->getSpringbotModel()->load($ruleId);
     }
+
+    public function getSpringbotModel()
+    {
+        return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Rule');
+    }
+
 
 }
