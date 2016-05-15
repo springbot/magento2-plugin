@@ -27,9 +27,28 @@ abstract class Handler extends AbstractModel
     protected $objectManager;
     protected $api;
 
+    /**
+     * @param int $storeId
+     * @param int $id
+     * @return mixed
+     */
     abstract public function handle($storeId, $id);
+
+    /**
+     * @param int $storeId
+     * @param int $id
+     * @return mixed
+     */
     abstract public function handleDelete($storeId, $id);
 
+    /**
+     * Handler constructor.
+     * @param StoreConfiguration $storeConfig
+     * @param State $state
+     * @param Api $api
+     * @param Context $context
+     * @param Registry $registry
+     */
     public function __construct(
         StoreConfiguration $storeConfig,
         State $state,
@@ -41,8 +60,8 @@ abstract class Handler extends AbstractModel
         $this->objectManager = ObjectManager::getInstance();
         $this->storeConfig = $storeConfig;
         $this->api = $api;
-
-        $this->state->setAreaCode("adminhtml");
         parent::__construct($context, $registry);
     }
+
+
 }

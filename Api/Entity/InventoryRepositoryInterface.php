@@ -4,7 +4,7 @@ namespace Springbot\Main\Api\Entity;
 
 /**
  * Interface InventoryRepositoryInterface
- * @package Springbot\Main\Api
+ * @package Springbot\Main\Api\Entity
  */
 interface InventoryRepositoryInterface
 {

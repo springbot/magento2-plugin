@@ -75,16 +75,18 @@ class Api extends AbstractModel
     /**
      * @param $storeId
      * @param $apiPath
-     * @param $entitiesName
      * @param array $entitiesData
      * @throws \Exception
      */
-    public function postEntities($storeId, $apiPath, $entitiesName, array $entitiesData)
+    public function postEntities($storeId, $apiPath, array $entitiesData)
     {
+        $body = json_encode([$apiPath => $entitiesData]);
+        die('xxx' . $body);
+
         $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($storeId);
         $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
-            $body = json_encode([$entitiesName => $entitiesData]);
+            $body = json_encode([$apiPath => $entitiesData]);
             $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}", $body, $this->_getAuthHeaders($springbotApiToken));
         }
     }
@@ -92,16 +94,15 @@ class Api extends AbstractModel
     /**
      * @param $storeId
      * @param $apiPath
-     * @param $entitiesName
      * @param $entityId
      * @throws \Exception
      */
-    public function deleteEntity($storeId, $apiPath, $entitiesName, $entityId)
+    public function deleteEntity($storeId, $apiPath, $entityId)
     {
         $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($storeId);
         $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
-            $body = json_encode([$entitiesName => ['id' => $entityId, 'is_deleted' => true]]);
+            $body = json_encode([$apiPath => ['id' => $entityId, 'is_deleted' => true]]);
             $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}", $body, $this->_getAuthHeaders($springbotApiToken));
         }
     }
