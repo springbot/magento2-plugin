@@ -81,7 +81,7 @@ class Register extends AbstractModel
     public function registerStores($email, $password, $stores)
     {
         try {
-            $url = $this->_api->getApiUrl(Api::STORE_REGISTRATION_URL);
+            $url = $this->_api->getApiUrl(Api::ETL_API_PATH . '/' .Api::STORE_REGISTRATION_PATH);
             $storesArray = $this->getStoresArray($stores);
             $response = $this->_api->post($url, json_encode([
                 'stores' => $storesArray,
