@@ -30,14 +30,12 @@ abstract class Handler extends AbstractModel
     /**
      * @param int $storeId
      * @param int $id
-     * @return mixed
      */
     abstract public function handle($storeId, $id);
 
     /**
      * @param int $storeId
      * @param int $id
-     * @return mixed
      */
     abstract public function handleDelete($storeId, $id);
 

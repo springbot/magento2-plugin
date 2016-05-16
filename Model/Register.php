@@ -27,6 +27,8 @@ class Register extends AbstractModel
     private $_storeManager;
     private $_urlInterface;
     private $_storeConfig;
+    private $_scopeConfigInterface;
+    private $_oauth;
 
     /**
      * @param Api $api
@@ -38,6 +40,7 @@ class Register extends AbstractModel
      * @param StoreManagerInterface $storeManager
      * @param UrlInterface $urlInterface
      * @param StoreConfiguration $storeConfig
+     * @param Oauth $oauth;
      */
     public function __construct(
         Api $api,
@@ -48,7 +51,8 @@ class Register extends AbstractModel
         ScopeConfigInterface $scopeConfigInterface,
         StoreManagerInterface $storeManager,
         UrlInterface $urlInterface,
-        StoreConfiguration $storeConfig
+        StoreConfiguration $storeConfig,
+        Oauth $oauth
     ) {
         $this->_api = $api;
         $this->_scopeConfigInterface = $scopeConfigInterface;
@@ -57,17 +61,19 @@ class Register extends AbstractModel
         $this->_storeManager = $storeManager;
         $this->_urlInterface = $urlInterface;
         $this->_storeConfig = $storeConfig;
+        $this->_oauth = $oauth;
         parent::__construct($context, $registry);
     }
 
     /**
-     * @param $email
-     * @param $password
+     * @param string $email
+     * @param string $password
+     * @return bool
      */
     public function registerAllStores($email, $password)
     {
         $stores = $this->_storeManager->getStores();
-        $this->registerStores($email, $password, $stores);
+        return $this->registerStores($email, $password, $stores);
     }
 
     /**
@@ -83,8 +89,10 @@ class Register extends AbstractModel
         try {
             $url = $this->_api->getApiUrl(Api::STORE_REGISTRATION_PATH);
             $storesArray = $this->getStoresArray($stores);
+
             $response = $this->_api->post($url, json_encode([
                 'stores' => $storesArray,
+                'access_token' => $this->_oauth->create(),
                 'credentials' => [
                     'email' => $email,
                     'password' => $password
@@ -92,12 +100,13 @@ class Register extends AbstractModel
             ]));
 
             if ($responseArray = json_decode($response->getBody(), true)) {
+                $securityToken = $responseArray['security_token'];
                 foreach ($storesArray as $guid => $storeArray) {
-                    if ($returnedStoreArray = $responseArray['stores'][$storeArray['store_id']]) {
-                        $this->_storeConfig->saveValues($storeArray['store_id'], [
-                            'store_guid' => $returnedStoreArray['guid'],
+                    if ($returnedStoreArray = $responseArray['stores'][$guid]) {
+                        $this->_storeConfig->saveValues($returnedStoreArray['store_id'], [
+                            'store_guid' => $guid,
                             'store_id' => $returnedStoreArray['springbot_store_id'],
-                            'security_token' => $returnedStoreArray['security_token']
+                            'security_token' => $securityToken
                         ]);
                     }
                 }
@@ -129,7 +138,7 @@ class Register extends AbstractModel
                 'logo_src' => $this->_scopeConfigInterface->getValue('design/header/logo_src'),
                 'logo_alt_tag' => $this->_scopeConfigInterface->getValue('design/header/logo_atl'),
                 'web_id' => $store->getWebsiteId(),
-                'store_id' => $this->getId(),
+                'store_id' => $store->getId(),
                 'store_name' => $store->getName(),
                 'store_code' => $store->getCode(),
                 'store_active' => $store->getIsActive(),
@@ -137,7 +146,7 @@ class Register extends AbstractModel
                 'media_url' => $this->_urlInterface->getBaseUrl(UrlInterface::URL_TYPE_MEDIA),
                 'store_mail_address' => $this->_getStoreAddress(),
                 'store_custsrv_email' => $this->_scopeConfigInterface->getValue('trans_email/ident_support/email'),
-                'store_statuses' => $this->_orderConfig->getStatuses()
+                'store_statuses' => $this->_orderConfig->getStatuses(),
             ];
         }
         return $storesArray;

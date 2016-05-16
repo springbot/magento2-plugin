@@ -16,7 +16,7 @@ use Springbot\Main\Helper\Data;
 class Api extends AbstractModel
 {
     const ETL_API_PATH = 'api/v1';
-    const WEBHOOKS_PATH = 'webhooks/v1';
+    const ETL_WEBHOOKS_PATH = 'webhooks/v1';
     const STORE_REGISTRATION_PATH = 'stores';
 
 
@@ -83,7 +83,8 @@ class Api extends AbstractModel
         $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
             $body = json_encode([$apiPath => $entitiesData]);
-            $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}", $body, $this->_getAuthHeaders($springbotApiToken));
+            $url = $this->getWebhooksUrl("{$springbotStoreId}/{$apiPath}");
+            $this->post($url, $body, $this->_getAuthHeaders($springbotApiToken));
         }
     }
 
@@ -134,6 +135,11 @@ class Api extends AbstractModel
         return $this->_client;
     }
 
+    public function getAppUrl()
+    {
+        return $this->_scopeConfig->getValue('springbot/configuration/app_url');
+    }
+
     /**
      * @param string $subpath
      * @return string
@@ -141,6 +147,19 @@ class Api extends AbstractModel
     public function getApiUrl($subpath = '')
     {
         $url = $this->_scopeConfig->getValue('springbot/configuration/api_url') . '/' . self::ETL_API_PATH;
+        if ($subpath) {
+            $url .= '/' . $subpath;
+        }
+        return $url;
+    }
+
+    /**
+     * @param string $subpath
+     * @return string
+     */
+    public function getWebhooksUrl($subpath = '')
+    {
+        $url = $this->_scopeConfig->getValue('springbot/configuration/api_url') . '/' . self::ETL_WEBHOOKS_PATH;
         if ($subpath) {
             $url .= '/' . $subpath;
         }

@@ -4,12 +4,10 @@ namespace Springbot\Main\Model;
 
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection
-    as ProductAttributeSets;
+use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection as ProductAttributeSets;
 use Magento\CatalogRule\Model\Rule as CatalogRule;
 use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\ResourceModel\Attribute\Collection
-    as CustomerAttributeSets;
+use Magento\Customer\Model\ResourceModel\Attribute\Collection as CustomerAttributeSets;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Model\AbstractModel;

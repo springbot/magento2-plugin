@@ -16,18 +16,13 @@ class ProductHandler extends Handler
 {
     const API_PATH = 'products';
 
-    /**
-     * @param $storeId
-     * @param $productId
-     * @throws \Exception
-     */
     public function handle($storeId, $productId)
     {
         $product = $this->objectManager->get('Springbot\Main\Api\Entity\Data\ProductInterface')->load($productId);
         /* @var \Springbot\Main\Model\Entity\Data\Product $product */
         $data = $product->toArray();
-        $data['get_url_in_store'] = $product->getUrlInStore();
-        $data['get_url_id_path'] = $product->getUrlInStore();
+        $data['url_in_store'] = $product->getUrlInStore();
+        $data['url_id_path'] = $product->getUrlInStore();
         $this->api->postEntities($storeId, self::API_PATH, [$data]);
     }
 

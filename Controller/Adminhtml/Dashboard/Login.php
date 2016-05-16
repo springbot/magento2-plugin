@@ -6,11 +6,9 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Config\Model\ResourceModel\Config;
-use Springbot\Main\Helper\Data as SpringbotHelper;
 use Springbot\Main\Model\Register;
 use Psr\Log\LoggerInterface;
-use Springbot\Main\Model\Oauth;
-use Magento\Framework\App\Config\ScopeConfigInterface;
+use Springbot\Main\Model\Api;
 
 /**
  * Class Login
@@ -22,6 +20,7 @@ class Login extends Action
     private $_register;
     private $_logger;
     private $_resultPageFactory;
+    private $_api;
 
     /**
      * @return Config
@@ -54,25 +53,28 @@ class Login extends Action
      * @param LoggerInterface $logger
      * @param PageFactory $pageFactory
      * @param Register $register
+     * @param Api $api
      */
     public function __construct(
         Config $config,
         Context $context,
         LoggerInterface $logger,
         PageFactory $pageFactory,
-        Register $register
+        Register $register,
+        Api $api
     ) {
         $this->_logger = $logger;
         $this->_config = $config;
         $this->_resultPageFactory = $pageFactory;
         $this->_register = $register;
+        $this->_api = $api;
         parent::__construct($context);
     }
 
     /**
      * Page execute
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return \Magento\Framework\App\ResponseInterface
      */
     public function execute()
     {
@@ -82,11 +84,14 @@ class Login extends Action
         $registered = $this->register()->registerAllStores($springbotEmail, $springbotPassword);
 
         if ($registered) {
+            return $this->_redirect($this->_api->getAppUrl());
+            /*
             $resultPage = $this->getResultPageFactory()->create();
             $resultPage->setActiveMenu('Springbot_Main::main');
             $resultPage->addBreadcrumb(__('Springbot'), __('Springbot'));
             $resultPage->getConfig()->getTitle()->prepend(__('Springbot'));
             return $resultPage;
+            */
         } else {
             // If response comes back 'unauthorized', redirect to the index page.
             $this->_redirect('*/dashboard', ['unauthorized']);
