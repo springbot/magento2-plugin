@@ -6,7 +6,7 @@ use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
-use Springbot\Main\Model\Handler\Store as StoreHandler;
+use Springbot\Main\Model\Handler\StoreHandler;
 use Magento\Catalog\Model\Product as MagentoProduct;
 use Exception;
 

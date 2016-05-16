@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Catalog\Model\Category as MagentoCategory;
-use Springbot\Main\Model\Handler\Category as CategoryHandler;
+use Springbot\Main\Model\Handler\CategoryHandler;
 
 class CategorySaveAfterObserver implements ObserverInterface
 {

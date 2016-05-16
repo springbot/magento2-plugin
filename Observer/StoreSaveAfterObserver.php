@@ -3,10 +3,10 @@
 namespace Springbot\Main\Observer;
 
 use Psr\Log\LoggerInterface;
-use Springbot\Main\Model\Handler\Store as StoreHandler;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Springbot\Queue\Model\Queue;
+use Springbot\Main\Model\Handler\StoreHandler;
 use Exception;
 
 class StoreSaveAfterObserver implements ObserverInterface

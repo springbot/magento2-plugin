@@ -8,7 +8,7 @@ use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Catalog\Model\Product\AttributeSet;
 use Magento\Catalog\Model\Entity\Attribute as MagentoAttribute;
-use Springbot\Main\Model\Handler\AttributeSet as AttributeSetHandler;
+use Springbot\Main\Model\Handler\AttributeSetHandler;
 
 class AttributeDeleteAfterObserver implements ObserverInterface
 {

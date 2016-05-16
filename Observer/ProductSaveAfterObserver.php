@@ -3,7 +3,7 @@
 namespace Springbot\Main\Observer;
 
 use Psr\Log\LoggerInterface;
-use Springbot\Main\Model\Handler\Product as ProductHandler;
+use Springbot\Main\Model\Handler\ProductHandler;
 use Magento\Catalog\Model\Product as MagentoProduct;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;

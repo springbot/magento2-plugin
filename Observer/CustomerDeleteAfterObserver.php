@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Customer\Model\Customer as MagentoCustomer;
-use Springbot\Main\Model\Handler\Customer as CustomerHandler;
+use Springbot\Main\Model\Handler\CustomerHandler;
 
 class CustomerDeleteAfterObserver implements ObserverInterface
 {

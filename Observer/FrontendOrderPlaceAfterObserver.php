@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Sales\Model\Order as MagentoOrder;
-use Springbot\Main\Model\Handler\Order as OrderHandler;
+use Springbot\Main\Model\Handler\OrderHandler;
 
 class FrontendOrderPlaceAfterObserver implements ObserverInterface
 {
