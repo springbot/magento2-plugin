@@ -29,6 +29,5 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
     public function getSpringbotModel()
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Inventory');
-        ;
     }
 }

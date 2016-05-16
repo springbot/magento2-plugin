@@ -34,6 +34,5 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
     public function getSpringbotModel()
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Product');
-        ;
     }
 }

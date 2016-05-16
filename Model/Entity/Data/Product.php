@@ -14,6 +14,17 @@ class Product extends \Magento\Catalog\Model\Product implements ProductInterface
 
     public function getUrlIdPath()
     {
-        return 'xxx';
+        return '';
     }
+
+    public function getImageUrl()
+    {
+        return $this->getImage();
+    }
+
+    public function getImageLabel()
+    {
+        return '';
+    }
+
 }

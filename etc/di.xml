@@ -15,36 +15,36 @@
     <preference for="Springbot\Main\Api\CountsInterface" type="Springbot\Main\Model\Counts"/>
 
     <preference for="Springbot\Main\Api\Entity\AttributeSetRepositoryInterface" type="Springbot\Main\Model\Entity\AttributeSetRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\AttributeSetInterface" type="Springbot\Main\Model\Entity\AttributeSet"/>
+    <preference for="Springbot\Main\Api\Entity\Data\AttributeSetInterface" type="Springbot\Main\Model\Entity\Data\AttributeSet"/>
 
     <preference for="Springbot\Main\Api\Entity\CartRepositoryInterface" type="Springbot\Main\Model\Entity\CartRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\CartInterface" type="Springbot\Main\Model\Entity\Cart"/>
+    <preference for="Springbot\Main\Api\Entity\Data\CartInterface" type="Springbot\Main\Model\Entity\Data\Cart"/>
 
     <preference for="Springbot\Main\Api\Entity\CategoryRepositoryInterface" type="Springbot\Main\Model\Entity\CategoryRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\CategoryInterface" type="Springbot\Main\Model\Entity\Category"/>
+    <preference for="Springbot\Main\Api\Entity\Data\CategoryInterface" type="Springbot\Main\Model\Entity\Data\Category"/>
 
     <preference for="Springbot\Main\Api\Entity\CouponRepositoryInterface" type="Springbot\Main\Model\Entity\CouponRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\CouponInterface" type="Springbot\Main\Model\Entity\Coupon"/>
+    <preference for="Springbot\Main\Api\Entity\Data\CouponInterface" type="Springbot\Main\Model\Entity\Data\Coupon"/>
 
     <preference for="Springbot\Main\Api\Entity\CustomerRepositoryInterface" type="Springbot\Main\Model\Entity\CustomerRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\CustomerInterface" type="Springbot\Main\Model\Entity\Customer"/>
+    <preference for="Springbot\Main\Api\Entity\Data\CustomerInterface" type="Springbot\Main\Model\Entity\Data\Customer"/>
 
     <preference for="Springbot\Main\Api\Entity\GuestRepositoryInterface" type="Springbot\Main\Model\Entity\GuestRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\GuestInterface" type="Springbot\Main\Model\Entity\Guest"/>
+    <preference for="Springbot\Main\Api\Entity\Data\GuestInterface" type="Springbot\Main\Model\Entity\Data\Guest"/>
 
     <preference for="Springbot\Main\Api\Entity\InventoryRepositoryInterface" type="Springbot\Main\Model\Entity\InventoryRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\InventoryInterface" type="Springbot\Main\Model\Entity\Inventory"/>
+    <preference for="Springbot\Main\Api\Entity\Data\InventoryInterface" type="Springbot\Main\Model\Entity\Data\Inventory"/>
 
     <preference for="Springbot\Main\Api\Entity\OrderRepositoryInterface" type="Springbot\Main\Model\Entity\OrderRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\OrderInterface" type="Springbot\Main\Model\Entity\Order"/>
+    <preference for="Springbot\Main\Api\Entity\Data\OrderInterface" type="Springbot\Main\Model\Entity\Data\Order"/>
 
     <preference for="Springbot\Main\Api\Entity\ProductRepositoryInterface" type="Springbot\Main\Model\Entity\ProductRepository"/>
     <preference for="Springbot\Main\Api\Entity\Data\ProductInterface" type="Springbot\Main\Model\Entity\Data\Product"/>
 
     <preference for="Springbot\Main\Api\Entity\RuleRepositoryInterface" type="Springbot\Main\Model\Entity\RuleRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\RuleInterface" type="Springbot\Main\Model\Entity\Rule"/>
+    <preference for="Springbot\Main\Api\Entity\Data\RuleInterface" type="Springbot\Main\Model\Entity\Data\Rule"/>
 
     <preference for="Springbot\Main\Api\Entity\SubscriberRepositoryInterface" type="Springbot\Main\Model\Entity\SubscriberRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\SubscriberInterface" type="Springbot\Main\Model\Entity\Subscriber"/>
+    <preference for="Springbot\Main\Api\Entity\Data\SubscriberInterface" type="Springbot\Main\Model\Entity\Data\Subscriber"/>
 
 </config>

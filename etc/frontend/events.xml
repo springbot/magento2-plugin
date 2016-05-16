@@ -36,4 +36,9 @@
     <event name="eav_entity_attribute_save_commit_after">
         <observer name="springbot_main_eav_entity_attribute_save_commit_after" instance="Springbot\Main\Observer\AttributeSaveObserver"/>
     </event>
+
+    <event name="sales_order_place_after">
+        <observer name="springbot_main_sales_order_place_after" instance="Springbot\Main\Observer\OrderSaveObserver"/>
+    </event>
+
 </config>

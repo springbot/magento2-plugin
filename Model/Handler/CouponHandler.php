@@ -13,7 +13,7 @@ use Magento\Catalog\Model\Category as MagentoCategory;
  */
 class CouponHandler extends Handler
 {
-    const API_PATH = 'categories';
+    const API_PATH = 'coupons';
 
     /**
      * @param $storeId

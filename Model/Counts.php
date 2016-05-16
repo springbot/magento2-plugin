@@ -77,7 +77,7 @@ class Counts extends AbstractHelper
      *
      * @return array
      */
-    public function getCounts()
+    public function getCounts($id = null)
     {
         // Construct the array to be displayed via the REST endpoint
         $array = [

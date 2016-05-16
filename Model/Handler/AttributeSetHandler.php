@@ -15,7 +15,7 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute\Collection as AttributeColl
  */
 class AttributeSetHandler extends Handler
 {
-    const API_PATH = 'attribute_sets';
+    const API_PATH = 'attribute-sets';
 
     /**
      * @param $storeId
