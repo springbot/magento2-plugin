@@ -2,21 +2,22 @@
 
 namespace Springbot\Main\Observer;
 
-use Exception;
 use Psr\Log\LoggerInterface;
+use Springbot\Main\Model\Handler\Quote as QuoteHandler;
+use Magento\Quote\Model\Quote as MagentoQuote;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Springbot\Queue\Model\Queue;
-use Springbot\Main\Model\Handler\Store as StoreHandler;
+use Exception;
 
-class StoreSaveAfterObserver implements ObserverInterface
+class QuoteSaveAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
 
     /**
-     * StoreSaveAfterObserver constructor
-     * 
+     * QuoteSaveAfterObserver constructor
+     *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
      */
@@ -27,7 +28,7 @@ class StoreSaveAfterObserver implements ObserverInterface
     }
 
     /**
-     * Pull the store data from the event
+     * Pull the quote data from the event
      *
      * @param Observer $observer
      * @return void
@@ -35,11 +36,10 @@ class StoreSaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $stores = $observer->getEvent()->getStores();
-            foreach ($stores as $store) {
-                $this->_queue->scheduleJob(StoreHandler::class, 'handle', [$store->getId()], 1);
-                $this->_logger->debug("Scheduled sync job for store ID: {$store->getId()}");
-            }
+            $quote = $observer->getEvent()->getQuote();
+            /* @var MagentoQuote $quote */
+            $this->_queue->scheduleJob(QuoteHandler::class, 'handle', [$quote->getId()]);
+            $this->_logger->debug("Scheduled sync job for quote ID: {$quote->getId()}");
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

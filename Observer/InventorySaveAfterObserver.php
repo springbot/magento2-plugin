@@ -2,21 +2,22 @@
 
 namespace Springbot\Main\Observer;
 
-use Exception;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\CatalogInventory\Model\Stock as MagentoInventoryStock;
+use Springbot\Main\Model\Handler\Inventory as InventoryHandler;
 use Springbot\Queue\Model\Queue;
-use Springbot\Main\Model\Handler\Store as StoreHandler;
+use Exception;
 
-class StoreSaveAfterObserver implements ObserverInterface
+class InventorySaveAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
 
     /**
-     * StoreSaveAfterObserver constructor
-     * 
+     * InventorySaveAfterObserver constructor
+     *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
      */
@@ -27,7 +28,7 @@ class StoreSaveAfterObserver implements ObserverInterface
     }
 
     /**
-     * Pull the store data from the event
+     * Pull the inventory data from the event
      *
      * @param Observer $observer
      * @return void
@@ -35,10 +36,11 @@ class StoreSaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $stores = $observer->getEvent()->getStores();
-            foreach ($stores as $store) {
-                $this->_queue->scheduleJob(StoreHandler::class, 'handle', [$store->getId()], 1);
-                $this->_logger->debug("Scheduled sync job for store ID: {$store->getId()}");
+            $items = $observer->getEvent()->getItems();
+            /* @var MagentoItem $item */
+            foreach($items as $item) {
+                $this->_queue->scheduleJob(InventoryHandler::class, 'handle', [$item->getItemId()]);
+                $this->_logger->debug("Scheduled sync job for item ID: {$item->getItemId()}");
             }
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());

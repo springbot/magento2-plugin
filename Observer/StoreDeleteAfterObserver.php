@@ -2,13 +2,12 @@
 
 namespace Springbot\Main\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
-use Psr\Log\LoggerInterface;
-use Springbot\Queue\Model\Queue;
-use Magento\Framework\Event\Observer;
-use Springbot\Main\Model\Handler\Store as StoreHandler;
-use Magento\Catalog\Model\Product as MagentoProduct;
 use Exception;
+use Psr\Log\LoggerInterface;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Springbot\Queue\Model\Queue;
+use Springbot\Main\Model\Handler\Store as StoreHandler;
 
 class StoreDeleteAfterObserver implements ObserverInterface
 {
@@ -16,7 +15,7 @@ class StoreDeleteAfterObserver implements ObserverInterface
     private $_queue;
 
     /**
-     * StoreSaveAfterObserver constructor
+     * StoreDeleteAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
@@ -37,10 +36,7 @@ class StoreDeleteAfterObserver implements ObserverInterface
     {
         try {
             $stores = $observer->getEvent()->getStores();
-
             foreach ($stores as $store) {
-
-                // Enqueue a job to sync this store
                 $this->_queue->scheduleJob(StoreHandler::class, 'handleDelete', [$store->getId()], 1);
                 $this->_logger->debug("Scheduled deleted sync job for Store ID: {$store->getId()}");
             }
