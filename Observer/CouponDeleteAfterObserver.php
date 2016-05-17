@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Springbot\Queue\Model\Queue;
-use Springbot\Main\Model\Handler\Rule as RuleHandler;
+use Springbot\Main\Model\Handler\Coupon as CouponHandler;
 // use Magento\CatalogInventory\Model\Stock as MagentoInventoryStock; // @Todo figure out model(s) for Rules
 
 class CouponDeleteAfterObserver implements ObserverInterface

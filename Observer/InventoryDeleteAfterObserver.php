@@ -28,7 +28,7 @@ class InventoryDeleteAfterObserver implements ObserverInterface
     }
 
     /**
-     * Pull the product data from the event
+     * Pull the inventory data from the event
      *
      * @param Observer $observer
      * @return void

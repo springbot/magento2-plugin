@@ -36,6 +36,7 @@ class StoreSaveAfterObserver implements ObserverInterface
     {
         try {
             $stores = $observer->getEvent()->getStores();
+            
             foreach ($stores as $store) {
                 $this->_queue->scheduleJob(StoreHandler::class, 'handle', [$store->getId()], 1);
                 $this->_logger->debug("Scheduled sync job for store ID: {$store->getId()}");
