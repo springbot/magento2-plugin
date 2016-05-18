@@ -35,7 +35,7 @@ class CartSaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $cart = $observer->getEvent()->getCart();
+            $cart = $observer->getEvent()->getQuote();
             /* @var MagentoQuote $cart */
             $cartId = $cart->getEntityId();
             $this->_queue->scheduleJob(CartHandler::class, 'handle', [$cart->getStoreId(), $cartId]);

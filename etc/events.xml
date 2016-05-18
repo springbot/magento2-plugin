@@ -40,7 +40,7 @@
 
 
 
-    <event name="checkout_cart_save_after">
+    <event name="sales_quote_save_after">
         <observer name="springbot_main_checkout_cart_save_after" instance="Springbot\Main\Observer\CartSaveAfterObserver"/>
     </event>
     <event name="salesrule_rule_save_after">
