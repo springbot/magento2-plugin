@@ -19,7 +19,7 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
         $this->filterResults($collection);
         $ret = [];
         foreach ($collection as $order) {
-            $ret = $this->getFromId($storeId, $order->getEntityId());
+            $ret[] = $this->getFromId($storeId, $order->getEntityId());
         }
         return $ret;
     }
