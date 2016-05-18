@@ -8,22 +8,35 @@ use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Sales\Model\Order as MagentoOrder;
 use Springbot\Main\Model\Handler\OrderHandler;
+use Magento\Checkout\Model\Session;
+use Magento\Framework\Stdlib\CookieManagerInterface;
+use Springbot\Main\Model\SpringbotOrderRedirect;
 
 class FrontendOrderPlaceAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
+    private $_cookieManager;
+    private $_orderRedirectFactory;
 
     /**
      * ProductSaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
+     * @param CookieManagerInterface $cookieManager
+     * @param SpringbotOrderRedirect $orderRedirect
      */
-    public function __construct(LoggerInterface $loggerInterface, Queue $queue)
-    {
+    public function __construct(
+        LoggerInterface $loggerInterface,
+        Queue $queue,
+        CookieManagerInterface $cookieManager,
+        SpringbotOrderRedirect $orderRedirect
+    ) {
         $this->_logger = $loggerInterface;
         $this->_queue = $queue;
+        $this->_cookieManager = $cookieManager;
+        $this->_orderRedirect = $orderRedirect;
     }
 
     /**
@@ -37,10 +50,24 @@ class FrontendOrderPlaceAfterObserver implements ObserverInterface
         try {
             $order = $observer->getEvent()->getOrder();
             /* @var MagentoOrder $order */
+            $this->_setRedirectIdsFromCookie($order->getId());
             $this->_queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $order->getId()]);
             $this->_logger->debug("Scheduled sync job for product ID: {$order->getId()}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
     }
+
+    /**
+     * @param $orderId
+     */
+    private function _setRedirectIdsFromCookie($orderId)
+    {
+        $redirectIdsStr = $this->_cookieManager->getCookie('redirect_mongo_id');
+        $redirectIdsArr = explode('|', $redirectIdsStr);
+        foreach ($redirectIdsArr as $redirectId) {
+            $this->_orderRedirect->insert($orderId, $redirectId);
+        }
+    }
+
 }

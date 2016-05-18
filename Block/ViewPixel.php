@@ -26,7 +26,6 @@ class ViewPixel extends AbstractProduct
      * @param ScopeConfigInterface $scopeConfig
      * @param Context $context
      * @param SpringbotHelper $springbotHelper
-     * @param UrlInterface $urlInterface
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
