@@ -40,8 +40,9 @@ class OrderSaveObserver implements ObserverInterface
         try {
             $order = $observer->getEvent()->getOrder();
             /* @var MagentoOrder $order */
-            $this->_queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $order->getId()]);
-            $this->_logger->debug("Scheduled sync job for product ID: {$order->getId()}, Store ID: {$order->getStoreId()}");
+            $orderId = $order->getIncrementId();
+            $this->_queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
+            $this->_logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
