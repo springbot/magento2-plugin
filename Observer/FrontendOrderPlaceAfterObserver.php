@@ -63,7 +63,7 @@ class FrontendOrderPlaceAfterObserver implements ObserverInterface
      */
     private function _setRedirectIdsFromCookie($orderId)
     {
-        $redirectIdsStr = $this->_cookieManager->getCookie('redirect_mongo_id');
+        $redirectIdsStr = $this->_cookieManager->getCookie('springbot_redirect_queue');
         $redirectIdsArr = explode('|', $redirectIdsStr);
         foreach ($redirectIdsArr as $redirectId) {
             $this->_orderRedirect->insert($orderId, $redirectId);
