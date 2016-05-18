@@ -50,7 +50,7 @@ class FrontendOrderPlaceAfterObserver implements ObserverInterface
         try {
             $order = $observer->getEvent()->getOrder();
             /* @var MagentoOrder $order */
-            $orderId = $order->getIncrementId();
+            $orderId = $order->getEntityId();
             $this->_setRedirectIdsFromCookie($orderId);
             $this->_logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {

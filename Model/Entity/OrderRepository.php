@@ -18,7 +18,11 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
         $collection = $this->getSpringbotModel()->getCollection();
         $this->filterResults($collection);
         $array = $collection->toArray();
-        return $array['items'];
+        $ret = [];
+        foreach ($array['items'] as $order) {
+            $ret = $this->getFromId($storeId, $order->getEntityId());
+        }
+        return $ret;
     }
 
     public function getFromId($storeId, $orderId)
