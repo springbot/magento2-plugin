@@ -142,11 +142,15 @@ class Api extends AbstractModel
 
     /**
      * @param string $subpath
+     * @param bool $apiPath
      * @return string
      */
-    public function getApiUrl($subpath = '')
+    public function getApiUrl($subpath = '', $apiPath = true)
     {
-        $url = $this->_scopeConfig->getValue('springbot/configuration/api_url') . '/' . self::ETL_API_PATH;
+        $url = $this->_scopeConfig->getValue('springbot/configuration/api_url');
+        if ($apiPath) {
+            $url .= '/' . self::ETL_API_PATH;
+        }
         if ($subpath) {
             $url .= '/' . $subpath;
         }

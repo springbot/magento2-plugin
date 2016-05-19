@@ -78,6 +78,15 @@ class StoreConfiguration extends AbstractModel
     }
 
     /**
+     * @param string $key
+     * @param string $value
+     */
+    public function saveGlobalValue($key, $value)
+    {
+        $this->_config->saveConfig($this->_makeConfigKey($key), $value, 'default', 0);
+    }
+
+    /**
      * @param string $configKey
      * @param string $storeId
      * @return string

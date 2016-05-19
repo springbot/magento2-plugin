@@ -18,7 +18,11 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
         $collection = $this->getSpringbotModel()->getCollection();
         $this->filterResults($collection);
         $array = $collection->toArray();
-        return $array['items'];
+        $ret = [];
+        foreach ($collection as $cart) {
+            $ret[] = $this->getSpringbotModel()->load($cart->getId());
+        }
+        return $ret;
     }
 
     public function getFromId($storeId, $cartId)
