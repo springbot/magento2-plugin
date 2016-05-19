@@ -6,17 +6,17 @@ use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
-use Springbot\Main\Model\Handler\StoreHandler;
-use Magento\Catalog\Model\Product as MagentoProduct;
+use Springbot\Main\Model\Handler\Inventory as InventoryHandler;
+use Magento\CatalogInventory\Model\Stock as MagentoInventoryStock;
 use Exception;
 
-class StoreDeleteAfterObserver implements ObserverInterface
+class InventoryDeleteAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
 
     /**
-     * StoreSaveAfterObserver constructor
+     * InventoryDeleteAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
@@ -28,7 +28,7 @@ class StoreDeleteAfterObserver implements ObserverInterface
     }
 
     /**
-     * Pull the store data from the event
+     * Pull the inventory data from the event
      *
      * @param Observer $observer
      * @return void
@@ -36,13 +36,11 @@ class StoreDeleteAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $stores = $observer->getEvent()->getStores();
-
-            foreach ($stores as $store) {
-
-                // Enqueue a job to sync this store
-                $this->_queue->scheduleJob(StoreHandler::class, 'handleDelete', [$store->getId()], 1);
-                $this->_logger->debug("Scheduled deleted sync job for Store ID: {$store->getId()}");
+            $items = $observer->getEvent()->getItems();
+            /* @var MagentoInventoryStock $inventory */
+            foreach($items as $item) {
+                $this->_queue->scheduleJob(InventoryHandler::class, 'handleDelete', [$item->getItemId()]);
+                $this->_logger->debug("Scheduled deleted sync job for inventory item ID: {$item->getId()}");
             }
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
