@@ -28,11 +28,10 @@ class ViewPixel extends AbstractProduct
      * @param SpringbotHelper $springbotHelper
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
         Context $context,
         SpringbotHelper $springbotHelper
     ) {
-        $this->scopeConfig = $scopeConfig;
+        $this->scopeConfig = $context->getScopeConfig();
         $this->springbotHelper = $springbotHelper;
         $this->urlInterface = ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
         parent::__construct($context);

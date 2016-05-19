@@ -19,16 +19,14 @@ class Async extends Template
     protected $scopeConfig;
 
     /**
-     * @param ScopeConfigInterface $scopeConfig
      * @param Context $context
      * @param SpringbotHelper $springbotHelper
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
         Context $context,
         SpringbotHelper $springbotHelper
     ) {
-        $this->scopeConfig = $scopeConfig;
+        $this->scopeConfig = $context->getScopeConfig();
         $this->springbotHelper = $springbotHelper;
         parent::__construct($context);
     }

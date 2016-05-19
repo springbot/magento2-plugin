@@ -42,19 +42,17 @@ abstract class Handler extends AbstractModel
     /**
      * Handler constructor.
      * @param StoreConfiguration $storeConfig
-     * @param State $state
      * @param Api $api
      * @param Context $context
      * @param Registry $registry
      */
     public function __construct(
         StoreConfiguration $storeConfig,
-        State $state,
         Api $api,
         Context $context,
         Registry $registry
     ) {
-        $this->state = $state;
+        $this->state = $context->getAppState();
         $this->objectManager = ObjectManager::getInstance();
         $this->storeConfig = $storeConfig;
         $this->api = $api;
