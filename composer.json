@@ -7,7 +7,7 @@
         "OSL-3.0"
     ],
     "require": {
-        "springbot/magento2-queue": "~1.0.2"
+        "springbot/magento2-queue": "~1.1.2"
     },
     "autoload": {
         "files": [ "registration.php" ],
