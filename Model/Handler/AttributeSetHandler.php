@@ -29,6 +29,7 @@ class AttributeSetHandler extends Handler
         $data = $attributeSet->toArray();
         $data['attributes'] = $attributeSet->getAttributes();
         $this->api->postEntities($storeId, self::API_PATH, [$data]);
+        throw new \Exception('test');
     }
 
     /**

@@ -9,8 +9,11 @@
     <event name="controller_action_predispatch_checkout_cart_index">
         <observer name="cart_reconstitution" instance="Springbot\Main\Observer\CartReconstitutionObserver" />
     </event>
-    <event name="sales_order_place_after">
-        <observer name="sb_sales_order_place_after" instance="Springbot\Main\Observer\FrontendOrderPlaceAfterObserver"/>
+    <event name="checkout_submit_all_after">
+        <observer name="sb_checkout_submit_all_after" instance="Springbot\Main\Observer\CheckoutSubmitAllAfterObserver"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="sb_sales_order_save_after" instance="Springbot\Main\Observer\OrderSaveAfterObserver"/>
     </event>
     <event name="catalog_product_save_after">
         <observer name="springbot_main_catalog_product_save_after" instance="Springbot\Main\Observer\ProductSaveAfterObserver"/>
@@ -33,8 +36,8 @@
     <event name="newsletter_subscriber_save_after">
         <observer name="springbot_main_newsletter_subscriber_save_after" instance="Springbot\Main\Observer\SubscriberSaveAfterObserver"/>
     </event>
-    <event name="eav_entity_attribute_save_commit_after">
-        <observer name="springbot_main_eav_entity_attribute_save_commit_after" instance="Springbot\Main\Observer\AttributeSaveAfterObserver"/>
+    <event name="eav_entity_attribute_set_save_after">
+        <observer name="springbot_main_eav_entity_attribute_save_commit_after" instance="Springbot\Main\Observer\AttributeSetSaveAfterObserver"/>
     </event>
 
 

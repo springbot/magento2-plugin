@@ -122,8 +122,25 @@ class Register extends AbstractModel
     }
 
     /**
+     * @return boolean
+     */
+    public function allStoresRegistered()
+    {
+        $stores = $this->_storeManager->getStores();
+        foreach ($stores as $store) {
+            if (!$this->_storeConfig->getSpringbotStoreId($store->getId()) ||
+                !$this->_storeConfig->getGuid($store->getId())
+            ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Returns an array of all stores on the instance with the necessary data to register the store with Springbot.
      *
+     * @param array $stores
      * @return array
      */
     public function getStoresArray($stores)

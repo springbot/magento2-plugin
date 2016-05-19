@@ -10,7 +10,7 @@ use Magento\Sales\Model\Order as MagentoOrder;
 use Springbot\Main\Model\Handler\OrderHandler;
 use Magento\Checkout\Model\Session;
 
-class OrderSaveObserver implements ObserverInterface
+class OrderSaveAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
@@ -40,7 +40,7 @@ class OrderSaveObserver implements ObserverInterface
         try {
             $order = $observer->getEvent()->getOrder();
             /* @var MagentoOrder $order */
-            $orderId = $order->getEntityId();
+            $orderId = $order->getId();
             $this->_queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
             $this->_logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {

@@ -6,17 +6,15 @@ use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
-use Magento\Catalog\Model\Entity\Attribute as MagentoAttribute;
 use Springbot\Main\Model\Handler\AttributeSetHandler;
+use Magento\Eav\Model\Entity\Attribute\Set as MagentoAttributeSet;
 
-class AttributeSaveAfterObserver implements ObserverInterface
+class AttributeSetSaveAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
 
     /**
-     * ProductSaveAfterObserver constructor
-     *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
      */
@@ -35,10 +33,10 @@ class AttributeSaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $attribute = $observer->getEvent()->getAttribute();
-            /* @var MagentoAttribute $attribute */
-            $this->_queue->scheduleJob(AttributeSetHandler::class, 'handle', [1, $attribute->getAttributeSetId()]);  // TODO: Figure out how to determine store_id
-            $this->_logger->debug("Created/Updated Attribute ID: " . $attribute->getAttributeId());
+            $attributeSet = $observer->getEvent()->getObject();
+            /* @var MagentoAttributeSet $attributeSet */
+            $this->_queue->scheduleJob(AttributeSetHandler::class, 'handle', [1, $attributeSet->getId()]);
+            $this->_logger->debug("Created/Updated Attribute ID: " . $attributeSet->getId());
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

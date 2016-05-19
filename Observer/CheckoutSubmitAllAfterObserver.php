@@ -7,17 +7,15 @@ use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Sales\Model\Order as MagentoOrder;
-use Springbot\Main\Model\Handler\OrderHandler;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Stdlib\CookieManagerInterface;
 use Springbot\Main\Model\SpringbotOrderRedirect;
 
-class FrontendOrderPlaceAfterObserver implements ObserverInterface
+class CheckoutSubmitAllAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
     private $_cookieManager;
-    private $_orderRedirectFactory;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -52,7 +50,6 @@ class FrontendOrderPlaceAfterObserver implements ObserverInterface
             /* @var MagentoOrder $order */
             $orderId = $order->getEntityId();
             $this->_setRedirectIdsFromCookie($orderId);
-            $this->_logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

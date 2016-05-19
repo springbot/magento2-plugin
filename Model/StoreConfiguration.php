@@ -36,16 +36,28 @@ class StoreConfiguration extends AbstractModel
         parent::__construct($context, $registry);
     }
 
+    /**
+     * @param $storeId
+     * @return mixed
+     */
     public function getSpringbotStoreId($storeId)
     {
         return $this->_scopeConfig->getValue($this->_makeConfigKey('store_id', $storeId));
     }
 
+    /**
+     * @param $storeId
+     * @return mixed
+     */
     public function getApiToken($storeId)
     {
         return $this->_scopeConfig->getValue($this->_makeConfigKey('security_token', $storeId));
     }
 
+    /**
+     * @param $storeId
+     * @return mixed
+     */
     public function getGuid($storeId)
     {
         return $this->_scopeConfig->getValue($this->_makeConfigKey('store_guid', $storeId));
