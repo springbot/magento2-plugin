@@ -8,7 +8,6 @@ use Magento\Sales\Model\Order;
 use Magento\Checkout\Model\Session;
 use Springbot\Main\Model\Api;
 
-
 /**
  * Class Async
  *
@@ -73,5 +72,4 @@ class EnhancedPixel extends Template
         $storeConfig = ObjectManager::getInstance()->get('Springbot\Main\Model\StoreConfiguration');
         return strtolower($storeConfig->getGuid($this->getLastOrder()->getStoreId()));
     }
-
 }

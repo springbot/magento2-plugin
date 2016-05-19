@@ -39,5 +39,4 @@ class Product extends \Magento\Catalog\Model\Product implements ProductInterface
         $currentStore = $storeManager->getStore();
         return $currentStore->getBaseUrl($type);
     }
-
 }

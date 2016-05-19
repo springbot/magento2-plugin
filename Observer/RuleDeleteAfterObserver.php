@@ -52,7 +52,6 @@ class RuleDeleteAfterObserver implements ObserverInterface
                     $this->_logger->debug("Scheduled deleted sync job for Rule ID: {$rule->getId()} in store id: {$storeId}");
                 }
             }
-
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
