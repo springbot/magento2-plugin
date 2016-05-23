@@ -2,7 +2,7 @@
 
 namespace Springbot\Main\Model;
 
-use Magento\Framework\Model\AbstractModel;
+use Magento\Backend\Service\V1\ModuleService;
 use Springbot\Main\Api\ModulesInterface;
 
 /**
@@ -10,15 +10,13 @@ use Springbot\Main\Api\ModulesInterface;
  *
  * @package Springbot\Main\Model
  */
-class Modules extends AbstractModel implements ModulesInterface
+class Modules extends ModuleService implements ModulesInterface
 {
     /**
-     * Returns a list of all modules with setup version number
-     *
      * @return array
      */
     public function getModules()
     {
-
+        return $this->moduleList->getAll();
     }
 }
