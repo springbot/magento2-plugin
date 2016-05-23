@@ -76,12 +76,12 @@ class CartReconstitutionObserver implements ObserverInterface
 
     public function setQuote($quoteId, $suppliedSecurityHash)
     {
-        // Instantiate Quote object and load the correct quote
-        $quote = $this->_quoteFactory->create();
-        $quote->load($quoteId);
-
         // Check to make sure the cart is allowed to be restored
         if ($this->_scopeConfig->getValue('springbot/cart_restore/do_restore') == 1) {
+            // Instantiate Quote object and load the correct quote
+            $quote = $this->_quoteFactory->create();
+            $quote->load($quoteId);
+
             if ($quote) {
 
                 // Only set the quote if they don't already have one

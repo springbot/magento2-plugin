@@ -66,5 +66,4 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
             $this->_orderRedirect->insert($orderId, $redirectId);
         }
     }
-
 }

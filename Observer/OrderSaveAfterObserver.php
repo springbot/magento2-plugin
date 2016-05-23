@@ -47,6 +47,4 @@ class OrderSaveAfterObserver implements ObserverInterface
             $this->_logger->debug($e->getMessage());
         }
     }
-
-
 }
