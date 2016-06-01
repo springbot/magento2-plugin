@@ -16,6 +16,13 @@
         </resources>
     </route>
 
+    <route url="/V1/springbot/main/modules" method="GET">
+        <service class="Springbot\Main\Api\ModulesInterface" method="getModules"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
     <route url="/V1/springbot/main/entities/:storeId/attribute-sets" method="GET">
         <service class="Springbot\Main\Api\Entity\AttributeSetRepositoryInterface" method="getList"/>
         <resources>

@@ -92,7 +92,7 @@ class Counts extends AbstractHelper
                 "carts"          => self::getEntityCount($this->_carts),
                 "orders"         => self::getEntityCount($this->_orders),
                 "customers"      => self::getEntityCount($this->_customers),
-                "categories"     => self::getEntityCount($this->_categories),
+                "categories"     => self::getEntityCount($this->_categories - 1),
                 "attribute_sets" => [
                     "customer_attribute_sets" => self::getAttributeCount(
                         'customer'
