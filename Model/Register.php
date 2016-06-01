@@ -2,7 +2,6 @@
 
 namespace Springbot\Main\Model;
 
-use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
@@ -141,7 +140,7 @@ class Register extends AbstractModel
     /**
      * Returns an array of all stores on the instance with the necessary data to register the store with Springbot.
      *
-     * @param array $stores
+     * @param \Magento\Store\Model\Store[] $stores
      * @return array
      */
     public function getStoresArray($stores)
