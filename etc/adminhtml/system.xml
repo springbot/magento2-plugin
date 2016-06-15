@@ -106,10 +106,6 @@
                     <label>Extended Configuration</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="product_url_type" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Product URL Type</label>
-                    <source_model>Springbot\Main\Model\Config\Source\ProductUrlType</source_model>
-                </field>
                 <field id="send_inventory" translate="label" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Send Inventory Data</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

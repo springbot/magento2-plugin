@@ -28,7 +28,6 @@
                 <worker_count>2</worker_count>
                 <sleep_interval>1</sleep_interval>
                 <extended_config>1</extended_config>
-                <product_url_type>default</product_url_type>
                 <send_inventory>0</send_inventory>
                 <max_job_time>60</max_job_time>
             </advanced>
