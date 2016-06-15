@@ -39,10 +39,6 @@
                     <label>Allow Remote Update</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="stability" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Minimum Acceptable Stability</label>
-                    <source_model>Springbot\Main\Model\Config\Source\Stability</source_model>
-                </field>
                 <field id="show_notifications" translate="label" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Show Notifications</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
