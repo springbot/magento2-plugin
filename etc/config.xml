@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
+
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <springbot>
             <configuration>
                 <segment_size>10</segment_size>
-                <remote_update>0</remote_update>
                 <show_notifications>1</show_notifications>
                 <email_selector>billing:email,login-email,newsletter</email_selector>
                 <api_url>https://prod-magento2-etl.herokuapp.com</api_url>
@@ -23,10 +23,6 @@
             </debug>
             <advanced>
                 <harvester_type>prattler</harvester_type>
-                <nohup>0</nohup>
-                <nice>0</nice>
-                <worker_count>2</worker_count>
-                <sleep_interval>1</sleep_interval>
                 <extended_config>1</extended_config>
                 <send_inventory>0</send_inventory>
                 <max_job_time>60</max_job_time>

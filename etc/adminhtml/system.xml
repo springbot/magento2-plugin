@@ -1,10 +1,5 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2015 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
+
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <tab id="springbot" translate="label" sortOrder="300">
@@ -17,9 +12,6 @@
             <resource>Springbot_Main::config_main</resource>
             <group id="hellopage" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>System Configuration</label>
-                <field id="php_exec" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>PHP Executable</label>
-                </field>
                 <field id="segment_size" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Segment Size</label>
                 </field>
@@ -28,16 +20,6 @@
                 </field>
                 <field id="define_store_list" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Explicitly Define Stores to Harvest</label>
-                </field>
-                <field id="account_email" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Springbot Username</label>
-                </field>
-                <field id="account_password" translate="label" type="password" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Springbot Password</label>
-                </field>
-                <field id="remote_update" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Allow Remote Update</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="show_notifications" translate="label" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Show Notifications</label>
@@ -87,20 +69,6 @@
                 <field id="max_jobs" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Max Cron Jobs to Run Per Instance</label>
                     <comment>This is the maximum number of jobs the cron worker will attempt to run each time it is called. Leave blank for unlimited.</comment>
-                </field>
-                <field id="nohup" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Nohup</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="nice" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Nice</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="worker_count" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Worker Count</label>
-                </field>
-                <field id="sleep_interval" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Sleep Interval</label>
                 </field>
                 <field id="extended_config" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Extended Configuration</label>
