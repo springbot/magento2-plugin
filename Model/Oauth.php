@@ -31,8 +31,7 @@ class Oauth extends AbstractModel
         OauthService $oauthService,
         Context $context,
         Registry $registry
-    )
-    {
+    ) {
         $this->_integrationService = $integrationService;
         $this->_oauthService = $oauthService;
         $this->_integrationData['name'] = 'Springbot';

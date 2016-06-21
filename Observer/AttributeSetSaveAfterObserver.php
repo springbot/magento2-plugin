@@ -38,8 +38,7 @@ class AttributeSetSaveAfterObserver implements ObserverInterface
                 /* @var MagentoAttributeSet $attributeSet */
                 $this->_queue->scheduleJob(AttributeSetHandler::class, 'handle', [1, $attributeSet->getId()]);
                 $this->_logger->debug("Created/Updated Attribute ID: " . $attributeSet->getId());
-            }
-            else {
+            } else {
                 throw new \Exception("Unable to get attribute_set from event observer");
             }
         } catch (\Exception $e) {

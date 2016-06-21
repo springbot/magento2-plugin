@@ -56,8 +56,7 @@ class Counts extends AbstractHelper
         Product $products,
         ProductAttributeSets $productAttributeSets,
         CustomerAttributeSets $customerAttributeSets
-    )
-    {
+    ) {
         $this->_salesRules = $salesRules;
         $this->_catalogRules = $catalogRules;
         $this->_coupons = $coupons;
@@ -142,8 +141,7 @@ class Counts extends AbstractHelper
         if ($entityType === 'customer') {
             $attributes = $this->_customerAttributeSets->getItems();
             return count($attributes);
-        }
-        else {
+        } else {
             if ($entityType === 'products') {
                 $attributes = $this->_productAttributeSets->getItems();
                 return count($attributes);

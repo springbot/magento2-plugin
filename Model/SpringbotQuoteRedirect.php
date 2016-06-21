@@ -20,8 +20,7 @@ class SpringbotQuoteRedirect extends AbstractModel
         Context $context,
         Registry $registry,
         SpringbotQuoteRedirectFactory $redirectFactory
-    )
-    {
+    ) {
         $this->_init('Springbot\Main\Model\ResourceModel\SpringbotQuoteRedirect');
         $this->_redirectFactory = $redirectFactory;
         parent::__construct($context, $registry);

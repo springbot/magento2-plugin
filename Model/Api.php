@@ -42,8 +42,7 @@ class Api extends AbstractModel
         StoreConfiguration $storeConfig,
         Context $context,
         Registry $registry
-    )
-    {
+    ) {
         $this->_springbotHelper = $springbotHelper;
         $this->_scopeConfig = $scopeConfig;
         $this->_storeConfig = $storeConfig;

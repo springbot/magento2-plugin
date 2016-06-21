@@ -46,8 +46,7 @@ class GenerateOauthTokenCommand extends Command
     {
         if ($token = $this->_oauth->create()) {
             $output->writeln($token);
-        }
-        else {
+        } else {
             $output->writeln("Unable to generate Oauth token");
         }
     }

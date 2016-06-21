@@ -30,8 +30,7 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
         Queue $queue,
         CookieManagerInterface $cookieManager,
         SpringbotOrderRedirect $orderRedirect
-    )
-    {
+    ) {
         $this->_logger = $loggerInterface;
         $this->_queue = $queue;
         $this->_cookieManager = $cookieManager;

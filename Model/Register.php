@@ -52,8 +52,7 @@ class Register extends AbstractModel
         UrlInterface $urlInterface,
         StoreConfiguration $storeConfig,
         Oauth $oauth
-    )
-    {
+    ) {
         $this->_api = $api;
         $this->_scopeConfigInterface = $scopeConfigInterface;
         $this->_helper = $data;
@@ -116,8 +115,7 @@ class Register extends AbstractModel
 
                 $this->_cacheManager->clean();
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         } catch (\Exception $e) {

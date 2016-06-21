@@ -38,8 +38,7 @@ class RegisterStoresCommand extends Command
         StoreManager $storeManager,
         Register $register,
         StoreConfiguration $storeConfig
-    )
-    {
+    ) {
         $state->setAreaCode('adminhtml');
         $this->_register = $register;
         $this->_storeManager = $storeManager;
@@ -94,8 +93,7 @@ class RegisterStoresCommand extends Command
 
             if ($successful) {
                 $message = 'Store registered successfully!';
-            }
-            else {
+            } else {
                 $message = 'Failed to register store.';
             }
 

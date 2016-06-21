@@ -30,8 +30,7 @@ class StoreConfiguration extends AbstractModel
         Context $context,
         Registry $registry,
         ScopeConfigInterface $scopeConfigInterface
-    )
-    {
+    ) {
         $this->_config = $config;
         $this->_scopeConfig = $scopeConfigInterface;
         parent::__construct($context, $registry);

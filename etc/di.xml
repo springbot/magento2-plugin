@@ -5,13 +5,9 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="generateOauthTokenCommand" xsi:type="object">
-                    Springbot\Main\Console\Command\GenerateOauthTokenCommand
-                </item>
+                <item name="generateOauthTokenCommand" xsi:type="object">Springbot\Main\Console\Command\GenerateOauthTokenCommand</item>
                 <item name="listStoresCommand" xsi:type="object">Springbot\Main\Console\Command\ListStoresCommand</item>
-                <item name="registerStoresCommand" xsi:type="object">
-                    Springbot\Main\Console\Command\RegisterStoresCommand
-                </item>
+                <item name="registerStoresCommand" xsi:type="object">Springbot\Main\Console\Command\RegisterStoresCommand</item>
             </argument>
         </arguments>
     </type>

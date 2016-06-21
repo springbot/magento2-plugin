@@ -25,8 +25,7 @@ class Async extends Template
     public function __construct(
         Context $context,
         SpringbotHelper $springbotHelper
-    )
-    {
+    ) {
         $this->scopeConfig = $context->getScopeConfig();
         $this->springbotHelper = $springbotHelper;
         parent::__construct($context);
