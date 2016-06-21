@@ -19,7 +19,8 @@ class Order extends \Magento\Sales\Model\Order implements OrderInterface
         $orderRedirect = $this->_getOrderRedirects()->getFirstItem();
         if (!$orderRedirect->isEmpty()) {
             return $orderRedirect->getData('redirect_string');
-        } else {
+        }
+        else {
             return null;
         }
     }

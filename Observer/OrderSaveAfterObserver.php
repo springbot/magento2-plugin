@@ -24,7 +24,8 @@ class OrderSaveAfterObserver implements ObserverInterface
     public function __construct(
         LoggerInterface $loggerInterface,
         Queue $queue
-    ) {
+    )
+    {
         $this->_logger = $loggerInterface;
         $this->_queue = $queue;
     }

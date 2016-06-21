@@ -47,7 +47,9 @@ class CouponDeleteAfterObserver implements ObserverInterface
                 $website = ObjectManager::getInstance()->get('Magento\Store\Model\Website')->load($websiteId);
                 /* @var MagentoWebsite $website */
                 foreach ($website->getStoreIds() as $storeId) {
-                    $this->_queue->scheduleJob(CouponHandler::class, 'handleDelete', [$storeId, $coupon->getCouponId()]);
+                    $this->_queue->scheduleJob(CouponHandler::class,
+                        'handleDelete',
+                        [$storeId, $coupon->getCouponId()]);
                     $this->_logger->debug("Deleted coupon ID: " . $coupon->getCouponId());
                 }
             }

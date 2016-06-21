@@ -62,7 +62,8 @@ class Login extends Action
         PageFactory $pageFactory,
         Register $register,
         Api $api
-    ) {
+    )
+    {
         $this->_logger = $logger;
         $this->_config = $config;
         $this->_resultPageFactory = $pageFactory;
@@ -92,7 +93,8 @@ class Login extends Action
             $resultPage->getConfig()->getTitle()->prepend(__('Springbot'));
             return $resultPage;
             */
-        } else {
+        }
+        else {
             // If response comes back 'unauthorized', redirect to the index page.
             $this->_redirect('*/dashboard', ['unauthorized']);
         }

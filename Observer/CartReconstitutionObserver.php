@@ -44,7 +44,8 @@ class CartReconstitutionObserver implements ObserverInterface
         ScopeConfigInterface $scopeConfig,
         SpringbotHelper $springbotHelper,
         LoggerInterface $loggerInterface
-    ) {
+    )
+    {
         $this->_action = $action;
         $this->_session = $session;
         $this->_quoteFactory = $quoteFactory;

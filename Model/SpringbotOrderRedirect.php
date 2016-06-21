@@ -21,7 +21,8 @@ class SpringbotOrderRedirect extends AbstractModel
         Context $context,
         Registry $registry,
         SpringbotOrderRedirectFactory $redirectFactory
-    ) {
+    )
+    {
         $this->_init('Springbot\Main\Model\ResourceModel\SpringbotOrderRedirect');
         $this->_redirectFactory = $redirectFactory;
         parent::__construct($context, $registry);

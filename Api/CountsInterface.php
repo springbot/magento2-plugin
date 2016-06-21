@@ -9,7 +9,7 @@ interface CountsInterface
 {
     /**
      * Returns an array of all the entity counts we care about.
-     * 
+     *
      * @param int|null $id
      * @return array
      */

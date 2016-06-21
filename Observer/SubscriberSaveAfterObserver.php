@@ -38,7 +38,9 @@ class SubscriberSaveAfterObserver implements ObserverInterface
         try {
             $subscriber = $observer->getEvent()->getSubscriber();
             /* @var MagentoSubscriber $subscriber */
-            $this->_queue->scheduleJob(SubscriberHandler::class, 'handle', [$subscriber->getStoreId(), $subscriber->getId()]);
+            $this->_queue->scheduleJob(SubscriberHandler::class,
+                'handle',
+                [$subscriber->getStoreId(), $subscriber->getId()]);
             $this->_logger->debug("Scheduled sync job for subscriber ID: {$subscriber->getId()}, Store ID: {$subscriber->getStoreId()}");
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());

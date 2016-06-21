@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Springbot_Main::main"
              title="Springbot"
              module="Springbot_Main"
              sortOrder="30"
              resource="Springbot_Main::main"
-        />
+                />
         <add
-            id="Springbot_Main::index"
-            title="Dashboard"
-            module="Springbot_Main"
-            sortOrder="10"
-            parent="Springbot_Main::main"
-            resource="Springbot_Main::index"
-            action="springbot/dashboard/"
-        />
+                id="Springbot_Main::index"
+                title="Dashboard"
+                module="Springbot_Main"
+                sortOrder="10"
+                parent="Springbot_Main::main"
+                resource="Springbot_Main::index"
+                action="springbot/dashboard/"
+                />
     </menu>
 </config>

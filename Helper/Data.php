@@ -23,15 +23,16 @@ class Data extends AbstractHelper
     /**
      * Data constructor.
      *
-     * @param Context               $context
-     * @param Config                $config
+     * @param Context $context
+     * @param Config $config
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Context $context,
         Config $config,
         StoreManagerInterface $storeManager
-    ) {
+    )
+    {
         $this->_config = $config;
         $this->_storeManager = $storeManager;
         parent::__construct($context);
@@ -56,7 +57,10 @@ class Data extends AbstractHelper
                 . substr($charid, 20, 12);
             $this->_config->saveConfig(
                 'springbot/configuration/store_guid_' .
-                $storeId, $guid, 'default', 0
+                $storeId,
+                $guid,
+                'default',
+                0
             );
         }
         return str_replace('-', '', $guid);

@@ -33,7 +33,7 @@ class GenerateOauthTokenCommand extends Command
     protected function configure()
     {
         $this->setName('springbot:oauth:generate')
-             ->setDescription('Creates Oauth token');
+            ->setDescription('Creates Oauth token');
     }
 
     /**
@@ -46,7 +46,8 @@ class GenerateOauthTokenCommand extends Command
     {
         if ($token = $this->_oauth->create()) {
             $output->writeln($token);
-        } else {
+        }
+        else {
             $output->writeln("Unable to generate Oauth token");
         }
     }

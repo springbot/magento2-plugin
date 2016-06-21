@@ -39,7 +39,7 @@ class Register extends AbstractModel
      * @param StoreManagerInterface $storeManager
      * @param UrlInterface $urlInterface
      * @param StoreConfiguration $storeConfig
-     * @param Oauth $oauth;
+     * @param Oauth $oauth ;
      */
     public function __construct(
         Api $api,
@@ -52,7 +52,8 @@ class Register extends AbstractModel
         UrlInterface $urlInterface,
         StoreConfiguration $storeConfig,
         Oauth $oauth
-    ) {
+    )
+    {
         $this->_api = $api;
         $this->_scopeConfigInterface = $scopeConfigInterface;
         $this->_helper = $data;
@@ -89,31 +90,34 @@ class Register extends AbstractModel
             $url = $this->_api->getApiUrl(Api::STORE_REGISTRATION_PATH);
             $storesArray = $this->getStoresArray($stores);
 
-            $response = $this->_api->post($url, json_encode([
-                'stores' => $storesArray,
-                'access_token' => $this->_oauth->create(),
-                'credentials' => [
-                    'email' => $email,
-                    'password' => $password
-                ]
-            ]));
+            $response = $this->_api->post($url,
+                json_encode([
+                    'stores' => $storesArray,
+                    'access_token' => $this->_oauth->create(),
+                    'credentials' => [
+                        'email' => $email,
+                        'password' => $password
+                    ]
+                ]));
 
             if ($responseArray = json_decode($response->getBody(), true)) {
                 $securityToken = $responseArray['security_token'];
                 $this->_storeConfig->saveGlobalValue('security_token', $securityToken);
                 foreach ($storesArray as $guid => $storeArray) {
                     if ($returnedStoreArray = $responseArray['stores'][$guid]) {
-                        $this->_storeConfig->saveValues($returnedStoreArray['store_id'], [
-                            'store_guid' => $guid,
-                            'store_id' => $returnedStoreArray['springbot_store_id'],
-                            'security_token' => $securityToken
-                        ]);
+                        $this->_storeConfig->saveValues($returnedStoreArray['store_id'],
+                            [
+                                'store_guid' => $guid,
+                                'store_id' => $returnedStoreArray['springbot_store_id'],
+                                'security_token' => $securityToken
+                            ]);
                     }
                 }
 
                 $this->_cacheManager->clean();
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
         } catch (\Exception $e) {
@@ -171,6 +175,8 @@ class Register extends AbstractModel
 
     protected function _getStoreAddress()
     {
-        return str_replace(["\n", "\r"], "|", $this->_scopeConfigInterface->getValue('general/store_information/address'));
+        return str_replace(["\n", "\r"],
+            "|",
+            $this->_scopeConfigInterface->getValue('general/store_information/address'));
     }
 }

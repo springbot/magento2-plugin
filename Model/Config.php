@@ -29,7 +29,8 @@ class Config extends AbstractModel implements ConfigInterface
         ScopeConfigInterface $scopeConfig,
         Context $context,
         Registry $registry
-    ) {
+    )
+    {
         $this->_scopeConfig = $scopeConfig;
         parent::__construct($context, $registry);
     }

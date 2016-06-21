@@ -30,7 +30,8 @@ class ViewPixel extends AbstractProduct
     public function __construct(
         Context $context,
         SpringbotHelper $springbotHelper
-    ) {
+    )
+    {
         $this->scopeConfig = $context->getScopeConfig();
         $this->springbotHelper = $springbotHelper;
         $this->urlInterface = ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
@@ -61,7 +62,8 @@ class ViewPixel extends AbstractProduct
     {
         if ($product = $this->getProduct()) {
             return $product->getSku();
-        } else {
+        }
+        else {
             return '';
         }
     }

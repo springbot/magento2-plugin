@@ -32,17 +32,17 @@ class Counts extends AbstractHelper
     /**
      * Counts constructor.
      *
-     * @param Context               $context
-     * @param SalesRule             $salesRules
-     * @param CatalogRule           $catalogRules
-     * @param Coupon                $coupons
-     * @param Quote                 $carts
-     * @param Order                 $orders
-     * @param Customer              $customers
-     * @param Category              $categories
-     * @param Product               $products
+     * @param Context $context
+     * @param SalesRule $salesRules
+     * @param CatalogRule $catalogRules
+     * @param Coupon $coupons
+     * @param Quote $carts
+     * @param Order $orders
+     * @param Customer $customers
+     * @param Category $categories
+     * @param Product $products
      * @param CustomerAttributeSets $customerAttributeSets
-     * @param ProductAttributeSets  $productAttributeSets
+     * @param ProductAttributeSets $productAttributeSets
      */
     public function __construct(
         Context $context,
@@ -56,7 +56,8 @@ class Counts extends AbstractHelper
         Product $products,
         ProductAttributeSets $productAttributeSets,
         CustomerAttributeSets $customerAttributeSets
-    ) {
+    )
+    {
         $this->_salesRules = $salesRules;
         $this->_catalogRules = $catalogRules;
         $this->_coupons = $coupons;
@@ -82,31 +83,31 @@ class Counts extends AbstractHelper
         // Construct the array to be displayed via the REST endpoint
         $array = [
             "counts" => [
-                "rules"          => [
-                    "sales_rules"   => self::getEntityCount($this->_salesRules),
+                "rules" => [
+                    "sales_rules" => self::getEntityCount($this->_salesRules),
                     "catalog_rules" => self::getEntityCount(
                         $this->_catalogRules
                     )
                 ],
-                "coupons"        => self::getEntityCount($this->_coupons),
-                "carts"          => self::getEntityCount($this->_carts),
-                "orders"         => self::getEntityCount($this->_orders),
-                "customers"      => self::getEntityCount($this->_customers),
-                "categories"     => self::getEntityCount($this->_categories - 1),
+                "coupons" => self::getEntityCount($this->_coupons),
+                "carts" => self::getEntityCount($this->_carts),
+                "orders" => self::getEntityCount($this->_orders),
+                "customers" => self::getEntityCount($this->_customers),
+                "categories" => self::getEntityCount($this->_categories - 1),
                 "attribute_sets" => [
                     "customer_attribute_sets" => self::getAttributeCount(
                         'customer'
                     ),
-                    "product_attribute_sets"  => self::getAttributeCount(
+                    "product_attribute_sets" => self::getAttributeCount(
                         'products'
                     )
                 ],
-                "products"       => [
-                    "simple"       => self::getProductCount('simple'),
+                "products" => [
+                    "simple" => self::getProductCount('simple'),
                     "configurable" => self::getProductCount('configurable'),
-                    "bundled"      => self::getProductCount('bundled'),
-                    "grouped"      => self::getProductCount('grouped'),
-                    "virtual"      => self::getProductCount('virtual')
+                    "bundled" => self::getProductCount('bundled'),
+                    "grouped" => self::getProductCount('grouped'),
+                    "virtual" => self::getProductCount('virtual')
                 ]
             ]
         ];
@@ -141,7 +142,8 @@ class Counts extends AbstractHelper
         if ($entityType === 'customer') {
             $attributes = $this->_customerAttributeSets->getItems();
             return count($attributes);
-        } else {
+        }
+        else {
             if ($entityType === 'products') {
                 $attributes = $this->_productAttributeSets->getItems();
                 return count($attributes);

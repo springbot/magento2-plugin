@@ -16,7 +16,7 @@ class StoreSaveAfterObserver implements ObserverInterface
 
     /**
      * StoreSaveAfterObserver constructor
-     * 
+     *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
      */

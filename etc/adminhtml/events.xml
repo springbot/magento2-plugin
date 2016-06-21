@@ -1,17 +1,21 @@
 <?xml version="1.0"?>
 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="catalog_entity_attribute_set_save_after">
-        <observer name="sb_catalog_entity_attribute_save_after" instance="Springbot\Main\Observer\AttributeSetSaveAfterObserver" />
+        <observer name="sb_catalog_entity_attribute_save_after"
+                  instance="Springbot\Main\Observer\AttributeSetSaveAfterObserver"/>
     </event>
     <event name="catalog_entity_attribute_delete_after">
-        <observer name="sb_catalog_entity_attribute_delete_after" instance="Springbot\Main\Observer\AttributeDeleteAfterObserver" />
+        <observer name="sb_catalog_entity_attribute_delete_after"
+                  instance="Springbot\Main\Observer\AttributeDeleteAfterObserver"/>
     </event>
     <event name="catalog_category_save_after">
-        <observer name="sb_catalog_category_save_after" instance="Springbot\Main\Observer\CategorySaveAfterObserver" />
+        <observer name="sb_catalog_category_save_after" instance="Springbot\Main\Observer\CategorySaveAfterObserver"/>
     </event>
     <event name="catalog_category_delete_after">
-        <observer name="sb_catalog_category_delete_after" instance="Springbot\Main\Observer\CategoryDeleteAfterObserver" />
+        <observer name="sb_catalog_category_delete_after"
+                  instance="Springbot\Main\Observer\CategoryDeleteAfterObserver"/>
     </event>
     <event name="customer_save_after">
         <observer name="sb_customer_save_after" instance="Springbot\Main\Observer\CustomerSaveAfterObserver"/>

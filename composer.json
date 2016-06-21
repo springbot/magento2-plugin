@@ -1,18 +1,20 @@
 {
-    "name": "springbot/magento2-plugin",
-    "description": "Springbot integration for Magento 2",
-    "type": "magento2-module",
-    "version": "1.2.6",
-    "license": [
-        "OSL-3.0"
+  "name": "springbot/magento2-plugin",
+  "description": "Springbot integration for Magento 2",
+  "type": "magento2-module",
+  "version": "1.2.6",
+  "license": [
+    "OSL-3.0"
+  ],
+  "require": {
+    "springbot/magento2-queue": "1.*"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
     ],
-    "require": {
-        "springbot/magento2-queue": "1.*"
-    },
-    "autoload": {
-        "files": [ "registration.php" ],
-        "psr-4": {
-            "Springbot\\Main\\": ""
-        }
+    "psr-4": {
+      "Springbot\\Main\\": ""
     }
+  }
 }

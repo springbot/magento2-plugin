@@ -35,7 +35,8 @@ class Index extends Action
         PageFactory $resultPageFactory,
         Register $register,
         Api $api
-    ) {
+    )
+    {
         $this->helperContext = $helperContext;
         $this->resultPageFactory = $resultPageFactory;
         $this->_register = $register;

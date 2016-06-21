@@ -23,7 +23,7 @@ class StoreHandler extends Handler
         $data = $store->toArray();
         $this->api->postEntities($storeId, self::API_PATH, [$data]);
     }
-    
+
     public function handleDelete($storeId, $id)
     {
         $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $storeId]);

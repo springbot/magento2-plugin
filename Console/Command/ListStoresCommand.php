@@ -33,7 +33,8 @@ class ListStoresCommand extends Command
         Oauth $oauth,
         StoreManager $storeManager,
         StoreConfiguration $storeConfig
-    ) {
+    )
+    {
         $this->_oauth = $oauth;
         $this->_storeManager = $storeManager;
         $this->_storeConfig = $storeConfig;

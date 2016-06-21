@@ -19,7 +19,6 @@ class Api extends AbstractModel
     const ETL_WEBHOOKS_PATH = 'webhooks/v1';
     const STORE_REGISTRATION_PATH = 'stores';
 
-
     const SUCCESSFUL_RESPONSE = 'ok';
     const TOTAL_POST_FAIL_LIMIT = 32;
     const RETRY_LIMIT = 3;
@@ -43,7 +42,8 @@ class Api extends AbstractModel
         StoreConfiguration $storeConfig,
         Context $context,
         Registry $registry
-    ) {
+    )
+    {
         $this->_springbotHelper = $springbotHelper;
         $this->_scopeConfig = $scopeConfig;
         $this->_storeConfig = $storeConfig;
@@ -100,7 +100,9 @@ class Api extends AbstractModel
         $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
             $body = json_encode([$apiPath => ['id' => $entityId, 'is_deleted' => true]]);
-            $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}", $body, $this->_getAuthHeaders($springbotApiToken));
+            $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}",
+                $body,
+                $this->_getAuthHeaders($springbotApiToken));
         }
     }
 

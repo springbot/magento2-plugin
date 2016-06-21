@@ -17,7 +17,7 @@ class ProductSaveAfterObserver implements ObserverInterface
 
     /**
      * ProductSaveAfterObserver constructor
-     * 
+     *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
      */

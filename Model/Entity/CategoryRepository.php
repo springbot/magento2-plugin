@@ -46,7 +46,6 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
      */
     public function getSpringbotModel()
     {
-        return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Category');
-        ;
+        return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Category');;
     }
 }

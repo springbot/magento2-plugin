@@ -1,57 +1,70 @@
 <?xml version="1.0"?>
 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="controller_action_predispatch_checkout_cart_index">
-        <observer name="cart_reconstitution" instance="Springbot\Main\Observer\CartReconstitutionObserver" />
+        <observer name="cart_reconstitution" instance="Springbot\Main\Observer\CartReconstitutionObserver"/>
     </event>
     <event name="checkout_submit_all_after">
-        <observer name="sb_checkout_submit_all_after" instance="Springbot\Main\Observer\CheckoutSubmitAllAfterObserver"/>
+        <observer name="sb_checkout_submit_all_after"
+                  instance="Springbot\Main\Observer\CheckoutSubmitAllAfterObserver"/>
     </event>
     <event name="sales_order_save_after">
         <observer name="sb_sales_order_save_after" instance="Springbot\Main\Observer\OrderSaveAfterObserver"/>
     </event>
     <event name="catalog_product_save_after">
-        <observer name="springbot_main_catalog_product_save_after" instance="Springbot\Main\Observer\ProductSaveAfterObserver"/>
+        <observer name="springbot_main_catalog_product_save_after"
+                  instance="Springbot\Main\Observer\ProductSaveAfterObserver"/>
     </event>
     <event name="catalog_product_delete_after">
-        <observer name="springbot_main_catalog_product_delete_after" instance="Springbot\Main\Observer\ProductDeleteAfterObserver"/>
+        <observer name="springbot_main_catalog_product_delete_after"
+                  instance="Springbot\Main\Observer\ProductDeleteAfterObserver"/>
     </event>
     <event name="catalog_category_save_after">
-        <observer name="springbot_main_catalog_category_save_after" instance="Springbot\Main\Observer\CategorySaveAfterObserver"/>
+        <observer name="springbot_main_catalog_category_save_after"
+                  instance="Springbot\Main\Observer\CategorySaveAfterObserver"/>
     </event>
     <event name="catalog_category_delete_after">
-        <observer name="springbot_main_catalog_category_delete_after" instance="Springbot\Main\Observer\CategoryDeleteAfterObserver"/>
+        <observer name="springbot_main_catalog_category_delete_after"
+                  instance="Springbot\Main\Observer\CategoryDeleteAfterObserver"/>
     </event>
     <event name="customer_save_after">
-        <observer name="springbot_main_customer_save_after" instance="Springbot\Main\Observer\CustomerSaveAfterObserver"/>
+        <observer name="springbot_main_customer_save_after"
+                  instance="Springbot\Main\Observer\CustomerSaveAfterObserver"/>
     </event>
     <event name="customer_delete_after">
-        <observer name="springbot_main_customer_delete_after" instance="Springbot\Main\Observer\CustomerDeleteAfterObserver"/>
+        <observer name="springbot_main_customer_delete_after"
+                  instance="Springbot\Main\Observer\CustomerDeleteAfterObserver"/>
     </event>
     <event name="newsletter_subscriber_save_after">
-        <observer name="springbot_main_newsletter_subscriber_save_after" instance="Springbot\Main\Observer\SubscriberSaveAfterObserver"/>
+        <observer name="springbot_main_newsletter_subscriber_save_after"
+                  instance="Springbot\Main\Observer\SubscriberSaveAfterObserver"/>
     </event>
     <event name="eav_entity_attribute_set_save_after">
-        <observer name="springbot_main_eav_entity_attribute_save_commit_after" instance="Springbot\Main\Observer\AttributeSetSaveAfterObserver"/>
+        <observer name="springbot_main_eav_entity_attribute_save_commit_after"
+                  instance="Springbot\Main\Observer\AttributeSetSaveAfterObserver"/>
     </event>
-
-
 
 
     <event name="sales_quote_save_after">
-        <observer name="springbot_main_checkout_cart_save_after" instance="Springbot\Main\Observer\CartSaveAfterObserver"/>
+        <observer name="springbot_main_checkout_cart_save_after"
+                  instance="Springbot\Main\Observer\CartSaveAfterObserver"/>
     </event>
     <event name="salesrule_rule_save_after">
-        <observer name="springbot_main_salesrule_rule_save_after" instance="Springbot\Main\Observer\RuleSaveAfterObserver"/>
+        <observer name="springbot_main_salesrule_rule_save_after"
+                  instance="Springbot\Main\Observer\RuleSaveAfterObserver"/>
     </event>
     <event name="salesrule_rule_delete_after">
-        <observer name="springbot_main_salesrule_rule_delete_after" instance="Springbot\Main\Observer\RuleDeleteAfterObserver"/>
+        <observer name="springbot_main_salesrule_rule_delete_after"
+                  instance="Springbot\Main\Observer\RuleDeleteAfterObserver"/>
     </event>
     <event name="salesrule_coupon_save_after">
-        <observer name="springbot_main_salesrule_coupon_save_after" instance="Springbot\Main\Observer\CouponSaveAfterObserver"/>
+        <observer name="springbot_main_salesrule_coupon_save_after"
+                  instance="Springbot\Main\Observer\CouponSaveAfterObserver"/>
     </event>
     <event name="salesrule_coupon_delete_after">
-        <observer name="springbot_main_salesrule_coupon_save_after" instance="Springbot\Main\Observer\CouponDeleteAfterObserver"/>
+        <observer name="springbot_main_salesrule_coupon_save_after"
+                  instance="Springbot\Main\Observer\CouponDeleteAfterObserver"/>
     </event>
 
 </config>
