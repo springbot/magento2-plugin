@@ -29,14 +29,19 @@ class AttributeSetSaveAfterObserver implements ObserverInterface
      *
      * @param Observer $observer
      * @return void
+     * @throws \Exception
      */
     public function execute(Observer $observer)
     {
         try {
-            $attributeSet = $observer->getEvent()->getObject();
-            /* @var MagentoAttributeSet $attributeSet */
-            $this->_queue->scheduleJob(AttributeSetHandler::class, 'handle', [1, $attributeSet->getId()]);
-            $this->_logger->debug("Created/Updated Attribute ID: " . $attributeSet->getId());
+            if ($attributeSet = $observer->getEvent()->getObject()) {
+                /* @var MagentoAttributeSet $attributeSet */
+                $this->_queue->scheduleJob(AttributeSetHandler::class, 'handle', [1, $attributeSet->getId()]);
+                $this->_logger->debug("Created/Updated Attribute ID: " . $attributeSet->getId());
+            }
+            else {
+                throw new \Exception("Unable to get attribute_set from event observer");
+            }
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
