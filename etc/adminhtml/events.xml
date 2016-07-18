@@ -2,6 +2,8 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+
+    <!-- Catalog Listeners -->
     <event name="catalog_entity_attribute_set_save_after">
         <observer name="sb_catalog_entity_attribute_save_after"
                   instance="Springbot\Main\Observer\AttributeSetSaveAfterObserver"/>
@@ -17,25 +19,90 @@
         <observer name="sb_catalog_category_delete_after"
                   instance="Springbot\Main\Observer\CategoryDeleteAfterObserver"/>
     </event>
-    <event name="customer_save_after">
-        <observer name="sb_customer_save_after" instance="Springbot\Main\Observer\CustomerSaveAfterObserver"/>
-    </event>
-    <event name="customer_delete_after">
-        <observer name="sb_customer_delete_after" instance="Springbot\Main\Observer\CustomerDeleteAfterObserver"/>
-    </event>
     <event name="catalog_product_save_after">
         <observer name="sb_catalog_product_save_after" instance="Springbot\Main\Observer\ProductSaveAfterObserver"/>
     </event>
     <event name="catalog_product_delete_after">
         <observer name="sb_catalog_product_delete_after" instance="Springbot\Main\Observer\ProductDeleteAfterObserver"/>
     </event>
+    <!-- End Catalog Listeners -->
+
+
+    <!-- Inventory Listeners -->
+    <event name="catalog_inventory_stock_item_save_after">
+        <observer name="sb_catalog_inventory_stock_item_save_after" instance="Springbot\Main\Observer\InventorySaveAfterObserver" />
+    </event>
+    <event name="catalog_inventory_stock_item_delete_after">
+        <observer name="sb_catalog_inventory_stock_item_delete_after" instance="Springbot\Main\Observer\InventoryDeleteAfterObserver" />
+    </event>
+    
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="sb_sales_model_service_quote_submit_before" instance="Springbot\Main\Observer\InventorySaveAfterObserver" />
+    </event>
+    
+    <event name="sales_model_service_quote_submit_failure">
+        <observer name="sb_sales_model_service_quote_submit_failure" instance="Springbot\Main\Observer\InventorySaveAfterObserver" />
+    </event>
+
+    <event name="sales_order_item_cancel">
+        <observer name="sb_sales_order_item_cancel" instance="Springbot\Main\Observer\InventorySaveAfterObserver" />
+    </event>
+
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="sb_sales_order_creditmemo_save_after" instance="Springbot\Main\Observer\InventorySaveAfterObserver" />
+    </event>
+    <!-- End Inventory Listeners -->
+
+
+    <!-- Rules Listeners -->
+    <event name="salesrule_rule_safe_after">
+        <observer name="sb_salesrule_rule_safe_after" instance="Springbot\Main\Observer\SalesRuleSaveAfterObserver" />
+    </event>
+    <event name="salesrule_rule_delete_after">
+        <observer name="sb_salesrule_rule_delete_after" instance="Springbot\Main\Observer\SalesRuleDeleteAfterObserver" />
+    </event>
+    <!-- End Rules Listeners -->
+
+
+    <!-- Sales Listeners -->
+    <event name="sales_quote_save_after">
+        <observer name="sb_sales_quote_save_after" instance="Springbot\Main\Observer\QuoteSaveAfterObserver" />
+    </event>
+    <event name="sales_quote_delete_after">
+        <observer name="sb_sales_quote_delete_after" instance="Springbot\Main\Observer\QuoteDeleteAfterObserver" />
+    </event>
     <event name="sales_order_save_after">
         <observer name="sb_sales_order_save_after" instance="Springbot\Main\Observer\AdminOrderSaveAfterObserver"/>
     </event>
+    <!-- End Sales Listeners -->
+
+
+    <!-- Coupon Listeners -->
+    <event name="salesrule_coupon_safe_after">
+        <observer name="sb_salesrule_coupon_safe_after" instance="Springbot\Main\Observer\CouponSaveAfterObserver" />
+    </event>
+    <event name="salesrule_coupon_delete_after">
+        <observer name="sb_salesrule_coupon_delete_after" instance="Springbot\Main\Observer\CouponDeleteAfterObserver" />
+    </event>
+    <!-- End Coupon Listeners -->
+
+
+    <!-- Customer Listeners -->
+    <event name="customer_save_after">
+        <observer name="sb_customer_save_after" instance="Springbot\Main\Observer\CustomerSaveAfterObserver"/>
+    </event>
+    <event name="customer_delete_after">
+        <observer name="sb_customer_delete_after" instance="Springbot\Main\Observer\CustomerDeleteAfterObserver"/>
+    </event>
+    <!-- End Customer Listeners -->
+
+    <!-- Store Listeners -->
     <event name="store_save_after">
         <observer name="sb_store_save_after" instance="Springbot\Main\Observer\StoreSaveAfterObserver"/>
     </event>
     <event name="store_delete_after">
         <observer name="sb_store_delete_after" instance="Springbot\Main\Observer\StoreDeleteAfterObserver"/>
     </event>
+    <!-- End Customer Listeners -->
+
 </config>

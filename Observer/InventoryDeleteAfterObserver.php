@@ -2,20 +2,21 @@
 
 namespace Springbot\Main\Observer;
 
-use Psr\Log\LoggerInterface;
-use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
-use Springbot\Main\Model\Handler\StoreHandler;
+use Magento\Framework\Event\Observer;
+use Springbot\Main\Model\Handler\InventoryHandler;
+use Magento\CatalogInventory\Model\Stock as MagentoInventoryStock;
 use Exception;
 
-class StoreSaveAfterObserver implements ObserverInterface
+class InventoryDeleteAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
 
     /**
-     * InventorySaveAfterObserver constructor
+     * InventoryDeleteAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
@@ -35,10 +36,12 @@ class StoreSaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $storeId = $observer->getEvent()->getStoreId();
-            $this->_queue->scheduleJob(StoreHandler::class, 'handleDelete', [$storeId]);
-            $this->_logger->debug("Scheduled deleted sync job for store ID: {$storeId}");
-
+            $items = $observer->getEvent()->getItems();
+            /* @var MagentoInventoryStock $inventory */
+            foreach($items as $item) {
+                $this->_queue->scheduleJob(InventoryHandler::class, 'handleDelete', [$item->getItemId()]);
+                $this->_logger->debug("Scheduled deleted sync job for inventory item ID: {$item->getId()}");
+            }
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

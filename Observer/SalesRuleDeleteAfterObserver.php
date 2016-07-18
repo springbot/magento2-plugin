@@ -7,15 +7,16 @@ use Psr\Log\LoggerInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Springbot\Queue\Model\Queue;
-use Springbot\Main\Model\Handler\StoreHandler;
+use Springbot\Main\Model\Handler\Rule as RuleHandler;
+// use Magento\CatalogInventory\Model\Stock as MagentoInventoryStock; // @Todo figure out model(s) for Rules
 
-class StoreDeleteAfterObserver implements ObserverInterface
+class SalesRuleDeleteAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
 
     /**
-     * RuleSaveAfterObserver constructor
+     * RuleDeleteAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
@@ -35,9 +36,12 @@ class StoreDeleteAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $storeId = $observer->getEvent()->getStoreId();
-            $this->_queue->scheduleJob(StoreHandler::class, 'handle', [$storeId]);
-            $this->_logger->debug("Scheduled sync job for store ID: {$storeId}");
+            $ruleIds = $observer->getEvent()->getAppliedRuleIds();
+            /* @var MagentoRule $rule */
+            foreach($ruleIds as $ruleId) {
+                $this->_queue->scheduleJob(RuleHandler::class, 'handleDelete', [$ruleId]);
+                $this->_logger->debug("Scheduled deleted sync job for rule ID: {$ruleId}");
+            }
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

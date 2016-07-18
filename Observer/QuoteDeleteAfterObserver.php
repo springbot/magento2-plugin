@@ -3,19 +3,21 @@
 namespace Springbot\Main\Observer;
 
 use Exception;
-use Psr\Log\LoggerInterface;
-use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Springbot\Main\Model\Handler\CartHandler;
 use Springbot\Queue\Model\Queue;
-use Springbot\Main\Model\Handler\StoreHandler;
+use Magento\Framework\Event\Observer;
+use Magento\Quote\Model\Quote as MagentoQuote;
+use Psr\Log\LoggerInterface;
 
-class StoreDeleteAfterObserver implements ObserverInterface
+
+class QuoteDeleteAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
 
     /**
-     * RuleSaveAfterObserver constructor
+     * QuoteDeleteAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
@@ -27,7 +29,7 @@ class StoreDeleteAfterObserver implements ObserverInterface
     }
 
     /**
-     * Pull the rule data from the event
+     * Pull the quote data from the event
      *
      * @param Observer $observer
      * @return void
@@ -35,9 +37,10 @@ class StoreDeleteAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $storeId = $observer->getEvent()->getStoreId();
-            $this->_queue->scheduleJob(StoreHandler::class, 'handle', [$storeId]);
-            $this->_logger->debug("Scheduled sync job for store ID: {$storeId}");
+            $quote = $observer->getEvent()->getQuote();
+            /* @var MagentoQuote $quote */
+            $this->_queue->scheduleJob(CartHandler::class, 'handleDelete', [$quote->getId()]);
+            $this->_logger->debug("Scheduled deleted sync job for quote ID: {$quote->getId()}");
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

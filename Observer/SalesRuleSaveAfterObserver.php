@@ -6,10 +6,10 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Springbot\Main\Model\Handler\RuleHandler;
 use Springbot\Queue\Model\Queue;
-use Springbot\Main\Model\Handler\StoreHandler;
 
-class StoreDeleteAfterObserver implements ObserverInterface
+class SalesRuleSaveAfterObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
@@ -35,9 +35,12 @@ class StoreDeleteAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $storeId = $observer->getEvent()->getStoreId();
-            $this->_queue->scheduleJob(StoreHandler::class, 'handle', [$storeId]);
-            $this->_logger->debug("Scheduled sync job for store ID: {$storeId}");
+            $ruleIds = $observer->getEvent()->getAppliedRuleIds();
+            /* @var MagentoRule $rule */
+            foreach($ruleIds as $ruleId) {
+                $this->_queue->scheduleJob(RuleHandler::class, 'handle', [$ruleId]);
+                $this->_logger->debug("Scheduled sync job for rule ID: {$ruleId}");
+            }
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
