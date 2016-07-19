@@ -8,7 +8,7 @@
         var fs = document.getElementsByTagName('script')[0];
         sb.type = 'text/javascript';
         sb.async = true;
-        sb.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '<?php echo $this->getAssetsDomain() . '/async/preload/' . $guid . '.js' ?>;
+        sb.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '<?php echo $this->getAssetsDomain() . '/async/preload/' . $guid . '.js' ?>';
         fs.parentNode.insertBefore(sb, fs);
     })();
 </script>
