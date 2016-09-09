@@ -104,7 +104,7 @@ class Register extends AbstractModel
                 $this->_storeConfig->saveGlobalValue('security_token', $securityToken);
                 foreach ($storesArray as $guid => $storeArray) {
                     if ($returnedStoreArray = $responseArray['stores'][$guid]) {
-                        $this->_storeConfig->saveValues($returnedStoreArray['store_id'],
+                        $this->_storeConfig->saveValues($returnedStoreArray['json_data']['store_id'],
                             [
                                 'store_guid' => $guid,
                                 'store_id' => $returnedStoreArray['springbot_store_id'],
@@ -160,7 +160,7 @@ class Register extends AbstractModel
                 'store_id' => $store->getId(),
                 'store_name' => $store->getName(),
                 'store_code' => $store->getCode(),
-                'store_active' => $store->getIsActive(),
+                'store_active' => $store->isActive(),
                 'store_url' => $store->getBaseUrl(),
                 'media_url' => $this->_urlInterface->getBaseUrl(UrlInterface::URL_TYPE_MEDIA),
                 'store_mail_address' => $this->_getStoreAddress(),

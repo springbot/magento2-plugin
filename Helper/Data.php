@@ -62,6 +62,7 @@ class Data extends AbstractHelper
                 0
             );
         }
-        return str_replace('-', '', $guid);
+        // return str_replace('-', '', $guid);
+        return $guid;
     }
 }

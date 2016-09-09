@@ -5,12 +5,12 @@ namespace Springbot\Main\Console\Command;
 use Magento\Framework\App\State;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface as StoreManager;
+use Springbot\Main\Model\Register as Register;
 use Springbot\Main\Model\StoreConfiguration;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Springbot\Main\Model\Register as Register;
-use Symfony\Component\Console\Input\InputArgument;
 use Zend\Text\Table\Table as TextTable;
 
 /**
@@ -26,11 +26,12 @@ class RegisterStoresCommand extends Command
 
     private $_storeManager;
     private $_storeConfig;
+    private $_register;
 
     /**
-     * @param State $state
-     * @param StoreManager $storeManager
-     * @param Register $register
+     * @param State              $state
+     * @param StoreManager       $storeManager
+     * @param Register           $register
      * @param StoreConfiguration $storeConfig
      */
     public function __construct(
@@ -58,25 +59,25 @@ class RegisterStoresCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     *
-     * @return string
+     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $table = new TextTable([
             'columnWidths' => [25, 10, 20, 42],
-            'decorator' => 'ascii',
+            'decorator'    => 'ascii',
             'AutoSeparate' => TextTable::AUTO_SEPARATE_HEADER,
-            'padding' => 1
+            'padding'      => 1
         ]);
 
         $table->appendRow(['store_name', 'store_id', 'springbot_store_id', 'action']);
         $storesToRegister = [];
-
         // Iterate all stores and output them if they're registered, otherwise set them to be registered
+
         foreach ($this->_storeManager->getStores() as $store) {
+            /* @var \Magento\Store\Model\Store\Interceptor $store */
             $registered = $this->_addToTable($table, $store, 'Already registered, no action taken');
             if (!$registered) {
                 $storesToRegister[] = $store;
@@ -107,10 +108,10 @@ class RegisterStoresCommand extends Command
     }
 
     /**
-     * @param TextTable $table
+     * @param TextTable      $table
      * @param StoreInterface $store
-     * @param $message
-     * @param bool|false $appendIfUnregistered
+     * @param                $message
+     * @param bool|false     $appendIfUnregistered
      * @return bool
      */
     private function _addToTable(TextTable $table, StoreInterface $store, $message, $appendIfUnregistered = false)
@@ -119,8 +120,10 @@ class RegisterStoresCommand extends Command
         $springbotGuid = strtolower($this->_storeConfig->getGuid($store->getId()));
         if (($springbotStoreId && $springbotGuid) || $appendIfUnregistered) {
             $table->appendRow([substr($store->getName(), 0, 23), $store->getId(), $springbotStoreId, $message]);
+
             return true;
         }
+
         return false;
     }
 }
