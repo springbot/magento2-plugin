@@ -102,14 +102,14 @@ class Register extends AbstractModel
             if ($responseArray = json_decode($response->getBody(), true)) {
                 $securityToken = $responseArray['security_token'];
                 $this->_storeConfig->saveGlobalValue('security_token', $securityToken);
+
                 foreach ($storesArray as $guid => $storeArray) {
                     if ($returnedStoreArray = $responseArray['stores'][$guid]) {
-                        $this->_storeConfig->saveValues($returnedStoreArray['store_id'],
-                            [
-                                'store_guid' => $guid,
-                                'store_id' => $returnedStoreArray['springbot_store_id'],
-                                'security_token' => $securityToken
-                            ]);
+                        $this->_storeConfig->saveValues($returnedStoreArray['json_data']['store_id'], [
+                            'store_guid' => $guid,
+                            'store_id' => $returnedStoreArray['springbot_store_id'],
+                            'security_token' => $securityToken
+                        ]);
                     }
                 }
 
