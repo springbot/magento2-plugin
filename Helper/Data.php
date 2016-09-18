@@ -54,15 +54,8 @@ class Data extends AbstractHelper
                 . substr($charid, 12, 4) . '-'
                 . substr($charid, 16, 4) . '-'
                 . substr($charid, 20, 12);
-            $this->_config->saveConfig(
-                'springbot/configuration/store_guid_' .
-                $storeId,
-                $guid,
-                'default',
-                0
-            );
         }
-        // return str_replace('-', '', $guid);
         return $guid;
     }
+
 }
