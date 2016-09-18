@@ -16,5 +16,8 @@
     "psr-4": {
       "Springbot\\Main\\": ""
     }
+  },
+  "require-dev": {
+    "psy/psysh": "^0.7.2"
   }
 }
