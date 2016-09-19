@@ -13,7 +13,7 @@ use Magento\SalesRule\Model\Rule as MagentoRule;
  */
 class RuleHandler extends Handler
 {
-    const API_PATH = 'promotions';
+    const API_PATH = 'rules';
 
     /**
      * @param $storeId

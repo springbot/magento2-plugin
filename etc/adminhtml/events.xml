@@ -66,10 +66,7 @@
 
     <!-- Sales Listeners -->
     <event name="sales_quote_save_after">
-        <observer name="sb_sales_quote_save_after" instance="Springbot\Main\Observer\QuoteSaveAfterObserver" />
-    </event>
-    <event name="sales_quote_delete_after">
-        <observer name="sb_sales_quote_delete_after" instance="Springbot\Main\Observer\QuoteDeleteAfterObserver" />
+        <observer name="sb_sales_quote_save_after" instance="Springbot\Main\Observer\CartSaveAfterObserver" />
     </event>
     <event name="sales_order_save_after">
         <observer name="sb_sales_order_save_after" instance="Springbot\Main\Observer\AdminOrderSaveAfterObserver"/>
