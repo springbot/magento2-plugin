@@ -4,6 +4,8 @@ namespace Springbot\Main\Model\Entity\Data;
 
 use Springbot\Main\Api\Entity\Data\ProductInterface;
 use Magento\Catalog\Model\Product\Image as MagentoProductImage;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\UrlInterface;
 
 /**
  * Class Order
@@ -13,30 +15,37 @@ use Magento\Catalog\Model\Product\Image as MagentoProductImage;
 class Product extends \Magento\Catalog\Model\Product implements ProductInterface
 {
 
+    public function getDefaultUrl()
+    {
+        return $this->getProductUrl();
+    }
+
     public function getUrlIdPath()
     {
-        return $this->_getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB) . 'catalog/product/view/id/' . $this->getId();
+        $om = ObjectManager::getInstance();
+        $store = $om->get('Magento\Store\Model\StoreManagerInterface')->getStore();
+        return $store->getBaseUrl(UrlInterface::URL_TYPE_WEB) . 'catalog/product/view/id/' . $this->getId();
     }
 
     public function getImageUrl()
     {
-        return $this->_getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->getImage();
+        $om = ObjectManager::getInstance();
+        $store = $om->get('Magento\Store\Model\StoreManagerInterface')->getStore();
+        return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->getImage();
     }
 
-    public function getImageLabel()
+    public function getParentSkus()
     {
-        return '';
+        $om = ObjectManager::getInstance();
+        $typeConfigurable = $om->get('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable');
+        $parentIds = $typeConfigurable->getParentIdsByChild($this->getId());
+        $skus = array();
+        $productLoader = $om->get('Magento\Catalog\Model\ProductFactory');
+        foreach ($parentIds as $parentId) {
+            $parent = $productLoader->create()->load($parentId);
+            $skus[] = $parent->getSku();
+        }
+        return $skus;
     }
 
-    /**
-     * @param $type
-     * @return string
-     */
-    private function _getBaseUrl($type)
-    {
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
-        $storeManager = $om->get('Magento\Store\Model\StoreManagerInterface');
-        $currentStore = $storeManager->getStore();
-        return $currentStore->getBaseUrl($type);
-    }
 }

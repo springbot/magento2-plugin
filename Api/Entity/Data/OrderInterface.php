@@ -18,4 +18,5 @@ interface OrderInterface extends \Magento\Sales\Api\Data\OrderInterface
      * @return array
      */
     public function getRedirectMongoIds();
+
 }
