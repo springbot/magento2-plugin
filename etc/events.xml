@@ -58,13 +58,5 @@
         <observer name="springbot_main_salesrule_rule_delete_after"
                   instance="Springbot\Main\Observer\RuleDeleteAfterObserver"/>
     </event>
-    <event name="salesrule_coupon_save_after">
-        <observer name="springbot_main_salesrule_coupon_save_after"
-                  instance="Springbot\Main\Observer\CouponSaveAfterObserver"/>
-    </event>
-    <event name="salesrule_coupon_delete_after">
-        <observer name="springbot_main_salesrule_coupon_save_after"
-                  instance="Springbot\Main\Observer\CouponDeleteAfterObserver"/>
-    </event>
 
 </config>

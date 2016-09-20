@@ -3,12 +3,14 @@
 namespace Springbot\Main\Observer;
 
 use Psr\Log\LoggerInterface;
+use Springbot\Main\Model\Handler\InventoryHandler;
 use Springbot\Main\Model\Handler\ProductHandler;
 use Magento\Catalog\Model\Product as MagentoProduct;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Springbot\Queue\Model\Queue;
 use Exception;
+use Magento\Framework\App\ObjectManager;
 
 class ProductSaveAfterObserver implements ObserverInterface
 {
@@ -42,6 +44,16 @@ class ProductSaveAfterObserver implements ObserverInterface
 
                 // Enqueue a job to sync this product for every store it belongs to
                 $this->_queue->scheduleJob(ProductHandler::class, 'handle', [$storeId, $product->getId()]);
+
+                // Enqueue the stock item as well
+                $stockRegistry = ObjectManager::getInstance()->get('Magento\CatalogInventory\Api\StockRegistryInterface');
+                $stockItem = $stockRegistry->getStockItem(
+                    $product->getId(),
+                    $product->getStore()->getWebsiteId()
+                );
+                $this->_queue->scheduleJob(InventoryHandler::class, 'handle', [$storeId, $stockItem->getId()]);
+
+
                 $this->_logger->debug("Scheduled sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
             }
         } catch (Exception $e) {

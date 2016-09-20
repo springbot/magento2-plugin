@@ -63,19 +63,6 @@
         </resources>
     </route>
 
-    <route url="/V1/springbot/main/entities/:storeId/coupons" method="GET">
-        <service class="Springbot\Main\Api\Entity\CouponRepositoryInterface" method="getList"/>
-        <resources>
-            <resource ref="Springbot_Main::api"/>
-        </resources>
-    </route>
-    <route url="/V1/springbot/main/entities/:storeId/coupons/:couponId" method="GET">
-        <service class="Springbot\Main\Api\Entity\CouponRepositoryInterface" method="getFromId"/>
-        <resources>
-            <resource ref="Springbot_Main::api"/>
-        </resources>
-    </route>
-
     <route url="/V1/springbot/main/entities/:storeId/customers" method="GET">
         <service class="Springbot\Main\Api\Entity\CustomerRepositoryInterface" method="getList"/>
         <resources>

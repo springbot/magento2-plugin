@@ -33,6 +33,15 @@ class Order extends \Magento\Sales\Model\Order implements OrderInterface
         return $ret;
     }
 
+    public function getLineItems()
+    {
+        $items = array();
+        foreach ($this->getAllVisibleItems() as $item) {
+            $items[] = $item->toArray();
+        }
+        return $items;
+    }
+
     /**
      * @return Collection
      */

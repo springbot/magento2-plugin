@@ -20,7 +20,6 @@ class Counts extends AbstractHelper
 {
     protected $_salesRules;
     protected $_catalogRules;
-    protected $_coupons;
     protected $_carts;
     protected $_orders;
     protected $_customers;
@@ -35,7 +34,6 @@ class Counts extends AbstractHelper
      * @param Context $context
      * @param SalesRule $salesRules
      * @param CatalogRule $catalogRules
-     * @param Coupon $coupons
      * @param Quote $carts
      * @param Order $orders
      * @param Customer $customers
@@ -48,7 +46,6 @@ class Counts extends AbstractHelper
         Context $context,
         SalesRule $salesRules,
         CatalogRule $catalogRules,
-        Coupon $coupons,
         Quote $carts,
         Order $orders,
         Customer $customers,
@@ -59,7 +56,6 @@ class Counts extends AbstractHelper
     ) {
         $this->_salesRules = $salesRules;
         $this->_catalogRules = $catalogRules;
-        $this->_coupons = $coupons;
         $this->_carts = $carts;
         $this->_orders = $orders;
         $this->_customers = $customers;
@@ -88,7 +84,6 @@ class Counts extends AbstractHelper
                         $this->_catalogRules
                     )
                 ],
-                "coupons" => self::getEntityCount($this->_coupons),
                 "carts" => self::getEntityCount($this->_carts),
                 "orders" => self::getEntityCount($this->_orders),
                 "customers" => self::getEntityCount($this->_customers),

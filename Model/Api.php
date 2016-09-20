@@ -17,7 +17,7 @@ class Api extends AbstractModel
 {
     const ETL_API_PATH = 'api/v1';
     const ETL_WEBHOOKS_PATH = 'webhooks/v1';
-    const STORE_REGISTRATION_PATH = 'stores';
+    const STORE_REGISTRATION_PATH = 'create';
 
     const SUCCESSFUL_RESPONSE = 'ok';
     const TOTAL_POST_FAIL_LIMIT = 32;
@@ -143,15 +143,11 @@ class Api extends AbstractModel
 
     /**
      * @param string $subpath
-     * @param bool $apiPath
      * @return string
      */
-    public function getApiUrl($subpath = '', $apiPath = true)
+    public function getApiUrl($subpath = '')
     {
         $url = $this->_scopeConfig->getValue('springbot/configuration/api_url');
-        if ($apiPath) {
-            $url .= '/' . self::ETL_API_PATH;
-        }
         if ($subpath) {
             $url .= '/' . $subpath;
         }

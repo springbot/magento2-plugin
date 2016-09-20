@@ -17,7 +17,6 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
     {
         $collection = $this->getSpringbotModel()->getCollection();
         $this->filterResults($collection);
-        $array = $collection->toArray();
         $ret = [];
         foreach ($collection as $cart) {
             $ret[] = $this->getSpringbotModel()->load($cart->getId());
@@ -34,4 +33,7 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Cart');
     }
+
+
+
 }

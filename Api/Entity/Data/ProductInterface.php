@@ -12,6 +12,11 @@ interface ProductInterface extends \Magento\Catalog\Api\Data\ProductInterface
     /**
      * @return string
      */
+    public function getDefaultUrl();
+
+    /**
+     * @return string
+     */
     public function getUrlInStore();
 
     /**
@@ -25,7 +30,8 @@ interface ProductInterface extends \Magento\Catalog\Api\Data\ProductInterface
     public function getImageUrl();
 
     /**
-     * @return string
+     * @return array
      */
-    public function getImageLabel();
+    public function getParentSkus();
+
 }

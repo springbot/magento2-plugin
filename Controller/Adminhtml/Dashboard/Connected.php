@@ -6,40 +6,36 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\App\Helper\Context as HelperContext;
-use Springbot\Main\Model\Register;
+use Magento\Framework\View\Asset\Repository as AssetRepository;
 use Springbot\Main\Model\Api;
 
 /**
  * Class Index
  * @package Springbot\Main\Controller\Adminhtml\Dashboard
  */
-class Index extends Action
+class Connected extends Action
 {
     protected $resultPageFactory;
-    protected $helperContext;
-    private $_register;
-    private $_api;
+    protected $assetRepository;
+    protected $api;
 
     /**
      * Index constructor.
      *
      * @param Context $context
-     * @param HelperContext $helperContext
      * @param PageFactory $resultPageFactory
-     * @param Register $register
+     * @param AssetRepository $assetRepository
      * @param Api $api
      */
     public function __construct(
         Context $context,
-        HelperContext $helperContext,
         PageFactory $resultPageFactory,
-        Register $register,
+        AssetRepository $assetRepository,
         Api $api
     ) {
-        $this->helperContext = $helperContext;
         $this->resultPageFactory = $resultPageFactory;
-        $this->_register = $register;
-        $this->_api = $api;
+        $this->assetRepository = $assetRepository;
+        $this->api = $api;
         parent::__construct($context);
     }
 
@@ -48,31 +44,16 @@ class Index extends Action
      */
     public function execute()
     {
-
-        // Check to see if security token is set. If so, show the connected screen
-        if ($this->_register->allStoresRegistered()) {
-            return $this->_redirect('springbot/dashboard/connected');
-        }
-
-        // Checks if the submission was invalid. If so, displays an error to the user.
-        if ($this->getRequest()->getParam(0) === 'unauthorized') {
-            $this->messageManager->addError(__('Incorrect username or password. Please try again.'));
-        }
-
         /* @var \Magento\Backend\Model\View\Result\Page $resultPage */
-        $resultPage = $this->getResultPageFactory()->create();
+        $resultPage = $this->resultPageFactory->create();
+        $asset = $this->assetRepository->createAsset('Springbot_Main::img/plugin_dashboard_syncing.jpg');
+        $block = $resultPage->getLayout()->getBlock('springbot.dashboard.connected');
+        $block->setGraphic($asset->getUrl());
+        $block->setAppUrl($this->api->getAppUrl());
         $resultPage->setActiveMenu('Springbot_Main::main');
         $resultPage->addBreadcrumb(__('Springbot'), __('Springbot'));
         $resultPage->getConfig()->getTitle()->prepend(__('Springbot'));
         return $resultPage;
-    }
-
-    /**
-     * @return \Magento\Framework\View\Result\PageFactory
-     */
-    public function getResultPageFactory()
-    {
-        return $this->resultPageFactory;
     }
 
     /**
