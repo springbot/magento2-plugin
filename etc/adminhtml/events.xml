@@ -74,16 +74,6 @@
     <!-- End Sales Listeners -->
 
 
-    <!-- Coupon Listeners -->
-    <event name="salesrule_coupon_safe_after">
-        <observer name="sb_salesrule_coupon_safe_after" instance="Springbot\Main\Observer\CouponSaveAfterObserver" />
-    </event>
-    <event name="salesrule_coupon_delete_after">
-        <observer name="sb_salesrule_coupon_delete_after" instance="Springbot\Main\Observer\CouponDeleteAfterObserver" />
-    </event>
-    <!-- End Coupon Listeners -->
-
-
     <!-- Customer Listeners -->
     <event name="customer_save_after">
         <observer name="sb_customer_save_after" instance="Springbot\Main\Observer\CustomerSaveAfterObserver"/>

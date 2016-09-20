@@ -25,6 +25,8 @@ class CustomerHandler extends Handler
         $customer = $this->objectManager->get('Springbot\Main\Api\Entity\Data\CustomerInterface')->load($customerId);
         /* @var \Springbot\Main\Model\Entity\Data\Customer $customer */
         $data = $customer->toArray();
+        $data['billing_address'] = $customer->getBillingAddress();
+        $data['shipping_address'] = $customer->getShippingAddress();
         $this->api->postEntities($storeId, self::API_PATH, [$data]);
     }
 

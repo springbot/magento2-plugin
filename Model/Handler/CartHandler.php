@@ -24,10 +24,7 @@ class CartHandler extends Handler
         $cart = $this->objectManager->get('Springbot\Main\Api\Entity\Data\CartInterface')->load($cartId);
         /* @var \Springbot\Main\Model\Entity\Data\Cart $cart */
         $data = $cart->toArray();
-
-        foreach ($cart->getAllVisibleItems() as $item) {
-            $data['items'][] = $item->toArray();
-        }
+        $data['items'] = $cart->getItems();
         $this->api->postEntities($storeId, self::API_PATH, [$data]);
     }
 

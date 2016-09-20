@@ -30,10 +30,6 @@
     <preference for="Springbot\Main\Api\Entity\Data\CategoryInterface"
                 type="Springbot\Main\Model\Entity\Data\Category"/>
 
-    <preference for="Springbot\Main\Api\Entity\CouponRepositoryInterface"
-                type="Springbot\Main\Model\Entity\CouponRepository"/>
-    <preference for="Springbot\Main\Api\Entity\Data\CouponInterface" type="Springbot\Main\Model\Entity\Data\Coupon"/>
-
     <preference for="Springbot\Main\Api\Entity\CustomerRepositoryInterface"
                 type="Springbot\Main\Model\Entity\CustomerRepository"/>
     <preference for="Springbot\Main\Api\Entity\Data\CustomerInterface"

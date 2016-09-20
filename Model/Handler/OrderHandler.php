@@ -24,12 +24,7 @@ class OrderHandler extends Handler
         $order = $this->objectManager->get('Springbot\Main\Api\Entity\Data\OrderInterface')->load($orderId);
         /* @var \Springbot\Main\Model\Entity\Data\Order $order */
         $data = $order->toArray();
-        $data['items'] = array();
-
-
-        foreach ($order->getAllVisibleItems() as $item) {
-            $data['items'][] = $item->toArray();
-        }
+        $data['line_items'] = $order->getLineItems();
         $this->api->postEntities($storeId, self::API_PATH, [$data]);
     }
 

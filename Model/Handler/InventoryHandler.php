@@ -13,7 +13,7 @@ use Springbot\Main\Model\Handler;
  */
 class InventoryHandler extends Handler
 {
-    const API_PATH = 'categories';
+    const API_PATH = 'inventories';
 
     /**
      * @param $storeId
