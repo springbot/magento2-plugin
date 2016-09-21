@@ -34,6 +34,12 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Cart');
     }
 
+    public function assignShipping($cartId, \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignment)
+    {
+        $cart = $this->getSpringbotModel()->load($cartId);
+        $cart->setShippingAddress($shippingAssignment->getShipping()->getAddress());
+        $cart->save();
 
-
+        return $cart;
+    }
 }

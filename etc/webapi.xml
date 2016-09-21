@@ -49,6 +49,12 @@
             <resource ref="Springbot_Main::api"/>
         </resources>
     </route>
+    <route url="/V1/springbot/main/entities/carts/:cartId/shipping" method="PUT">
+        <service class="Springbot\Main\Api\Entity\CartRepositoryInterface" method="assignShipping"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
 
     <route url="/V1/springbot/main/entities/:storeId/categories" method="GET">
         <service class="Springbot\Main\Api\Entity\CategoryRepositoryInterface" method="getList"/>
