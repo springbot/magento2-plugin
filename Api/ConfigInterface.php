@@ -12,7 +12,14 @@ interface ConfigInterface
     /**
      * Get store configuration
      *
-     * @return array
+     * @return \Springbot\Main\Api\ConfigItemInterface[]
      */
     public function getConfig();
+
+    /**
+     * @param string $path
+     * @param string $value
+     * @return \Springbot\Main\Api\ConfigInterface
+     */
+    public function saveConfig($path, $value);
 }

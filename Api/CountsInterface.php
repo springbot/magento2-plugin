@@ -10,8 +10,8 @@ interface CountsInterface
     /**
      * Returns an array of all the entity counts we care about.
      *
-     * @param int|null $id
+     * @param int $storeId
      * @return array
      */
-    public function getCounts($id = null);
+    public function getCounts($storeId);
 }

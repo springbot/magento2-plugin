@@ -16,17 +16,17 @@
         <observer name="springbot_main_catalog_product_save_after"
                   instance="Springbot\Main\Observer\ProductSaveAfterObserver"/>
     </event>
-    <event name="catalog_product_delete_after">
-        <observer name="springbot_main_catalog_product_delete_after"
-                  instance="Springbot\Main\Observer\ProductDeleteAfterObserver"/>
+    <event name="catalog_product_delete_before">
+        <observer name="springbot_main_catalog_product_delete_before"
+                  instance="Springbot\Main\Observer\ProductDeleteBeforeObserver"/>
     </event>
     <event name="catalog_category_save_after">
         <observer name="springbot_main_catalog_category_save_after"
                   instance="Springbot\Main\Observer\CategorySaveAfterObserver"/>
     </event>
-    <event name="catalog_category_delete_after">
-        <observer name="springbot_main_catalog_category_delete_after"
-                  instance="Springbot\Main\Observer\CategoryDeleteAfterObserver"/>
+    <event name="catalog_category_delete_before">
+        <observer name="springbot_main_catalog_category_delete_before"
+                  instance="Springbot\Main\Observer\CategoryDeleteBeforeObserver"/>
     </event>
     <event name="customer_save_after">
         <observer name="springbot_main_customer_save_after"

@@ -26,7 +26,7 @@ class Order extends \Magento\Sales\Model\Order implements OrderInterface
 
     public function getRedirectMongoIds()
     {
-        $ret = [];
+        $ret = array();
         foreach ($this->_getOrderRedirects() as $redirectItem) {
             $ret[] = $redirectItem->getData('redirect_string');
         }

@@ -19,5 +19,24 @@ interface OrderInterface extends \Magento\Sales\Api\Data\OrderInterface
      */
     public function getRedirectMongoIds();
 
+    /**
+     * @return string
+     */
+    public function getTotalPaid();
+
+    /**
+     * @return string
+     */
+    public function getShippingMethod();
+
+    /**
+     * @return string
+     */
+    public function getCouponCode();
+
+    /**
+     * @return int
+     */
+    public function getCustomerId();
 
 }

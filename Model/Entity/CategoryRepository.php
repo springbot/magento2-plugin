@@ -22,11 +22,16 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
     {
         $store = $this->getStoreModel()->load($storeId);
         $rootCategory = $this->getSpringbotModel()->load($store->getRootCategoryId());
-        $collection = $rootCategory->getChildrenCategories();
+        $collection = $this->getSpringbotModel()->getCollection();
+        $collection->addFieldToFilter('path', array('like' => $rootCategory->getPath() . '%'));
         $this->filterResults($collection);
-        $ret = [];
-        foreach ($collection->getAllIds() as $id) {
-            $ret[] = $this->getFromId($storeId, $id);
+        $ret = array();
+        $collection->load();
+        foreach ($collection as $item) {
+            $ret[] = $this->getFromId($storeId, $item->getId());
+        }
+        if ($ret) {
+            $ret[] = $rootCategory;
         }
         return $ret;
     }
