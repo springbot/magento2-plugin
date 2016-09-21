@@ -7,16 +7,16 @@ use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection as ProductAttributeSets;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\ResourceModel\Attribute\Collection as CustomerAttributeSets;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
-use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\Context;
 use Magento\Quote\Model\Quote;
 use Magento\Sales\Model\Order;
 use Magento\SalesRule\Model\Coupon;
 use Magento\SalesRule\Model\Rule as SalesRule;
 use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
+use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Registry;
 
-class Counts extends AbstractHelper
+class Counts extends AbstractModel
 {
     protected $_salesRules;
     protected $_catalogRules;
@@ -41,6 +41,7 @@ class Counts extends AbstractHelper
      */
     public function __construct(
         Context $context,
+        Registry $registry,
         SalesRule $salesRules,
         Quote $carts,
         Order $orders,
@@ -57,7 +58,7 @@ class Counts extends AbstractHelper
         $this->_categories = $categories;
         $this->_products = $products;
         $this->_attributeSets = $attributeSets;
-        parent::__construct($context);
+        parent::__construct($context, $registry);
     }
 
     /**
@@ -76,7 +77,6 @@ class Counts extends AbstractHelper
                 "orders" => self::getEntityCount($this->_orders, $storeId),
                 "customers" => self::getEntityCount($this->_customers, $storeId),
                 "categories" => self::getCategoryCount($storeId),
-                "attribute_sets" => $this->getAttriubteSetCount($storeId),
                 "products" => $this->getProductCount($storeId)
             ]
         ];
@@ -132,16 +132,5 @@ class Counts extends AbstractHelper
         return $collection->count();
     }
 
-    private function getAttriubteSetCount($storeId)
-    {
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
-        $attributeSet = $om->get('Magento\Catalog\Model\Product\AttributeSet\Options');
-        $collection = $attributeSet->getCollection();
-
-        $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
-        $store = $manager->getStore($storeId);
-        $collection->addWebsiteFilter($store->getWebsiteId());
-        return $collection->count();
-    }
 
 }

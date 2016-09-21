@@ -16,20 +16,18 @@ class CustomerHandler extends Handler
     const API_PATH = 'customers';
 
     /**
-     * @param $storeId
-     * @param $customerId
-     * @throws \Exception
+     * @param int $storeId
+     * @param int $customerId
      */
     public function handle($storeId, $customerId)
     {
-        $customer = $this->objectManager->get('Springbot\Main\Api\Entity\Data\CustomerInterface')->load($customerId);
-        /* @var \Springbot\Main\Model\Entity\Data\Customer $customer */
-        $data = $customer->toArray();
-        $data['billing_address'] = $customer->getBillingAddress();
-        $data['shipping_address'] = $customer->getShippingAddress();
-        $this->api->postEntities($storeId, self::API_PATH, [$data]);
+        $this->api->postEntities($storeId, self::API_PATH, ['id' => $customerId]);
     }
 
+    /**
+     * @param int $storeId
+     * @param int $customerId
+     */
     public function handleDelete($storeId, $customerId)
     {
         $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $customerId]);

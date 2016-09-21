@@ -22,10 +22,7 @@ class RuleHandler extends Handler
      */
     public function handle($storeId, $ruleId)
     {
-        $rule = $this->objectManager->get('Springbot\Main\Api\Entity\Data\RuleInterface')->load($ruleId);
-        /* @var \Springbot\Main\Model\Entity\Data\Rule $rule */
-        $data = $rule->toArray();
-        $this->api->postEntities($storeId, self::API_PATH, [$data]);
+        $this->api->postEntities($storeId, self::API_PATH, ['id' => $ruleId]);
     }
 
     /**

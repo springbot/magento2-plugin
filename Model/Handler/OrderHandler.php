@@ -15,19 +15,18 @@ class OrderHandler extends Handler
     const API_PATH = 'orders';
 
     /**
-     * @param $storeId
-     * @param $orderId
-     * @throws \Exception
+     * @param int $storeId
+     * @param int $orderId
      */
     public function handle($storeId, $orderId)
     {
-        $order = $this->objectManager->get('Springbot\Main\Api\Entity\Data\OrderInterface')->load($orderId);
-        /* @var \Springbot\Main\Model\Entity\Data\Order $order */
-        $data = $order->toArray();
-        $data['items'] = $order->getItems();
-        $this->api->postEntities($storeId, self::API_PATH, [$data]);
+        $this->api->postEntities($storeId, self::API_PATH, ['id' => $orderId]);
     }
 
+    /**
+     * @param int $storeId
+     * @param int $orderId
+     */
     public function handleDelete($storeId, $orderId)
     {
         $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $orderId]);

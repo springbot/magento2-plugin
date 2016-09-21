@@ -3,25 +3,25 @@
 namespace Springbot\Main\Model\Handler;
 
 use Magento\Sales\Model\Order as MagentoOrder;
+use Springbot\Main\Model\Handler;
 use Magento\Framework\App\ObjectManager;
 use Magento\Catalog\Model\Category as MagentoCategory;
-use Springbot\Main\Model\Handler;
 
 /**
- * Class InventoryHandler
+ * Class CouponHandler
  * @package Springbot\Main\Model\Handler
  */
-class InventoryHandler extends Handler
+class CouponHandler extends Handler
 {
-    const API_PATH = 'inventories';
+    const API_PATH = 'coupons';
 
     /**
      * @param int $storeId
-     * @param int $inventoryId
+     * @param int $couponId
      */
-    public function handle($storeId, $inventoryId)
+    public function handle($storeId, $couponId)
     {
-        $this->api->postEntities($storeId, self::API_PATH, ['id' => $inventoryId]);
+        $this->api->postEntities($storeId, self::API_PATH, ['id' => $couponId]);
     }
 
     /**

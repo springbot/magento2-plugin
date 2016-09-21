@@ -80,7 +80,7 @@ class Api extends AbstractModel
         $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($storeId);
         $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
-            $body = json_encode([$apiPath => $entitiesData]);
+            $body = json_encode($entitiesData);
             $url = $this->getWebhooksUrl("{$springbotStoreId}/{$apiPath}");
             $this->post($url, $body, $this->_getAuthHeaders($springbotApiToken));
         }
