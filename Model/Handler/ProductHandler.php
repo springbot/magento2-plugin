@@ -26,6 +26,7 @@ class ProductHandler extends Handler
         $data['url_id_path'] = $product->getUrlIdPath();
         $data['image_url'] = $product->getImageUrl();
         $data['parent_skus'] = $product->getParentSkus();
+        $data['custom_attributes'] = $product->getCustomAttributes();
         $this->api->postEntities($storeId, self::API_PATH, [$data]);
     }
 

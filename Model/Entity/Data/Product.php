@@ -34,6 +34,11 @@ class Product extends \Magento\Catalog\Model\Product implements ProductInterface
         return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->getImage();
     }
 
+    public function getCost()
+    {
+        return 0;
+    }
+
     public function getParentSkus()
     {
         $om = ObjectManager::getInstance();
@@ -47,5 +52,6 @@ class Product extends \Magento\Catalog\Model\Product implements ProductInterface
         }
         return $skus;
     }
+
 
 }
