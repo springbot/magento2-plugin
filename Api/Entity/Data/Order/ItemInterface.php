@@ -85,9 +85,9 @@ interface ItemInterface
     public function getAttributeSetId();
 
     /**
-     * @return  \Springbot\Main\Api\Entity\Data\Order\ItemAttributeInterface[]
+     * @return \Springbot\Main\Api\Entity\Data\Order\ItemAttributeInterface[]
      */
-    public function getAttributes();
+    public function getProductAttributes();
 
 
 }

@@ -2,6 +2,8 @@
 
 namespace Springbot\Main\Model\Entity\Data;
 
+use Magento\Sales\Model\Order as MagentoOrder;
+
 /**
  *  Guest
  *
@@ -10,6 +12,6 @@ namespace Springbot\Main\Model\Entity\Data;
  *
  * @package Springbot\Main\Api\Data
  */
-class Guest extends \Magento\Sales\Model\Order
+class Guest extends MagentoOrder
 {
 }

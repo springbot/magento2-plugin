@@ -8,17 +8,23 @@ use Springbot\Main\Model\Entity\Data\Order\Item;
 use Springbot\Main\Model\Entity\Data\Order\ItemAttribute;
 use Springbot\Main\Model\SpringbotOrderRedirect;
 use Magento\Framework\Data\Collection;
+use Magento\Sales\Model\Order as MagentoOrder;
 
 /**
  * Class Order
  * @package Springbot\Main\Model\Entity\Data
  */
-class Order extends \Magento\Sales\Model\Order implements OrderInterface
+class Order extends MagentoOrder implements OrderInterface
 {
+
+    public function getShipments()
+    {
+        return [];
+    }
 
     public function getRedirectMongoId()
     {
-        $orderRedirect = $this->_getOrderRedirects()->getFirstItem();
+        $orderRedirect = $this->getOrderRedirects()->getFirstItem();
         if (!$orderRedirect->isEmpty()) {
             return $orderRedirect->getData('redirect_string');
         } else {
@@ -29,7 +35,7 @@ class Order extends \Magento\Sales\Model\Order implements OrderInterface
     public function getRedirectMongoIds()
     {
         $ret = array();
-        foreach ($this->_getOrderRedirects() as $redirectItem) {
+        foreach ($this->getOrderRedirects() as $redirectItem) {
             $ret[] = $redirectItem->getData('redirect_string');
         }
         return $ret;
@@ -40,7 +46,7 @@ class Order extends \Magento\Sales\Model\Order implements OrderInterface
      */
     public function getItems()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $objectManager = ObjectManager::getInstance();
         $items = array();
         foreach (parent::getItems() as $item) {
 
@@ -54,10 +60,15 @@ class Order extends \Magento\Sales\Model\Order implements OrderInterface
             $springbotItem->setImageUrl($product->getImageUrl());
             $springbotItem->setCategoryIds($product->getCategoryIds());
             $springbotItem->setLandingUrl($product->getDefaultUrl());
-            $springbotItem->setAttributes([
-                new ItemAttribute('foo', 'bar')
-            ]);
 
+            $productAttributes = [];
+            foreach ($product->getCustomAttributes() as $customAttribute) {
+                $productAttributes[] = new ItemAttribute(
+                    $customAttribute->getAttributeCode(),
+                    $customAttribute->getValue()
+                );
+            }
+            $springbotItem->setProductAttributes($productAttributes);
             $springbotItem->setProductType($item->getProductType());
             $springbotItem->setProductId($item->getProductId());
             $springbotItem->setName($item->getName());
@@ -79,9 +90,9 @@ class Order extends \Magento\Sales\Model\Order implements OrderInterface
     /**
      * @return Collection
      */
-    private function _getOrderRedirects()
+    private function getOrderRedirects()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $objectManager = ObjectManager::getInstance();
         $orderRedirect = $objectManager->get('Springbot\Main\Model\SpringbotOrderRedirect');
         /* @var SpringbotOrderRedirect $orderRedirect */
         return $orderRedirect->getCollection()->addFieldToFilter('order_id', $this->getId())

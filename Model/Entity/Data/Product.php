@@ -36,7 +36,7 @@ class Product extends \Magento\Catalog\Model\Product implements ProductInterface
 
     public function getCost()
     {
-        return 0;
+        return parent::getCost();
     }
 
     public function getParentSkus()

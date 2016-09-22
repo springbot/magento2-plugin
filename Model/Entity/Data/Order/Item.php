@@ -4,12 +4,14 @@ namespace Springbot\Main\Model\Entity\Data\Order;
 
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Model\AbstractModel;
+use Springbot\Main\Api\Entity\Data\Order\ItemAttributeInterface;
+use Springbot\Main\Api\Entity\Data\Order\ItemInterface;
 
 /**
  * Class Item
  * @package Springbot\Main\Model\Entity\Data\Order
  */
-class Item extends AbstractModel
+class Item implements ItemInterface
 {
 
     private $sku;
@@ -27,7 +29,7 @@ class Item extends AbstractModel
     private $rootCategoryIds;
     private $allCategoryIds;
     private $attributeSetId;
-    private $attributes;
+    private $productAttributes;
 
     /**
      * @return mixed
@@ -270,19 +272,19 @@ class Item extends AbstractModel
     }
 
     /**
-     * @return ItemAttribute[]
+     * @return ItemAttributeInterface[]
      */
-    public function getAttributes()
+    public function getProductAttributes()
     {
-        return $this->attributes;
+        return $this->productAttributes;
     }
 
     /**
-     * @param ItemAttribute[] $attributes
+     * @param ItemAttributeInterface[] $productAttributes
      */
-    public function setAttributes($attributes)
+    public function setProductAttributes($productAttributes)
     {
-        $this->attributes = $attributes;
+        $this->productAttributes = $productAttributes;
     }
 
 }

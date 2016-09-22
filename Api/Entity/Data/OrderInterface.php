@@ -11,7 +11,7 @@ interface OrderInterface
     /**
      * @return int
      */
-    public function getPurchaseId();
+    public function getIncrementId();
 
     /**
      * @return int
@@ -67,7 +67,7 @@ interface OrderInterface
     /**
      * @return bool
      */
-    public function getIsGuest();
+    public function getCustomerIsGuest();
 
     /**
      * @return string
