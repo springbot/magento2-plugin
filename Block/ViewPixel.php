@@ -23,7 +23,6 @@ class ViewPixel extends AbstractProduct
     protected $urlInterface;
 
     /**
-     * @param ScopeConfigInterface $scopeConfig
      * @param Context $context
      * @param SpringbotHelper $springbotHelper
      */
@@ -73,6 +72,6 @@ class ViewPixel extends AbstractProduct
      */
     public function getStoreGuid()
     {
-        return strtolower($this->springbotHelper->getStoreGuid());
+        return str_replace('-', '', strtolower($this->springbotHelper->getStoreGuid()));
     }
 }

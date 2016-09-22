@@ -10,6 +10,26 @@ interface ProductInterface extends \Magento\Catalog\Api\Data\ProductInterface
 {
 
     /**
+     * @return array
+     */
+    public function getCategoryIds();
+
+    /**
+     * @return int
+     */
+    public function getEntityId();
+
+    /**
+     * @return string
+     */
+    public function getSpecialPrice();
+
+    /**
+     * @return string
+     */
+    public function getCost();
+
+    /**
      * @return string
      */
     public function getDefaultUrl();

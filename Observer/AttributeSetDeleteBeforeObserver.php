@@ -10,10 +10,11 @@ use Magento\Catalog\Model\Product\AttributeSet;
 use Magento\Catalog\Model\Entity\Attribute as MagentoAttribute;
 use Springbot\Main\Model\Handler\AttributeSetHandler;
 
-class AttributeDeleteAfterObserver implements ObserverInterface
+class AttributeSetDeleteBeforeObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
+    private $_storeManager;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -21,10 +22,15 @@ class AttributeDeleteAfterObserver implements ObserverInterface
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
      */
-    public function __construct(LoggerInterface $loggerInterface, Queue $queue)
+    public function __construct(
+        LoggerInterface $loggerInterface,
+        Queue $queue,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
+    )
     {
         $this->_logger = $loggerInterface;
         $this->_queue = $queue;
+        $this->_storeManager = $storeManager;
     }
 
     /**
@@ -36,12 +42,16 @@ class AttributeDeleteAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $attribute = $observer->getEvent()->getAttribute();
+            $attributeSet = $observer->getEvent()->getObject();
             /* @var MagentoAttribute $attribute */
-            $this->_queue->scheduleJob(AttributeSetHandler::class,
-                'handle',
-                [1, $attribute->getAttributeSetId()]);  // TODO: Figure out how to determine store_id
-            $this->_logger->debug("Created/Updated Attribute ID: " . $attribute->getAttributeId());
+
+            foreach ($this->_storeManager->getStores() as $store) {
+                $this->_queue->scheduleJob(AttributeSetHandler::class,
+                    'handleDelete',
+                    [$store->getId(), $attributeSet->getAttributeSetId()]);
+            }
+
+            $this->_logger->debug("Deleted attribute set: " . $attributeSet->getId());
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());
         }

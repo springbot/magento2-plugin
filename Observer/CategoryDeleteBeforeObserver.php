@@ -9,7 +9,7 @@ use Magento\Framework\Event\Observer;
 use Magento\Catalog\Model\Category as MagentoCategory;
 use Springbot\Main\Model\Handler\CategoryHandler;
 
-class CategoryDeleteAfterObserver implements ObserverInterface
+class CategoryDeleteBeforeObserver implements ObserverInterface
 {
     private $_logger;
     private $_queue;
@@ -38,8 +38,9 @@ class CategoryDeleteAfterObserver implements ObserverInterface
             $category = $observer->getEvent()->getCategory();
             /* @var MagentoCategory $category */
             foreach ($category->getStoreIds() as $storeId) {
-                $this->_queue->scheduleJob(CategoryHandler::class, 'handle', [$storeId, $category->getId()]);
-                $this->_logger->debug("Created/Updated Category ID: " . $category->getEntityId());
+
+                $this->_queue->scheduleJob(CategoryHandler::class, 'handleDelete', [$storeId, $category->getId()]);
+                $this->_logger->debug("Deleted Category ID: " . $category->getEntityId());
             }
         } catch (\Exception $e) {
             $this->_logger->debug($e->getMessage());

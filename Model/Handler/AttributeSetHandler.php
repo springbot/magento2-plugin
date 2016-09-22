@@ -18,22 +18,17 @@ class AttributeSetHandler extends Handler
     const API_PATH = 'attribute-sets';
 
     /**
-     * @param $storeId
-     * @param $attributeSetId
-     * @throws \Exception
+     * @param int $storeId
+     * @param int $attributeSetId
      */
     public function handle($storeId, $attributeSetId)
     {
-        $attributeSet = $this->objectManager->get('Springbot\Main\Api\Entity\Data\AttributeSetInterface')->load($attributeSetId);
-        /* @var \Springbot\Main\Model\Entity\Data\AttributeSet $attributeSet */
-        $data = $attributeSet->toArray();
-        $data['attributes'] = $attributeSet->getAttributes();
-        $this->api->postEntities($storeId, self::API_PATH, [$data]);
+        $this->api->postEntities($storeId, self::API_PATH, ['id' => $attributeSetId]);
     }
 
     /**
-     * @param $storeId
-     * @param $attributeSetId
+     * @param int $storeId
+     * @param int $attributeSetId
      */
     public function handleDelete($storeId, $attributeSetId)
     {

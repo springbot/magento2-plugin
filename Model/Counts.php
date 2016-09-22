@@ -5,18 +5,18 @@ namespace Springbot\Main\Model;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection as ProductAttributeSets;
-use Magento\CatalogRule\Model\Rule as CatalogRule;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\ResourceModel\Attribute\Collection as CustomerAttributeSets;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
-use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\Context;
 use Magento\Quote\Model\Quote;
 use Magento\Sales\Model\Order;
 use Magento\SalesRule\Model\Coupon;
 use Magento\SalesRule\Model\Rule as SalesRule;
+use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
+use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Registry;
 
-class Counts extends AbstractHelper
+class Counts extends AbstractModel
 {
     protected $_salesRules;
     protected $_catalogRules;
@@ -24,8 +24,7 @@ class Counts extends AbstractHelper
     protected $_orders;
     protected $_customers;
     protected $_categories;
-    protected $_customerAttributeSets;
-    protected $_productAttributeSets;
+    protected $_attributeSets;
     protected $_products;
 
     /**
@@ -33,76 +32,52 @@ class Counts extends AbstractHelper
      *
      * @param Context $context
      * @param SalesRule $salesRules
-     * @param CatalogRule $catalogRules
      * @param Quote $carts
      * @param Order $orders
      * @param Customer $customers
      * @param Category $categories
      * @param Product $products
-     * @param CustomerAttributeSets $customerAttributeSets
-     * @param ProductAttributeSets $productAttributeSets
+     * @param AttributeSet $attributeSets
      */
     public function __construct(
         Context $context,
+        Registry $registry,
         SalesRule $salesRules,
-        CatalogRule $catalogRules,
         Quote $carts,
         Order $orders,
         Customer $customers,
         Category $categories,
         Product $products,
-        ProductAttributeSets $productAttributeSets,
-        CustomerAttributeSets $customerAttributeSets
-    ) {
+        AttributeSet $attributeSets
+    )
+    {
         $this->_salesRules = $salesRules;
-        $this->_catalogRules = $catalogRules;
         $this->_carts = $carts;
         $this->_orders = $orders;
         $this->_customers = $customers;
         $this->_categories = $categories;
         $this->_products = $products;
-        $this->_customerAttributeSets = $customerAttributeSets;
-        $this->_productAttributeSets = $productAttributeSets;
-        parent::__construct($context);
+        $this->_attributeSets = $attributeSets;
+        parent::__construct($context, $registry);
     }
 
     /**
      * Get all store counts we care about.
      *
-     * @param int|null $id
-     *
+     * @param int $storeId
      * @return array
      */
-    public function getCounts($id = null)
+    public function getCounts($storeId)
     {
         // Construct the array to be displayed via the REST endpoint
         $array = [
             "counts" => [
-                "rules" => [
-                    "sales_rules" => self::getEntityCount($this->_salesRules),
-                    "catalog_rules" => self::getEntityCount(
-                        $this->_catalogRules
-                    )
-                ],
-                "carts" => self::getEntityCount($this->_carts),
-                "orders" => self::getEntityCount($this->_orders),
-                "customers" => self::getEntityCount($this->_customers),
-                "categories" => self::getEntityCount($this->_categories - 1),
-                "attribute_sets" => [
-                    "customer_attribute_sets" => self::getAttributeCount(
-                        'customer'
-                    ),
-                    "product_attribute_sets" => self::getAttributeCount(
-                        'products'
-                    )
-                ],
-                "products" => [
-                    "simple" => self::getProductCount('simple'),
-                    "configurable" => self::getProductCount('configurable'),
-                    "bundled" => self::getProductCount('bundled'),
-                    "grouped" => self::getProductCount('grouped'),
-                    "virtual" => self::getProductCount('virtual')
-                ]
+                "sales_rules" => self::getRuleCount($storeId),
+                "carts" => self::getEntityCount($this->_carts, $storeId),
+                "orders" => self::getEntityCount($this->_orders, $storeId),
+                "customers" => self::getEntityCount($this->_customers, $storeId),
+                "categories" => self::getCategoryCount($storeId),
+                "products" => $this->getProductCount($storeId)
             ]
         ];
 
@@ -114,51 +89,48 @@ class Counts extends AbstractHelper
      * Get the total count for a particular entity type
      *
      * @param AbstractModel $entity
-     *
+     * @param int $storeId
      * @return int
      */
-    protected function getEntityCount($entity)
+    private function getEntityCount($entity, $storeId)
     {
-        // Initialize empty array
-        $array = [];
-        // Get sales rule collection
         $collection = $entity->getCollection();
-        // Iterate through the collection and add it to the array
-        foreach ($collection as $item) {
-            $array[] = $item;
-        }
+        $collection->addFieldToFilter('store_id', $storeId);
+
         // Return sales array count
-        return count($array);
+        return $collection->count();
     }
 
-    protected function getAttributeCount($entityType)
+    private function getCategoryCount($storeId)
     {
-        if ($entityType === 'customer') {
-            $attributes = $this->_customerAttributeSets->getItems();
-            return count($attributes);
-        } else {
-            if ($entityType === 'products') {
-                $attributes = $this->_productAttributeSets->getItems();
-                return count($attributes);
-            }
-        }
-
-        return false;
+        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        $storeModel = $om->create('Magento\Store\Model\Store');
+        $store = $storeModel->load($storeId);
+        $rootCategory = $this->_categories->load($store->getRootCategoryId());
+        $collection = $this->_categories->getCollection();
+        $collection->addFieldToFilter('path', array('like' => $rootCategory->getPath() . '%'));
+        return $collection->count();
     }
 
-    protected function getProductCount($typeId)
+    private function getRuleCount($storeId)
     {
-        // Initialize empty array
-        $array = [];
-        // Get Product collection
+        $collection = $this->_salesRules->getCollection();
+        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
+        $store = $manager->getStore($storeId);
+        $collection->addWebsiteFilter($store->getWebsiteId());
+        return $collection->count();
+    }
+
+    private function getProductCount($storeId)
+    {
         $collection = $this->_products->getCollection();
-        // Filter by type
-        $collection->addAttributeToFilter('type_id', $typeId);
-        // Iterate through the collection and add it to the array
-        foreach ($collection as $product) {
-            $array[] = $product;
-        }
-        // Return Product array count
-        return count($array);
+        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
+        $store = $manager->getStore($storeId);
+        $collection->addWebsiteFilter($store->getWebsiteId());
+        return $collection->count();
     }
+
+
 }

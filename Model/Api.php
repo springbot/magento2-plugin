@@ -15,9 +15,8 @@ use Springbot\Main\Helper\Data;
  */
 class Api extends AbstractModel
 {
-    const ETL_API_PATH = 'api/v1';
-    const ETL_WEBHOOKS_PATH = 'webhooks/v1';
-    const STORE_REGISTRATION_PATH = 'create';
+    const ETL_WEBHOOKS_PATH = 'magento2/webhooks/v1';
+    const STORE_REGISTRATION_PATH = 'magento2/create';
 
     const SUCCESSFUL_RESPONSE = 'ok';
     const TOTAL_POST_FAIL_LIMIT = 32;
@@ -81,7 +80,7 @@ class Api extends AbstractModel
         $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($storeId);
         $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
-            $body = json_encode([$apiPath => $entitiesData]);
+            $body = json_encode($entitiesData);
             $url = $this->getWebhooksUrl("{$springbotStoreId}/{$apiPath}");
             $this->post($url, $body, $this->_getAuthHeaders($springbotApiToken));
         }

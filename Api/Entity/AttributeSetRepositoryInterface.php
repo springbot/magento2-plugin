@@ -18,8 +18,8 @@ interface AttributeSetRepositoryInterface
 
     /**
      * @param int $storeId
-     * @param int $categoryId
+     * @param int $attributeSetId
      * @return \Springbot\Main\Api\Entity\Data\AttributeSetInterface
      */
-    public function getFromId($storeId, $categoryId);
+    public function getFromId($storeId, $attributeSetId);
 }

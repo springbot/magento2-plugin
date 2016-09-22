@@ -15,19 +15,18 @@ class CartHandler extends Handler
     const API_PATH = 'carts';
 
     /**
-     * @param $storeId
-     * @param $cartId
-     * @throws \Exception
+     * @param int $storeId
+     * @param int $cartId
      */
     public function handle($storeId, $cartId)
     {
-        $cart = $this->objectManager->get('Springbot\Main\Api\Entity\Data\CartInterface')->load($cartId);
-        /* @var \Springbot\Main\Model\Entity\Data\Cart $cart */
-        $data = $cart->toArray();
-        $data['items'] = $cart->getItems();
-        $this->api->postEntities($storeId, self::API_PATH, [$data]);
+        $this->api->postEntities($storeId, self::API_PATH, ['id' => $cartId]);
     }
 
+    /**
+     * @param int $storeId
+     * @param int $cartId
+     */
     public function handleDelete($storeId, $cartId)
     {
         $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $cartId]);

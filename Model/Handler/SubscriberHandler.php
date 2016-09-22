@@ -16,21 +16,17 @@ class SubscriberHandler extends Handler
     const API_PATH = 'subscribers';
 
     /**
-     * @param $storeId
-     * @param $subscriberId
-     * @throws \Exception
+     * @param int $storeId
+     * @param int $subscriberId
      */
     public function handle($storeId, $subscriberId)
     {
-        $rule = $this->objectManager->get('Springbot\Main\Api\Entity\Data\SubscriberInterface')->load($subscriberId);
-        /* @var \Springbot\Main\Model\Entity\Data\Rule $rule */
-        $data = $rule->toArray();
-        $this->api->postEntities($storeId, self::API_PATH, [$data]);
+        $this->api->postEntities($storeId, self::API_PATH, ['id' => $subscriberId]);
     }
 
     /**
-     * @param $storeId
-     * @param $subscriberId
+     * @param int $storeId
+     * @param int $subscriberId
      */
     public function handleDelete($storeId, $subscriberId)
     {

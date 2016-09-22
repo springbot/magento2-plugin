@@ -16,19 +16,19 @@ class ProductHandler extends Handler
 {
     const API_PATH = 'products';
 
+    /**
+     * @param int $storeId
+     * @param int $productId
+     */
     public function handle($storeId, $productId)
     {
-        $product = $this->objectManager->get('Springbot\Main\Api\Entity\Data\ProductInterface')->load($productId);
-        /* @var \Springbot\Main\Model\Entity\Data\Product $product */
-        $data = $product->toArray();
-        $data['default_url'] = $product->getDefaultUrl();
-        $data['url_in_store'] = $product->getUrlInStore();
-        $data['url_id_path'] = $product->getUrlIdPath();
-        $data['image_url'] = $product->getImageUrl();
-        $data['parent_skus'] = $product->getParentSkus();
-        $this->api->postEntities($storeId, self::API_PATH, [$data]);
+        $this->api->postEntities($storeId, self::API_PATH, ['id' => $productId]);
     }
 
+    /**
+     * @param int $storeId
+     * @param int $productId
+     */
     public function handleDelete($storeId, $productId)
     {
         $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $productId]);

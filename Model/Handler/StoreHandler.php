@@ -16,16 +16,21 @@ class StoreHandler extends Handler
 {
     const API_PATH = 'stores';
 
+    /**
+     * @param int $storeId
+     * @param int $id
+     */
     public function handle($storeId, $id)
     {
-        $store = $this->objectManager->get('Magento\Store\Model\Store')->load($storeId);
-        /* @var \Magento\Store\Model\Store $store */
-        $data = $store->toArray();
-        $this->api->postEntities($storeId, self::API_PATH, [$data]);
+        $this->api->postEntities($storeId, self::API_PATH, ['id' => $id]);
     }
 
+    /**
+     * @param int $storeId
+     * @param int $id
+     */
     public function handleDelete($storeId, $id)
     {
-        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $storeId]);
+        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $id]);
     }
 }

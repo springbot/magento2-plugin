@@ -13,8 +13,10 @@
     </type>
 
     <preference for="Springbot\Main\Api\ConfigInterface" type="Springbot\Main\Model\Config"/>
+    <preference for="Springbot\Main\Api\ConfigItemInterface" type="Springbot\Main\Model\ConfigItem"/>
     <preference for="Springbot\Main\Api\CountsInterface" type="Springbot\Main\Model\Counts"/>
     <preference for="Springbot\Main\Api\ModulesInterface" type="Springbot\Main\Model\Modules"/>
+    <preference for="Springbot\Main\Api\RedirectsInterface" type="Springbot\Main\Model\Redirects"/>
 
     <preference for="Springbot\Main\Api\Entity\AttributeSetRepositoryInterface"
                 type="Springbot\Main\Model\Entity\AttributeSetRepository"/>
