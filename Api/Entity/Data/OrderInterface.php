@@ -9,19 +9,44 @@ namespace Springbot\Main\Api\Entity\Data;
 interface OrderInterface
 {
     /**
+     * @return int
+     */
+    public function getPurchaseId();
+
+    /**
+     * @return int
+     */
+    public function getEntityId();
+
+    /**
      * @return string
      */
     public function getCustomerEmail();
 
     /**
+     * @return int
+     */
+    public function getQuoteId();
+
+    /**
      * @return string
      */
-    public function getGrandTotal();
+    public function getRedirectMongoId();
+
+    /**
+     * @return array
+     */
+    public function getRedirectMongoIds();
 
     /**
      * @return int
      */
-    public function getQuoteId();
+    public function getCustomerId();
+
+    /**
+     * @return string
+     */
+    public function getGrandTotal();
 
     /**
      * @return string
@@ -38,6 +63,12 @@ interface OrderInterface
      */
     public function getState();
 
+
+    /**
+     * @return bool
+     */
+    public function getIsGuest();
+
     /**
      * @return string
      */
@@ -49,21 +80,6 @@ interface OrderInterface
     public function getDiscountAmount();
 
     /**
-     * @return int
-     */
-    public function getEntityId();
-
-    /**
-     * @return string
-     */
-    public function getRedirectMongoId();
-
-    /**
-     * @return array
-     */
-    public function getRedirectMongoIds();
-
-    /**
      * @return string
      */
     public function getTotalPaid();
@@ -73,6 +89,17 @@ interface OrderInterface
      */
     public function getShippingMethod();
 
+    /**
+     * @return string
+     */
+    public function getShippingAmount();
+
+    /**
+     * Get all shipments
+     *
+     * @return \Magento\Sales\Api\Data\ShipmentInterface|null
+     */
+    public function getShipments();
 
     /**
      * Gets order payment
@@ -85,11 +112,6 @@ interface OrderInterface
      * @return string
      */
     public function getCouponCode();
-
-    /**
-     * @return int
-     */
-    public function getCustomerId();
 
     /**
      * @return string

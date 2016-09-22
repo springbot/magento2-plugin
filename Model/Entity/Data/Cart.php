@@ -26,7 +26,7 @@ class Cart extends Quote implements CartInterface
             $springbotItem->setImageUrl($product->getImageUrl());
             $springbotItem->setLandingUrl($product->getDefaultUrl());
             $springbotItem->setProductType($item->getProductType());
-            $springbotItem->setQtyOrdered($item->getQtyOrdered());
+            $springbotItem->setQtyOrdered($item->getQty());
             $items[] = $springbotItem;
         }
         return $items;
@@ -34,51 +34,47 @@ class Cart extends Quote implements CartInterface
 
     public function getCustomerId()
     {
-        return 9999;
+        return parent::getCustomerId();
     }
-
 
     public function getCustomerPrefix()
     {
-        return 'MRRR';
+        return parent::getCustomerPrefix();
     }
-
 
     public function getCustomerLastname()
     {
-        return 'MRRR';
+        return parent::getCustomerLastname();
     }
 
     public function getCustomerMiddlename()
     {
-        return 'MRRR';
+        return parent::getCustomerMiddlename();
     }
 
     public function getCustomerFirstname()
     {
-        return 'MRRR';
+        return parent::getCustomerFirstname();
     }
 
     public function getCustomerSuffix()
     {
-        return 'The 3rd';
+        return parent::getCustomerSuffix();
     }
 
     public function getRemoteIp()
     {
-        return '127.0.0.1';
+        return parent::getRemoteIp();
     }
 
     public function getCartUserAgent()
     {
-        return 'XXX';
+        return null;
     }
-
 
     public function getCustomerEmail()
     {
-        return 'x' . parent::getCustomerEmail();
+        return parent::getCustomerEmail();
     }
-
 
 }
