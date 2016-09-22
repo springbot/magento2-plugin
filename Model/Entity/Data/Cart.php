@@ -2,6 +2,7 @@
 
 namespace Springbot\Main\Model\Entity\Data;
 
+use Springbot\Main\Api\Entity\Data\CartInterface;
 use Springbot\Main\Model\Entity\Data\Cart\Item;
 use Magento\Framework\App\ObjectManager;
 use Magento\Quote\Model\Quote;
@@ -9,9 +10,8 @@ use Magento\Quote\Model\Quote;
  * Class Cart
  * @package Springbot\Main\Model\Entity\Data
  */
-class Cart extends Quote
+class Cart extends Quote implements CartInterface
 {
-
 
     public function getItems()
     {
@@ -27,11 +27,58 @@ class Cart extends Quote
             $springbotItem->setLandingUrl($product->getDefaultUrl());
             $springbotItem->setProductType($item->getProductType());
             $springbotItem->setQtyOrdered($item->getQtyOrdered());
-
             $items[] = $springbotItem;
         }
         return $items;
-
     }
+
+    public function getCustomerId()
+    {
+        return 9999;
+    }
+
+
+    public function getCustomerPrefix()
+    {
+        return 'MRRR';
+    }
+
+
+    public function getCustomerLastname()
+    {
+        return 'MRRR';
+    }
+
+    public function getCustomerMiddlename()
+    {
+        return 'MRRR';
+    }
+
+    public function getCustomerFirstname()
+    {
+        return 'MRRR';
+    }
+
+    public function getCustomerSuffix()
+    {
+        return 'The 3rd';
+    }
+
+    public function getRemoteIp()
+    {
+        return '127.0.0.1';
+    }
+
+    public function getCartUserAgent()
+    {
+        return 'XXX';
+    }
+
+
+    public function getCustomerEmail()
+    {
+        return 'x' . parent::getCustomerEmail();
+    }
+
 
 }

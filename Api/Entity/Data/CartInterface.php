@@ -67,4 +67,25 @@ interface CartInterface
      * @return string
      */
     public function getCartUserAgent();
+
+    /**
+     * @return bool
+     */
+    public function getCustomerIsGuest();
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt();
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAt();
+
+    /**
+     * @return string
+     */
+    public function getCustomerEmail();
+
 }
