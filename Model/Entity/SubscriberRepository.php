@@ -7,12 +7,16 @@ use Springbot\Main\Api\Entity\SubscriberRepositoryInterface;
 use Magento\Framework\App\Request\Http as HttpRequest;
 
 /**
- *  SubscriberRepository
+ * SubscriberRepository
  * @package Springbot\Main\Api
  */
 class SubscriberRepository extends AbstractRepository implements SubscriberRepositoryInterface
 {
 
+    /**
+     * @param int $storeId
+     * @return \Springbot\Main\Api\Entity\Data\SubscriberInterface[]
+     */
     public function getList($storeId)
     {
         $collection = $this->getSpringbotModel()->getCollection();
@@ -25,7 +29,7 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
     /**
      * @param int $storeId
      * @param int $subscriberId
-     * @return \Springbot\Main\Model\Entity\Data\Subscriber
+     * @return \Springbot\Main\Api\Entity\Data\SubscriberInterface
      */
     public function getFromId($storeId, $subscriberId)
     {

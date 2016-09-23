@@ -6,11 +6,27 @@ namespace Springbot\Main\Api\Entity\Data;
  * Interface AttributeSetInterface
  * @package Springbot\Main\Api\Entity\Data
  */
-interface AttributeSetInterface extends \Magento\Eav\Api\Data\AttributeSetInterface
+interface AttributeSetInterface
 {
 
     /**
-     * @return \Magento\Eav\Model\Entity\Attribute[]
+     * @return int
+     */
+    public function getAttributeSetId();
+
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @return string
+     */
+    public function getType();
+
+    /**
+     * @return \Springbot\Main\Api\Entity\Data\AttributeSet\AttributeSetAttributeInterface[]
      */
     public function getAttributes();
+
 }

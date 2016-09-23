@@ -6,10 +6,46 @@ namespace Springbot\Main\Api\Entity\Data;
  * Interface GuestInterface
  *
  * Springbot "guests" are customers for which there is no customer record. Since they have no customer record, we
- * determine guests from the order objects.
+ * determine guests from order objects.
  *
  * @package Springbot\Main\Api\Entity\Data
  */
-interface GuestInterface extends \Magento\Sales\Api\Data\OrderInterface
+interface GuestInterface
 {
+
+    /**
+     * @return int
+     */
+    public function getGuestId();
+
+    /**
+     * @return int
+     */
+    public function getOrderId();
+
+    /**
+     * @return string
+     */
+    public function getFirstname();
+
+    /**
+     * @return string
+     */
+    public function getLastname();
+
+    /**
+     * @return string
+     */
+    public function getEmail();
+
+    /**
+     * @return \Springbot\Main\Api\Entity\Data\Customer\AddressInterface
+     */
+    public function getBillingAddress();
+
+    /**
+     * @return \Springbot\Main\Api\Entity\Data\Customer\AddressInterface
+     */
+    public function getShippingAddress();
+
 }

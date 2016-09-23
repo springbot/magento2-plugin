@@ -9,8 +9,6 @@ namespace Springbot\Main\Api\Entity;
 interface CartRepositoryInterface
 {
     /**
-     * Get store configuration
-     *
      * @param int $storeId
      * @return \Springbot\Main\Api\Entity\Data\CartInterface[]
      */
@@ -23,10 +21,4 @@ interface CartRepositoryInterface
      */
     public function getFromId($storeId, $cartId);
 
-    /**
-     * @param int $cartId
-     * @param \Magento\Quote\Api\Data\AddressInterface $address
-     * @return \Springbot\Main\Api\Entity\Data\CartInterface
-     */
-    public function assignShipping($cartId, \Magento\Quote\Api\Data\ShippingAssignmentInterface $shippingAssignments);
 }

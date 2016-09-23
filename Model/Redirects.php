@@ -3,6 +3,7 @@
 namespace Springbot\Main\Model;
 
 use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\App\ObjectManager;
 
 /**
  * Class Redirects
@@ -16,7 +17,7 @@ class Redirects extends AbstractModel
      */
     public function getRedirects()
     {
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        $om = ObjectManager::getInstance();
         $urlRewrite = $om->get('Magento\UrlRewrite\Model\UrlRewrite');
         $collection = $urlRewrite->getCollection();
         $ret = $collection->toArray();

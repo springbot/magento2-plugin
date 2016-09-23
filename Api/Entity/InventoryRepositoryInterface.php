@@ -9,8 +9,6 @@ namespace Springbot\Main\Api\Entity;
 interface InventoryRepositoryInterface
 {
     /**
-     * Get store configuration
-     *
      * @param int $storeId
      * @return \Springbot\Main\Api\Entity\Data\InventoryInterface[]
      */
