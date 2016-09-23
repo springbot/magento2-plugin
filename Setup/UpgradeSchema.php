@@ -16,7 +16,12 @@ class UpgradeSchema implements UpgradeSchemaInterface
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
-        $this->addTrackableTable($setup);
+
+        if (version_compare($context->getVersion(), '1.2.0', '<')) {
+            $this->addTrackableTable($setup);
+            $this->createMarketplacesRemoteOrderTable($setup);
+        }
+
         $setup->endSetup();
     }
 
@@ -69,4 +74,53 @@ class UpgradeSchema implements UpgradeSchemaInterface
         $setup->getConnection()->createTable($table);
     }
 
+
+    protected function createMarketplacesRemoteOrderTable(SchemaSetupInterface $setup)
+    {
+        $tableName = 'springbot_marketplaces_remote_order';
+        // Check if the table already exists
+        if ($setup->getConnection()->isTableExists($tableName) == false) {
+            $table = $connection->newTable($tableName)
+                ->addColumn(
+                    'id',
+                    Table::TYPE_INTEGER,
+                    11,
+                    ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+                    'ID')
+                ->addColumn(
+                    'order_id',
+                    Table::TYPE_INTEGER,
+                    11,
+                    ['nullable' => false],
+                    'Customer Order ID')
+                ->addColumn(
+                    'increment_id',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    32,
+                    [],
+                    'Magento Order Increment Id')
+                ->addColumn(
+                    'remote_order_id',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    32,
+                    [],
+                    'Order ID in Remote Marketplace')
+                ->addColumn(
+                    'marketplace_type',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    32,
+                    [],
+                    'Marketplace of Origin')
+                ->setComment('Springbot join table for remote orders')
+                ->addIndex(
+                    $installer->getIdxName($tableName, ['remote_order_id']),
+                    ['remote_order_id'],
+                    ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE])
+                ->addIndex(
+                    $installer->getIdxName($tableName, ['increment_id']),
+                    ['increment_id'],
+                    ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]);
+            $setup->getConnection()->createTable($table);
+        }
+    }
 }
