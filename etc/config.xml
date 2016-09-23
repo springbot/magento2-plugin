@@ -33,5 +33,28 @@
                 <retain_coupon>1</retain_coupon>
             </cart_restore>
         </springbot>
+        <carriers>
+            <sbmarketplaces>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Springbot\Main\Model\Carrier\Marketplaces</model>
+                <name>Marketplaces Shipping</name>
+                <price>0</price>
+                <title>Marketplaces Shipping</title>
+                <type>I</type>
+                <showmethod>false</showmethod>
+                <specificerrmsg>This shipping method is intended for internal use only.  It is a placeholder for order originating from a remote marketplace.</specificerrmsg>
+            </sbmarketplaces>
+        </carriers>
+        <payment>
+            <sbmarketplaces>
+                <active>1</active>
+                <model>Springbot\Main\Model\Payment\Marketplaces</model>
+                <order_status>pending</order_status>
+                <title>Payment source from marketplace</title>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </sbmarketplaces>
+        </payment>
     </default>
 </config>
