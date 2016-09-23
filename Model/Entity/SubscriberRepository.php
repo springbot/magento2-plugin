@@ -16,6 +16,7 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
     public function getList($storeId)
     {
         $collection = $this->getSpringbotModel()->getCollection();
+        $collection->addFieldToFilter('store_id', $storeId);
         $this->filterResults($collection);
         $rules = $collection->toArray();
         return $rules['items'];

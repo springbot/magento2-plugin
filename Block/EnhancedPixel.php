@@ -47,6 +47,9 @@ class EnhancedPixel extends Template
         return $this->_order;
     }
 
+    /**
+     * @return int
+     */
     public function getOrderId()
     {
         $session = ObjectManager::getInstance()->get('Magento\Checkout\Model\Session');
