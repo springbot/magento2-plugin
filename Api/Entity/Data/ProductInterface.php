@@ -6,13 +6,8 @@ namespace Springbot\Main\Api\Entity\Data;
  * Interface ProductInterface
  * @package Springbot\Main\Api
  */
-interface ProductInterface extends \Magento\Catalog\Api\Data\ProductInterface
+interface ProductInterface
 {
-
-    /**
-     * @return array
-     */
-    public function getCategoryIds();
 
     /**
      * @return int
@@ -22,12 +17,92 @@ interface ProductInterface extends \Magento\Catalog\Api\Data\ProductInterface
     /**
      * @return string
      */
-    public function getSpecialPrice();
+    public function getName();
+
+    /**
+     * @return string
+     */
+    public function getUrlKey();
+
+    /**
+     * @return string
+     */
+    public function getSku();
+
+    /**
+     * @return string
+     */
+    public function getType();
+
+    /**
+     * @return string
+     */
+    public function getStatus();
+
+    /**
+     * @return string
+     */
+    public function getVisibility();
+
+    /**
+     * @return string
+     */
+    public function getMsrp();
+
+    /**
+     * @return string
+     */
+    public function getPrice();
 
     /**
      * @return string
      */
     public function getCost();
+
+    /**
+     * @return string
+     */
+    public function getWeight();
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt();
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAt();
+
+    /**
+     * @return string
+     */
+    public function getDescription();
+
+    /**
+     * @return string
+     */
+    public function getShortDescription();
+
+    /**
+     * @return array
+     */
+    public function getCategoryIds();
+
+    /**
+     * @return array
+     */
+    public function getRootCategoryIds();
+
+    /**
+     * @return array
+     */
+    public function getAllCategoryIds();
+
+    /**
+     * @return string
+     */
+    public function getSpecialPrice();
 
     /**
      * @return string
@@ -50,8 +125,23 @@ interface ProductInterface extends \Magento\Catalog\Api\Data\ProductInterface
     public function getImageUrl();
 
     /**
+     * @return string
+     */
+    public function getImageLabel();
+
+    /**
      * @return array
      */
     public function getParentSkus();
+
+    /**
+     * @return array
+     */
+    public function getCustomAttributeSetId();
+
+    /**
+     * @return \Springbot\Main\Api\Entity\Data\Product\ProductAttributeInterface[]
+     */
+    public function getProductAttributes();
 
 }

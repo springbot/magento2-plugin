@@ -1,21 +1,21 @@
 <?php
 
-namespace Springbot\Main\Model\Entity\Data\Customer;
+namespace Springbot\Main\Model\Entity\Data\Product;
 
-use Springbot\Main\Api\Entity\Data\Customer\CustomerAttributeInterface;
+use Springbot\Main\Api\Entity\Data\Product\ProductAttributeInterface;
 
 /**
- * Class CustomerAttribute
- * @package Springbot\Main\Model\Entity\Data\Customer
+ * Class ProductAttribute
+ * @package Springbot\Main\Model\Entity\Data\Product
  */
-class CustomerAttribute implements CustomerAttributeInterface
+class ProductAttribute implements ProductAttributeInterface
 {
 
     public $name;
     public $value;
 
     /**
-     * CustomerAttribute constructor.
+     * ProductAttribute constructor.
      * @param $name
      * @param $value
      */
