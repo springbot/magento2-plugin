@@ -12,8 +12,8 @@ use Magento\Checkout\Model\Session;
 
 class OrderSaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -25,8 +25,8 @@ class OrderSaveAfterObserver implements ObserverInterface
         LoggerInterface $loggerInterface,
         Queue $queue
     ) {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -41,10 +41,10 @@ class OrderSaveAfterObserver implements ObserverInterface
             $order = $observer->getEvent()->getOrder();
             /* @var MagentoOrder $order */
             $orderId = $order->getId();
-            $this->_queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
-            $this->_logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
+            $this->queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
+            $this->logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

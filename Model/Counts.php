@@ -4,28 +4,26 @@ namespace Springbot\Main\Model;
 
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection as ProductAttributeSets;
 use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\ResourceModel\Attribute\Collection as CustomerAttributeSets;
 use Magento\Framework\Model\Context;
 use Magento\Quote\Model\Quote;
 use Magento\Sales\Model\Order;
-use Magento\SalesRule\Model\Coupon;
 use Magento\SalesRule\Model\Rule as SalesRule;
 use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Registry;
+use Magento\Framework\App\ObjectManager;
 
 class Counts extends AbstractModel
 {
-    protected $_salesRules;
-    protected $_catalogRules;
-    protected $_carts;
-    protected $_orders;
-    protected $_customers;
-    protected $_categories;
-    protected $_attributeSets;
-    protected $_products;
+    protected $salesRules;
+    protected $catalogRules;
+    protected $carts;
+    protected $orders;
+    protected $customers;
+    protected $categories;
+    protected $attributeSets;
+    protected $products;
 
     /**
      * Counts constructor.
@@ -51,13 +49,13 @@ class Counts extends AbstractModel
         AttributeSet $attributeSets
     )
     {
-        $this->_salesRules = $salesRules;
-        $this->_carts = $carts;
-        $this->_orders = $orders;
-        $this->_customers = $customers;
-        $this->_categories = $categories;
-        $this->_products = $products;
-        $this->_attributeSets = $attributeSets;
+        $this->salesRules = $salesRules;
+        $this->carts = $carts;
+        $this->orders = $orders;
+        $this->customers = $customers;
+        $this->categories = $categories;
+        $this->products = $products;
+        $this->attributeSets = $attributeSets;
         parent::__construct($context, $registry);
     }
 
@@ -73,9 +71,9 @@ class Counts extends AbstractModel
         $array = [
             "counts" => [
                 "sales_rules" => self::getRuleCount($storeId),
-                "carts" => self::getEntityCount($this->_carts, $storeId),
-                "orders" => self::getEntityCount($this->_orders, $storeId),
-                "customers" => self::getEntityCount($this->_customers, $storeId),
+                "carts" => self::getEntityCount($this->carts, $storeId),
+                "orders" => self::getEntityCount($this->orders, $storeId),
+                "customers" => self::getEntityCount($this->customers, $storeId),
                 "categories" => self::getCategoryCount($storeId),
                 "products" => $this->getProductCount($storeId)
             ]
@@ -103,19 +101,19 @@ class Counts extends AbstractModel
 
     private function getCategoryCount($storeId)
     {
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        $om = ObjectManager::getInstance();
         $storeModel = $om->create('Magento\Store\Model\Store');
         $store = $storeModel->load($storeId);
-        $rootCategory = $this->_categories->load($store->getRootCategoryId());
-        $collection = $this->_categories->getCollection();
+        $rootCategory = $this->categories->load($store->getRootCategoryId());
+        $collection = $this->categories->getCollection();
         $collection->addFieldToFilter('path', array('like' => $rootCategory->getPath() . '%'));
         return $collection->count();
     }
 
     private function getRuleCount($storeId)
     {
-        $collection = $this->_salesRules->getCollection();
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        $collection = $this->salesRules->getCollection();
+        $om = ObjectManager::getInstance();
         $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
         $store = $manager->getStore($storeId);
         $collection->addWebsiteFilter($store->getWebsiteId());
@@ -124,8 +122,8 @@ class Counts extends AbstractModel
 
     private function getProductCount($storeId)
     {
-        $collection = $this->_products->getCollection();
-        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        $collection = $this->products->getCollection();
+        $om = ObjectManager::getInstance();
         $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
         $store = $manager->getStore($storeId);
         $collection->addWebsiteFilter($store->getWebsiteId());

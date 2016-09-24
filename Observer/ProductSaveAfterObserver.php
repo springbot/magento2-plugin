@@ -14,8 +14,8 @@ use Magento\Framework\App\ObjectManager;
 
 class ProductSaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -25,8 +25,8 @@ class ProductSaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -43,7 +43,7 @@ class ProductSaveAfterObserver implements ObserverInterface
             foreach ($product->getStoreIds() as $storeId) {
 
                 // Enqueue a job to sync this product for every store it belongs to
-                $this->_queue->scheduleJob(ProductHandler::class, 'handle', [$storeId, $product->getId()]);
+                $this->queue->scheduleJob(ProductHandler::class, 'handle', [$storeId, $product->getId()]);
 
                 // Enqueue the stock item as well
                 $stockRegistry = ObjectManager::getInstance()->get('Magento\CatalogInventory\Api\StockRegistryInterface');
@@ -51,13 +51,13 @@ class ProductSaveAfterObserver implements ObserverInterface
                     $product->getId(),
                     $product->getStore()->getWebsiteId()
                 );
-                $this->_queue->scheduleJob(InventoryHandler::class, 'handle', [$storeId, $stockItem->getId()]);
+                $this->queue->scheduleJob(InventoryHandler::class, 'handle', [$storeId, $stockItem->getId()]);
 
 
-                $this->_logger->debug("Scheduled sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
+                $this->logger->debug("Scheduled sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
             }
         } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

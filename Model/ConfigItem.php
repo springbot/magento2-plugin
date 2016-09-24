@@ -13,7 +13,7 @@ class ConfigItem extends AbstractModel implements ConfigItemInterface
 {
 
     protected $path;
-    protected  $value;
+    protected $value;
 
     public function __construct($path, $value)
     {

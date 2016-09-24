@@ -12,8 +12,8 @@ use Exception;
 
 class InventoryDeleteAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * InventoryDeleteAfterObserver constructor
@@ -23,8 +23,8 @@ class InventoryDeleteAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -39,11 +39,11 @@ class InventoryDeleteAfterObserver implements ObserverInterface
             $items = $observer->getEvent()->getItems();
             /* @var MagentoInventoryStock $inventory */
             foreach($items as $item) {
-                $this->_queue->scheduleJob(InventoryHandler::class, 'handleDelete', [$item->getItemId()]);
-                $this->_logger->debug("Scheduled deleted sync job for inventory item ID: {$item->getId()}");
+                $this->queue->scheduleJob(InventoryHandler::class, 'handleDelete', [$item->getItemId()]);
+                $this->logger->debug("Scheduled deleted sync job for inventory item ID: {$item->getId()}");
             }
         } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

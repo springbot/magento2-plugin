@@ -12,8 +12,8 @@ use Exception;
 
 class ProductDeleteBeforeObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -23,8 +23,8 @@ class ProductDeleteBeforeObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -42,13 +42,13 @@ class ProductDeleteBeforeObserver implements ObserverInterface
             foreach ($product->getStoreIds() as $storeId) {
 
                 // Enqueue a job to sync this product for every store it belongs to
-                $this->_queue->scheduleJob(ProductHandler::class,
+                $this->queue->scheduleJob(ProductHandler::class,
                     'handleDelete',
                     [$product->getStoreId(), $product->getId()]);
-                $this->_logger->debug("Scheduled deleted sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
+                $this->logger->debug("Scheduled deleted sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
             }
         } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

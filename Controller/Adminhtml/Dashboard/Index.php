@@ -17,8 +17,8 @@ class Index extends Action
 {
     protected $resultPageFactory;
     protected $helperContext;
-    private $_register;
-    private $_api;
+    private $register;
+    private $api;
 
     /**
      * Index constructor.
@@ -38,8 +38,8 @@ class Index extends Action
     ) {
         $this->helperContext = $helperContext;
         $this->resultPageFactory = $resultPageFactory;
-        $this->_register = $register;
-        $this->_api = $api;
+        $this->register = $register;
+        $this->api = $api;
         parent::__construct($context);
     }
 
@@ -50,7 +50,7 @@ class Index extends Action
     {
 
         // Check to see if security token is set. If so, show the connected screen
-        if ($this->_register->allStoresRegistered()) {
+        if ($this->register->allStoresRegistered()) {
             return $this->_redirect('springbot/dashboard/connected');
         }
 

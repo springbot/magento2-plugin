@@ -11,8 +11,8 @@ use Springbot\Main\Model\Handler\CartHandler;
 
 class CartSaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -22,8 +22,8 @@ class CartSaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -38,10 +38,10 @@ class CartSaveAfterObserver implements ObserverInterface
             $cart = $observer->getEvent()->getQuote();
             /* @var MagentoQuote $cart */
             $cartId = $cart->getEntityId();
-            $this->_queue->scheduleJob(CartHandler::class, 'handle', [$cart->getStoreId(), $cartId]);
-            $this->_logger->debug("Created/Updated Cart ID: {$cartId}");
+            $this->queue->scheduleJob(CartHandler::class, 'handle', [$cart->getStoreId(), $cartId]);
+            $this->logger->debug("Created/Updated Cart ID: {$cartId}");
         } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

@@ -10,14 +10,13 @@ use Magento\Framework\Registry;
 
 /**
  * Class StoreConfiguration
- *
  * @package Springbot\Main\Model
  */
 class StoreConfiguration extends AbstractModel
 {
 
-    private $_config;
-    private $_scopeConfig;
+    private $config;
+    private $scopeConfig;
 
     /**
      * @param Config $config
@@ -31,8 +30,8 @@ class StoreConfiguration extends AbstractModel
         Registry $registry,
         ScopeConfigInterface $scopeConfigInterface
     ) {
-        $this->_config = $config;
-        $this->_scopeConfig = $scopeConfigInterface;
+        $this->config = $config;
+        $this->scopeConfig = $scopeConfigInterface;
         parent::__construct($context, $registry);
     }
 
@@ -42,7 +41,7 @@ class StoreConfiguration extends AbstractModel
      */
     public function getSpringbotStoreId($storeId)
     {
-        return $this->_scopeConfig->getValue($this->_makeConfigKey('store_id', $storeId));
+        return $this->scopeConfig->getValue($this->makeConfigKey('store_id', $storeId));
     }
 
     /**
@@ -51,7 +50,7 @@ class StoreConfiguration extends AbstractModel
      */
     public function getApiToken($storeId)
     {
-        return $this->_scopeConfig->getValue($this->_makeConfigKey('security_token', $storeId));
+        return $this->scopeConfig->getValue($this->makeConfigKey('security_token', $storeId));
     }
 
     /**
@@ -60,7 +59,7 @@ class StoreConfiguration extends AbstractModel
      */
     public function getGuid($storeId)
     {
-        return $this->_scopeConfig->getValue($this->_makeConfigKey('store_guid', $storeId));
+        return $this->scopeConfig->getValue($this->makeConfigKey('store_guid', $storeId));
     }
 
     /**
@@ -72,8 +71,8 @@ class StoreConfiguration extends AbstractModel
     public function saveValues($storeId, $vars)
     {
         foreach ($vars as $key => $value) {
-            $configKey = $this->_makeConfigKey($key, $storeId);
-            $this->_config->saveConfig($configKey, $value, 'default', 0);
+            $configKey = $this->makeConfigKey($key, $storeId);
+            $this->config->saveConfig($configKey, $value, 'default', 0);
         }
     }
 
@@ -83,7 +82,7 @@ class StoreConfiguration extends AbstractModel
      */
     public function saveGlobalValue($key, $value)
     {
-        $this->_config->saveConfig($this->_makeConfigKey($key), $value, 'default', 0);
+        $this->config->saveConfig($this->makeConfigKey($key), $value, 'default', 0);
     }
 
     /**
@@ -91,7 +90,7 @@ class StoreConfiguration extends AbstractModel
      * @param string $storeId
      * @return string
      */
-    private function _makeConfigKey($configKey, $storeId = '')
+    private function makeConfigKey($configKey, $storeId = '')
     {
         $configKey = "springbot/configuration/{$configKey}";
         if ($storeId != '') {

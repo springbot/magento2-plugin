@@ -13,8 +13,8 @@ use Psr\Log\LoggerInterface;
  */
 class Login extends Action
 {
-    private $_register;
-    private $_logger;
+    private $register;
+    private $logger;
 
     /**
      * Login constructor.
@@ -27,8 +27,8 @@ class Login extends Action
         LoggerInterface $logger,
         Register $register
     ) {
-        $this->_logger = $logger;
-        $this->_register = $register;
+        $this->logger = $logger;
+        $this->register = $register;
         parent::__construct($context);
     }
 
@@ -42,7 +42,7 @@ class Login extends Action
         // Pull values from the customer form for transit back to Springbot
         $springbotEmail = $this->getRequest()->getParam('springbot-email');
         $springbotPassword = $this->getRequest()->getParam('springbot-password');
-        $registered = $this->_register->registerAllStores($springbotEmail, $springbotPassword);
+        $registered = $this->register->registerAllStores($springbotEmail, $springbotPassword);
 
         if ($registered) {
             return $this->_redirect('springbot/dashboard/connected');

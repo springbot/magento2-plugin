@@ -2,9 +2,7 @@
 
 namespace Springbot\Main\Model\Entity;
 
-use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\InventoryRepositoryInterface;
-use Magento\Framework\App\Request\Http as HttpRequest;
 
 /**
  *  InventoryRepository

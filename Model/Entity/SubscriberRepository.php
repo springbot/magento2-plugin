@@ -36,6 +36,9 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
         return $this->getSpringbotModel()->load($subscriberId);
     }
 
+    /**
+     * @return mixed
+     */
     public function getSpringbotModel()
     {
         return $this->objectManager->create('Springbot\Main\Model\Entity\Data\Subscriber');

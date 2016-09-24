@@ -11,8 +11,8 @@ use Springbot\Main\Model\Handler\CategoryHandler;
 
 class CategoryDeleteBeforeObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -22,8 +22,8 @@ class CategoryDeleteBeforeObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -39,11 +39,11 @@ class CategoryDeleteBeforeObserver implements ObserverInterface
             /* @var MagentoCategory $category */
             foreach ($category->getStoreIds() as $storeId) {
 
-                $this->_queue->scheduleJob(CategoryHandler::class, 'handleDelete', [$storeId, $category->getId()]);
-                $this->_logger->debug("Deleted Category ID: " . $category->getEntityId());
+                $this->queue->scheduleJob(CategoryHandler::class, 'handleDelete', [$storeId, $category->getId()]);
+                $this->logger->debug("Deleted Category ID: " . $category->getEntityId());
             }
         } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

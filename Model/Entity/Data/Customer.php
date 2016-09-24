@@ -8,8 +8,8 @@ use Springbot\Main\Model\Entity\Data\Customer\Address;
 use Springbot\Main\Model\Entity\Data\Customer\CustomerAttribute;
 
 /**
- *  Customer
- * @package Springbot\Main\Api\Data
+ * Class Customer
+ * @package Springbot\Main\Model\Entity\Data
  */
 class Customer extends MagentoCustomer implements CustomerInterface
 {

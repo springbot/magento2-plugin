@@ -8,6 +8,7 @@ namespace Springbot\Main\Api\Entity\Data;
  */
 interface CartInterface
 {
+
     /**
      * @return \Springbot\Main\Api\Entity\Data\Cart\ItemInterface[]
      */

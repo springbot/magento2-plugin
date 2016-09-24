@@ -11,8 +11,8 @@ use Magento\Eav\Model\Entity\Attribute\Set as MagentoAttributeSet;
 
 class AttributeSetSaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * @param LoggerInterface $loggerInterface
@@ -20,8 +20,8 @@ class AttributeSetSaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -36,13 +36,13 @@ class AttributeSetSaveAfterObserver implements ObserverInterface
         try {
             if ($attributeSet = $observer->getEvent()->getObject()) {
                 /* @var MagentoAttributeSet $attributeSet */
-                $this->_queue->scheduleJob(AttributeSetHandler::class, 'handle', [1, $attributeSet->getId()]);
-                $this->_logger->debug("Created/Updated Attribute ID: " . $attributeSet->getId());
+                $this->queue->scheduleJob(AttributeSetHandler::class, 'handle', [1, $attributeSet->getId()]);
+                $this->logger->debug("Created/Updated Attribute ID: " . $attributeSet->getId());
             } else {
                 throw new \Exception("Unable to get attribute_set from event observer");
             }
         } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

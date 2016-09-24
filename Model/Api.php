@@ -22,10 +22,10 @@ class Api extends AbstractModel
     const TOTAL_POST_FAIL_LIMIT = 32;
     const RETRY_LIMIT = 3;
 
-    private $_springbotHelper;
-    private $_scopeConfig;
-    private $_storeConfig;
-    private $_client;
+    private $springbotHelper;
+    private $scopeConfig;
+    private $storeConfig;
+    private $client;
 
     /**
      * Api constructor.
@@ -42,9 +42,9 @@ class Api extends AbstractModel
         Context $context,
         Registry $registry
     ) {
-        $this->_springbotHelper = $springbotHelper;
-        $this->_scopeConfig = $scopeConfig;
-        $this->_storeConfig = $storeConfig;
+        $this->springbotHelper = $springbotHelper;
+        $this->scopeConfig = $scopeConfig;
+        $this->storeConfig = $storeConfig;
         parent::__construct($context, $registry);
     }
 
@@ -54,12 +54,12 @@ class Api extends AbstractModel
      * @param array $headers
      * @return \Zend_Http_Response
      * @throws \Exception
-     * @throws \Zend_Http_Client_Exception
+     * @throws \Zend_Httpclient_Exception
      */
     public function post($url, $body, $headers = ['Content-Type' => 'application/json'])
     {
         try {
-            return $this->getClient(\Zend_Http_Client::POST)
+            return $this->getClient(\Zend_Httpclient::POST)
                 ->setUri($url)
                 ->setHeaders($headers)
                 ->setRawData($body)
@@ -77,8 +77,8 @@ class Api extends AbstractModel
      */
     public function postEntities($storeId, $apiPath, array $entitiesData)
     {
-        $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($storeId);
-        $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
+        $springbotStoreId = $this->storeConfig->getSpringbotStoreId($storeId);
+        $springbotApiToken = $this->storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
             $body = json_encode($entitiesData);
             $url = $this->getWebhooksUrl("{$springbotStoreId}/{$apiPath}");
@@ -94,8 +94,8 @@ class Api extends AbstractModel
      */
     public function deleteEntity($storeId, $apiPath, $entityId)
     {
-        $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($storeId);
-        $springbotApiToken = $this->_storeConfig->getApiToken($storeId);
+        $springbotStoreId = $this->storeConfig->getSpringbotStoreId($storeId);
+        $springbotApiToken = $this->storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
             $body = json_encode([$apiPath => ['id' => $entityId, 'is_deleted' => true]]);
             $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}",
@@ -109,11 +109,11 @@ class Api extends AbstractModel
      * @param array $headers
      * @return \Zend_Http_Response
      * @throws \Exception
-     * @throws \Zend_Http_Client_Exception
+     * @throws \Zend_Httpclient_Exception
      */
     public function get($url, $headers = [])
     {
-        $client = $this->getClient(\Zend_Http_Client::POST)
+        $client = $this->getClient(\Zend_Httpclient::POST)
             ->setUri($url)
             ->setHeaders($headers);
         try {
@@ -125,19 +125,22 @@ class Api extends AbstractModel
 
     /**
      * @param string $method
-     * @return \Zend_Http_Client
-     * @throws \Zend_Http_Client_Exception
+     * @return \Zend_Httpclient
+     * @throws \Zend_Httpclient_Exception
      */
-    public function getClient($method = \Zend_Http_Client::POST)
+    public function getClient($method = \Zend_Httpclient::POST)
     {
-        $this->_client = new \Zend_Http_Client();
-        $this->_client->setMethod($method);
-        return $this->_client;
+        $this->client = new \Zend_Httpclient();
+        $this->client->setMethod($method);
+        return $this->client;
     }
 
+    /**
+     * @return string
+     */
     public function getAppUrl()
     {
-        return $this->_scopeConfig->getValue('springbot/configuration/app_url');
+        return $this->scopeConfig->getValue('springbot/configuration/app_url');
     }
 
     /**
@@ -146,7 +149,7 @@ class Api extends AbstractModel
      */
     public function getApiUrl($subpath = '')
     {
-        $url = $this->_scopeConfig->getValue('springbot/configuration/api_url');
+        $url = $this->scopeConfig->getValue('springbot/configuration/api_url');
         if ($subpath) {
             $url .= '/' . $subpath;
         }
@@ -159,7 +162,7 @@ class Api extends AbstractModel
      */
     public function getWebhooksUrl($subpath = '')
     {
-        $url = $this->_scopeConfig->getValue('springbot/configuration/api_url') . '/' . self::ETL_WEBHOOKS_PATH;
+        $url = $this->scopeConfig->getValue('springbot/configuration/api_url') . '/' . self::ETL_WEBHOOKS_PATH;
         if ($subpath) {
             $url .= '/' . $subpath;
         }

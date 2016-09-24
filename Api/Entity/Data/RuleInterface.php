@@ -8,6 +8,7 @@ namespace Springbot\Main\Api\Entity\Data;
  */
 interface RuleInterface
 {
+
     /**
      * @return int
      */

@@ -2,13 +2,10 @@
 
 namespace Springbot\Main\Model\Entity;
 
-use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\CategoryRepositoryInterface;
-use Magento\Framework\App\Request\Http as HttpRequest;
-use Magento\Store\Model\Store;
 
 /**
- *  CategoryRepository
+ * CategoryRepository
  * @package Springbot\Main\Api
  */
 class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
