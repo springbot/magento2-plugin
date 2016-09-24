@@ -4,9 +4,9 @@ namespace Springbot\Main\Model\Handler;
 
 use Magento\Catalog\Model\Product as MagentoProduct;
 use Magento\Framework\App\ObjectManager;
-use Springbot\Main\Model\Entity\Data\Product;
+use Springbot\Main\Model\Api\Entity\Data\Product;
 use Springbot\Main\Model\Handler;
-use Springbot\Main\Model\Entity\Data\ProductFactory;
+use Springbot\Main\Model\Api\Entity\Data\ProductFactory;
 
 /**
  * Class ProductHandler
