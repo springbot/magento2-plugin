@@ -80,7 +80,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
         $tableName = 'springbot_marketplaces_remote_order';
         // Check if the table already exists
         if ($setup->getConnection()->isTableExists($tableName) == false) {
-            $table = $connection->newTable($tableName)
+            $table = $setup->getConnection()->newTable($tableName)
                 ->addColumn(
                     'id',
                     Table::TYPE_INTEGER,
@@ -113,11 +113,11 @@ class UpgradeSchema implements UpgradeSchemaInterface
                     'Marketplace of Origin')
                 ->setComment('Springbot join table for remote orders')
                 ->addIndex(
-                    $installer->getIdxName($tableName, ['remote_order_id']),
+                    $setup->getIdxName($tableName, ['remote_order_id']),
                     ['remote_order_id'],
                     ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE])
                 ->addIndex(
-                    $installer->getIdxName($tableName, ['increment_id']),
+                    $setup->getIdxName($tableName, ['increment_id']),
                     ['increment_id'],
                     ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]);
             $setup->getConnection()->createTable($table);
