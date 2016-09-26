@@ -5,9 +5,9 @@ namespace Springbot\Main\Model\Marketplaces;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
-use Springbot\Main\Api\Data\Marketplaces\RemoteOrderInterface;
+use Springbot\Main\Api\Entity\Data\RemoteOrderInterface;
 
-class RemoteOrder extends AbstractModel implements ShippingAssignmentInterface
+class RemoteOrder extends AbstractModel
 {
     private $_remoteOrderFactory;
 
@@ -37,7 +37,7 @@ class RemoteOrder extends AbstractModel implements ShippingAssignmentInterface
                 'marketplace_type' => $marketplace
             ]);
             $remoteOrder->save();
-        } catch($e) {
+        } catch (Exception $e) {
             eval(\Psy\sh());
         }
     }
