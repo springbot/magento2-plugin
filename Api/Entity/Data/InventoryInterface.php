@@ -2,12 +2,55 @@
 
 namespace Springbot\Main\Api\Entity\Data;
 
-use Magento\CatalogInventory\Api\Data\StockItemInterface;
-
 /**
  * Interface InventoryInterface
  * @package Springbot\Main\Api\Entity\Data
  */
-interface InventoryInterface extends StockItemInterface
+interface InventoryInterface
 {
+    /**
+     * @return int
+     */
+    public function getProductId();
+
+    /**
+     * @return bool
+     */
+    public function getSystemManaged();
+
+    /**
+     * @return string
+     */
+    public function getOutOfStockQty();
+
+    /**
+     * @return string
+     */
+    public function getQuantity();
+
+    /**
+     * @return int
+     */
+    public function getItemId();
+
+    /**
+     * @return bool
+     */
+    public function getIsInStock();
+
+    /**
+     * @return string
+     */
+    public function getMinSaleQty();
+
+    /**
+     * @return array
+     */
+    public function getParentSkus();
+
+    /**
+     * @return string
+     */
+    public function getSkuFulfillment();
+
 }

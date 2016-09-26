@@ -14,10 +14,14 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
     /**
      * @param int $storeId
      * @return \Springbot\Main\Model\Api\Entity\Data\Category[]
+     * @throws \Exception
      */
     public function getList($storeId)
     {
         $store = $this->getStoreModel()->load($storeId);
+        if (!$store->getData()) {
+            throw new \Exception("Store not found, store_id {$storeId}", 404);
+        }
         $rootCategory = $this->getSpringbotModel()->load($store->getRootCategoryId());
         $collection = $this->getSpringbotModel()->getCollection();
         $collection->addFieldToFilter('path', array('like' => $rootCategory->getPath() . '%'));

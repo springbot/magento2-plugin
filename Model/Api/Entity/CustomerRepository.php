@@ -16,7 +16,7 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
     public function getList($storeId)
     {
         $collection = $this->getSpringbotModel()->getCollection();
-        return $collection;
+        $collection->addFieldtoFilter('store_id', $storeId);
         $this->filterResults($collection);
         $ret = [];
         foreach ($collection->getAllIds() as $id) {

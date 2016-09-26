@@ -10,11 +10,13 @@ use Magento\Quote\Model\Quote;
 use Magento\Sales\Model\Order;
 use Magento\SalesRule\Model\Rule as SalesRule;
 use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
+use Magento\Newsletter\Model\Subscriber;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Registry;
 use Magento\Framework\App\ObjectManager;
+use Springbot\Main\Api\CountsInterface;
 
-class Counts extends AbstractModel
+class Counts implements CountsInterface
 {
     protected $salesRules;
     protected $catalogRules;
@@ -24,11 +26,11 @@ class Counts extends AbstractModel
     protected $categories;
     protected $attributeSets;
     protected $products;
+    protected $subscribers;
 
     /**
      * Counts constructor.
      *
-     * @param Context $context
      * @param SalesRule $salesRules
      * @param Quote $carts
      * @param Order $orders
@@ -36,17 +38,17 @@ class Counts extends AbstractModel
      * @param Category $categories
      * @param Product $products
      * @param AttributeSet $attributeSets
+     * @param Subscriber $subscribers
      */
     public function __construct(
-        Context $context,
-        Registry $registry,
         SalesRule $salesRules,
         Quote $carts,
         Order $orders,
         Customer $customers,
         Category $categories,
         Product $products,
-        AttributeSet $attributeSets
+        AttributeSet $attributeSets,
+        Subscriber $subscribers
     )
     {
         $this->salesRules = $salesRules;
@@ -56,7 +58,7 @@ class Counts extends AbstractModel
         $this->categories = $categories;
         $this->products = $products;
         $this->attributeSets = $attributeSets;
-        parent::__construct($context, $registry);
+        $this->subscribers = $subscribers;
     }
 
     /**
@@ -75,7 +77,9 @@ class Counts extends AbstractModel
                 "orders" => self::getEntityCount($this->orders, $storeId),
                 "customers" => self::getEntityCount($this->customers, $storeId),
                 "categories" => self::getCategoryCount($storeId),
-                "products" => $this->getProductCount($storeId)
+                "products" => $this->getProductCount($storeId),
+                "guests" => $this->getGuests($storeId),
+                "subscribers" => $this->getEntityCount($this->subscribers, $storeId),
             ]
         ];
 
@@ -130,5 +134,12 @@ class Counts extends AbstractModel
         return $collection->count();
     }
 
+    public function getGuests($storeId)
+    {
+        $collection = $this->orders->getCollection();
+        $collection->addFieldToFilter('store_id', $storeId);
+        $collection->addFieldToFilter('customer_is_guest', true);
+        return $collection->count();
+    }
 
 }

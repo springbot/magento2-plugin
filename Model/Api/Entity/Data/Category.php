@@ -46,7 +46,6 @@ class Category extends MagentoCategory implements CategoryInterface
         return parent::getIsActive();
     }
 
-
     public function getDescription()
     {
         return parent::getDescription();

@@ -22,8 +22,11 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
         $collection = $this->getSpringbotModel()->getCollection();
         $collection->addFieldToFilter('store_id', $storeId);
         $this->filterResults($collection);
-        $rules = $collection->toArray();
-        return $rules['items'];
+        $subscribers = [];
+        foreach ($collection as $magentoSubscriber) {
+            $subscribers[] = $this->getSpringbotModel()->setData($magentoSubscriber->getData());
+        }
+        return $subscribers;
     }
 
     /**

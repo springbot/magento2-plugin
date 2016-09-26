@@ -20,8 +20,11 @@ class GuestRepository extends AbstractRepository implements GuestRepositoryInter
         $collection->addFieldToFilter('store_id', $storeId);
         $collection->addFieldToFilter($guest::CUSTOMER_IS_GUEST, true);
         $this->filterResults($collection);
-        $array = $collection->toArray();
-        return $array['items'];
+        $guests = [];
+        foreach ($collection as $guest) {
+            $guests[] = $this->getSpringbotModel()->setData($guest->getData());
+        }
+        return $guests;
     }
 
     public function getFromId($storeId, $guestId)
