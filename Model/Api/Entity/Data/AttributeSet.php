@@ -68,7 +68,7 @@ class AttributeSet extends MagentoAttributeSet implements AttributeSetInterface
                 $attribute->getAttributeCode(),
                 $optionsArray
             );
-            
+
         }
 
         return $attributes;

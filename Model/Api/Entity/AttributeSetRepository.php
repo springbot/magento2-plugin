@@ -18,7 +18,9 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
     public function getList($storeId)
     {
         $collection = $this->getSpringbotModel()->getCollection();
+        $collection->addFieldToFilter('entity_type_id', ['in' => [1, 4]]);
         $this->filterResults($collection);
+
 
         $ret = [];
         foreach ($collection->getItems() as $item) {
