@@ -34,6 +34,10 @@ class Oauth extends AbstractModel
     ) {
         $this->integrationService = $integrationService;
         $this->oauthService = $oauthService;
+        $this->integrationData['name'] = 'Springbot';
+        $this->integrationData['email'] = 'magento@springbot.com';
+        $this->integrationData['status'] = 1;
+        $this->integrationData['all_resources'] = 1;
         parent::__construct($context, $registry);
     }
 
