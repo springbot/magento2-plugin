@@ -16,9 +16,9 @@ use Magento\Framework\Registry;
 class Oauth extends AbstractModel
 {
 
-    protected $_integrationService;
-    protected $_oauthService;
-    protected $_integrationData = [];
+    protected $integrationService;
+    protected $oauthService;
+    protected $integrationData = [];
 
     /**
      * @param IntegrationService $integrationService
@@ -32,13 +32,8 @@ class Oauth extends AbstractModel
         Context $context,
         Registry $registry
     ) {
-        $this->_integrationService = $integrationService;
-        $this->_oauthService = $oauthService;
-        $this->_integrationData['name'] = 'Springbot';
-        $this->_integrationData['email'] = 'magento@springbot.com';
-        $this->_integrationData['endpoint'] = 'https://app.springbot.com/registration/stores';
-        $this->_integrationData['status'] = 1;
-        $this->_integrationData['all_resources'] = 1;
+        $this->integrationService = $integrationService;
+        $this->oauthService = $oauthService;
         parent::__construct($context, $registry);
     }
 
@@ -51,14 +46,14 @@ class Oauth extends AbstractModel
      */
     public function create()
     {
-        $integration = $this->_integrationService->findByName('Springbot');
+        $integration = $this->integrationService->findByName('Springbot');
         if ($integration->isEmpty()) {
-            $integration = $this->_integrationService->create($this->_integrationData);
+            $integration = $this->integrationService->create($this->integrationData);
         }
 
         if ($consumerId = $integration->getConsumerId()) {
-            $this->_oauthService->createAccessToken($integration->getConsumerId());
-            $accessToken = $this->_oauthService->getAccessToken($integration->getConsumerId());
+            $this->oauthService->createAccessToken($integration->getConsumerId());
+            $accessToken = $this->oauthService->getAccessToken($integration->getConsumerId());
             if (!$accessToken->isEmpty()) {
                 return $accessToken->getToken();
             }

@@ -9,6 +9,4 @@ namespace Springbot\Main\Api\Entity\Data\Order;
 interface ShipmentInterface
 {
 
-    
-
 }

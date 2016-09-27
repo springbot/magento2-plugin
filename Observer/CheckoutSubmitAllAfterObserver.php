@@ -13,9 +13,9 @@ use Springbot\Main\Model\SpringbotOrderRedirect;
 
 class CheckoutSubmitAllAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
-    private $_cookieManager;
+    private $logger;
+    private $queue;
+    private $cookieManager;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -31,9 +31,9 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
         CookieManagerInterface $cookieManager,
         SpringbotOrderRedirect $orderRedirect
     ) {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
-        $this->_cookieManager = $cookieManager;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
+        $this->cookieManager = $cookieManager;
         $this->_orderRedirect = $orderRedirect;
     }
 
@@ -51,7 +51,7 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
             $orderId = $order->getEntityId();
             $this->_setRedirectIdsFromCookie($orderId);
         } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 
@@ -60,7 +60,7 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
      */
     private function _setRedirectIdsFromCookie($orderId)
     {
-        $redirectIdsStr = $this->_cookieManager->getCookie('springbot_redirect_queue');
+        $redirectIdsStr = $this->cookieManager->getCookie('springbot_redirectqueue');
         $redirectIdsArr = explode('|', $redirectIdsStr);
         foreach ($redirectIdsArr as $redirectId) {
             $this->_orderRedirect->insert($orderId, $redirectId);

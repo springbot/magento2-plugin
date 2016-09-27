@@ -9,8 +9,6 @@ namespace Springbot\Main\Api\Entity;
 interface OrderRepositoryInterface
 {
     /**
-     * Get store configuration
-     *
      * @param int $storeId
      * @return \Springbot\Main\Api\Entity\Data\OrderInterface[]
      */

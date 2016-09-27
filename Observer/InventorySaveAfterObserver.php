@@ -12,8 +12,8 @@ use Exception;
 
 class InventorySaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * InventorySaveAfterObserver constructor
@@ -23,8 +23,8 @@ class InventorySaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -39,11 +39,11 @@ class InventorySaveAfterObserver implements ObserverInterface
             $items = $observer->getEvent()->getItems();
             /* @var MagentoItem $item */
             foreach($items as $item) {
-                $this->_queue->scheduleJob(InventoryHandler::class, 'handle', [$item->getItemId()]);
-                $this->_logger->debug("Scheduled sync job for item ID: {$item->getItemId()}");
+                $this->queue->scheduleJob(InventoryHandler::class, 'handle', [$item->getItemId()]);
+                $this->logger->debug("Scheduled sync job for item ID: {$item->getItemId()}");
             }
         } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

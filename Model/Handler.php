@@ -6,7 +6,6 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\App\State;
 
 /**
  * Class Handler

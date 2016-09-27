@@ -2,8 +2,6 @@
 
 namespace Springbot\Main\Helper;
 
-use Magento\Checkout\Model\Cart;
-use Magento\Checkout\Model\Session;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -17,8 +15,8 @@ use Magento\Store\Model\StoreManagerInterface;
 class Data extends AbstractHelper
 {
 
-    private $_config;
-    private $_storeManager;
+    private $config;
+    private $storeManager;
 
     /**
      * Data constructor.
@@ -32,8 +30,8 @@ class Data extends AbstractHelper
         Config $config,
         StoreManagerInterface $storeManager
     ) {
-        $this->_config = $config;
-        $this->_storeManager = $storeManager;
+        $this->config = $config;
+        $this->storeManager = $storeManager;
         parent::__construct($context);
     }
 
@@ -44,7 +42,7 @@ class Data extends AbstractHelper
      */
     public function getStoreGuid()
     {
-        $storeId = $this->_storeManager->getStore()->getId();
+        $storeId = $this->storeManager->getStore()->getId();
         $guid = $this->scopeConfig
             ->getValue('springbot/configuration/store_guid_' . $storeId);
         if (empty($guid)) {

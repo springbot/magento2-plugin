@@ -2,7 +2,6 @@
 
 namespace Springbot\Main\Console\Command;
 
-use Magento\Framework\App\State;
 use Magento\Store\Model\StoreManagerInterface as StoreManager;
 use Springbot\Main\Model\StoreConfiguration;
 use Symfony\Component\Console\Command\Command;
@@ -19,10 +18,9 @@ use Zend\Text\Table\Table as TextTable;
 class ListStoresCommand extends Command
 {
 
-    private $_oauth;
-    private $_state;
-    private $_storeManager;
-    private $_storeConfig;
+    private $oauth;
+    private $storeManager;
+    private $storeConfig;
 
     /**
      * @param Oauth $oauth
@@ -34,9 +32,9 @@ class ListStoresCommand extends Command
         StoreManager $storeManager,
         StoreConfiguration $storeConfig
     ) {
-        $this->_oauth = $oauth;
-        $this->_storeManager = $storeManager;
-        $this->_storeConfig = $storeConfig;
+        $this->oauth = $oauth;
+        $this->storeManager = $storeManager;
+        $this->storeConfig = $storeConfig;
         parent::__construct();
     }
 
@@ -65,9 +63,9 @@ class ListStoresCommand extends Command
         ]);
 
         $table->appendRow(['store_name', 'store_id', 'springbot_store_id', 'springbot_guid']);
-        foreach ($this->_storeManager->getStores() as $store) {
-            $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($store->getId());
-            $springbotGuid = strtolower($this->_storeConfig->getGuid($store->getId()));
+        foreach ($this->storeManager->getStores() as $store) {
+            $springbotStoreId = $this->storeConfig->getSpringbotStoreId($store->getId());
+            $springbotGuid = strtolower($this->storeConfig->getGuid($store->getId()));
             $table->appendRow([substr($store->getName(), 0, 23), $store->getId(), $springbotStoreId, $springbotGuid]);
         }
 

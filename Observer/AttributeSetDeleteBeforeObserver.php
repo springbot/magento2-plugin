@@ -6,31 +6,31 @@ use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
-use Magento\Catalog\Model\Product\AttributeSet;
 use Magento\Catalog\Model\Entity\Attribute as MagentoAttribute;
 use Springbot\Main\Model\Handler\AttributeSetHandler;
+use Magento\Store\Model\StoreManagerInterface;
 
 class AttributeSetDeleteBeforeObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
-    private $_storeManager;
+    private $logger;
+    private $queue;
+    private $storeManager;
 
     /**
-     * ProductSaveAfterObserver constructor
-     *
+     * AttributeSetDeleteBeforeObserver constructor.
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         LoggerInterface $loggerInterface,
         Queue $queue,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager
     )
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
-        $this->_storeManager = $storeManager;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -45,15 +45,15 @@ class AttributeSetDeleteBeforeObserver implements ObserverInterface
             $attributeSet = $observer->getEvent()->getObject();
             /* @var MagentoAttribute $attribute */
 
-            foreach ($this->_storeManager->getStores() as $store) {
-                $this->_queue->scheduleJob(AttributeSetHandler::class,
+            foreach ($this->storeManager->getStores() as $store) {
+                $this->queue->scheduleJob(AttributeSetHandler::class,
                     'handleDelete',
                     [$store->getId(), $attributeSet->getAttributeSetId()]);
             }
 
-            $this->_logger->debug("Deleted attribute set: " . $attributeSet->getId());
+            $this->logger->debug("Deleted attribute set: " . $attributeSet->getId());
         } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

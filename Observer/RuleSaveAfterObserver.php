@@ -18,8 +18,8 @@ use Exception;
  */
 class RuleSaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * RuleSaveAfterObserver constructor
@@ -29,8 +29,8 @@ class RuleSaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -48,12 +48,12 @@ class RuleSaveAfterObserver implements ObserverInterface
                 $website = ObjectManager::getInstance()->get('Magento\Store\Model\Website')->load($websiteId);
                 /* @var MagentoWebsite $website */
                 foreach ($website->getStoreIds() as $storeId) {
-                    $this->_queue->scheduleJob(RuleHandler::class, 'handle', [$storeId, $rule->getId()], 1);
-                    $this->_logger->debug("Scheduled sync job for Rule ID: {$rule->getId()} in store id: {$storeId}");
+                    $this->queue->scheduleJob(RuleHandler::class, 'handle', [$storeId, $rule->getId()], 1);
+                    $this->logger->debug("Scheduled sync job for Rule ID: {$rule->getId()} in store id: {$storeId}");
                 }
             }
         } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

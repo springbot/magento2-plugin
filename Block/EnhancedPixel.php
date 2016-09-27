@@ -5,8 +5,6 @@ namespace Springbot\Main\Block;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\App\ObjectManager;
 use Magento\Sales\Model\Order;
-use Magento\Checkout\Model\Session;
-use Springbot\Main\Model\Api;
 
 /**
  * Class Async
@@ -16,7 +14,7 @@ use Springbot\Main\Model\Api;
 class EnhancedPixel extends Template
 {
 
-    private $_order;
+    private $order;
 
     /**
      * @return float
@@ -40,11 +38,11 @@ class EnhancedPixel extends Template
      */
     public function getLastOrder()
     {
-        if (!isset($this->_order)) {
+        if (!isset($this->order)) {
             $orderFactory = ObjectManager::getInstance()->get('Magento\Sales\Model\OrderFactory');
-            $this->_order = $orderFactory->create()->load($this->getOrderId());
+            $this->order = $orderFactory->create()->load($this->getOrderId());
         }
-        return $this->_order;
+        return $this->order;
     }
 
     /**

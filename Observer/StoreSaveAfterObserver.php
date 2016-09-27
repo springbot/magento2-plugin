@@ -11,8 +11,8 @@ use Exception;
 
 class StoreSaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * InventorySaveAfterObserver constructor
@@ -22,8 +22,8 @@ class StoreSaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -36,11 +36,11 @@ class StoreSaveAfterObserver implements ObserverInterface
     {
         try {
             $storeId = $observer->getEvent()->getStoreId();
-            $this->_queue->scheduleJob(StoreHandler::class, 'handleDelete', [$storeId]);
-            $this->_logger->debug("Scheduled deleted sync job for store ID: {$storeId}");
+            $this->queue->scheduleJob(StoreHandler::class, 'handleDelete', [$storeId]);
+            $this->logger->debug("Scheduled deleted sync job for store ID: {$storeId}");
 
         } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

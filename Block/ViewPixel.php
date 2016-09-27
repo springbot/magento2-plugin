@@ -2,12 +2,9 @@
 
 namespace Springbot\Main\Block;
 
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\View\Element\Template;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Block\Product\AbstractProduct;
 use Springbot\Main\Helper\Data as SpringbotHelper;
-use Magento\Framework\UrlInterface;
 use Magento\Framework\App\ObjectManager;
 
 /**

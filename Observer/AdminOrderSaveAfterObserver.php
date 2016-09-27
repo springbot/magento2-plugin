@@ -11,8 +11,8 @@ use Magento\Framework\Event\Observer;
 
 class AdminOrderSaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -22,8 +22,8 @@ class AdminOrderSaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -37,10 +37,10 @@ class AdminOrderSaveAfterObserver implements ObserverInterface
         try {
             $order = $observer->getEvent()->getOrder();
             /* @var MagentoOrder $order */
-            $this->_queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $order->getId()]);
-            $this->_logger->debug("Scheduled sync job for product ID: {$order->getId()}, Store ID: {$order->getStoreId()}");
+            $this->queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $order->getId()]);
+            $this->logger->debug("Scheduled sync job for product ID: {$order->getId()}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }
