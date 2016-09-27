@@ -24,7 +24,7 @@ interface OrderRepositoryInterface
     /**
      * @param int $storeId
      * @param \Magento\Customer\Api\Data\CustomerInterface $customer
-     * @param \Magento\Quote\Api\Data\AddressInterface $address
+     * @param \Magento\Customer\Api\Data\AddressInterface $address
      * @param \Magento\Quote\Api\Data\CartInterface $quote
      * @param \Magento\Quote\Api\Data\CartItemInterface[] $items
      * @return \Springbot\Main\Api\Entity\Data\OrderInterface

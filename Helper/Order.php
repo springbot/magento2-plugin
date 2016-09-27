@@ -4,7 +4,6 @@ namespace Springbot\Main\Helper;
 
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\AlreadyExistsException;
-use Psr\Log\LoggerInterface as Logger;
 
 class Order extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -23,7 +22,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Customer\Model\StoreRepository $storeRepository
      * @param \Magento\Directory\Helper\Data $regionHelper
      * @param \Magento\Directory\Model\Region $region
-     * @param Logger $logger
+     * @param \Magento\Quote\Api\Data\CartInterfaceFactory $cartFactory
+     * @param \Magento\Framework\Logger\Monolog $logger
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -34,7 +34,8 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Store\Model\StoreRepository $storeRepository,
         \Magento\Directory\Helper\Data $regionHelper,
         \Magento\Directory\Model\Region $region,
-        Logger $logger
+        \Magento\Quote\Api\Data\CartInterfaceFactory $cartFactory,
+        \Magento\Framework\Logger\Monolog $logger
     ) {
         $this->objectManager = $objectManager;
         $this->customerFactory = $customerFactory;
@@ -43,6 +44,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->storeRepository = $storeRepository;
         $this->regionHelper = $regionHelper;
         $this->region = $region;
+        $this->cartFactory = $cartFactory;
         $this->logger = $logger;
         parent::__construct($context);
     }
@@ -50,7 +52,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param int $storeId
      * @param \Magento\Customer\Api\Data\CustomerInterface $customerData
-     * @param \Magento\Quote\Api\Data\AddressInterface $addressData
+     * @param \Magento\Customer\Api\Data\AddressInterface $addressData
      * @param \Magento\Quote\Api\Data\CartInterface $quoteData
      * @param \Magento\Quote\Api\Data\CartItemInterface[] $itemsData
      * @return \Springbot\Main\Api\Entity\Data\OrderInterface
@@ -63,10 +65,22 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->quoteData = $quoteData;
         $this->quoteItemsData = $itemsData;
 
-        $this->findOrCreateCustomer();
+        if($this->findOrCreateCustomer()) {
+          $this->buildCart();
+        }
+
+        eval(\Psy\sh());
 
         // return order eventually
         return;
+    }
+
+    private function buildCart()
+    {
+        $this->quoteData->setItems($this->quoteItemsData)
+            ->assignCustomer($this->customer);
+
+        return $this->cart = $this->quoteData->save();
     }
 
     private function getStore()
@@ -79,20 +93,20 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
     private function getAddresses()
     {
-        return [
-            $this->addressData
-                ->setRegionId($this->getRegionId())
-                ->setDefaultBilling(true)
-                ->setDefaultShipping(true)
-                ->getDataModel()
-        ];
+        $this->address = $this->addressData
+            ->setRegionId($this->getRegionId())
+            ->setPrefix(null)
+            ->setIsDefaultBilling(true)
+            ->setIsDefaultShipping(true);
+
+        return [ $this->address ];
     }
 
     private function getRegionId()
     {
         if ($this->regionHelper->isRegionRequired($this->addressData->getCountryId())) {
-            $this->region->loadByName($this->addressData->getRegion(), $this->addressData->getCountryId());
-            $this->region->loadByCode($this->addressData->getRegion(), $this->addressData->getCountryId());
+            $this->region->loadByName($this->addressData->getPrefix(), $this->addressData->getCountryId());
+            $this->region->loadByCode($this->addressData->getPrefix(), $this->addressData->getCountryId());
         }
         return $this->region->getRegionId();
     }
