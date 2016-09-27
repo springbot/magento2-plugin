@@ -17,7 +17,7 @@ interface CartInterface
     /**
      * @return int
      */
-    public function getEntityId();
+    public function getCartId();
 
     /**
      * @return string

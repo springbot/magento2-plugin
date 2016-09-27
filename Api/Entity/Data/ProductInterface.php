@@ -12,7 +12,7 @@ interface ProductInterface
     /**
      * @return int
      */
-    public function getEntityId();
+    public function getProductId();
 
     /**
      * @return string

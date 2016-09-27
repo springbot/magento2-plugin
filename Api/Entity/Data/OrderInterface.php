@@ -16,7 +16,7 @@ interface OrderInterface
     /**
      * @return int
      */
-    public function getEntityId();
+    public function getOrderId();
 
     /**
      * @return string
@@ -127,6 +127,16 @@ interface OrderInterface
      * @return \Springbot\Main\Api\Entity\Data\Order\ItemInterface[]
      */
     public function getItems();
+
+    /**
+     * @return string
+     */
+    public function getCartUserAgent();
+
+    /**
+     * @return string
+     */
+    public function getOrderUserAgent();
 
 
 }

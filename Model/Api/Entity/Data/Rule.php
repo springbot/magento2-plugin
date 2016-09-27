@@ -13,7 +13,7 @@ class Rule extends MagentoRule implements RuleInterface
 {
     public function getRuleId()
     {
-        return parent::getEntityId();
+        return parent::getRuleId();
     }
 
     public function getIsActive()

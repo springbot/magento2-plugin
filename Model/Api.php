@@ -54,12 +54,12 @@ class Api extends AbstractModel
      * @param array $headers
      * @return \Zend_Http_Response
      * @throws \Exception
-     * @throws \Zend_Httpclient_Exception
+     * @throws \Zend_Http_Client_Exception
      */
     public function post($url, $body, $headers = ['Content-Type' => 'application/json'])
     {
         try {
-            return $this->getClient(\Zend_Httpclient::POST)
+            return $this->getClient(\Zend_Http_Client::POST)
                 ->setUri($url)
                 ->setHeaders($headers)
                 ->setRawData($body)
@@ -109,11 +109,11 @@ class Api extends AbstractModel
      * @param array $headers
      * @return \Zend_Http_Response
      * @throws \Exception
-     * @throws \Zend_Httpclient_Exception
+     * @throws \Zend_Http_Client_Exception
      */
     public function get($url, $headers = [])
     {
-        $client = $this->getClient(\Zend_Httpclient::POST)
+        $client = $this->getClient(\Zend_Http_Client::POST)
             ->setUri($url)
             ->setHeaders($headers);
         try {
@@ -125,12 +125,12 @@ class Api extends AbstractModel
 
     /**
      * @param string $method
-     * @return \Zend_Httpclient
-     * @throws \Zend_Httpclient_Exception
+     * @return \Zend_Http_Client
+     * @throws \Zend_Http_Client_Exception
      */
-    public function getClient($method = \Zend_Httpclient::POST)
+    public function getClient($method = \Zend_Http_Client::POST)
     {
-        $this->client = new \Zend_Httpclient();
+        $this->client = new \Zend_Http_Client();
         $this->client->setMethod($method);
         return $this->client;
     }

@@ -18,6 +18,7 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
     public function getList($storeId)
     {
         $collection = $this->getSpringbotModel()->getCollection();
+        $this->filterResults($collection);
         $stockItems = [];
         foreach ($collection  as $rule) {
             $stockItems[] = $this->getSpringbotModel()->setData($rule->getData());

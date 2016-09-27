@@ -17,7 +17,7 @@ use Springbot\Main\Model\Api\Entity\Data\Product\ProductAttribute;
 class Product extends MagentoProduct implements ProductInterface
 {
 
-    public function getEntityId()
+    public function getProductId()
     {
         return parent::getEntityId();
     }

@@ -32,6 +32,12 @@ class Cart extends Quote implements CartInterface
         return $items;
     }
 
+
+    public function getCartId()
+    {
+        return parent::getEntityId();
+    }
+
     public function getCustomerId()
     {
         return parent::getCustomerId();

@@ -72,7 +72,7 @@ class Counts implements CountsInterface
         // Construct the array to be displayed via the REST endpoint
         $array = [
             "counts" => [
-                "sales_rules" => self::getRuleCount($storeId),
+                "rules" => self::getRuleCount($storeId),
                 "carts" => self::getEntityCount($this->carts, $storeId),
                 "orders" => self::getEntityCount($this->orders, $storeId),
                 "customers" => self::getEntityCount($this->customers, $storeId),

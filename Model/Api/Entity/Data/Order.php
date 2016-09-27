@@ -17,6 +17,11 @@ use Magento\Sales\Model\Order as MagentoOrder;
 class Order extends MagentoOrder implements OrderInterface
 {
 
+    public function getOrderId()
+    {
+        return parent::getEntityId();
+    }
+
     public function getShipments()
     {
         return [];
@@ -98,4 +103,16 @@ class Order extends MagentoOrder implements OrderInterface
         return $orderRedirect->getCollection()->addFieldToFilter('order_id', $this->getId())
             ->setOrder($orderRedirect->getIdFieldName(), 'DESC');
     }
+
+    public function getCartUserAgent()
+    {
+        return null;
+    }
+
+
+    public function getOrderUserAgent()
+    {
+        return null;
+    }
+
 }
