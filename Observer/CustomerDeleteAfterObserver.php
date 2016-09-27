@@ -11,8 +11,8 @@ use Springbot\Main\Model\Handler\CustomerHandler;
 
 class CustomerDeleteAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -22,8 +22,8 @@ class CustomerDeleteAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -37,12 +37,12 @@ class CustomerDeleteAfterObserver implements ObserverInterface
         try {
             $customer = $observer->getEvent()->getCustomer();
             /* @var MagentoCustomer $customer */
-            $this->_queue->scheduleJob(CustomerHandler::class,
+            $this->queue->scheduleJob(CustomerHandler::class,
                 'handleDelete',
                 [$customer->getStoreId(), $customer->getId()]);
-            $this->_logger->debug("Deleted Customer ID: " . $customer->getId());
+            $this->logger->debug("Deleted Customer ID: " . $customer->getId());
         } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

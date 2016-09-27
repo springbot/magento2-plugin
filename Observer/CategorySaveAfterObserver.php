@@ -11,8 +11,8 @@ use Springbot\Main\Model\Handler\CategoryHandler;
 
 class CategorySaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -22,8 +22,8 @@ class CategorySaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -39,12 +39,12 @@ class CategorySaveAfterObserver implements ObserverInterface
             /* @var MagentoCategory $category */
             foreach ($category->getStoreIds() as $storeId) {
                 if ($storeId != 0) {
-                    $this->_queue->scheduleJob(CategoryHandler::class, 'handle', [$storeId, $category->getId()]);
-                    $this->_logger->debug("Created/Updated Category ID: " . $category->getEntityId());
+                    $this->queue->scheduleJob(CategoryHandler::class, 'handle', [$storeId, $category->getId()]);
+                    $this->logger->debug("Created/Updated Category ID: " . $category->getEntityId());
                 }
             }
         } catch (\Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

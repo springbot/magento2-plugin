@@ -11,8 +11,8 @@ use Springbot\Queue\Model\Queue;
 
 class SalesRuleSaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * RuleSaveAfterObserver constructor
@@ -22,8 +22,8 @@ class SalesRuleSaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -38,11 +38,11 @@ class SalesRuleSaveAfterObserver implements ObserverInterface
             $ruleIds = $observer->getEvent()->getAppliedRuleIds();
             /* @var MagentoRule $rule */
             foreach($ruleIds as $ruleId) {
-                $this->_queue->scheduleJob(RuleHandler::class, 'handle', [$ruleId]);
-                $this->_logger->debug("Scheduled sync job for rule ID: {$ruleId}");
+                $this->queue->scheduleJob(RuleHandler::class, 'handle', [$ruleId]);
+                $this->logger->debug("Scheduled sync job for rule ID: {$ruleId}");
             }
         } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

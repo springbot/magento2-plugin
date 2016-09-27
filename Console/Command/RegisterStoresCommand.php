@@ -24,9 +24,9 @@ class RegisterStoresCommand extends Command
     const EMAIL_ARGUMENT = '<springbot_email>';
     const PASSWORD_ARGUMENT = '<springbot_password>';
 
-    private $_storeManager;
-    private $_storeConfig;
-    private $_register;
+    private $storeManager;
+    private $storeConfig;
+    private $register;
 
     /**
      * @param State              $state
@@ -41,9 +41,9 @@ class RegisterStoresCommand extends Command
         StoreConfiguration $storeConfig
     ) {
         $state->setAreaCode('adminhtml');
-        $this->_register = $register;
-        $this->_storeManager = $storeManager;
-        $this->_storeConfig = $storeConfig;
+        $this->register = $register;
+        $this->storeManager = $storeManager;
+        $this->storeConfig = $storeConfig;
         parent::__construct();
     }
 
@@ -76,7 +76,7 @@ class RegisterStoresCommand extends Command
         $storesToRegister = [];
         // Iterate all stores and output them if they're registered, otherwise set them to be registered
 
-        foreach ($this->_storeManager->getStores() as $store) {
+        foreach ($this->storeManager->getStores() as $store) {
             /* @var \Magento\Store\Model\Store\Interceptor $store */
             $registered = $this->_addToTable($table, $store, 'Already registered, no action taken');
             if (!$registered) {
@@ -86,7 +86,7 @@ class RegisterStoresCommand extends Command
 
         // Register any stores that were not already
         if ($storesToRegister) {
-            $successful = $this->_register->registerStores(
+            $successful = $this->register->registerStores(
                 $input->getArgument(self::EMAIL_ARGUMENT),
                 $input->getArgument(self::PASSWORD_ARGUMENT),
                 $storesToRegister
@@ -116,8 +116,8 @@ class RegisterStoresCommand extends Command
      */
     private function _addToTable(TextTable $table, StoreInterface $store, $message, $appendIfUnregistered = false)
     {
-        $springbotStoreId = $this->_storeConfig->getSpringbotStoreId($store->getId());
-        $springbotGuid = strtolower($this->_storeConfig->getGuid($store->getId()));
+        $springbotStoreId = $this->storeConfig->getSpringbotStoreId($store->getId());
+        $springbotGuid = strtolower($this->storeConfig->getGuid($store->getId()));
         if (($springbotStoreId && $springbotGuid) || $appendIfUnregistered) {
             $table->appendRow([substr($store->getName(), 0, 23), $store->getId(), $springbotStoreId, $message]);
 

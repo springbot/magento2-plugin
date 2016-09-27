@@ -3,7 +3,8 @@
 namespace Springbot\Main\Api;
 
 /**
- * @api
+ * Interface CountsInterface
+ * @package Springbot\Main\Api
  */
 interface CountsInterface
 {

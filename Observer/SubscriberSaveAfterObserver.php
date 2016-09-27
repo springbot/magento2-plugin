@@ -12,8 +12,8 @@ use Exception;
 
 class SubscriberSaveAfterObserver implements ObserverInterface
 {
-    private $_logger;
-    private $_queue;
+    private $logger;
+    private $queue;
 
     /**
      * SubscriberSaveAfterObserver constructor
@@ -23,8 +23,8 @@ class SubscriberSaveAfterObserver implements ObserverInterface
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
-        $this->_logger = $loggerInterface;
-        $this->_queue = $queue;
+        $this->logger = $loggerInterface;
+        $this->queue = $queue;
     }
 
     /**
@@ -38,12 +38,12 @@ class SubscriberSaveAfterObserver implements ObserverInterface
         try {
             $subscriber = $observer->getEvent()->getSubscriber();
             /* @var MagentoSubscriber $subscriber */
-            $this->_queue->scheduleJob(SubscriberHandler::class,
+            $this->queue->scheduleJob(SubscriberHandler::class,
                 'handle',
                 [$subscriber->getStoreId(), $subscriber->getId()]);
-            $this->_logger->debug("Scheduled sync job for subscriber ID: {$subscriber->getId()}, Store ID: {$subscriber->getStoreId()}");
+            $this->logger->debug("Scheduled sync job for subscriber ID: {$subscriber->getId()}, Store ID: {$subscriber->getStoreId()}");
         } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
+            $this->logger->debug($e->getMessage());
         }
     }
 }

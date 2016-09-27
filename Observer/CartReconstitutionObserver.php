@@ -19,13 +19,13 @@ use Springbot\Main\Helper\Data as SpringbotHelper;
  */
 class CartReconstitutionObserver implements ObserverInterface
 {
-    private $_session;
-    private $_action;
-    private $_messageManager;
-    private $_springbotHelper;
-    private $_loggerInterface;
-    private $_quoteFactory;
-    private $_scopeConfig;
+    private $session;
+    private $action;
+    private $messageManager;
+    private $springbotHelper;
+    private $loggerInterface;
+    private $quoteFactory;
+    private $scopeConfig;
 
     /**
      * @param Action $action
@@ -45,13 +45,13 @@ class CartReconstitutionObserver implements ObserverInterface
         SpringbotHelper $springbotHelper,
         LoggerInterface $loggerInterface
     ) {
-        $this->_action = $action;
-        $this->_session = $session;
-        $this->_quoteFactory = $quoteFactory;
-        $this->_scopeConfig = $scopeConfig;
-        $this->_loggerInterface = $loggerInterface;
-        $this->_messageManager = $messageManager;
-        $this->_springbotHelper = $springbotHelper;
+        $this->action = $action;
+        $this->session = $session;
+        $this->quoteFactory = $quoteFactory;
+        $this->scopeConfig = $scopeConfig;
+        $this->loggerInterface = $loggerInterface;
+        $this->messageManager = $messageManager;
+        $this->springbotHelper = $springbotHelper;
     }
 
     /**
@@ -62,14 +62,14 @@ class CartReconstitutionObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            if ($quoteId = $this->_action->getRequest()->getParam('quote_id')) {
-                $suppliedSecurityHash = $this->_action->getRequest()->getParam('sec_key');
+            if ($quoteId = $this->action->getRequest()->getParam('quote_id')) {
+                $suppliedSecurityHash = $this->action->getRequest()->getParam('sec_key');
                 $this->setQuote($quoteId, $suppliedSecurityHash);
             }
         } catch (LocalizedException $e) {
-            $this->_messageManager->addError($e->getMessage());
+            $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
-            $this->_messageManager->addException($e, __('Cart Reconstitution error'));
+            $this->messageManager->addException($e, __('Cart Reconstitution error'));
         }
         return;
     }
@@ -77,24 +77,24 @@ class CartReconstitutionObserver implements ObserverInterface
     public function setQuote($quoteId, $suppliedSecurityHash)
     {
         // Check to make sure the cart is allowed to be restored
-        if ($this->_scopeConfig->getValue('springbot/cart_restore/do_restore') == 1) {
+        if ($this->scopeConfig->getValue('springbot/cart_restore/do_restore') == 1) {
             // Instantiate Quote object and load the correct quote
-            $quote = $this->_quoteFactory->create();
+            $quote = $this->quoteFactory->create();
             $quote->load($quoteId);
 
             if ($quote) {
 
                 // Only set the quote if they don't already have one
-                if (!$this->_session->hasQuote()) {
+                if (!$this->session->hasQuote()) {
                     $quote->setIsActive(true)->save();
-                    $token = $this->_scopeConfig->getValue('springbot/configuration/security_token');
+                    $token = $this->scopeConfig->getValue('springbot/configuration/security_token');
                     $correctSecurityHash = sha1($quoteId . $token);
                     if ($suppliedSecurityHash == $correctSecurityHash) {
-                        if ($this->_scopeConfig->getValue('springbot/cart_restore/retain_coupon') === 0) {
+                        if ($this->scopeConfig->getValue('springbot/cart_restore/retain_coupon') === 0) {
                             $quote->setCouponCode('');
                             $quote->save();
                         }
-                        $this->_session->setQuoteId($quoteId);
+                        $this->session->setQuoteId($quoteId);
                     }
                 }
             }

@@ -5,7 +5,7 @@ namespace Springbot\Main\Model\Handler;
 use Magento\Sales\Model\Order as MagentoOrder;
 use Magento\Framework\App\ObjectManager;
 use Magento\Eav\Model\Entity\Attribute\Set as MagentoAttributeSet;
-use Springbot\Main\Model\Entity\Data\AttributeSet;
+use Springbot\Main\Model\Api\Entity\Data\AttributeSet;
 use Springbot\Main\Model\Handler;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Collection as AttributeCollection;
 

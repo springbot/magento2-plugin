@@ -4,7 +4,6 @@ namespace Springbot\Main\Api;
 
 /**
  * Interface ModulesInterface
- *
  * @package Springbot\Main\Api
  */
 interface ModulesInterface
