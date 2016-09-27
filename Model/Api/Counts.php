@@ -100,7 +100,7 @@ class Counts implements CountsInterface
         $collection->addFieldToFilter('store_id', $storeId);
 
         // Return sales array count
-        return $collection->count();
+        return $collection->getSize();
     }
 
     private function getCategoryCount($storeId)
@@ -111,7 +111,7 @@ class Counts implements CountsInterface
         $rootCategory = $this->categories->load($store->getRootCategoryId());
         $collection = $this->categories->getCollection();
         $collection->addFieldToFilter('path', array('like' => $rootCategory->getPath() . '%'));
-        return $collection->count();
+        return $collection->getSize();
     }
 
     private function getRuleCount($storeId)
@@ -121,7 +121,7 @@ class Counts implements CountsInterface
         $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
         $store = $manager->getStore($storeId);
         $collection->addWebsiteFilter($store->getWebsiteId());
-        return $collection->count();
+        return $collection->getSize();
     }
 
     private function getProductCount($storeId)
@@ -131,7 +131,7 @@ class Counts implements CountsInterface
         $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
         $store = $manager->getStore($storeId);
         $collection->addWebsiteFilter($store->getWebsiteId());
-        return $collection->count();
+        return $collection->getSize();
     }
 
     public function getGuests($storeId)
@@ -139,7 +139,7 @@ class Counts implements CountsInterface
         $collection = $this->orders->getCollection();
         $collection->addFieldToFilter('store_id', $storeId);
         $collection->addFieldToFilter('customer_is_guest', true);
-        return $collection->count();
+        return $collection->getSize();
     }
 
 }

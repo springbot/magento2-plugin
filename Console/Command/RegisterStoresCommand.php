@@ -29,18 +29,15 @@ class RegisterStoresCommand extends Command
     private $register;
 
     /**
-     * @param State              $state
      * @param StoreManager       $storeManager
      * @param Register           $register
      * @param StoreConfiguration $storeConfig
      */
     public function __construct(
-        State $state,
         StoreManager $storeManager,
         Register $register,
         StoreConfiguration $storeConfig
     ) {
-        $state->setAreaCode('adminhtml');
         $this->register = $register;
         $this->storeManager = $storeManager;
         $this->storeConfig = $storeConfig;
