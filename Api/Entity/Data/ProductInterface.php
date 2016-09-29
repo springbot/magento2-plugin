@@ -10,6 +10,18 @@ interface ProductInterface
 {
 
     /**
+     * @param $storeId
+     * @param $productId
+     * @param $sku
+     * @param $type
+     * @param $createdAt
+     * @param $updatedAt
+     * @param $customAttributeSetId
+     * @return void
+     */
+    public function setValues($storeId, $productId, $sku, $type,  $createdAt, $updatedAt, $customAttributeSetId);
+
+    /**
      * @return int
      */
     public function getProductId();
@@ -88,11 +100,6 @@ interface ProductInterface
      * @return array
      */
     public function getCategoryIds();
-
-    /**
-     * @return array
-     */
-    public function getRootCategoryIds();
 
     /**
      * @return array

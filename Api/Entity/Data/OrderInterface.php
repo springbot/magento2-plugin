@@ -8,6 +8,51 @@ namespace Springbot\Main\Api\Entity\Data;
  */
 interface OrderInterface
 {
+
+    /**
+     * @param $storeId
+     * @param $incrementId
+     * @param $orderId
+     * @param $customerEmail
+     * @param $quoteId
+     * @param $customerId
+     * @param $grandTotal
+     * @param $remoteIp
+     * @param $status
+     * @param $state
+     * @param $customerIsGuest
+     * @param $createdAt
+     * @param $discountAmount
+     * @param $totalPaid
+     * @param $shippingMethod
+     * @param $shippingAmount
+     * @param $couponCode
+     * @param $orderCurrencyCode
+     * @param $baseTaxAmount
+     * @return null
+     */
+    public function setValues(
+        $storeId,
+        $incrementId,
+        $orderId,
+        $customerEmail,
+        $quoteId,
+        $customerId,
+        $grandTotal,
+        $remoteIp,
+        $status,
+        $state,
+        $customerIsGuest,
+        $createdAt,
+        $discountAmount,
+        $totalPaid,
+        $shippingMethod,
+        $shippingAmount,
+        $couponCode,
+        $orderCurrencyCode,
+        $baseTaxAmount
+    );
+
     /**
      * @return int
      */
@@ -97,7 +142,7 @@ interface OrderInterface
     /**
      * Get all shipments
      *
-     * @return \Magento\Sales\Api\Data\ShipmentInterface|null
+     * @return \Magento\Sales\Api\Data\ShipmentInterface[]
      */
     public function getShipments();
 

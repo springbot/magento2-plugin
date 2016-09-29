@@ -72,11 +72,6 @@ interface ItemInterface
     /**
      * @return array
      */
-    public function getRootCategoryIds();
-
-    /**
-     * @return array
-     */
     public function getAllCategoryIds();
 
     /**

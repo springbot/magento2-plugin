@@ -21,7 +21,6 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
         $collection->addFieldToFilter('entity_type_id', ['in' => [1, 4]]);
         $this->filterResults($collection);
 
-
         $ret = [];
         foreach ($collection->getItems() as $item) {
             $ret[] = $this->getFromId($storeId, $item->getId());

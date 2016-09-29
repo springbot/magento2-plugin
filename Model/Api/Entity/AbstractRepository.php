@@ -4,40 +4,40 @@ namespace Springbot\Main\Model\Api\Entity;
 
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Data\Collection;
-use Springbot\Main\Api\Entity\ProductRepositoryInterface;
-use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\Store;
+use Magento\Framework\DB\Select;
 
 /**
  * Class ProductRepository
  * @package Springbot\Main\Model\Api\Entity
  */
-abstract class AbstractRepository implements ProductRepositoryInterface
+abstract class AbstractRepository
 {
     protected $request;
     protected $objectManager;
-
-    /**
-     * @return AbstractModel
-     */
-    abstract public function getSpringbotModel();
+    protected $resourceConnection;
 
     /**
      * AbstractRepository constructor.
-     * @param HttpRequest $request
+     * @param \Magento\Framework\App\Request\Http $request
+     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     * @param \Magento\Framework\App\ObjectManager $objectManager
      */
-    public function __construct(HttpRequest $request)
+    public function __construct(Http $request, ResourceConnection $resourceConnection, ObjectManager $objectManager)
     {
         $this->request = $request;
-        $this->objectManager = ObjectManager::getInstance();
+        $this->resourceConnection = $resourceConnection;
+        $this->objectManager = $objectManager;
     }
 
     /**
-     * @param Collection $collection
+     * @param \Magento\Framework\DB\Select $select
      * @throws \Exception
      */
-    public function filterResults(Collection $collection)
+    public function filterResults(Select $select)
     {
         $page = $this->request->getQuery('page', 1);
         if (!is_numeric($page)) {
@@ -49,14 +49,7 @@ abstract class AbstractRepository implements ProductRepositoryInterface
             throw new \Exception("Limit {$limit} is not a valid integer");
         }
 
-        $collection->getSelect()->limitPage((int)$page, (int)$limit);
+        $select->limitPage((int)$page, (int)$limit);
     }
 
-    /**
-     * @return Store
-     */
-    public function getStoreModel()
-    {
-        return $this->objectManager->create(Store::class);
-    }
 }

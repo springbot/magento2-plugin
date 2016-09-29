@@ -2,8 +2,6 @@
 
 namespace Springbot\Main\Model\Api\Entity\Data\Order;
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\Data\Order\ItemAttributeInterface;
 use Springbot\Main\Api\Entity\Data\Order\ItemInterface;
 
@@ -32,19 +30,62 @@ class Item implements ItemInterface
     private $productAttributes;
 
     /**
+     * @param $sku
+     * @param $skuFulfillment
+     * @param $qtyOrdered
+     * @param $landingUrl
+     * @param $imageUrl
+     * @param $wgt
+     * @param $name
+     * @param $desc
+     * @param $sellPrice
+     * @param $productId
+     * @param $productType
+     * @param $categoryIds
+     * @param $allCategoryIds
+     * @param $attributeSetId
+     * @param $productAttributes
+     */
+    public function setValues(
+        $sku,
+        $skuFulfillment,
+        $qtyOrdered,
+        $landingUrl,
+        $imageUrl,
+        $wgt,
+        $name,
+        $desc,
+        $sellPrice,
+        $productId,
+        $productType,
+        $categoryIds,
+        $allCategoryIds,
+        $attributeSetId,
+        $productAttributes
+    ) {
+        $this->sku = $sku;
+        $this->skuFulfillment = $skuFulfillment;
+        $this->qtyOrdered = $qtyOrdered;
+        $this->landingUrl = $landingUrl;
+        $this->imageUrl = $imageUrl;
+        $this->wgt = $wgt;
+        $this->name = $name;
+        $this->desc = $desc;
+        $this->sellPrice = $sellPrice;
+        $this->productId = $productId;
+        $this->productType = $productType;
+        $this->categoryIds = $categoryIds;
+        $this->allCategoryIds = $allCategoryIds;
+        $this->attributeSetId = $attributeSetId;
+        $this->productAttributes = $productAttributes;
+    }
+
+    /**
      * @return mixed
      */
     public function getSku()
     {
         return $this->sku;
-    }
-
-    /**
-     * @param mixed $sku
-     */
-    public function setSku($sku)
-    {
-        $this->sku = $sku;
     }
 
     /**
@@ -56,27 +97,11 @@ class Item implements ItemInterface
     }
 
     /**
-     * @param mixed $skuFulfillment
-     */
-    public function setSkuFulfillment($skuFulfillment)
-    {
-        $this->skuFulfillment = $skuFulfillment;
-    }
-
-    /**
      * @return mixed
      */
     public function getQtyOrdered()
     {
         return $this->qtyOrdered;
-    }
-
-    /**
-     * @param mixed $qtyOrdered
-     */
-    public function setQtyOrdered($qtyOrdered)
-    {
-        $this->qtyOrdered = $qtyOrdered;
     }
 
     /**
@@ -88,27 +113,11 @@ class Item implements ItemInterface
     }
 
     /**
-     * @param mixed $landingUrl
-     */
-    public function setLandingUrl($landingUrl)
-    {
-        $this->landingUrl = $landingUrl;
-    }
-
-    /**
      * @return mixed
      */
     public function getImageUrl()
     {
         return $this->imageUrl;
-    }
-
-    /**
-     * @param mixed $imageUrl
-     */
-    public function setImageUrl($imageUrl)
-    {
-        $this->imageUrl = $imageUrl;
     }
 
     /**
@@ -120,27 +129,11 @@ class Item implements ItemInterface
     }
 
     /**
-     * @param mixed $wgt
-     */
-    public function setWgt($wgt)
-    {
-        $this->wgt = $wgt;
-    }
-
-    /**
      * @return mixed
      */
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
     }
 
     /**
@@ -152,27 +145,11 @@ class Item implements ItemInterface
     }
 
     /**
-     * @param mixed $desc
-     */
-    public function setDesc($desc)
-    {
-        $this->desc = $desc;
-    }
-
-    /**
      * @return mixed
      */
     public function getSellPrice()
     {
         return $this->sellPrice;
-    }
-
-    /**
-     * @param mixed $sellPrice
-     */
-    public function setSellPrice($sellPrice)
-    {
-        $this->sellPrice = $sellPrice;
     }
 
     /**
@@ -184,27 +161,11 @@ class Item implements ItemInterface
     }
 
     /**
-     * @param mixed $productId
-     */
-    public function setProductId($productId)
-    {
-        $this->productId = $productId;
-    }
-
-    /**
      * @return mixed
      */
     public function getProductType()
     {
         return $this->productType;
-    }
-
-    /**
-     * @param mixed $productType
-     */
-    public function setProductType($productType)
-    {
-        $this->productType = $productType;
     }
 
     /**
@@ -216,43 +177,11 @@ class Item implements ItemInterface
     }
 
     /**
-     * @param mixed $categoryIds
-     */
-    public function setCategoryIds($categoryIds)
-    {
-        $this->categoryIds = $categoryIds;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRootCategoryIds()
-    {
-        return $this->rootCategoryIds;
-    }
-
-    /**
-     * @param mixed $rootCategoryIds
-     */
-    public function setRootCategoryIds($rootCategoryIds)
-    {
-        $this->rootCategoryIds = $rootCategoryIds;
-    }
-
-    /**
      * @return mixed
      */
     public function getAllCategoryIds()
     {
         return $this->allCategoryIds;
-    }
-
-    /**
-     * @param mixed $allCategoryIds
-     */
-    public function setAllCategoryIds($allCategoryIds)
-    {
-        $this->allCategoryIds = $allCategoryIds;
     }
 
     /**
@@ -264,27 +193,11 @@ class Item implements ItemInterface
     }
 
     /**
-     * @param mixed $attributeSetId
-     */
-    public function setAttributeSetId($attributeSetId)
-    {
-        $this->attributeSetId = $attributeSetId;
-    }
-
-    /**
      * @return ItemAttributeInterface[]
      */
     public function getProductAttributes()
     {
         return $this->productAttributes;
-    }
-
-    /**
-     * @param ItemAttributeInterface[] $productAttributes
-     */
-    public function setProductAttributes($productAttributes)
-    {
-        $this->productAttributes = $productAttributes;
     }
 
 }
