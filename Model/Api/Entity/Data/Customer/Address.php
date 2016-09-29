@@ -12,7 +12,6 @@ class Address implements AddressInterface
 {
 
     public $entityId;
-    public $incrementId;
     public $createdAt;
     public $updatedAt;
     public $isActive;
@@ -32,30 +31,8 @@ class Address implements AddressInterface
     public $attributes;
     public $customerId;
 
-    /**
-     * Address constructor.
-     * @param $entityId
-     * @param $incrementId
-     * @param $createdAt
-     * @param $updatedAt
-     * @param $isActive
-     * @param $city
-     * @param $company
-     * @param $countryId
-     * @param $fax
-     * @param $firstname
-     * @param $lastname
-     * @param $middlename
-     * @param $postcode
-     * @param $prefix
-     * @param $region
-     * @param $street
-     * @param $suffix
-     * @param $telephone
-     */
-    public function __construct(
+    public function setValues(
         $entityId,
-        $incrementId,
         $createdAt,
         $updatedAt,
         $isActive,
@@ -74,7 +51,6 @@ class Address implements AddressInterface
         $telephone
     ) {
         $this->entityId = $entityId;
-        $this->incrementId = $incrementId;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
         $this->isActive = $isActive;
@@ -100,15 +76,6 @@ class Address implements AddressInterface
     {
         return $this->entityId;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getIncrementId()
-    {
-        return $this->incrementId;
-    }
-
 
     /**
      * @return mixed

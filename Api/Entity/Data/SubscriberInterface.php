@@ -6,6 +6,15 @@ interface SubscriberInterface
 {
 
     /**
+     * @param $storeId
+     * @param $optinStatus
+     * @param $email
+     * @param $subscriberId
+     * @return void
+     */
+    public function setValues($storeId, $optinStatus, $email, $subscriberId);
+
+    /**
      * @return int
      */
     public function getSubscriberId();

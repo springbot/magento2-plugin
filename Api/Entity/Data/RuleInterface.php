@@ -10,6 +10,60 @@ interface RuleInterface
 {
 
     /**
+     * @param $storeId
+     * @param $ruleId
+     * @param $isActive
+     * @param $name
+     * @param $couponCode
+     * @param $description
+     * @param $conditions
+     * @param $actions
+     * @param $fromDate
+     * @param $toDate
+     * @param $usesPerCoupon
+     * @param $usesPerCustomer
+     * @param $stopRulesProcessing
+     * @param $isAdvanced
+     * @param $productIds
+     * @param $sortOrder
+     * @param $simpleAction
+     * @param $discountAmount
+     * @param $discountQty
+     * @param $discountStep
+     * @param $isSimpleFreeShipping
+     * @param $appliesToShipping
+     * @param $timesUsed
+     * @param $isRss
+     * @return void
+     */
+    public function setValues(
+        $storeId,
+        $ruleId,
+        $isActive,
+        $name,
+        $couponCode,
+        $description,
+        $conditions,
+        $actions,
+        $fromDate,
+        $toDate,
+        $usesPerCoupon,
+        $usesPerCustomer,
+        $stopRulesProcessing,
+        $isAdvanced,
+        $productIds,
+        $sortOrder,
+        $simpleAction,
+        $discountAmount,
+        $discountQty,
+        $discountStep,
+        $isSimpleFreeShipping,
+        $appliesToShipping,
+        $timesUsed,
+        $isRss
+    );
+
+    /**
      * @return int
      */
     public function getRuleId();

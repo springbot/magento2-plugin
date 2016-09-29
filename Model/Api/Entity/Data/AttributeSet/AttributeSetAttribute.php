@@ -23,7 +23,7 @@ class AttributeSetAttribute implements AttributeSetAttributeInterface
      * @param string $code
      * @param array $options
      */
-    public function __construct($id, $label, $code, $options = [])
+    public function setValues($id, $label, $code, $options = [])
     {
         $this->id = $id;
         $this->label = $label;

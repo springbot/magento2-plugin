@@ -58,7 +58,7 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
             ->from([$conn->getTableName('catalog_product_entity')])
             ->where('entity_id', $productId);
         $this->filterResults($select);
-        
+
         foreach ($conn->fetchAll($select) as $row) {
             return $this->createProduct($storeId, $row);
         }

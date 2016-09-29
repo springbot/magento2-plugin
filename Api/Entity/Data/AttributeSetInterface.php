@@ -10,6 +10,15 @@ interface AttributeSetInterface
 {
 
     /**
+     * @param $storeId
+     * @param $attributeSetId
+     * @param $name
+     * @param $type
+     * @return void
+     */
+    public function setValues($storeId, $attributeSetId, $name, $type);
+
+    /**
      * @return int
      */
     public function getAttributeSetId();

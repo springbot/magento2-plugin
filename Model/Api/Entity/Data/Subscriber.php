@@ -5,34 +5,49 @@ namespace Springbot\Main\Model\Api\Entity\Data;
 use Magento\Newsletter\Model\Subscriber as MagentoSubscriber;
 use Springbot\Main\Api\Entity\Data\SubscriberInterface;
 
-class Subscriber extends MagentoSubscriber implements SubscriberInterface
+class Subscriber implements SubscriberInterface
 {
+    public $storeId;
     public $optinStatus;
     public $email;
     public $subscriberId;
 
     /**
-     * @return string
+     * @param $storeId
+     * @param $optinStatus
+     * @param $email
+     * @param $subscriberId
      */
-    public function getSubscriberId()
+    public function setValues($storeId, $optinStatus, $email, $subscriberId)
     {
-        return parent::getSubscriberId();
+        $this->storeId = $storeId;
+        $this->optinStatus = $optinStatus;
+        $this->email = $email;
+        $this->subscriberId = $subscriberId;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getOptinStatus()
     {
-        return parent::getOptinStatus();
+        return $this->optinStatus;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getEmail()
     {
-        return parent::getEmail();
+        return $this->email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubscriberId()
+    {
+        return $this->subscriberId;
     }
 
 }

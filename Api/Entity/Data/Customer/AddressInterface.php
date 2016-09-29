@@ -15,11 +15,6 @@ interface AddressInterface
     public function getEntityId();
 
     /**
-     * @return int
-     */
-    public function getIncrementId();
-
-    /**
      * @return string
      */
     public function getCreatedAt();

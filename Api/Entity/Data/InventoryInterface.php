@@ -8,6 +8,32 @@ namespace Springbot\Main\Api\Entity\Data;
  */
 interface InventoryInterface
 {
+
+    /**
+     * Inventory constructor.
+     * @param $storeId
+     * @param $productId
+     * @param $systemManaged
+     * @param $outOfStockQty
+     * @param $quantity
+     * @param $itemId
+     * @param $isInStock
+     * @param $minSaleQty
+     * @param $skuFulfillment
+     * @return void
+     */
+    public function setValues(
+        $storeId,
+        $productId,
+        $systemManaged,
+        $outOfStockQty,
+        $quantity,
+        $itemId,
+        $isInStock,
+        $minSaleQty,
+        $skuFulfillment
+    );
+
     /**
      * @return int
      */

@@ -14,6 +14,21 @@ interface GuestInterface
 {
 
     /**
+     * @param $storeId
+     * @param $orderId
+     * @param $firstname
+     * @param $lastname
+     * @param $email
+     * @param $createdAt
+     * @param $updatedAt
+     * @param $billingAddressId
+     * @param $shippingAddressId
+     * @return void
+     */
+    public function setValues($storeId, $orderId, $firstname, $lastname, $email, $createdAt, $updatedAt,
+        $billingAddressId, $shippingAddressId);
+
+    /**
      * @return int
      */
     public function getGuestId();

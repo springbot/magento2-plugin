@@ -2,8 +2,10 @@
 
 namespace Springbot\Main\Model\Api\Entity\Data;
 
+use Magento\Framework\App\ResourceConnection;
 use Magento\Sales\Model\Order as MagentoOrder;
 use Springbot\Main\Api\Entity\Data\GuestInterface;
+use Springbot\Main\Model\Api\Entity\Data\Customer\AddressFactory;
 
 /**
  *  Guest
@@ -13,43 +15,141 @@ use Springbot\Main\Api\Entity\Data\GuestInterface;
  *
  * @package Springbot\Main\Api\Data
  */
-class Guest extends MagentoOrder implements GuestInterface
+class Guest implements GuestInterface
 {
     private static $offset = 100000000;
 
+    public $storeId;
+    public $orderId;
+    public $firstname;
+    public $lastname;
+    public $email;
+    public $createdAt;
+    public $updatedAt;
+    public $billingAddressId;
+    public $shippingAddressId;
+
+    private $resourceConnection;
+    private $addressFactory;
+
+    /**
+     * Guest constructor.
+     * @param ResourceConnection $resourceConnection
+     * @param AddressFactory $addressFactory
+     */
+    public function __construct(ResourceConnection $resourceConnection, AddressFactory $addressFactory)
+    {
+        $this->resourceConnection = $resourceConnection;
+        $this->addressFactory = $addressFactory;
+    }
+
+    /**
+     * @param $storeId
+     * @param $orderId
+     * @param $firstname
+     * @param $lastname
+     * @param $email
+     * @param $createdAt
+     * @param $updatedAt
+     * @param $billingAddressId
+     * @param $shippingAddressId
+     * @return void
+     */
+    public function setValues($storeId, $orderId, $firstname, $lastname, $email, $createdAt, $updatedAt,
+        $billingAddressId, $shippingAddressId)
+    {
+        $this->storeId = $storeId;
+        $this->orderId = $orderId;
+        $this->firstname = $firstname;
+        $this->lastname = $lastname;
+        $this->email = $email;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
+        $this->billingAddressId = $billingAddressId;
+        $this->shippingAddressId = $shippingAddressId;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getGuestId()
     {
-        return parent::getEntityId() + self::$offset;
+        return $this->orderId + self::$offset;
     }
 
+    /**
+     * @return mixed
+     */
     public function getOrderId()
     {
-        return parent::getEntityId();
+        return $this->orderId;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFirstname()
     {
-        return parent::getCustomerFirstname();
+        return $this->firstname;
     }
 
+    /**
+     * @return mixed
+     */
     public function getLastname()
     {
-        return parent::getCustomerLastname();
+        return $this->lastname;
     }
 
+    /**
+     * @return mixed
+     */
     public function getEmail()
     {
-        return parent::getCustomerEmail();
+        return $this->email;
     }
 
     public function getBillingAddress()
     {
-        // TODO: Implement getBillingAddress() method.
+        return $this->fetchAddress($this->storeId, $this->billingAddressId);
     }
 
     public function getShippingAddress()
     {
-        // TODO: Implement getShippingAddress() method.
+        return $this->fetchAddress($this->storeId, $this->shippingAddressId);
+    }
+    
+    private function fetchAddress($storeId, $id)
+    {
+        $conn = $this->resourceConnection->getConnection();
+        $select = $conn->select()
+            ->from([$conn->getTableName('sales_order_address')])
+            ->where('entity_id = ?', $this->billingAddressId);
+        foreach ($conn->fetchAll($select) as $row) {
+            $address = $this->addressFactory->create();
+            $address->setValues(
+                $row['entity_id'],
+                $this->createdAt,
+                $this->updatedAt,
+                true,
+                $row['city'],
+                $row['company'],
+                $row['country_id'],
+                $row['fax'],
+                $row['firstname'],
+                $row['lastname'],
+                $row['middlename'],
+                $row['postcode'],
+                $row['prefix'],
+                $row['region'],
+                $row['street'],
+                $row['suffix'],
+                $row['telephone']
+            );
+            return $address;
+        }
+        return null;
+
     }
 
 }

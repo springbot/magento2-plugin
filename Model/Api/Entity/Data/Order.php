@@ -6,7 +6,6 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Springbot\Main\Api\Entity\Data\OrderInterface;
-use Springbot\Main\Model\SpringbotOrderRedirect;
 
 /**
  * Class Order
@@ -293,45 +292,27 @@ class Order implements OrderInterface
 
     public function getRedirectMongoId()
     {
-        return '';
-        $orderRedirect = $this->getOrderRedirects()->getFirstItem();
-        if (!$orderRedirect->isEmpty()) {
-            return $orderRedirect->getData('redirect_string');
-        } else {
-            return null;
-        }
+        $redirects = $this->getRedirectMongoIds();
+        return end($redirects);
     }
 
     public function getRedirectMongoIds()
     {
-        return [];
-        $ret = array();
-        foreach ($this->getOrderRedirects() as $redirectItem) {
-            $ret[] = $redirectItem->getData('redirect_string');
+        if (isset($this->redirectMongoIds)) {
+            return $this->redirectMongoIds;
         }
-        return $ret;
-    }
+        $conn = $this->connectionResource->getConnection();
+        $select = $conn->select()
+            ->from([$conn->getTableName('springbot_order_redirect')])
+            ->where('order_id = ?', $this->orderId)
+            ->order('id', 'DESC');
 
-    /**
-     * @return Collection
-     */
-    private function getOrderRedirects()
-    {
-        $orderRedirect = $this->objectManager->get('Springbot\Main\Model\SpringbotOrderRedirect');
-        /* @var SpringbotOrderRedirect $orderRedirect */
-        return $orderRedirect->getCollection()
-            ->addFieldToFilter('order_id', $this->getId())
-            ->setOrder($orderRedirect->getIdFieldName(), 'DESC');
-    }
-
-    public function getCartUserAgent()
-    {
-        return null;
-    }
-
-    public function getOrderUserAgent()
-    {
-        return null;
+        $redirectIds = [];
+        foreach ($conn->fetchAll($select) as $row) {
+            $redirectIds[] = $row['redirect_string'];
+        }
+        $this->redirectMongoIds = $redirectIds;
+        return $this->redirectMongoIds;
     }
 
     /**
@@ -383,5 +364,27 @@ class Order implements OrderInterface
     }
 
 
+    public function getCartUserAgent()
+    {
+        return $this->fetchTrackable('quote_id', $this->quoteId, 'cart_user_agent');
+    }
+
+    public function getOrderUserAgent()
+    {
+        return $this->fetchTrackable('order_id', $this->orderId, 'order_user_agent');
+    }
+
+    private function fetchTrackable($column, $value, $type)
+    {
+        $conn = $this->connectionResource->getConnection();
+        $select = $conn->select()
+            ->from([$conn->getTableName('springbot_trackable')])
+            ->where($column . ' = ?', $value)
+            ->where('type = ?', $type)
+            ->order('id', 'DESC');
+        foreach ($conn->fetchAll($select) as $row) {
+            return $row['value'];
+        }
+    }
 
 }

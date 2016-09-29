@@ -24,7 +24,6 @@ class Item implements ItemInterface
     private $productId;
     private $productType;
     private $categoryIds;
-    private $rootCategoryIds;
     private $allCategoryIds;
     private $attributeSetId;
     private $productAttributes;
