@@ -2,7 +2,7 @@
   "name": "springbot/magento2-plugin",
   "description": "Springbot integration for Magento 2",
   "type": "magento2-module",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "license": [
     "OSL-3.0"
   ],
