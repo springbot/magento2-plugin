@@ -4,6 +4,10 @@ namespace Springbot\Main\Model\Api\Entity\Data;
 
 use Magento\Catalog\Model\Category as MagentoCategory;
 use Springbot\Main\Api\Entity\Data\CategoryInterface;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Backend\Model\UrlInterface;
 
 /**
  * Class Category
@@ -11,71 +15,83 @@ use Springbot\Main\Api\Entity\Data\CategoryInterface;
  */
 class Category implements CategoryInterface
 {
-
+    public $storeId;
     public $categoryId;
     public $level;
     public $path;
     public $createdAt;
     public $updatedAt;
-    public $categoryAttributes = [];
-
     public $name;
     public $urlPath;
     public $description;
+    public $requestPath;
+    public $targetPath;
+    public $categoryAttributes = [];
+
+    private $resourceConnection;
+    private $scopeConfig;
+    private $storeManager;
 
     /**
-     * Category constructor.
+     * Guest constructor.
+     * @param ResourceConnection $resourceConnection
+     * @param ScopeConfigInterface $scopeConfig
+     * @param StoreManagerInterface $storeManager
+     */
+    public function __construct(
+        ResourceConnection $resourceConnection,
+        ScopeConfigInterface $scopeConfig,
+        StoreManagerInterface $storeManager
+    )
+    {
+        $this->resourceConnection = $resourceConnection;
+        $this->scopeConfig = $scopeConfig;
+        $this->storeManager = $storeManager;
+    }
+
+    /**
+     * @param $storeId
      * @param $categoryId
      * @param $level
      * @param $path
      * @param $createdAt
      * @param $updatedAt
+     * @param $requestPath
+     * @param $targetPath
      */
-    public function setValues($categoryId, $level, $path, $createdAt, $updatedAt)
+    public function setValues($storeId, $categoryId, $level, $path, $createdAt, $updatedAt, $requestPath, $targetPath)
     {
+        $this->storeId = $storeId;
         $this->categoryId = $categoryId;
         $this->level = $level;
         $this->path = $path;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
+        $this->requestPath = $requestPath;
+        $this->targetPath = $targetPath;
         $this->loadAttributes();
     }
 
-    /**
-     * @return mixed
-     */
     public function getCategoryId()
     {
         return $this->categoryId;
     }
 
-    /**
-     * @return mixed
-     */
     public function getLevel()
     {
         return $this->level;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPath()
     {
         return $this->path;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
@@ -93,12 +109,22 @@ class Category implements CategoryInterface
 
     public function getUrl()
     {
-        // TODO: Implement getUrl() method.
+        $store = $this->storeManager->getStore($this->storeId);
+        return $store->getBaseUrl(UrlInterface::URL_TYPE_WEB)
+        . $this->requestPath;
+    }
+
+
+    public function getUrlIdPath()
+    {
+        $store = $this->storeManager->getStore($this->storeId);
+        return $store->getBaseUrl(UrlInterface::URL_TYPE_WEB)
+        . $this->targetPath;
     }
 
     public function getIsActive()
     {
-        // TODO: Implement getIsActive() method.
+        return true;
     }
 
     public function getDescription()
@@ -108,7 +134,7 @@ class Category implements CategoryInterface
 
     private function loadAttributes()
     {
-        $conn = $this->connectionResource->getConnection();
+        $conn = $this->resourceConnection->getConnection();
         $query = $conn->query("SELECT 
               ea.attribute_code,
               cpet.value as `text`,
@@ -156,8 +182,8 @@ class Category implements CategoryInterface
                 case 'name':
                     $this->name = $value;
                     break;
-                case 'url_path':
-                    $this->urlPath = $value;
+                case 'description':
+                    $this->description = $value;
                     break;
                 default:
                     if ($value !== null) {

@@ -2,144 +2,77 @@
 
 namespace Springbot\Main\Model\Api;
 
-use Magento\Catalog\Model\Category;
-use Magento\Catalog\Model\Product;
-use Magento\Customer\Model\Customer;
-use Magento\Framework\Model\Context;
-use Magento\Quote\Model\Quote;
-use Magento\Sales\Model\Order;
-use Magento\SalesRule\Model\Rule as SalesRule;
-use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
-use Magento\Newsletter\Model\Subscriber;
-use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\Registry;
-use Magento\Framework\App\ObjectManager;
 use Springbot\Main\Api\CountsInterface;
+use Springbot\Main\Model\Api\CountFactory;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Store\Model\StoreManagerInterface;
 
 class Counts implements CountsInterface
 {
-    protected $salesRules;
-    protected $catalogRules;
-    protected $carts;
-    protected $orders;
-    protected $customers;
-    protected $categories;
-    protected $attributeSets;
-    protected $products;
-    protected $subscribers;
+
+    private $resourceConnection;
+    private $countFactory;
+    private $storeManager;
+    private $counts = [];
 
     /**
-     * Counts constructor.
-     *
-     * @param SalesRule $salesRules
-     * @param Quote $carts
-     * @param Order $orders
-     * @param Customer $customers
-     * @param Category $categories
-     * @param Product $products
-     * @param AttributeSet $attributeSets
-     * @param Subscriber $subscribers
+     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     * @param CountFactory $countFactory
+     * @param StoreManagerInterface $storeManager
      */
-    public function __construct(
-        SalesRule $salesRules,
-        Quote $carts,
-        Order $orders,
-        Customer $customers,
-        Category $categories,
-        Product $products,
-        AttributeSet $attributeSets,
-        Subscriber $subscribers
-    )
+    public function __construct(ResourceConnection $resourceConnection, CountFactory $countFactory, StoreManagerInterface $storeManager)
     {
-        $this->salesRules = $salesRules;
-        $this->carts = $carts;
-        $this->orders = $orders;
-        $this->customers = $customers;
-        $this->categories = $categories;
-        $this->products = $products;
-        $this->attributeSets = $attributeSets;
-        $this->subscribers = $subscribers;
+        $this->resourceConnection = $resourceConnection;
+        $this->countFactory = $countFactory;
+        $this->storeManager = $storeManager;
     }
 
-    /**
-     * Get all store counts we care about.
-     *
-     * @param int $storeId
-     * @return array
-     */
+
     public function getCounts($storeId)
     {
-        // Construct the array to be displayed via the REST endpoint
-        $array = [
-            "counts" => [
-                "rules" => self::getRuleCount($storeId),
-                "carts" => self::getEntityCount($this->carts, $storeId),
-                "orders" => self::getEntityCount($this->orders, $storeId),
-                "customers" => self::getEntityCount($this->customers, $storeId),
-                "categories" => self::getCategoryCount($storeId),
-                "products" => $this->getProductCount($storeId),
-                "guests" => $this->getGuests($storeId),
-                "subscribers" => $this->getEntityCount($this->subscribers, $storeId),
-            ]
-        ];
+        if (($store = $this->storeManager->getStore($storeId)) == null) {
+            throw new \Exception("Store not found");
+        }
+        $websiteId = $store->getWebsiteId();
 
-        // Return our array for display via the REST API
-        return $array;
+        $conn = $this->resourceConnection->getConnection();
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('sales_order')} WHERE store_id = :store_id", ['store_id' => $storeId]);
+        $this->addCount('orders', $this->getCountFromQuery($query));
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('quote')} WHERE store_id = :store_id", ['store_id' => $storeId]);
+        $this->addCount('carts', $this->getCountFromQuery($query));
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('newsletter_subscriber')} WHERE store_id = :store_id", ['store_id' => $storeId]);
+        $this->addCount('subscribers', $this->getCountFromQuery($query));
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('customer_entity')} WHERE store_id = :store_id", ['store_id' => $storeId]);
+        $this->addCount('customers', $this->getCountFromQuery($query));
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('sales_order')} WHERE store_id = :store_id AND customer_is_guest = true", ['store_id' => $storeId]);
+        $this->addCount('guests', $this->getCountFromQuery($query));
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('eav_attribute_set')}");
+        $this->addCount('attribute-sets', $this->getCountFromQuery($query));
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('salesrule')}");
+        $this->addCount('rules', $this->getCountFromQuery($query));
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('catalog_product_website')} WHERE website_id = :website_id", ['website_id' => $websiteId]);
+        $this->addCount('products', $this->getCountFromQuery($query));
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('cataloginventory_stock_item')} WHERE website_id = :website_id", ['website_id' => $websiteId]);
+        $this->addCount('inventory', $this->getCountFromQuery($query));
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('catalog_category_entity')}");
+        $this->addCount('categories', $this->getCountFromQuery($query));
+
+        return $this->counts;
     }
 
-    /**
-     * Get the total count for a particular entity type
-     *
-     * @param AbstractModel $entity
-     * @param int $storeId
-     * @return int
-     */
-    private function getEntityCount($entity, $storeId)
+    public function addCount($type, $count)
     {
-        $collection = $entity->getCollection();
-        $collection->addFieldToFilter('store_id', $storeId);
-
-        // Return sales array count
-        return $collection->getSize();
+        $countObject = $this->countFactory->create();
+        $countObject->setEntityType($type);
+        $countObject->setCount($count);
+        $this->counts[] = $countObject;
     }
 
-    private function getCategoryCount($storeId)
+    private function getCountFromQuery($query)
     {
-        $om = ObjectManager::getInstance();
-        $storeModel = $om->create('Magento\Store\Model\Store');
-        $store = $storeModel->load($storeId);
-        $rootCategory = $this->categories->load($store->getRootCategoryId());
-        $collection = $this->categories->getCollection();
-        $collection->addFieldToFilter('path', array('like' => $rootCategory->getPath() . '%'));
-        return $collection->getSize();
+        $result = $query->fetch();
+        return $result['count'];
     }
 
-    private function getRuleCount($storeId)
-    {
-        $collection = $this->salesRules->getCollection();
-        $om = ObjectManager::getInstance();
-        $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
-        $store = $manager->getStore($storeId);
-        $collection->addWebsiteFilter($store->getWebsiteId());
-        return $collection->getSize();
-    }
-
-    private function getProductCount($storeId)
-    {
-        $collection = $this->products->getCollection();
-        $om = ObjectManager::getInstance();
-        $manager = $om->get('Magento\Store\Model\StoreManagerInterface');
-        $store = $manager->getStore($storeId);
-        $collection->addWebsiteFilter($store->getWebsiteId());
-        return $collection->getSize();
-    }
-
-    public function getGuests($storeId)
-    {
-        $collection = $this->orders->getCollection();
-        $collection->addFieldToFilter('store_id', $storeId);
-        $collection->addFieldToFilter('customer_is_guest', true);
-        return $collection->getSize();
-    }
 
 }

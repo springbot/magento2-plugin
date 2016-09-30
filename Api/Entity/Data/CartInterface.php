@@ -10,6 +10,42 @@ interface CartInterface
 {
 
     /**
+     * @param $storeId
+     * @param $cartId
+     * @param $convertedAt
+     * @param $customerId
+     * @param $customerPrefix
+     * @param $customerFirstname
+     * @param $customerLastname
+     * @param $customerMiddlename
+     * @param $customerSuffix
+     * @param $checkoutMethod
+     * @param $remoteIp
+     * @param $customerIsGuest
+     * @param $createdAt
+     * @param $updatedAt
+     * @param $customerEmail
+     * @return void
+     */
+    public function setValues(
+        $storeId,
+        $cartId,
+        $convertedAt,
+        $customerId,
+        $customerPrefix,
+        $customerFirstname,
+        $customerLastname,
+        $customerMiddlename,
+        $customerSuffix,
+        $checkoutMethod,
+        $remoteIp,
+        $customerIsGuest,
+        $createdAt,
+        $updatedAt,
+        $customerEmail
+    );
+
+    /**
      * @return \Springbot\Main\Api\Entity\Data\Cart\ItemInterface[]
      */
     public function getItems();

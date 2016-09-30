@@ -28,7 +28,7 @@ class Customer implements CustomerInterface
     private $attributeFactory;
 
     /**
-     * Guest constructor.
+     * Customer constructor.
      * @param ResourceConnection $resourceConnection
      * @param AddressFactory $addressFactory
      * @param CustomerAttributeFactory $attributeFactory

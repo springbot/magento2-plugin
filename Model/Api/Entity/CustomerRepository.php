@@ -43,7 +43,8 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
     {
         $conn = $this->resourceConnection->getConnection();
         $select = $conn->select()
-            ->from(['ce' => $conn->getTableName('customer_entity')]);
+            ->from(['ce' => $conn->getTableName('customer_entity')])
+            ->where('store_id = ?', $storeId);
         $this->filterResults($select);
         $ret = [];
         foreach ($conn->fetchAll($select) as $row) {

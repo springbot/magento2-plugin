@@ -2,17 +2,18 @@
 
 namespace Springbot\Main\Api;
 
+
 /**
  * Interface CountsInterface
  * @package Springbot\Main\Api
  */
 interface CountsInterface
 {
+
     /**
-     * Returns an array of all the entity counts we care about.
-     *
      * @param int $storeId
-     * @return array
+     * @return \Springbot\Main\Api\CountInterface[]
      */
     public function getCounts($storeId);
+
 }

@@ -41,7 +41,8 @@ class GuestRepository extends AbstractRepository implements GuestRepositoryInter
     {
         $conn = $this->resourceConnection->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('sales_order')]);
+            ->from([$conn->getTableName('sales_order')])
+            ->where('store_id = ?', $storeId);
         $this->filterResults($select);
 
         $ret = [];

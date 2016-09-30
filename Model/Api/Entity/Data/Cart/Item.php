@@ -4,116 +4,112 @@ namespace Springbot\Main\Model\Api\Entity\Data\Cart;
 
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Model\AbstractModel;
+use Springbot\Main\Api\Entity\Data\Cart\ItemInterface;
+use Springbot\Main\Model\Api\Entity\Data\ProductFactory;
+use Springbot\Main\Model\Api\Entity\ProductRepository;
 
 /**
  * Class Item
  * @package Springbot\Main\Model\Api\Entity\Data\Order
  */
-class Item extends AbstractModel
+class Item implements ItemInterface
 {
-
+    private $storeId;
+    private $name;
+    private $productId;
+    private $parentProductId;
+    private $parentSku;
     private $sku;
-    private $skuFulfillment;
-    private $qtyOrdered;
-    private $landingUrl;
-    private $imageUrl;
+    private $qty;
     private $productType;
 
+    private $productRepository;
+    private $product;
+
     /**
-     * @return mixed
+     * Customer constructor.
+     * @param ProductRepository $productRepository
      */
+    public function __construct(ProductRepository $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
+    public function setValues($storeId, $name, $productId, $parentProductId, $sku, $parentSku, $qty, $productType)
+    {
+        $this->storeId = $storeId;
+        $this->name = $name;
+        $this->productId = $productId;
+        $this->parentProductId = $parentProductId;
+        $this->sku = $sku;
+        $this->parentSku = $parentSku;
+        $this->qty = $qty;
+        $this->productType = $productType;
+    }
+
     public function getSku()
     {
         return $this->sku;
     }
 
-    /**
-     * @return string
-     */
-    public function getSkuFulfillment()
+    public function getName()
     {
-        return $this->skuFulfillment;
+        return $this->name;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getQtyOrdered()
+    public function getProductId()
     {
-        return $this->qtyOrdered;
+        return $this->productId;
     }
 
+    public function getParentProductId()
+    {
+        return $this->parentProductId;
+    }
 
-    /**
-     * @return mixed
-     */
+    public function getParentSku()
+    {
+        return $this->parentSku;
+    }
+
+    public function getQty()
+    {
+        return $this->qty;
+    }
+
+    private function getProduct()
+    {
+        if (isset($this->product)) {
+            return $this->product;
+        }
+        else {
+            if (!($productId = $this->parentProductId)) {
+                $productId = $this->productId;
+            }
+            $this->product = $this->productRepository->getFromId($this->storeId, $productId);
+            return $this->product;
+        }
+    }
+
     public function getLandingUrl()
     {
-        return $this->landingUrl;
+        if ($product = $this->getProduct()) {
+            return $product->getDefaultUrl();
+        }
+        return null;
     }
 
-    /**
-     * @return mixed
-     */
     public function getImageUrl()
     {
-        return $this->imageUrl;
+        if ($product = $this->getProduct()) {
+            return $product->getImageUrl();
+        }
+        return null;
     }
 
-    /**
-     * @return mixed
-     */
     public function getProductType()
     {
         return $this->productType;
-    }
-
-    /**
-     * @param mixed $sku
-     */
-    public function setSku($sku)
-    {
-        $this->sku = $sku;
-    }
-
-    /**
-     * @param mixed $skuFulfillment
-     */
-    public function setSkuFulfillment($skuFulfillment)
-    {
-        $this->skuFulfillment = $skuFulfillment;
-    }
-
-    /**
-     * @param mixed $qtyOrdered
-     */
-    public function setQtyOrdered($qtyOrdered)
-    {
-        $this->qtyOrdered = $qtyOrdered;
-    }
-
-    /**
-     * @param mixed $landingUrl
-     */
-    public function setLandingUrl($landingUrl)
-    {
-        $this->landingUrl = $landingUrl;
-    }
-
-    /**
-     * @param mixed $imageUrl
-     */
-    public function setImageUrl($imageUrl)
-    {
-        $this->imageUrl = $imageUrl;
-    }
-
-    /**
-     * @param mixed $productType
-     */
-    public function setProductType($productType)
-    {
-        $this->productType = $productType;
     }
 
 }

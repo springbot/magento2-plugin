@@ -7,6 +7,7 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\ObjectManager;
 use Springbot\Main\Api\Entity\InventoryRepositoryInterface;
 use Springbot\Main\Model\Api\Entity\Data\InventoryFactory;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  *  InventoryRepository
@@ -18,27 +19,32 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
     /* @var InventoryFactory $inventoryFactor */
     protected $inventoryFactory;
 
+    private $storeManager;
+
     /**
      * OrderRepository constructor.
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\ResourceConnection $resourceConnection
      * @param \Magento\Framework\App\ObjectManager $objectManager
      * @param \Springbot\Main\Model\Api\Entity\Data\InventoryFactory $factory
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         ObjectManager $objectManager,
-        InventoryFactory $factory
+        InventoryFactory $factory,
+        StoreManagerInterface $storeManager
     )
     {
         $this->inventoryFactory = $factory;
+        $this->storeManager = $storeManager;
         parent::__construct($request, $resourceConnection, $objectManager);
     }
 
     public function getList($storeId)
     {
-        $select = $this->getSelect();
+        $select = $this->getSelect($storeId);
         $this->filterResults($select);
         $ret = [];
         foreach ($this->resourceConnection->getConnection()->fetchAll($select) as $row) {
@@ -49,7 +55,7 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
 
     public function getFromId($storeId, $inventoryId)
     {
-        $select = $this->getSelect()->where('item_id = ?', $inventoryId);
+        $select = $this->getSelect($storeId)->where('item_id = ?', $inventoryId);
         foreach ($this->resourceConnection->getConnection()->fetchAll($select) as $row) {
             return $this->createInventory($storeId, $row);
         }
@@ -73,15 +79,20 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
         return $inventory;
     }
 
-    private function getSelect()
+    private function getSelect($storeId)
     {
+        if (($store = $this->storeManager->getStore($storeId)) === null) {
+            throw new \Exception("Store not found: {$storeId}");
+        }
+        $websiteId = $store->getWebsiteId();
         $conn = $this->resourceConnection->getConnection();
         return $conn->select()
             ->from(['stock' => $conn->getTableName('cataloginventory_stock_item')])
             ->joinLeft(
                 ['prod' => $conn->getTableName('catalog_product_entity')],
                 'prod.entity_id = stock.product_id'
-            );
+            )
+            ->where('website_id = ?', $websiteId);
     }
 
 }

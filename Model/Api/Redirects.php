@@ -23,6 +23,5 @@ class Redirects extends AbstractModel
         $ret = $collection->toArray();
         array_shift($ret);
         return $ret;
-
     }
 }

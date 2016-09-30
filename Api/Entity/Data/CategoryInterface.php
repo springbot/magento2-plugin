@@ -39,8 +39,14 @@ interface CategoryInterface
      */
     public function getUrl();
 
+
     /**
      * @return string
+     */
+    public function getUrlIdPath();
+
+    /**
+     * @return boolean
      */
     public function getIsActive();
 

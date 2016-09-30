@@ -45,7 +45,8 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
     {
         $conn = $this->resourceConnection->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('newsletter_subscriber')]);
+            ->from([$conn->getTableName('newsletter_subscriber')])
+            ->where('store_id = ?', $storeId);
         $this->filterResults($select);
 
         $ret = [];
