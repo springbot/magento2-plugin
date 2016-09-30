@@ -11,7 +11,7 @@ use Springbot\Main\Api\Entity\Data\Customer\AddressInterface;
 class Address implements AddressInterface
 {
 
-    public $entityId;
+    public $addressId;
     public $createdAt;
     public $updatedAt;
     public $isActive;
@@ -32,9 +32,7 @@ class Address implements AddressInterface
     public $customerId;
 
     public function setValues(
-        $entityId,
-        $createdAt,
-        $updatedAt,
+        $addressId,
         $isActive,
         $city,
         $company,
@@ -50,9 +48,7 @@ class Address implements AddressInterface
         $suffix,
         $telephone
     ) {
-        $this->entityId = $entityId;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
+        $this->addressId = $addressId;
         $this->isActive = $isActive;
         $this->city = $city;
         $this->company = $company;
@@ -72,25 +68,9 @@ class Address implements AddressInterface
     /**
      * @return mixed
      */
-    public function getEntityId()
+    public function getAddressId()
     {
-        return $this->entityId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
+        return $this->addressId;
     }
 
     /**

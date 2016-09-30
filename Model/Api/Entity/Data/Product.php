@@ -330,7 +330,7 @@ class Product implements ProductInterface
               cpedec.value as `decimal`,
               cpei.value as `int`,
               cpev.value as `varchar`
-            FROM eav_attribute ea
+            FROM {$conn->getTableName('eav_attribute')} ea
             LEFT JOIN {$conn->getTableName('catalog_product_entity_text')} cpet
                 ON (ea.attribute_id = cpet.attribute_id)
             LEFT JOIN {$conn->getTableName('catalog_product_entity_datetime')} cped

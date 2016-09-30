@@ -129,8 +129,6 @@ class Guest implements GuestInterface
             $address = $this->addressFactory->create();
             $address->setValues(
                 $row['entity_id'],
-                $this->createdAt,
-                $this->updatedAt,
                 true,
                 $row['city'],
                 $row['company'],
@@ -149,7 +147,6 @@ class Guest implements GuestInterface
             return $address;
         }
         return null;
-
     }
 
 }

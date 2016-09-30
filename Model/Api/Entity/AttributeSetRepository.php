@@ -43,9 +43,11 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
     {
         $conn = $this->resourceConnection->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('eav_attribute_set')]);
+            ->from(['eas' => $conn->getTableName('eav_attribute_set')])
+            ->joinLeft(['eat' => $conn->getTableName('eav_entity_type')], 'eat.entity_type_id = eas.entity_type_id', ['eat.entity_type_code'])
+            ->where('entity_type_code = ?', 'catalog_product')
+            ->orWhere('entity_type_code = ?', 'catalog_category');
         $this->filterResults($select);
-
         $ret = [];
         foreach ($conn->fetchAll($select) as $row) {
             $ret[] = $this->createAttributeSet($storeId, $row);
@@ -60,7 +62,17 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
      */
     public function getFromId($storeId, $attributeSetId)
     {
-        return $this->getSpringbotModel()->load($attributeSetId);
+        $conn = $this->resourceConnection->getConnection();
+        $select = $conn->select()
+            ->from(['eas' => $conn->getTableName('eav_attribute_set')])
+            ->joinLeft(['eat' => $conn->getTableName('eav_entity_type')], 'eat.entity_type_id = eas.entity_type_id', ['eat.entity_type_code'])
+            ->where('attribute_set_id = ?', $attributeSetId);
+        foreach ($conn->fetchAll($select) as $row) {
+            if (in_array($row['entity_type_code'], ['catalog_product', 'catalog_category'])) {
+                return $this->createAttributeSet($storeId, $row);
+            }
+        }
+        return null;
     }
 
     /**
@@ -71,11 +83,17 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
     public function createAttributeSet($storeId, $row)
     {
         $attributeSet = $this->attributeSetFactory->create();
+        if ($row['entity_type_code'] == 'catalog_category') {
+            $type = 'category';
+        }
+        else {
+            $type = 'product';
+        }
         $attributeSet->setValues(
             $storeId,
             $row['attribute_set_id'],
             $row['attribute_set_name'],
-            $row['entity_type_id']
+            $type
         );
         return $attributeSet;
     }

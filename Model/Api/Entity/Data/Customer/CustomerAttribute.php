@@ -15,11 +15,11 @@ class CustomerAttribute implements CustomerAttributeInterface
     public $value;
 
     /**
-     * CustomerAttribute constructor.
      * @param $name
      * @param $value
+     * @return void
      */
-    public function __construct($name, $value)
+    public function setValues($name, $value)
     {
         $this->name = $name;
         $this->value = $value;

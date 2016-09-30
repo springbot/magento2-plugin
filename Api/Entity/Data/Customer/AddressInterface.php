@@ -12,17 +12,7 @@ interface AddressInterface
     /**
      * @return int
      */
-    public function getEntityId();
-
-    /**
-     * @return string
-     */
-    public function getCreatedAt();
-
-    /**
-     * @return string
-     */
-    public function getUpdatedAt();
+    public function getAddressId();
 
     /**
      * @return bool

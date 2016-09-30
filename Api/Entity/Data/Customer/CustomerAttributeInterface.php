@@ -9,6 +9,14 @@ namespace Springbot\Main\Api\Entity\Data\Customer;
 interface CustomerAttributeInterface
 {
 
+
+    /**
+     * @param $name
+     * @param $value
+     * @return void
+     */
+    public function setValues($name, $value);
+
     /**
      * @return string
      */

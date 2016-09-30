@@ -73,7 +73,6 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
             $row['rule_id'],
             $row['is_active'],
             $row['name'],
-            'coupon TODO',
             $row['description'],
             $row['conditions_serialized'],
             $row['actions_serialized'],

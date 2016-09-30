@@ -3,8 +3,11 @@
 namespace Springbot\Main\Model\Api\Entity;
 
 use Magento\Framework\App\Request\Http as HttpRequest;
-use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\CustomerRepositoryInterface;
+use Springbot\Main\Model\Api\Entity\Data\CustomerFactory;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\App\Request\Http;
 
 /**
  *  CustomerRepository
@@ -13,25 +16,84 @@ use Springbot\Main\Api\Entity\CustomerRepositoryInterface;
 class CustomerRepository extends AbstractRepository implements CustomerRepositoryInterface
 {
 
+    /* @var CustomerFactory $customerFactory */
+    protected $customerFactory;
+
+    private $customerAttributeSetId;
+
+    /**
+     * OrderRepository constructor.
+     * @param \Magento\Framework\App\Request\Http $request
+     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     * @param \Magento\Framework\App\ObjectManager $objectManager
+     * @param \Springbot\Main\Model\Api\Entity\Data\CustomerFactory $factory
+     */
+    public function __construct(
+        Http $request,
+        ResourceConnection $resourceConnection,
+        ObjectManager $objectManager,
+        CustomerFactory $factory
+    )
+    {
+        $this->customerFactory = $factory;
+        parent::__construct($request, $resourceConnection, $objectManager);
+    }
+
     public function getList($storeId)
     {
-        $collection = $this->getSpringbotModel()->getCollection();
-        $collection->addFieldtoFilter('store_id', $storeId);
-        $this->filterResults($collection);
+        $conn = $this->resourceConnection->getConnection();
+        $select = $conn->select()
+            ->from(['ce' => $conn->getTableName('customer_entity')]);
+        $this->filterResults($select);
         $ret = [];
-        foreach ($collection as $customer) {
-            $ret[] = $this->getSpringbotModel()->setData($customer->getData());
+        foreach ($conn->fetchAll($select) as $row) {
+            $ret[] = $this->createCustomer($storeId, $row);
         }
         return $ret;
     }
 
     public function getFromId($storeId, $customerId)
     {
-        return $this->getSpringbotModel()->load($customerId);
+        $conn = $this->resourceConnection->getConnection();
+        $select = $conn->select()
+            ->from([$conn->getTableName('customer_entity')])
+            ->where('entity_id = ?', $customerId);
+        foreach ($conn->fetchAll($select) as $row) {
+            return $this->createCustomer($storeId, $row);
+        }
+        return null;
+    }
+    
+    private function createCustomer($storeId, $row)
+    {
+        $customer = $this->customerFactory->create();
+        $customer->setValues(
+            $storeId,
+            $row['entity_id'],
+            $row['firstname'],
+            $row['lastname'],
+            $row['email'],
+            $this->fetchCustomerAttributeSetId(),
+            $row['default_billing'],
+            $row['default_shipping']
+        );
+        return $customer;
     }
 
-    public function getSpringbotModel()
+    private function fetchCustomerAttributeSetId()
     {
-        return $this->objectManager->create('Springbot\Main\Model\Api\Entity\Data\Customer');
+        if (isset($this->customerAttributeSetId)) {
+            return $this->customerAttributeSetId;
+        }
+        $conn = $this->resourceConnection->getConnection();
+        $select = $conn->select()
+            ->from(['eas' => $conn->getTableName('eav_attribute_set')])
+            ->joinLeft(['eat' => $conn->getTableName('eav_entity_type')], 'eas.entity_type_id = eat.entity_type_id', ['eat.entity_type_code']);
+        foreach ($conn->fetchAll($select) as $row) {
+            $this->customerAttributeSetId = $row['attribute_set_id'];
+            return $this->customerAttributeSetId;
+        }
+        return null;
     }
+
 }

@@ -14,7 +14,6 @@ interface RuleInterface
      * @param $ruleId
      * @param $isActive
      * @param $name
-     * @param $couponCode
      * @param $description
      * @param $conditions
      * @param $actions
@@ -41,7 +40,6 @@ interface RuleInterface
         $ruleId,
         $isActive,
         $name,
-        $couponCode,
         $description,
         $conditions,
         $actions,
@@ -81,7 +79,7 @@ interface RuleInterface
     /**
      * @return string
      */
-    public function getCouponCode();
+    public function getCouponCodes();
 
     /**
      * @return string

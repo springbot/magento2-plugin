@@ -16,7 +16,6 @@ class Rule implements RuleInterface
     public $ruleId;
     public $isActive;
     public $name;
-    public $couponCode;
     public $description;
     public $conditions;
     public $actions;
@@ -53,7 +52,6 @@ class Rule implements RuleInterface
         $ruleId,
         $isActive,
         $name,
-        $couponCode,
         $description,
         $conditions,
         $actions,
@@ -78,7 +76,6 @@ class Rule implements RuleInterface
         $this->ruleId = $ruleId;
         $this->isActive = $isActive;
         $this->name = $name;
-        $this->couponCode = $couponCode;
         $this->description = $description;
         $this->conditions = $conditions;
         $this->actions = $actions;
@@ -122,14 +119,6 @@ class Rule implements RuleInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCouponCode()
-    {
-        return $this->couponCode;
     }
 
     /**
@@ -282,6 +271,24 @@ class Rule implements RuleInterface
     public function getIsRss()
     {
         return $this->isRss;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getCouponCodes()
+    {
+        $conn = $this->connectionResource->getConnection();
+        $select = $conn->select()
+            ->from([$conn->getTableName('salesrule_coupon')])
+            ->where('rule_id = ?', $this->ruleId);
+
+        $coupons = [];
+        foreach ($conn->fetchAll($select) as $row) {
+            $coupons[] = $row['code'];
+        }
+        return $coupons;
     }
 
     /**
