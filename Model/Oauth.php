@@ -4,41 +4,27 @@ namespace Springbot\Main\Model;
 
 use Magento\Integration\Model\IntegrationService;
 use Magento\Integration\Model\OauthService;
-use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\Model\Context;
-use Magento\Framework\Registry;
 
 /**
  * Class Oauth
  *
  * @package Springbot\Main\Model
  */
-class Oauth extends AbstractModel
+class Oauth
 {
+    const email = 'magento@springbot.com';
+    const name = 'Springbot';
 
     protected $integrationService;
     protected $oauthService;
-    protected $integrationData = [];
 
     /**
      * @param IntegrationService $integrationService
      * @param OauthService $oauthService
-     * @param Context $context
-     * @param Registry $registry
      */
-    public function __construct(
-        IntegrationService $integrationService,
-        OauthService $oauthService,
-        Context $context,
-        Registry $registry
-    ) {
+    public function __construct(IntegrationService $integrationService, OauthService $oauthService) {
         $this->integrationService = $integrationService;
         $this->oauthService = $oauthService;
-        $this->integrationData['name'] = 'Springbot';
-        $this->integrationData['email'] = 'magento@springbot.com';
-        $this->integrationData['status'] = 1;
-        $this->integrationData['all_resources'] = 1;
-        parent::__construct($context, $registry);
     }
 
     /**
@@ -50,9 +36,14 @@ class Oauth extends AbstractModel
      */
     public function create()
     {
-        $integration = $this->integrationService->findByName('Springbot');
+        $integration = $this->integrationService->findByName(self::name);
         if ($integration->isEmpty()) {
-            $integration = $this->integrationService->create($this->integrationData);
+            $integration = $this->integrationService->create([
+                'name' => self::name,
+                'email' => self::email,
+                'status' => 1,
+                'all_resources' => 1,
+            ]);
         }
 
         if ($consumerId = $integration->getConsumerId()) {
