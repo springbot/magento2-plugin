@@ -300,6 +300,9 @@ class Product implements ProductInterface
 
     public function getImageUrl()
     {
+        if (!$this->imagePath) {
+            return null;
+        }
         $store = $this->storeManager->getStore($this->storeId);
         return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->imagePath;
     }
