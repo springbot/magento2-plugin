@@ -5,6 +5,7 @@ namespace Springbot\Main\Model;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
+use Springbot\Main\Model\SpringbotTrackableFactory;
 
 /**
  * Class SpringbotTrackable

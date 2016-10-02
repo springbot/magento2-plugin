@@ -3,9 +3,6 @@
 namespace Springbot\Main\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\Model\Context;
-use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Sales\Model\Order\Config as OrderConfig;
@@ -16,7 +13,7 @@ use Springbot\Main\Helper\Data;
  *
  * @package Springbot\Main\Model
  */
-class Register extends AbstractModel
+class Register
 {
     const api_class = 'stores';
 
@@ -31,10 +28,8 @@ class Register extends AbstractModel
 
     /**
      * @param Api $api
-     * @param Context $context
      * @param Data $data
      * @param OrderConfig $orderConfig
-     * @param Registry $registry
      * @param ScopeConfigInterface $scopeConfigInterface
      * @param StoreManagerInterface $storeManager
      * @param UrlInterface $urlInterface
@@ -43,10 +38,8 @@ class Register extends AbstractModel
      */
     public function __construct(
         Api $api,
-        Context $context,
         Data $data,
         OrderConfig $orderConfig,
-        Registry $registry,
         ScopeConfigInterface $scopeConfigInterface,
         StoreManagerInterface $storeManager,
         UrlInterface $urlInterface,
@@ -61,7 +54,6 @@ class Register extends AbstractModel
         $this->urlInterface = $urlInterface;
         $this->storeConfig = $storeConfig;
         $this->oauth = $oauth;
-        parent::__construct($context, $registry);
     }
 
     /**
@@ -113,7 +105,6 @@ class Register extends AbstractModel
                     }
                 }
 
-                $this->_cacheManager->clean();
                 return true;
             } else {
                 return false;

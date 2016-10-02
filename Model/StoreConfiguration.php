@@ -4,15 +4,12 @@ namespace Springbot\Main\Model;
 
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\Model\Context;
-use Magento\Framework\Registry;
 
 /**
  * Class StoreConfiguration
  * @package Springbot\Main\Model
  */
-class StoreConfiguration extends AbstractModel
+class StoreConfiguration
 {
 
     private $config;
@@ -20,19 +17,14 @@ class StoreConfiguration extends AbstractModel
 
     /**
      * @param Config $config
-     * @param Context $context
-     * @param Registry $registry
      * @param ScopeConfigInterface $scopeConfigInterface
      */
     public function __construct(
         Config $config,
-        Context $context,
-        Registry $registry,
         ScopeConfigInterface $scopeConfigInterface
     ) {
         $this->config = $config;
         $this->scopeConfig = $scopeConfigInterface;
-        parent::__construct($context, $registry);
     }
 
     /**
