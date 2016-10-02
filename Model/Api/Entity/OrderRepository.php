@@ -21,18 +21,16 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
      * OrderRepository constructor.
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\ResourceConnection $resourceConnection
-     * @param \Magento\Framework\App\ObjectManager $objectManager
      * @param \Springbot\Main\Model\Api\Entity\Data\OrderFactory $factory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
-        ObjectManager $objectManager,
         OrderFactory $factory
     )
     {
         $this->orderFactory = $factory;
-        parent::__construct($request, $resourceConnection, $objectManager);
+        parent::__construct($request, $resourceConnection);
     }
 
     /**

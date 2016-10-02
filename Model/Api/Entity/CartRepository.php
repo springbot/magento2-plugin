@@ -21,18 +21,16 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
      * CartRepository constructor.
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\ResourceConnection $resourceConnection
-     * @param \Magento\Framework\App\ObjectManager $objectManager
      * @param \Springbot\Main\Model\Api\Entity\Data\CartFactory $factory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
-        ObjectManager $objectManager,
         CartFactory $factory
     )
     {
         $this->cartFactory = $factory;
-        parent::__construct($request, $resourceConnection, $objectManager);
+        parent::__construct($request, $resourceConnection);
     }
     
     /**

@@ -26,21 +26,19 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
      * OrderRepository constructor.
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\ResourceConnection $resourceConnection
-     * @param \Magento\Framework\App\ObjectManager $objectManager
      * @param \Springbot\Main\Model\Api\Entity\Data\ProductFactory $factory
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
-        ObjectManager $objectManager,
         ProductFactory $factory,
         StoreManagerInterface $storeManager
     )
     {
         $this->storeManager = $storeManager;
         $this->productFactory = $factory;
-        parent::__construct($request, $resourceConnection, $objectManager);
+        parent::__construct($request, $resourceConnection);
     }
 
     public function getList($storeId)

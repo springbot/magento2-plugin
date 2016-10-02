@@ -23,7 +23,6 @@ abstract class Handler extends AbstractModel
 
     protected $storeConfig;
     protected $state;
-    protected $objectManager;
     protected $api;
 
     /**
@@ -52,7 +51,6 @@ abstract class Handler extends AbstractModel
         Registry $registry
     ) {
         $this->state = $context->getAppState();
-        $this->objectManager = ObjectManager::getInstance();
         $this->storeConfig = $storeConfig;
         $this->api = $api;
         parent::__construct($context, $registry);

@@ -47,7 +47,6 @@ class Product implements ProductInterface
     public $customAttributeSetId;
     public $productAttributes = [];
 
-    protected $objectManager;
     protected $productRepository;
     protected $connectionResource;
     protected $storeManager;
@@ -59,7 +58,6 @@ class Product implements ProductInterface
     /**
      * Product constructor.
      * @param \Magento\Framework\App\ResourceConnection $connectionResource
-     * @param \Magento\Framework\App\ObjectManager $objectManager
      * @param \Springbot\Main\Api\Entity\ProductRepositoryInterface $productRepository
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Backend\Model\UrlInterface $urlInterface
@@ -67,14 +65,12 @@ class Product implements ProductInterface
      */
     public function __construct(
         ResourceConnection $connectionResource,
-        ObjectManager $objectManager,
         ProductRepositoryInterface $productRepository,
         StoreManagerInterface $storeManager,
         UrlInterface $urlInterface,
         ScopeConfigInterface $scopeConfig
     )
     {
-        $this->objectManager = $objectManager;
         $this->productRepository = $productRepository;
         $this->connectionResource = $connectionResource;
         $this->storeManager = $storeManager;

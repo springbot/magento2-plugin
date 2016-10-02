@@ -21,18 +21,16 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
     /**
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\ResourceConnection $resourceConnection
-     * @param \Magento\Framework\App\ObjectManager $objectManager
      * @param \Springbot\Main\Model\Api\Entity\Data\AttributeSetFactory $factory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
-        ObjectManager $objectManager,
         AttributeSetFactory $factory
     )
     {
         $this->attributeSetFactory = $factory;
-        parent::__construct($request, $resourceConnection, $objectManager);
+        parent::__construct($request, $resourceConnection);
     }
 
     /**

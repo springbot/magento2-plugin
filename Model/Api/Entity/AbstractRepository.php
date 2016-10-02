@@ -17,20 +17,17 @@ use Magento\Framework\DB\Select;
 abstract class AbstractRepository
 {
     protected $request;
-    protected $objectManager;
     protected $resourceConnection;
 
     /**
      * AbstractRepository constructor.
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\ResourceConnection $resourceConnection
-     * @param \Magento\Framework\App\ObjectManager $objectManager
      */
-    public function __construct(Http $request, ResourceConnection $resourceConnection, ObjectManager $objectManager)
+    public function __construct(Http $request, ResourceConnection $resourceConnection)
     {
         $this->request = $request;
         $this->resourceConnection = $resourceConnection;
-        $this->objectManager = $objectManager;
     }
 
     /**

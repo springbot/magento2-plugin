@@ -4,19 +4,13 @@ namespace Springbot\Main\Test\Unit\Controller\Index;
 
 class IndexTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject| \Springbot\Main\Controller\Adminhtml\Index\Index
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject| \Springbot\Main\Controller\Adminhtml\Index\Index */
     private $indexControllerMock;
 
-    /**
-     * @var \Magento\Framework\AuthorizationInterface
-     */
+    /** @var \Magento\Framework\AuthorizationInterface */
     protected $authorization;
 
-    /**
-     * @var \Magento\Framework\TestFramework\Unit\Helper\ObjectManager
-     */
+    /** @var \Magento\Framework\TestFramework\Unit\Helper\ObjectManager */
     protected $objectManager;
 
     public function setUp()
