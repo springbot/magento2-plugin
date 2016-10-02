@@ -2,15 +2,11 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Magento\Sales\Model\Order as MagentoOrder;
-use Springbot\Main\Model\Handler;
-use Magento\Catalog\Model\Category as MagentoCategory;
-
 /**
  * Class CouponHandler
  * @package Springbot\Main\Model\Handler
  */
-class CouponHandler extends Handler
+class CouponHandler extends AbstractHandler
 {
     const API_PATH = 'coupons';
 

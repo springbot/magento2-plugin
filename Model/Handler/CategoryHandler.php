@@ -2,15 +2,11 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Magento\Sales\Model\Order as MagentoOrder;
-use Springbot\Main\Model\Handler;
-use Magento\Catalog\Model\Category as MagentoCategory;
-
 /**
  * Class CategoryHandler
  * @package Springbot\Main\Model\Handler
  */
-class CategoryHandler extends Handler
+class CategoryHandler extends AbstractHandler
 {
     const API_PATH = 'categories';
 

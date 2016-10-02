@@ -2,15 +2,11 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Magento\Sales\Model\Order as MagentoOrder;
-use Springbot\Main\Model\Handler;
-use Magento\Customer\Model\Customer as MagentoCustomer;
-
 /**
  * Class CustomerHandler
  * @package Springbot\Main\Model\Handler
  */
-class CustomerHandler extends Handler
+class CustomerHandler extends AbstractHandler
 {
     const API_PATH = 'customers';
 

@@ -2,15 +2,11 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Magento\Sales\Model\Order as MagentoOrder;
-use Springbot\Main\Model\Handler;
-use Magento\SalesRule\Model\Rule as MagentoRule;
-
 /**
  * Class RuleHandler
  * @package Springbot\Main\Model\Handler
  */
-class RuleHandler extends Handler
+class RuleHandler extends AbstractHandler
 {
     const API_PATH = 'rules';
 

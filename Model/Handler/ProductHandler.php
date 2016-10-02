@@ -2,15 +2,11 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Magento\Catalog\Model\Product as MagentoProduct;
-use Springbot\Main\Model\Handler;
-use Springbot\Main\Model\Api\Entity\Data\ProductFactory;
-
 /**
  * Class ProductHandler
  * @package Springbot\Main\Model\Handler
  */
-class ProductHandler extends Handler
+class ProductHandler extends AbstractHandler
 {
     const API_PATH = 'products';
 

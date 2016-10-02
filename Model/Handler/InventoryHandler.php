@@ -2,15 +2,11 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Magento\Sales\Model\Order as MagentoOrder;
-use Magento\Catalog\Model\Category as MagentoCategory;
-use Springbot\Main\Model\Handler;
-
 /**
  * Class InventoryHandler
  * @package Springbot\Main\Model\Handler
  */
-class InventoryHandler extends Handler
+class InventoryHandler extends AbstractHandler
 {
     const API_PATH = 'inventories';
 

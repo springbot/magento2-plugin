@@ -2,14 +2,11 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Magento\Store\Model\Store as MagentoStore;
-use Springbot\Main\Model\Handler;
-
 /**
  * Class StoreHandler
  * @package Springbot\Main\Model\Handler
  */
-class StoreHandler extends Handler
+class StoreHandler extends AbstractHandler
 {
     const API_PATH = 'stores';
 

@@ -7,8 +7,7 @@ use Psr\Log\LoggerInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Springbot\Queue\Model\Queue;
-use Springbot\Main\Model\Handler\Rule as RuleHandler;
-// use Magento\CatalogInventory\Model\Stock as MagentoInventoryStock; // @Todo figure out model(s) for Rules
+use Springbot\Main\Model\Handler\RuleHandler;
 
 class SalesRuleDeleteAfterObserver implements ObserverInterface
 {

@@ -2,14 +2,11 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Magento\Sales\Model\Order as MagentoOrder;
-use Springbot\Main\Model\Handler;
-
 /**
  * Class CartHandler
  * @package Springbot\Main\Model\Handler
  */
-class CartHandler extends Handler
+class CartHandler extends AbstractHandler
 {
     const API_PATH = 'carts';
 

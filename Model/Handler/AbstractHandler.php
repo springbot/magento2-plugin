@@ -1,27 +1,25 @@
 <?php
 
-namespace Springbot\Main\Model;
+namespace Springbot\Main\Model\Handler;
 
-use Magento\Framework\Model\Context;
-use Magento\Framework\Registry;
-use Magento\Framework\Model\AbstractModel;
+use Springbot\Main\Model\Api;
+use Springbot\Main\Model\StoreConfiguration;
 
 /**
- * Class Handler
+ * Class AbstractHandler
  *
  * Handlers are classes intended to be run from the job queue. They are responsible for loading a given entity based
  * on its id and sending it to the Springbot API.
  *
- * @package Springbot\Main\Model
+ * @package Springbot\Main\Model\Handler
  */
-abstract class Handler extends AbstractModel
+abstract class AbstractHandler
 {
 
     const DATA_SOURCE_BH = 'BH';
     const DATA_SOURCE_OB = 'OB';
 
     protected $storeConfig;
-    protected $state;
     protected $api;
 
     /**
@@ -40,18 +38,9 @@ abstract class Handler extends AbstractModel
      * Handler constructor.
      * @param StoreConfiguration $storeConfig
      * @param Api $api
-     * @param Context $context
-     * @param Registry $registry
      */
-    public function __construct(
-        StoreConfiguration $storeConfig,
-        Api $api,
-        Context $context,
-        Registry $registry
-    ) {
-        $this->state = $context->getAppState();
+    public function __construct(StoreConfiguration $storeConfig, Api $api) {
         $this->storeConfig = $storeConfig;
         $this->api = $api;
-        parent::__construct($context, $registry);
     }
 }

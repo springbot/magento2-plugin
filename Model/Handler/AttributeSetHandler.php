@@ -2,15 +2,11 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Magento\Sales\Model\Order as MagentoOrder;
-use Magento\Eav\Model\Entity\Attribute\Set as MagentoAttributeSet;
-use Springbot\Main\Model\Handler;
-
 /**
  * Class AttributeSetHandler
  * @package Springbot\Main\Model\Handler
  */
-class AttributeSetHandler extends Handler
+class AttributeSetHandler extends AbstractHandler
 {
     const API_PATH = 'attribute-sets';
 
