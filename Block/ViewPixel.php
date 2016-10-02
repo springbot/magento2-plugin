@@ -5,7 +5,7 @@ namespace Springbot\Main\Block;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Block\Product\AbstractProduct;
 use Springbot\Main\Helper\Data as SpringbotHelper;
-use Magento\Framework\App\ObjectManager;
+use Magento\Framework\UrlInterface;
 
 /**
  * Class Async
@@ -22,14 +22,16 @@ class ViewPixel extends AbstractProduct
     /**
      * @param Context $context
      * @param SpringbotHelper $springbotHelper
+     * @param UrlInterface $urlInterface
      */
     public function __construct(
         Context $context,
-        SpringbotHelper $springbotHelper
+        SpringbotHelper $springbotHelper,
+        UrlInterface $urlInterface
     ) {
         $this->scopeConfig = $context->getScopeConfig();
         $this->springbotHelper = $springbotHelper;
-        $this->urlInterface = ObjectManager::getInstance()->get('Magento\Framework\UrlInterface');
+        $this->urlInterface = $urlInterface;
         parent::__construct($context);
     }
 

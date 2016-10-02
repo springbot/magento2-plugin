@@ -3,10 +3,7 @@
 namespace Springbot\Main\Model\Api\Entity\Data;
 
 use Springbot\Main\Api\Entity\Data\CartInterface;
-use Springbot\Main\Model\Api\Entity\Data\Cart\Item;
 use Springbot\Main\Model\Api\Entity\Data\Cart\ItemFactory;
-use Magento\Framework\App\ObjectManager;
-use Magento\Quote\Model\Quote;
 use Magento\Framework\App\ResourceConnection;
 
 /**

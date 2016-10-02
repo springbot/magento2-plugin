@@ -6,7 +6,6 @@ use Springbot\Main\Api\Entity\AttributeSetRepositoryInterface;
 use Springbot\Main\Model\Api\Entity\Data\AttributeSetFactory;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\App\ObjectManager;
 
 
 /**
@@ -15,7 +14,6 @@ use Magento\Framework\App\ObjectManager;
  */
 class AttributeSetRepository extends AbstractRepository implements AttributeSetRepositoryInterface
 {
-
     private $attributeSetFactory;
 
     /**

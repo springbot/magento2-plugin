@@ -2,11 +2,8 @@
 
 namespace Springbot\Main\Model\Handler;
 
-use Springbot\Main\Model\Api;
-use Springbot\Main\Model\Parser\Store as StoreParser; // Todo
 use Magento\Store\Model\Store as MagentoStore;
 use Springbot\Main\Model\Handler;
-use Magento\Framework\App\ObjectManager;
 
 /**
  * Class StoreHandler

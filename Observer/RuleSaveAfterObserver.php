@@ -2,15 +2,15 @@
 
 namespace Springbot\Main\Observer;
 
-use Magento\Framework\App\ObjectManager;
+use Exception;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Event\Observer;
+use Magento\SalesRule\Model\Rule as MagentoRule;
+use Magento\Store\Model\Website;
 use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
-use Magento\Framework\Event\Observer;
 use Springbot\Main\Model\Handler\RuleHandler;
-use Magento\SalesRule\Model\Rule as MagentoRule;
-use Magento\Store\Model\Website as MagentoWebsite;
-use Exception;
+
 
 /**
  * Class RuleSaveAfterObserver
@@ -20,17 +20,20 @@ class RuleSaveAfterObserver implements ObserverInterface
 {
     private $logger;
     private $queue;
+    private $website;
 
     /**
      * RuleSaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
+     * @param Website $website
      */
-    public function __construct(LoggerInterface $loggerInterface, Queue $queue)
+    public function __construct(LoggerInterface $loggerInterface, Queue $queue, Website $website)
     {
         $this->logger = $loggerInterface;
         $this->queue = $queue;
+        $this->website = $website;
     }
 
     /**
@@ -45,8 +48,8 @@ class RuleSaveAfterObserver implements ObserverInterface
             $rule = $observer->getEvent()->getRule();
             /* @var MagentoRule $rule */
             foreach ($rule->getWebsiteIds() as $websiteId) {
-                $website = ObjectManager::getInstance()->get('Magento\Store\Model\Website')->load($websiteId);
-                /* @var MagentoWebsite $website */
+                $website = $this->website->load($websiteId);
+                /* @var Website $website */
                 foreach ($website->getStoreIds() as $storeId) {
                     $this->queue->scheduleJob(RuleHandler::class, 'handle', [$storeId, $rule->getId()], 1);
                     $this->logger->debug("Scheduled sync job for Rule ID: {$rule->getId()} in store id: {$storeId}");

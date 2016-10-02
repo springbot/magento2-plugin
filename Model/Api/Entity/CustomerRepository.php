@@ -5,7 +5,6 @@ namespace Springbot\Main\Model\Api\Entity;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Springbot\Main\Api\Entity\CustomerRepositoryInterface;
 use Springbot\Main\Model\Api\Entity\Data\CustomerFactory;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\Request\Http;
 

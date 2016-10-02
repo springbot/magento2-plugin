@@ -2,24 +2,32 @@
 
 namespace Springbot\Main\Model\Api;
 
-use Magento\Framework\Model\AbstractModel;
-use Magento\Framework\App\ObjectManager;
+use Magento\UrlRewrite\Model\UrlRewrite;
 
 /**
  * Class Redirects
  * @package Springbot\Main\Model
  */
-class Redirects extends AbstractModel
+class Redirects
 {
+
+    private $urlRewrite;
+
+    /**
+     * Redirects constructor.
+     * @param UrlRewrite $urlRewrite
+     */
+    public function __construct(UrlRewrite $urlRewrite)
+    {
+        $this->urlRewrite = $urlRewrite;
+    }
 
     /**
      * @return array
      */
     public function getRedirects()
     {
-        $om = ObjectManager::getInstance();
-        $urlRewrite = $om->get('Magento\UrlRewrite\Model\UrlRewrite');
-        $collection = $urlRewrite->getCollection();
+        $collection = $this->urlRewrite->getCollection();
         $ret = $collection->toArray();
         array_shift($ret);
         return $ret;

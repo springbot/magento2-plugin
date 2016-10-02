@@ -2,8 +2,6 @@
 
 namespace Springbot\Main\Model\Api\Entity;
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Api\Entity\ProductRepositoryInterface;

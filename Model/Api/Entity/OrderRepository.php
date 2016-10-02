@@ -6,7 +6,6 @@ use Springbot\Main\Api\Entity\OrderRepositoryInterface;
 use Springbot\Main\Model\Api\Entity\Data\OrderFactory;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\App\ObjectManager;
 
 /**
  *  OrderRepository

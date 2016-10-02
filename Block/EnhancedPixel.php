@@ -3,8 +3,11 @@
 namespace Springbot\Main\Block;
 
 use Magento\Framework\View\Element\Template;
-use Magento\Framework\App\ObjectManager;
 use Magento\Sales\Model\Order;
+use Magento\Sales\Model\OrderFactory;
+use Magento\Checkout\Model\Session;
+use Springbot\Main\Model\Api;
+use Springbot\Main\Model\StoreConfiguration;
 
 /**
  * Class Async
@@ -15,6 +18,26 @@ class EnhancedPixel extends Template
 {
 
     private $order;
+    private $orderFactory;
+    private $api;
+    private $session;
+    private $storeConfig;
+
+    /**
+     * EnhancedPixel constructor.
+     * @param OrderFactory $orderFactory
+     * @param Api $api
+     * @param Session $session
+     * @param StoreConfiguration $storeConfig
+     */
+    public function __construct(OrderFactory $orderFactory, Api $api, Session $session, StoreConfiguration $storeConfig)
+    {
+        $this->orderFactory = $orderFactory;
+        $this->api = $api;
+        $this->session = $session;
+        $this->storeConfig = $storeConfig;
+    }
+
 
     /**
      * @return float
@@ -39,8 +62,7 @@ class EnhancedPixel extends Template
     public function getLastOrder()
     {
         if (!isset($this->order)) {
-            $orderFactory = ObjectManager::getInstance()->get('Magento\Sales\Model\OrderFactory');
-            $this->order = $orderFactory->create()->load($this->getOrderId());
+            $this->order = $this->orderFactory->create()->load($this->getOrderId());
         }
         return $this->order;
     }
@@ -50,8 +72,7 @@ class EnhancedPixel extends Template
      */
     public function getOrderId()
     {
-        $session = ObjectManager::getInstance()->get('Magento\Checkout\Model\Session');
-        $lastOrder = $session->getLastRealOrder();
+        $lastOrder = $this->session->getLastRealOrder();
         /* @var Order $lastOrder */
         return $lastOrder->getId();
     }
@@ -61,8 +82,7 @@ class EnhancedPixel extends Template
      */
     public function getApiUrl()
     {
-        $api = ObjectManager::getInstance()->get('Springbot\Main\Model\Api');
-        return $api->getApiUrl();
+        return $this->api->getApiUrl();
     }
 
     /**
@@ -70,7 +90,6 @@ class EnhancedPixel extends Template
      */
     public function getStoreGuid()
     {
-        $storeConfig = ObjectManager::getInstance()->get('Springbot\Main\Model\StoreConfiguration');
-        return strtolower($storeConfig->getGuid($this->getLastOrder()->getStoreId()));
+        return strtolower($this->storeConfig->getGuid($this->getLastOrder()->getStoreId()));
     }
 }

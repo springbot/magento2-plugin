@@ -2,12 +2,8 @@
 
 namespace Springbot\Main\Model\Api\Entity;
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Data\Collection;
 use Magento\Framework\App\Request\Http;
-use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Store\Model\Store;
 use Magento\Framework\DB\Select;
 
 /**

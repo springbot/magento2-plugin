@@ -2,8 +2,6 @@
 
 namespace Springbot\Main\Model\Api\Entity\Data\Cart;
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\Data\Cart\ItemInterface;
 use Springbot\Main\Model\Api\Entity\Data\ProductFactory;
 use Springbot\Main\Model\Api\Entity\ProductRepository;

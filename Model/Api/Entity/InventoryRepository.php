@@ -4,7 +4,6 @@ namespace Springbot\Main\Model\Api\Entity;
 
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\App\ObjectManager;
 use Springbot\Main\Api\Entity\InventoryRepositoryInterface;
 use Springbot\Main\Model\Api\Entity\Data\InventoryFactory;
 use Magento\Store\Model\StoreManagerInterface;

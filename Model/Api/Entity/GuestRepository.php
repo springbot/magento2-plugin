@@ -2,11 +2,9 @@
 
 namespace Springbot\Main\Model\Api\Entity;
 
-use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\GuestRepositoryInterface;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Springbot\Main\Model\Api\Entity\Data\GuestFactory;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\Request\Http;
 

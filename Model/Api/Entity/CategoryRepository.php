@@ -4,7 +4,6 @@ namespace Springbot\Main\Model\Api\Entity;
 
 use Springbot\Main\Api\Entity\CategoryRepositoryInterface;
 use Springbot\Main\Model\Api\Entity\Data\CategoryFactory;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\Request\Http;
 use Magento\Store\Model\StoreManagerInterface;

@@ -2,9 +2,7 @@
 
 namespace Springbot\Main\Model\Api\Entity\Data;
 
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
-use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Springbot\Main\Api\Entity\Data\OrderInterface;
 use Springbot\Main\Model\Api\Entity\Data\Order\ItemFactory;
 

@@ -2,11 +2,9 @@
 
 namespace Springbot\Main\Model\Api\Entity;
 
-use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\SubscriberRepositoryInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\App\ObjectManager;
 use Springbot\Main\Model\Api\Entity\Data\SubscriberFactory;
 
 

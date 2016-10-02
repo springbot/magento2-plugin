@@ -5,7 +5,6 @@ namespace Springbot\Main\Model\Api\Entity\Data;
 use Magento\Catalog\Model\Product as MagentoProduct;
 use Magento\Catalog\Model\Product\Image as MagentoProductImage;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Backend\Model\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;

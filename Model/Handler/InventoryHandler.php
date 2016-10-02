@@ -3,7 +3,6 @@
 namespace Springbot\Main\Model\Handler;
 
 use Magento\Sales\Model\Order as MagentoOrder;
-use Magento\Framework\App\ObjectManager;
 use Magento\Catalog\Model\Category as MagentoCategory;
 use Springbot\Main\Model\Handler;
 

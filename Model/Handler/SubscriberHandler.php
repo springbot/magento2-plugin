@@ -4,7 +4,6 @@ namespace Springbot\Main\Model\Handler;
 
 use Magento\Sales\Model\Order as MagentoOrder;
 use Springbot\Main\Model\Handler;
-use Magento\Framework\App\ObjectManager;
 use Magento\SalesRule\Model\Rule as MagentoRule;
 
 /**

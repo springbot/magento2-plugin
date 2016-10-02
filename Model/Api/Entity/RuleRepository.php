@@ -2,10 +2,7 @@
 
 namespace Springbot\Main\Model\Api\Entity;
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\App\Request\Http as HttpRequest;
-use Magento\SalesRule\Model\Rule;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\Request\Http;
 use Springbot\Main\Api\Entity\RuleRepositoryInterface;

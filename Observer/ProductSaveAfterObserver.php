@@ -10,23 +10,26 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Springbot\Queue\Model\Queue;
 use Exception;
-use Magento\Framework\App\ObjectManager;
+use Magento\CatalogInventory\Model\StockRegistryFactory;
 
 class ProductSaveAfterObserver implements ObserverInterface
 {
     private $logger;
     private $queue;
+    private $stockFactory;
 
     /**
      * ProductSaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
+     * @param StockRegistryFactory $stockFactory
      */
-    public function __construct(LoggerInterface $loggerInterface, Queue $queue)
+    public function __construct(LoggerInterface $loggerInterface, Queue $queue, StockRegistryFactory $stockFactory)
     {
         $this->logger = $loggerInterface;
         $this->queue = $queue;
+        $this->stockFactory = $stockFactory;
     }
 
     /**
@@ -46,14 +49,12 @@ class ProductSaveAfterObserver implements ObserverInterface
                 $this->queue->scheduleJob(ProductHandler::class, 'handle', [$storeId, $product->getId()]);
 
                 // Enqueue the stock item as well
-                $stockRegistry = ObjectManager::getInstance()->get('Magento\CatalogInventory\Api\StockRegistryInterface');
+                $stockRegistry = $this->stockFactory->create();
                 $stockItem = $stockRegistry->getStockItem(
                     $product->getId(),
                     $product->getStore()->getWebsiteId()
                 );
                 $this->queue->scheduleJob(InventoryHandler::class, 'handle', [$storeId, $stockItem->getId()]);
-
-
                 $this->logger->debug("Scheduled sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
             }
         } catch (Exception $e) {

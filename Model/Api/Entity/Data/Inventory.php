@@ -3,8 +3,6 @@
 namespace Springbot\Main\Model\Api\Entity\Data;
 
 use Springbot\Main\Api\Entity\Data\InventoryInterface;
-use Magento\CatalogInventory\Model\Stock\Item as MagentoStockItem;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 
 /**
