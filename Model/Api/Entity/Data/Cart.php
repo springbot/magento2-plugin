@@ -211,7 +211,8 @@ class Cart implements CartInterface
                 'qi.parent_item_id = qip.item_id',
                 ['qip.product_id as parent_product_id', 'qip.sku as parent_sku']
             )
-            ->where('qi.quote_id = ?', $this->cartId);
+            ->where('qi.quote_id = ?', $this->cartId)
+            ->where('qi.quote_id IS NOT NULL');
         $items = [];
         foreach ($conn->fetchAll($select) as $row) {
             $items[] = $this->createItem($this->storeId, $row);

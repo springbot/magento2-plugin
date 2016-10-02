@@ -60,7 +60,15 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
      */
     public function getFromId($storeId, $cartId)
     {
-        return $this->getSpringbotModel()->load($cartId);
+        $conn = $this->resourceConnection->getConnection();
+        $select = $conn->select()
+            ->from(['q' => $conn->getTableName('quote')])
+            ->where('store_id = ?', $storeId)
+            ->where('entityId = ?', $cartId);
+        foreach ($conn->fetchAll($select) as $row) {
+            return $this->createCart($storeId, $row);
+        }
+        return null;
     }
 
 
