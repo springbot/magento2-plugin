@@ -38,7 +38,6 @@ class StoreSaveAfterObserver implements ObserverInterface
             $storeId = $observer->getEvent()->getStoreId();
             $this->queue->scheduleJob(StoreHandler::class, 'handleDelete', [$storeId]);
             $this->logger->debug("Scheduled deleted sync job for store ID: {$storeId}");
-
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }

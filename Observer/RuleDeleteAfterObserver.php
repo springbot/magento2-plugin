@@ -47,8 +47,7 @@ class RuleDeleteAfterObserver implements ObserverInterface
             $rule = $observer->getEvent()->getRule();
             /* @var MagentoRule $rule */
             foreach ($rule->getWebsiteIds() as $websiteId) {
-                $this->website->load($websiteId);
-                /* @var MagentoWebsite $website */
+                $website = $this->website->load($websiteId);
                 foreach ($website->getStoreIds() as $storeId) {
                     $this->queue->scheduleJob(RuleHandler::class, 'handleDelete', [$storeId, $rule->getId()], 1);
                     $this->logger->debug("Scheduled deleted sync job for Rule ID: {$rule->getId()} in store id: {$storeId}");

@@ -8,7 +8,6 @@ use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Sales\Model\Order as MagentoOrder;
 use Springbot\Main\Model\Handler\OrderHandler;
-use Magento\Checkout\Model\Session;
 
 class OrderSaveAfterObserver implements ObserverInterface
 {

@@ -11,7 +11,6 @@ use Psr\Log\LoggerInterface;
 use Springbot\Queue\Model\Queue;
 use Springbot\Main\Model\Handler\RuleHandler;
 
-
 /**
  * Class RuleSaveAfterObserver
  * @package Springbot\Main\Observer

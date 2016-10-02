@@ -39,7 +39,6 @@ class InventorySaveAfterObserver implements ObserverInterface
             $items = $observer->getEvent()->getItems();
             if (is_array($items)) {
                 foreach ($items as $item) {
-                    /* @var MagentoItem $item */
                     $this->queue->scheduleJob(InventoryHandler::class, 'handle', [$item->getItemId()]);
                     $this->logger->debug("Scheduled sync job for item ID: {$item->getItemId()}");
                 }

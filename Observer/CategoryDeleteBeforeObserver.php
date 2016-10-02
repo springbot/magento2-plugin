@@ -38,7 +38,6 @@ class CategoryDeleteBeforeObserver implements ObserverInterface
             $category = $observer->getEvent()->getCategory();
             /* @var MagentoCategory $category */
             foreach ($category->getStoreIds() as $storeId) {
-
                 $this->queue->scheduleJob(CategoryHandler::class, 'handleDelete', [$storeId, $category->getId()]);
                 $this->logger->debug("Deleted Category ID: " . $category->getEntityId());
             }
