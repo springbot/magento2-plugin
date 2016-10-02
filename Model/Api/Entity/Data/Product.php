@@ -323,50 +323,41 @@ class Product implements ProductInterface
     private function loadAttributes()
     {
         $conn = $this->connectionResource->getConnection();
-        $query = $conn->query("SELECT 
-              ea.attribute_code,
-              cpet.value as `text`,
-              cped.value as `datetime`,
-              cpedec.value as `decimal`,
-              cpei.value as `int`,
-              cpev.value as `varchar`
-            FROM {$conn->getTableName('eav_attribute')} ea
-            LEFT JOIN {$conn->getTableName('catalog_product_entity_text')} cpet
-                ON (ea.attribute_id = cpet.attribute_id)
-            LEFT JOIN {$conn->getTableName('catalog_product_entity_datetime')} cped
-                ON (ea.attribute_id = cped.attribute_id)
-            LEFT JOIN {$conn->getTableName('catalog_product_entity_decimal')} cpedec
-                ON (ea.attribute_id = cpedec.attribute_id)
-            LEFT JOIN {$conn->getTableName('catalog_product_entity_int')} cpei
-                ON (ea.attribute_id = cpei.attribute_id)
-            LEFT JOIN {$conn->getTableName('catalog_product_entity_varchar')} cpev
-                ON (ea.attribute_id = cpev.attribute_id)
-            WHERE cpet.entity_id = :entity_id 
-             OR cped.entity_id = :entity_id
-             OR cpedec.entity_id = :entity_id
-             OR cpei.entity_id = :entity_id 
-             OR cpev.entity_id = :entity_id
+        $query = $conn->query("
+            SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
+            FROM {$conn->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_datetime')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_decimal')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_int')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_text')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_varchar')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.entity_id = :entity_id);
         ", ['entity_id' => $this->productId]);
 
         foreach($query->fetchAll() as $attributeRow) {
-            $value = null;
-            if (isset($attributeRow['text'])) {
-                $value = $attributeRow['text'];
-            }
-            else if (isset($attributeRow['datetime'])) {
-                $value = $attributeRow['datetime'];
-            }
-            else if (isset($attributeRow['decimal'])) {
-                $value = $attributeRow['decimal'];
-            }
-            else if (isset($attributeRow['int'])) {
-                $value = $attributeRow['int'];
-            }
-            else if (isset($attributeRow['varchar'])) {
-                $value = $attributeRow['varchar'];
-            }
-
-            switch($attributeRow['attribute_code']) {
+            $value = $attributeRow['value'];
+            switch($attributeRow['code']) {
                 case 'name':
                     $this->name = $value;
                     break;
@@ -408,7 +399,7 @@ class Product implements ProductInterface
                     break;
                 default:
                     if ($value !== null) {
-                        $this->productAttributes[] = new ProductAttribute($attributeRow['attribute_code'], $value); ;
+                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value); ;
                     }
             }
         }
