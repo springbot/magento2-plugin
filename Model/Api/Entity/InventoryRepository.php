@@ -55,7 +55,8 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
 
     public function getFromId($storeId, $inventoryId)
     {
-        $select = $this->getSelect($storeId)->where('item_id = ?', $inventoryId);
+        $select = $this->getSelect($storeId)
+            ->where('item_id = ?', $inventoryId);
         foreach ($this->resourceConnection->getConnection()->fetchAll($select) as $row) {
             return $this->createInventory($storeId, $row);
         }

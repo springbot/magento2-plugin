@@ -50,14 +50,6 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
      */
     public function getList($storeId)
     {
-        /*
-        if (($store = $this->storeManager->getStore($storeId)) == null) {
-            throw new \Exception("Store not found: {$storeId}");
-        }
-        $rootCategoryId = $store->getRootCategoryId();
-        $rootCategory = $this->getFromId($storeId, $rootCategoryId);
-        */
-
         $conn = $this->resourceConnection->getConnection();
         $select = $conn->select()
             ->from(['cce' => $conn->getTableName('catalog_category_entity')])
