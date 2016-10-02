@@ -82,7 +82,7 @@ class Api extends AbstractModel
         if ($springbotStoreId && $springbotApiToken) {
             $body = json_encode($entitiesData);
             $url = $this->getWebhooksUrl("{$springbotStoreId}/{$apiPath}");
-            $this->post($url, $body, $this->_getAuthHeaders($springbotApiToken));
+            $this->post($url, $body, $this->getAuthHeaders($springbotApiToken));
         }
     }
 
@@ -100,7 +100,7 @@ class Api extends AbstractModel
             $body = json_encode([$apiPath => ['id' => $entityId, 'is_deleted' => true]]);
             $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}",
                 $body,
-                $this->_getAuthHeaders($springbotApiToken));
+                $this->getAuthHeaders($springbotApiToken));
         }
     }
 
@@ -173,7 +173,7 @@ class Api extends AbstractModel
      * @param $apiToken
      * @return array
      */
-    private function _getAuthHeaders($apiToken)
+    private function getAuthHeaders($apiToken)
     {
         return [
             'X-AUTH-TOKEN' => $apiToken,

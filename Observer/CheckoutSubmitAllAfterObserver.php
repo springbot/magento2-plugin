@@ -3,19 +3,19 @@
 namespace Springbot\Main\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
-use Psr\Log\LoggerInterface;
-use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Sales\Model\Order as MagentoOrder;
-use Magento\Checkout\Model\Session;
 use Magento\Framework\Stdlib\CookieManagerInterface;
+use Psr\Log\LoggerInterface;
 use Springbot\Main\Model\SpringbotOrderRedirect;
+use Springbot\Queue\Model\Queue;
 
 class CheckoutSubmitAllAfterObserver implements ObserverInterface
 {
     private $logger;
     private $queue;
     private $cookieManager;
+    private $orderRedirect;
 
     /**
      * ProductSaveAfterObserver constructor
@@ -34,7 +34,7 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
         $this->logger = $loggerInterface;
         $this->queue = $queue;
         $this->cookieManager = $cookieManager;
-        $this->_orderRedirect = $orderRedirect;
+        $this->orderRedirect = $orderRedirect;
     }
 
     /**
@@ -49,7 +49,7 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
             $order = $observer->getEvent()->getOrder();
             /* @var MagentoOrder $order */
             $orderId = $order->getEntityId();
-            $this->_setRedirectIdsFromCookie($orderId);
+            $this->setRedirectIdsFromCookie($orderId);
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }
@@ -58,12 +58,12 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
     /**
      * @param $orderId
      */
-    private function _setRedirectIdsFromCookie($orderId)
+    private function setRedirectIdsFromCookie($orderId)
     {
         $redirectIdsStr = $this->cookieManager->getCookie('springbot_redirectqueue');
         $redirectIdsArr = explode('|', $redirectIdsStr);
         foreach ($redirectIdsArr as $redirectId) {
-            $this->_orderRedirect->insert($orderId, $redirectId);
+            $this->orderRedirect->insert($orderId, $redirectId);
         }
     }
 }

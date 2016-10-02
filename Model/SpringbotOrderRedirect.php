@@ -8,7 +8,7 @@ use Magento\Framework\Registry;
 
 class SpringbotOrderRedirect extends AbstractModel
 {
-    const REDIRECT_STRING_LENGTH = 24;
+    const redirect_string_length = 24;
 
     private $redirectFactory;
 
@@ -29,7 +29,7 @@ class SpringbotOrderRedirect extends AbstractModel
 
     public function insert($orderId, $redirectMongoId)
     {
-        if ($orderId && (strlen($redirectMongoId) == self::REDIRECT_STRING_LENGTH)) {
+        if ($orderId && (strlen($redirectMongoId) == self::redirect_string_length)) {
             $redirectModel = $this->redirectFactory->create();
             $redirectModel->addData([
                 'order_id' => $orderId,
@@ -39,7 +39,4 @@ class SpringbotOrderRedirect extends AbstractModel
         }
     }
 
-    public function getRedirectIds($orderId)
-    {
-    }
 }
