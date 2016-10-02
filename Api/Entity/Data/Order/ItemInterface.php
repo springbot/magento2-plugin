@@ -10,6 +10,32 @@ interface ItemInterface
 {
 
     /**
+     * @param $storeId
+     * @param $sku
+     * @param $skuFulfillment
+     * @param $qtyOrdered
+     * @param $wgt
+     * @param $name
+     * @param $sellPrice
+     * @param $productId
+     * @param $parentProductId
+     * @param $productType
+     * @return void
+     */
+    public function setValues(
+        $storeId,
+        $sku,
+        $skuFulfillment,
+        $qtyOrdered,
+        $wgt,
+        $name,
+        $sellPrice,
+        $productId,
+        $parentProductId,
+        $productType
+    );
+
+    /**
      * @return string
      */
     public function getSku();
@@ -58,6 +84,11 @@ interface ItemInterface
      * @return int
      */
     public function getProductId();
+
+    /**
+     * @return int
+     */
+    public function getParentProductId();
 
     /**
      * @return string

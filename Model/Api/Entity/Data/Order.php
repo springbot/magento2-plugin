@@ -6,6 +6,7 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Springbot\Main\Api\Entity\Data\OrderInterface;
+use Springbot\Main\Model\Api\Entity\Data\Order\ItemFactory;
 
 /**
  * Class Order
@@ -38,25 +39,13 @@ class Order implements OrderInterface
     public $cartUserAgent;
     public $orderUserAgent;
 
-    protected $objectManager;
-    protected $productRepository;
-    protected $connectionResource;
+    private $resourceConnection;
+    private $itemFactory;
 
-    /**
-     * Order constructor.
-     * @param \Magento\Framework\App\ResourceConnection $connectionResource
-     * @param \Magento\Framework\App\ObjectManager $objectManager
-     * @param \Springbot\Main\Api\Entity\ProductRepositoryInterface $productRepository
-     */
-    public function __construct(
-        ResourceConnection $connectionResource,
-        ObjectManager $objectManager,
-        ProductRepositoryInterface $productRepository
-    )
+    public function __construct(ResourceConnection $productRepository, ItemFactory $factory)
     {
-        $this->objectManager = $objectManager;
-        $this->productRepository = $productRepository;
-        $this->connectionResource = $connectionResource;
+        $this->resourceConnection = $productRepository;
+        $this->itemFactory = $factory;
     }
 
     /**
@@ -79,7 +68,7 @@ class Order implements OrderInterface
      * @param $couponCode
      * @param $orderCurrencyCode
      * @param $baseTaxAmount
-     * @return null
+     * @return void
      */
     public function setValues(
         $storeId,
@@ -256,7 +245,7 @@ class Order implements OrderInterface
      */
     public function getPayment()
     {
-        $conn = $this->connectionResource->getConnection();
+        $conn = $this->resourceConnection->getConnection();
         $select = $conn->select()
             ->from([$conn->getTableName('sales_order_payment')])
             ->where('entity_id = ?', $this->orderId);
@@ -301,7 +290,7 @@ class Order implements OrderInterface
         if (isset($this->redirectMongoIds)) {
             return $this->redirectMongoIds;
         }
-        $conn = $this->connectionResource->getConnection();
+        $conn = $this->resourceConnection->getConnection();
         $select = $conn->select()
             ->from([$conn->getTableName('springbot_order_redirect')])
             ->where('order_id = ?', $this->orderId)
@@ -320,47 +309,39 @@ class Order implements OrderInterface
      */
     public function getItems()
     {
-        $conn = $this->connectionResource->getConnection();
+        $conn = $this->resourceConnection->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('sales_order_item')])
-            ->where('order_id = ?', $this->orderId);
+            ->from(['soi' => $conn->getTableName('sales_order_item')])
+            ->joinLeft(
+                ['soip' => $conn->getTableName('sales_order_item')],
+                'soi.parent_item_id = soip.item_id',
+                ['soip.product_id AS parent_product_id', 'soip.sku AS parent_sku']
+            )
+            ->where('soi.order_id = ?', $this->orderId);
 
         $ret = [];
         foreach ($conn->fetchAll($select) as $row) {
-            $item = $this->objectManager->create('Springbot\Main\Model\Api\Entity\Data\Order\Item');
+            $item = $this->itemFactory->create();
             /* @var \Springbot\Main\Model\Api\Entity\Data\Order\Item $item */
 
-            $product = $this->productRepository->getFromId($this->storeId, $row['product_id']);
-            if ($parentProductId =  $row['parent_item_id']) {
-                /* @var \Springbot\Main\Model\Api\Entity\ProductRepository $productRepo */
-                if ($product = $this->productRepository->getFromId($this->storeId, $parentProductId)) {
-                    $parentSku = $product->getSku();
-                }
-                else {
-                    $parentSku = null;
-                }
+            if ($row['parent_sku']) {
+                $parentSku = $row['parent_sku'];
             }
             else {
                 $parentSku = $row['sku'];
             }
 
-            /* @var \Springbot\Main\Model\Api\Entity\Data\Product $product */
             $item->setValues(
+                $this->storeId,
                 $parentSku,
                 $row['sku'],
                 $row['qty_ordered'],
-                $product->getDefaultUrl(),
-                $product->getImageUrl(),
                 $row['weight'],
                 $row['name'],
-                $product->getDescription(),
                 $row['price'],
                 $row['product_id'],
-                $row['product_type'],
-                $product->getCategoryIds(),
-                $product->getAllCategoryIds(),
-                $product->getCustomAttributeSetId(),
-                $product->getProductAttributes()
+                $row['parent_product_id'],
+                $row['product_type']
             );
             $ret[] = $item;
         }
@@ -380,7 +361,7 @@ class Order implements OrderInterface
 
     private function fetchTrackable($column, $value, $type)
     {
-        $conn = $this->connectionResource->getConnection();
+        $conn = $this->resourceConnection->getConnection();
         $select = $conn->select()
             ->from([$conn->getTableName('springbot_trackable')])
             ->where($column . ' = ?', $value)

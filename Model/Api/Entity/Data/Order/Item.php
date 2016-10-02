@@ -4,6 +4,8 @@ namespace Springbot\Main\Model\Api\Entity\Data\Order;
 
 use Springbot\Main\Api\Entity\Data\Order\ItemAttributeInterface;
 use Springbot\Main\Api\Entity\Data\Order\ItemInterface;
+use Springbot\Main\Api\Entity\Data\ProductInterface;
+use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 
 /**
  * Class Item
@@ -12,71 +14,69 @@ use Springbot\Main\Api\Entity\Data\Order\ItemInterface;
 class Item implements ItemInterface
 {
 
+    private $storeId;
     private $sku;
     private $skuFulfillment;
     private $qtyOrdered;
-    private $landingUrl;
-    private $imageUrl;
     private $wgt;
     private $name;
-    private $desc;
     private $sellPrice;
     private $productId;
+    private $parentProductId;
     private $productType;
-    private $categoryIds;
-    private $allCategoryIds;
-    private $attributeSetId;
-    private $productAttributes;
+
+    /* @var ProductInterface $product */
+    private $product;
+    private $productRepository;
 
     /**
+     * @param \Springbot\Main\Api\Entity\ProductRepositoryInterface $productRepository
+     */
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
+    /**
+     * @param $storeId
      * @param $sku
      * @param $skuFulfillment
      * @param $qtyOrdered
-     * @param $landingUrl
-     * @param $imageUrl
      * @param $wgt
      * @param $name
-     * @param $desc
      * @param $sellPrice
      * @param $productId
+     * @param $parentProductId
      * @param $productType
-     * @param $categoryIds
-     * @param $allCategoryIds
-     * @param $attributeSetId
-     * @param $productAttributes
      */
     public function setValues(
+        $storeId,
         $sku,
         $skuFulfillment,
         $qtyOrdered,
-        $landingUrl,
-        $imageUrl,
         $wgt,
         $name,
-        $desc,
         $sellPrice,
         $productId,
-        $productType,
-        $categoryIds,
-        $allCategoryIds,
-        $attributeSetId,
-        $productAttributes
+        $parentProductId,
+        $productType
     ) {
+        $this->storeId = $storeId;
         $this->sku = $sku;
         $this->skuFulfillment = $skuFulfillment;
         $this->qtyOrdered = $qtyOrdered;
-        $this->landingUrl = $landingUrl;
-        $this->imageUrl = $imageUrl;
         $this->wgt = $wgt;
         $this->name = $name;
-        $this->desc = $desc;
         $this->sellPrice = $sellPrice;
         $this->productId = $productId;
+        $this->parentProductId = $parentProductId;
         $this->productType = $productType;
-        $this->categoryIds = $categoryIds;
-        $this->allCategoryIds = $allCategoryIds;
-        $this->attributeSetId = $attributeSetId;
-        $this->productAttributes = $productAttributes;
+        if ($parentProductId) {
+            $this->product =  $this->productRepository->getFromId($this->storeId, $parentProductId);
+        }
+        else {
+            $this->product =  $this->productRepository->getFromId($this->storeId, $productId);
+        }
     }
 
     /**
@@ -106,22 +106,6 @@ class Item implements ItemInterface
     /**
      * @return mixed
      */
-    public function getLandingUrl()
-    {
-        return $this->landingUrl;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImageUrl()
-    {
-        return $this->imageUrl;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getWgt()
     {
         return $this->wgt;
@@ -133,14 +117,6 @@ class Item implements ItemInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDesc()
-    {
-        return $this->desc;
     }
 
     /**
@@ -159,6 +135,15 @@ class Item implements ItemInterface
         return $this->productId;
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function getParentProductId()
+    {
+        return $this->parentProductId;
+    }
+
     /**
      * @return mixed
      */
@@ -170,9 +155,45 @@ class Item implements ItemInterface
     /**
      * @return mixed
      */
+    public function getLandingUrl()
+    {
+        if ($this->product) {
+            return $this->product->getDefaultUrl();
+        }
+        return null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImageUrl()
+    {
+        if ($this->product) {
+            return $this->product->getImageUrl();
+        }
+        return null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDesc()
+    {
+        if ($this->product) {
+            return $this->product->getDescription();
+        }
+        return null;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getCategoryIds()
     {
-        return $this->categoryIds;
+        if ($this->product) {
+            return $this->product->getCategoryIds();
+        }
+        return null;
     }
 
     /**
@@ -180,7 +201,10 @@ class Item implements ItemInterface
      */
     public function getAllCategoryIds()
     {
-        return $this->allCategoryIds;
+        if ($this->product) {
+            return $this->product->getAllCategoryIds();
+        }
+        return null;
     }
 
     /**
@@ -188,7 +212,10 @@ class Item implements ItemInterface
      */
     public function getAttributeSetId()
     {
-        return $this->attributeSetId;
+        if ($this->product) {
+            return $this->product->getCustomAttributeSetId();
+        }
+        return null;
     }
 
     /**
@@ -196,7 +223,10 @@ class Item implements ItemInterface
      */
     public function getProductAttributes()
     {
-        return $this->productAttributes;
+        if ($this->product) {
+            return $this->product->getProductAttributes();
+        }
+        return null;
     }
 
 }
