@@ -122,51 +122,42 @@ class Customer implements CustomerInterface
     public function getCustomerAttributes()
     {
         $conn = $this->resourceConnection->getConnection();
-        $query = $conn->query("SELECT 
-              ea.attribute_code,
-              cet.value as `text`,
-              ced.value as `datetime`,
-              cedec.value as `decimal`,
-              cei.value as `int`,
-              cev.value as `varchar`
-            FROM {$conn->getTableName('eav_attribute')} ea
-            LEFT JOIN {$conn->getTableName('customer_entity_text')} cet
-                ON (ea.attribute_id = cet.attribute_id)
-            LEFT JOIN {$conn->getTableName('customer_entity_datetime')} ced
-                ON (ea.attribute_id = ced.attribute_id)
-            LEFT JOIN {$conn->getTableName('customer_entity_decimal')} cedec
-                ON (ea.attribute_id = cedec.attribute_id)
-            LEFT JOIN {$conn->getTableName('customer_entity_int')} cei
-                ON (ea.attribute_id = cei.attribute_id)
-            LEFT JOIN {$conn->getTableName('customer_entity_varchar')} cev
-                ON (ea.attribute_id = cev.attribute_id)
-            WHERE cet.entity_id = :entity_id 
-             OR ced.entity_id = :entity_id
-             OR cedec.entity_id = :entity_id
-             OR cei.entity_id = :entity_id 
-             OR cev.entity_id = :entity_id
+        $query = $conn->query(" 
+            SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
+            FROM {$conn->getTableName('customer_entity')} ce
+              LEFT JOIN {$conn->getTableName('customer_entity_datetime')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (ce.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('customer_entity')} ce
+              LEFT JOIN {$conn->getTableName('customer_entity_decimal')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (ce.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('customer_entity')} ce
+              LEFT JOIN {$conn->getTableName('customer_entity_int')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (ce.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('customer_entity')} ce
+              LEFT JOIN {$conn->getTableName('customer_entity_text')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (ce.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('customer_entity')} ce
+              LEFT JOIN {$conn->getTableName('customer_entity_varchar')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (ce.entity_id = :entity_id);
         ", ['entity_id' => $this->customerId]);
         $attributes = [];
         foreach($query->fetchAll() as $attributeRow) {
-            $value = null;
-            if (isset($attributeRow['text'])) {
-                $value = $attributeRow['text'];
-            }
-            else if (isset($attributeRow['datetime'])) {
-                $value = $attributeRow['datetime'];
-            }
-            else if (isset($attributeRow['decimal'])) {
-                $value = $attributeRow['decimal'];
-            }
-            else if (isset($attributeRow['int'])) {
-                $value = $attributeRow['int'];
-            }
-            else if (isset($attributeRow['varchar'])) {
-                $value = $attributeRow['varchar'];
-            }
-            if ($value !== null) {
+            if ($attributeRow['value'] !== null) {
                 $attribute = $this->attributeFactory->create();
-                $attribute->setValues($attributeRow['attribute_code'], $value);
+                $attribute->setValues($attributeRow['code'], $attributeRow['value']);
                 $attributes[] = $attribute;
             }
         }

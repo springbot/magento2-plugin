@@ -64,7 +64,7 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
         $select = $conn->select()
             ->from(['q' => $conn->getTableName('quote')])
             ->where('store_id = ?', $storeId)
-            ->where('entityId = ?', $cartId);
+            ->where('entity_id = ?', $cartId);
         foreach ($conn->fetchAll($select) as $row) {
             return $this->createCart($storeId, $row);
         }

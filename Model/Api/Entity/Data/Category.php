@@ -135,50 +135,41 @@ class Category implements CategoryInterface
     private function loadAttributes()
     {
         $conn = $this->resourceConnection->getConnection();
-        $query = $conn->query("SELECT 
-              ea.attribute_code,
-              cpet.value as `text`,
-              cped.value as `datetime`,
-              cpedec.value as `decimal`,
-              cpei.value as `int`,
-              cpev.value as `varchar`
-            FROM {$conn->getTableName('eav_attribute')} ea
-            LEFT JOIN {$conn->getTableName('catalog_category_entity_text')} cpet
-                ON (ea.attribute_id = cpet.attribute_id)
-            LEFT JOIN {$conn->getTableName('catalog_category_entity_datetime')} cped
-                ON (ea.attribute_id = cped.attribute_id)
-            LEFT JOIN {$conn->getTableName('catalog_category_entity_decimal')} cpedec
-                ON (ea.attribute_id = cpedec.attribute_id)
-            LEFT JOIN {$conn->getTableName('catalog_category_entity_int')} cpei
-                ON (ea.attribute_id = cpei.attribute_id)
-            LEFT JOIN {$conn->getTableName('catalog_category_entity_varchar')} cpev
-                ON (ea.attribute_id = cpev.attribute_id)
-            WHERE cpet.entity_id = :entity_id 
-             OR cped.entity_id = :entity_id
-             OR cpedec.entity_id = :entity_id
-             OR cpei.entity_id = :entity_id 
-             OR cpev.entity_id = :entity_id
+        $query = $conn->query("
+            SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
+            FROM {$conn->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_datetime')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cce.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_decimal')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cce.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_int')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cce.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_text')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cce.entity_id = :entity_id)
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$conn->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_varchar')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cce.entity_id = :entity_id);
         ", ['entity_id' => $this->categoryId]);
 
         foreach($query->fetchAll() as $attributeRow) {
-            $value = null;
-            if (isset($attributeRow['text'])) {
-                $value = $attributeRow['text'];
-            }
-            else if (isset($attributeRow['datetime'])) {
-                $value = $attributeRow['datetime'];
-            }
-            else if (isset($attributeRow['decimal'])) {
-                $value = $attributeRow['decimal'];
-            }
-            else if (isset($attributeRow['int'])) {
-                $value = $attributeRow['int'];
-            }
-            else if (isset($attributeRow['varchar'])) {
-                $value = $attributeRow['varchar'];
-            }
-
-            switch($attributeRow['attribute_code']) {
+            $value = $attributeRow['value'];
+            switch($attributeRow['code']) {
                 case 'name':
                     $this->name = $value;
                     break;
