@@ -16,8 +16,8 @@ use Springbot\Main\Model\StoreConfiguration;
 abstract class AbstractHandler
 {
 
-    const DATA_SOURCE_BH = 'BH';
-    const DATA_SOURCE_OB = 'OB';
+    const data_source_bh = 'BH';
+    const data_source_ob = 'OB';
 
     protected $storeConfig;
     protected $api;

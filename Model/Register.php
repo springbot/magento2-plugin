@@ -18,7 +18,7 @@ use Springbot\Main\Helper\Data;
  */
 class Register extends AbstractModel
 {
-    const API_CLASS = 'stores';
+    const api_class = 'stores';
 
     private $api;
     private $helper;
@@ -39,7 +39,7 @@ class Register extends AbstractModel
      * @param StoreManagerInterface $storeManager
      * @param UrlInterface $urlInterface
      * @param StoreConfiguration $storeConfig
-     * @param Oauth $oauth ;
+     * @param Oauth $oauth
      */
     public function __construct(
         Api $api,
@@ -86,7 +86,7 @@ class Register extends AbstractModel
     public function registerStores($email, $password, $stores)
     {
         try {
-            $url = $this->api->getApiUrl(Api::STORE_REGISTRATION_PATH);
+            $url = $this->api->getApiUrl(Api::store_registration_path);
             $storesArray = $this->getStoresArray($stores);
 
             $response = $this->api->post($url,

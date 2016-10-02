@@ -8,7 +8,7 @@ namespace Springbot\Main\Model\Handler;
  */
 class RuleHandler extends AbstractHandler
 {
-    const API_PATH = 'rules';
+    const api_path = 'rules';
 
     /**
      * @param $storeId
@@ -17,7 +17,7 @@ class RuleHandler extends AbstractHandler
      */
     public function handle($storeId, $ruleId)
     {
-        $this->api->postEntities($storeId, self::API_PATH, ['id' => $ruleId]);
+        $this->api->postEntities($storeId, self::api_path, ['id' => $ruleId]);
     }
 
     /**
@@ -26,6 +26,6 @@ class RuleHandler extends AbstractHandler
      */
     public function handleDelete($storeId, $ruleId)
     {
-        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $ruleId]);
+        $this->api->deleteEntity($storeId, self::api_path, ['id' => $ruleId]);
     }
 }

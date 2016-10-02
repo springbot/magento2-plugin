@@ -2,10 +2,7 @@
 
 namespace Springbot\Main\Model;
 
-use Magento\Framework\Model\Context;
-use Magento\Framework\Registry;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Helper\Data;
 
 /**
@@ -13,14 +10,14 @@ use Springbot\Main\Helper\Data;
  *
  * @package Springbot\Main\Model
  */
-class Api extends AbstractModel
+class Api
 {
-    const ETL_WEBHOOKS_PATH = 'magento2/webhooks/v1';
-    const STORE_REGISTRATION_PATH = 'magento2/create';
+    const etl_webhooks_path = 'magento2/webhooks/v1';
+    const store_registration_path = 'magento2/create';
 
-    const SUCCESSFUL_RESPONSE = 'ok';
-    const TOTAL_POST_FAIL_LIMIT = 32;
-    const RETRY_LIMIT = 3;
+    const successful_response = 'ok';
+    const total_post_fail_limit = 32;
+    const retry_limit = 3;
 
     private $springbotHelper;
     private $scopeConfig;
@@ -32,20 +29,15 @@ class Api extends AbstractModel
      * @param Data $springbotHelper
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreConfiguration $storeConfig
-     * @param Context $context
-     * @param Registry $registry
      */
     public function __construct(
         Data $springbotHelper,
         ScopeConfigInterface $scopeConfig,
-        StoreConfiguration $storeConfig,
-        Context $context,
-        Registry $registry
+        StoreConfiguration $storeConfig
     ) {
         $this->springbotHelper = $springbotHelper;
         $this->scopeConfig = $scopeConfig;
         $this->storeConfig = $storeConfig;
-        parent::__construct($context, $registry);
     }
 
     /**
@@ -162,7 +154,7 @@ class Api extends AbstractModel
      */
     public function getWebhooksUrl($subpath = '')
     {
-        $url = $this->scopeConfig->getValue('springbot/configuration/api_url') . '/' . self::ETL_WEBHOOKS_PATH;
+        $url = $this->scopeConfig->getValue('springbot/configuration/api_url') . '/' . self::etl_webhooks_path;
         if ($subpath) {
             $url .= '/' . $subpath;
         }

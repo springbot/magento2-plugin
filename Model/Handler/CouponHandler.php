@@ -8,7 +8,7 @@ namespace Springbot\Main\Model\Handler;
  */
 class CouponHandler extends AbstractHandler
 {
-    const API_PATH = 'coupons';
+    const api_path = 'coupons';
 
     /**
      * @param int $storeId
@@ -16,7 +16,7 @@ class CouponHandler extends AbstractHandler
      */
     public function handle($storeId, $couponId)
     {
-        $this->api->postEntities($storeId, self::API_PATH, ['id' => $couponId]);
+        $this->api->postEntities($storeId, self::api_path, ['id' => $couponId]);
     }
 
     /**
@@ -25,6 +25,6 @@ class CouponHandler extends AbstractHandler
      */
     public function handleDelete($storeId, $categoryId)
     {
-        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $categoryId]);
+        $this->api->deleteEntity($storeId, self::api_path, ['id' => $categoryId]);
     }
 }

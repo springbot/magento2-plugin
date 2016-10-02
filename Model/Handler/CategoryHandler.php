@@ -8,7 +8,7 @@ namespace Springbot\Main\Model\Handler;
  */
 class CategoryHandler extends AbstractHandler
 {
-    const API_PATH = 'categories';
+    const api_path = 'categories';
 
     /**
      * @param int $storeId
@@ -16,7 +16,7 @@ class CategoryHandler extends AbstractHandler
      */
     public function handle($storeId, $categoryId)
     {
-        $this->api->postEntities($storeId, self::API_PATH, ['id' => $categoryId]);
+        $this->api->postEntities($storeId, self::api_path, ['id' => $categoryId]);
     }
 
     /**
@@ -25,6 +25,6 @@ class CategoryHandler extends AbstractHandler
      */
     public function handleDelete($storeId, $categoryId)
     {
-        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $categoryId]);
+        $this->api->deleteEntity($storeId, self::api_path, ['id' => $categoryId]);
     }
 }

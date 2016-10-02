@@ -8,7 +8,7 @@ namespace Springbot\Main\Model\Handler;
  */
 class CustomerHandler extends AbstractHandler
 {
-    const API_PATH = 'customers';
+    const api_path = 'customers';
 
     /**
      * @param int $storeId
@@ -16,7 +16,7 @@ class CustomerHandler extends AbstractHandler
      */
     public function handle($storeId, $customerId)
     {
-        $this->api->postEntities($storeId, self::API_PATH, ['id' => $customerId]);
+        $this->api->postEntities($storeId, self::api_path, ['id' => $customerId]);
     }
 
     /**
@@ -25,6 +25,6 @@ class CustomerHandler extends AbstractHandler
      */
     public function handleDelete($storeId, $customerId)
     {
-        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $customerId]);
+        $this->api->deleteEntity($storeId, self::api_path, ['id' => $customerId]);
     }
 }

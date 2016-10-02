@@ -8,7 +8,7 @@ namespace Springbot\Main\Model\Handler;
  */
 class AttributeSetHandler extends AbstractHandler
 {
-    const API_PATH = 'attribute-sets';
+    const api_path = 'attribute-sets';
 
     /**
      * @param int $storeId
@@ -16,7 +16,7 @@ class AttributeSetHandler extends AbstractHandler
      */
     public function handle($storeId, $attributeSetId)
     {
-        $this->api->postEntities($storeId, self::API_PATH, ['id' => $attributeSetId]);
+        $this->api->postEntities($storeId, self::api_path, ['id' => $attributeSetId]);
     }
 
     /**
@@ -25,6 +25,6 @@ class AttributeSetHandler extends AbstractHandler
      */
     public function handleDelete($storeId, $attributeSetId)
     {
-        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $attributeSetId]);
+        $this->api->deleteEntity($storeId, self::api_path, ['id' => $attributeSetId]);
     }
 }

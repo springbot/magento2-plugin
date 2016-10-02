@@ -8,7 +8,7 @@ namespace Springbot\Main\Model\Handler;
  */
 class InventoryHandler extends AbstractHandler
 {
-    const API_PATH = 'inventories';
+    const api_path = 'inventories';
 
     /**
      * @param int $storeId
@@ -16,7 +16,7 @@ class InventoryHandler extends AbstractHandler
      */
     public function handle($storeId, $inventoryId)
     {
-        $this->api->postEntities($storeId, self::API_PATH, ['id' => $inventoryId]);
+        $this->api->postEntities($storeId, self::api_path, ['id' => $inventoryId]);
     }
 
     /**
@@ -25,6 +25,6 @@ class InventoryHandler extends AbstractHandler
      */
     public function handleDelete($storeId, $categoryId)
     {
-        $this->api->deleteEntity($storeId, self::API_PATH, ['id' => $categoryId]);
+        $this->api->deleteEntity($storeId, self::api_path, ['id' => $categoryId]);
     }
 }

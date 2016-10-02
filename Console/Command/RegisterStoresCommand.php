@@ -21,8 +21,8 @@ use Zend\Text\Table\Table as TextTable;
 class RegisterStoresCommand extends Command
 {
 
-    const EMAIL_ARGUMENT = '<springbot_email>';
-    const PASSWORD_ARGUMENT = '<springbot_password>';
+    const email_argument = '<springbot_email>';
+    const password_argument = '<springbot_password>';
 
     private $storeManager;
     private $storeConfig;
@@ -51,8 +51,8 @@ class RegisterStoresCommand extends Command
     {
         $this->setName('springbot:stores:register')
             ->setDescription('Register all stores with Springbot')
-            ->addArgument(self::EMAIL_ARGUMENT, InputArgument::REQUIRED)
-            ->addArgument(self::PASSWORD_ARGUMENT, InputArgument::REQUIRED);
+            ->addArgument(self::email_argument, InputArgument::REQUIRED)
+            ->addArgument(self::password_argument, InputArgument::REQUIRED);
     }
 
     /**
@@ -75,7 +75,7 @@ class RegisterStoresCommand extends Command
 
         foreach ($this->storeManager->getStores() as $store) {
             /* @var \Magento\Store\Model\Store\Interceptor $store */
-            $registered = $this->_addToTable($table, $store, 'Already registered, no action taken');
+            $registered = $this->addToTable($table, $store, 'Already registered, no action taken');
             if (!$registered) {
                 $storesToRegister[] = $store;
             }
@@ -84,8 +84,8 @@ class RegisterStoresCommand extends Command
         // Register any stores that were not already
         if ($storesToRegister) {
             $successful = $this->register->registerStores(
-                $input->getArgument(self::EMAIL_ARGUMENT),
-                $input->getArgument(self::PASSWORD_ARGUMENT),
+                $input->getArgument(self::email_argument),
+                $input->getArgument(self::password_argument),
                 $storesToRegister
             );
 
@@ -96,7 +96,7 @@ class RegisterStoresCommand extends Command
             }
 
             foreach ($storesToRegister as $store) {
-                $this->_addToTable($table, $store, $message, true);
+                $this->addToTable($table, $store, $message, true);
             }
         }
 
@@ -111,7 +111,7 @@ class RegisterStoresCommand extends Command
      * @param bool|false     $appendIfUnregistered
      * @return bool
      */
-    private function _addToTable(TextTable $table, StoreInterface $store, $message, $appendIfUnregistered = false)
+    private function addToTable(TextTable $table, StoreInterface $store, $message, $appendIfUnregistered = false)
     {
         $springbotStoreId = $this->storeConfig->getSpringbotStoreId($store->getId());
         $springbotGuid = strtolower($this->storeConfig->getGuid($store->getId()));
