@@ -10,7 +10,7 @@ use Springbot\Main\Model\Api\Entity\ProductRepository;
 
 /**
  * Class Item
- * @package Springbot\Main\Model\Api\Entity\Data\Order
+ * @package Springbot\Main\Model\Api\Entity\Data\Cart
  */
 class Item implements ItemInterface
 {

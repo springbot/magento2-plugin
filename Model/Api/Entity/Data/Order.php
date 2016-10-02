@@ -333,7 +333,7 @@ class Order implements OrderInterface
             $product = $this->productRepository->getFromId($this->storeId, $row['product_id']);
             if ($parentProductId =  $row['parent_item_id']) {
                 /* @var \Springbot\Main\Model\Api\Entity\ProductRepository $productRepo */
-                $product = $productRepo->getFromId($this->storeId, $parentProductId);
+                $product = $this->productRepository->getFromId($this->storeId, $parentProductId);
                 $parentSku = $product->getSku();
             }
             else {
