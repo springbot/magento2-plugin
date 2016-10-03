@@ -16,18 +16,24 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
     /* @var OrderFactory $orderFactory */
     protected $orderFactory;
 
+    /* @var \Springbot\Main\Helper\Order $orderBuilder */
+    protected $orderBuilder;
+
     /**
      * OrderRepository constructor.
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\ResourceConnection $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\OrderFactory $factory
+     * @param \Springbot\Main\Helper\Order $orderBuilder
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
-        OrderFactory $factory
+        OrderFactory $factory,
+        \Springbot\Main\Helper\Order $orderBuilder
     )
     {
+        $this->orderBuilder = $orderBuilder;
         $this->orderFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
@@ -68,6 +74,10 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
         }
     }
 
+    public function create($storeId, $customer, $address, $quote, $items, $marketplaces)
+    {
+        return $this->orderBuilder->buildOrder($storeId, $customer, $address, $quote, $items, $marketplaces);
+    }
 
     private function createOrder($storeId, $row)
     {
