@@ -142,7 +142,7 @@ interface OrderInterface
     /**
      * Get all shipments
      *
-     * @return \Magento\Sales\Api\Data\ShipmentInterface[]
+     * @return \Springbot\Main\Api\Entity\Data\Order\ShipmentInterface[]
      */
     public function getShipments();
 

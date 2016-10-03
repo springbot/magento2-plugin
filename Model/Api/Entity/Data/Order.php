@@ -5,6 +5,7 @@ namespace Springbot\Main\Model\Api\Entity\Data;
 use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Api\Entity\Data\OrderInterface;
 use Springbot\Main\Model\Api\Entity\Data\Order\ItemFactory;
+use Springbot\Main\Model\Api\Entity\Data\Order\ShipmentFactory;
 
 /**
  * Class Order
@@ -30,7 +31,6 @@ class Order implements OrderInterface
     public $totalPaid;
     public $shippingMethod;
     public $shippingAmount;
-    public $shipments;
     public $couponCode;
     public $orderCurrencyCode;
     public $baseTaxAmount;
@@ -39,11 +39,17 @@ class Order implements OrderInterface
 
     private $resourceConnection;
     private $itemFactory;
+    private $shipmentFactory;
 
-    public function __construct(ResourceConnection $productRepository, ItemFactory $factory)
+    public function __construct(
+        ResourceConnection $productRepository,
+        ItemFactory $factory,
+        ShipmentFactory $shipmentFactory
+    )
     {
         $this->resourceConnection = $productRepository;
         $this->itemFactory = $factory;
+        $this->shipmentFactory = $shipmentFactory;
     }
 
     /**
@@ -235,7 +241,36 @@ class Order implements OrderInterface
      */
     public function getShipments()
     {
-        return $this->shipments;
+        $conn = $this->resourceConnection->getConnection();
+        $select = $conn->select()
+            ->from(['ss' => $conn->getTableName('sales_shipment')])
+            ->joinleft(
+                ['sst' => $conn->getTableName('sales_shipment_track')],
+                'ss.entity_id = sst.parent_id',
+                ['sst.track_number', 'sst.carrier_code', 'sst.title']
+            )
+            ->joinleft(
+                ['soa' => $conn->getTableName('sales_order_address')],
+                'soa.entity_id = ss.shipping_address_id',
+                ['soa.prefix', 'soa.firstname', 'soa.middlename', 'soa.lastname', 'soa.suffix']
+            )
+            ->where('ss.order_id = ?', $this->orderId);
+        $shipments = [];
+        foreach ($conn->fetchAll($select) as $row) {
+            $shipToName = "{$row['prefix']} {$row['firstname']} {$row['middlename']} {$row['lastname']} {$row['suffix']}";
+            $shipToName = trim(str_replace('  ', ' ', $shipToName));
+            $shipment = $this->shipmentFactory->create();
+            $shipment->setValues(
+                $row['entity_id'],
+                $row['track_number'],
+                $row['carrier_code'],
+                $row['title'],
+                $shipToName,
+                $row['shipment_status']
+            );
+            $shipments[] = $shipment;
+        }
+        return $shipments;
     }
 
     /**
