@@ -4,12 +4,15 @@ namespace Springbot\Main\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Stdlib\CookieManagerInterface;
-use Psr\Log\LoggerInterface;
-use Springbot\Main\Model\SpringbotOrderRedirect;
-use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Sales\Model\Order as MagentoOrder;
+use Magento\Framework\App\Request\Http;
+use Psr\Log\LoggerInterface;
 use Springbot\Main\Model\Handler\OrderHandler;
+use Springbot\Main\Model\SpringbotTrackable;
+use Springbot\Main\Model\SpringbotOrderRedirect;
+use Springbot\Queue\Model\Queue;
+
 
 class OrderSaveAfterObserver implements ObserverInterface
 {
@@ -17,24 +20,32 @@ class OrderSaveAfterObserver implements ObserverInterface
     private $queue;
     private $orderRedirect;
     private $cookieManager;
+    private $springbotTrackable;
+    private $request;
 
     /**
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
      * @param SpringbotOrderRedirect $orderRedirect
      * @param CookieManagerInterface $cookieManager
+     * @param SpringbotTrackable $springbotTrackable
+     * @param Http $request
      */
     public function __construct(
         LoggerInterface $loggerInterface,
         Queue $queue,
         SpringbotOrderRedirect $orderRedirect,
-        CookieManagerInterface $cookieManager
+        CookieManagerInterface $cookieManager,
+        SpringbotTrackable $springbotTrackable,
+        Http $request
     )
     {
         $this->logger = $loggerInterface;
         $this->queue = $queue;
         $this->orderRedirect = $orderRedirect;
         $this->cookieManager = $cookieManager;
+        $this->springbotTrackable = $springbotTrackable;
+        $this->request = $request;
     }
 
     /**
@@ -55,6 +66,7 @@ class OrderSaveAfterObserver implements ObserverInterface
                     $this->orderRedirect->insert($orderId, $redirect);
                 }
             }
+            $this->springbotTrackable->insert(null, $orderId, 'order_user_agent', $this->request->getHeader('User-Agent'));
             $this->queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
             $this->logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {

@@ -26,22 +26,21 @@ class SpringbotTrackable extends AbstractModel
         Registry $registry,
         SpringbotTrackableFactory $trackableFactory
     ) {
-        $this->_init('Springbot\Main\Model\ResourceModel\SpringbotQuoteRedirect');
+        $this->_init('Springbot\Main\Model\ResourceModel\SpringbotTrackable');
         $this->trackableFactory = $trackableFactory;
         parent::__construct($context, $registry);
     }
 
-    public function insert($quoteId, $redirectMongoId)
+    public function insert($quoteId, $orderId, $type, $value)
     {
-        $redirectModel = $this->trackableFactory->create();
-        $redirectModel->addData([
+        $trackable = $this->trackableFactory->create();
+        $trackable->addData([
             'quote_id' => $quoteId,
-            'redirect_string' => $redirectMongoId
+            'order_id' => $orderId,
+            'type' => $type,
+            'value' => $value
         ]);
-        $redirectModel->save();
+        $trackable->save();
     }
 
-    public function getRedirectIds($quoteId)
-    {
-    }
 }
