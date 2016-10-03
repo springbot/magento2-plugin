@@ -41,8 +41,8 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
         $select = $conn->select()
             ->from(['eas' => $conn->getTableName('eav_attribute_set')])
             ->joinLeft(['eat' => $conn->getTableName('eav_entity_type')], 'eat.entity_type_id = eas.entity_type_id', ['eat.entity_type_code'])
-            ->where('entity_type_code = ?', 'catalog_product')
-            ->orWhere('entity_type_code = ?', 'customer');
+            ->where('entity_type_code = ?', 'customer')
+            ->orWhere('entity_type_code = ?', 'catalog_product');
         $this->filterResults($select);
         $ret = [];
         foreach ($conn->fetchAll($select) as $row) {
@@ -79,8 +79,8 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
     public function createAttributeSet($storeId, $row)
     {
         $attributeSet = $this->attributeSetFactory->create();
-        if ($row['entity_type_code'] == 'catalog_category') {
-            $type = 'category';
+        if ($row['entity_type_code'] == 'customer') {
+            $type = 'customer';
         }
         else {
             $type = 'product';
