@@ -2,11 +2,13 @@
 
 namespace Springbot\Main\Model\Api;
 
+use Magento\Framework\App\Request\Http;
+use Magento\Framework\App\Config\ScopeConfigInterface;;
 use Magento\Framework\App\ResourceConnection;
+use Magento\UrlRewrite\Model\UrlRewriteFactory;
 use Springbot\Main\Api\RedirectsInterface;
 use Springbot\Main\Model\Api\RedirectFactory;
 use Springbot\Main\Model\Api\Entity\AbstractRepository;
-use Magento\Framework\App\Request\Http;
 
 /**
  * Class Redirects
@@ -16,15 +18,23 @@ class Redirects extends AbstractRepository implements RedirectsInterface
 {
 
     private $redirectFactory;
+    private $urlRewriteFactory;
     
     /**
      * @param \Magento\Framework\App\Request\Http $request
      * @param ResourceConnection $resourceConnection
      * @param RedirectFactory $redirectFactory
+     * @param UrlRewriteFactory $urlRewriteFactory
      */
-    public function __construct(Http $request, ResourceConnection $resourceConnection, RedirectFactory $redirectFactory)
+    public function __construct(
+        Http $request,
+        ResourceConnection $resourceConnection,
+        RedirectFactory $redirectFactory,
+        UrlRewriteFactory $urlRewriteFactory
+    )
     {
         $this->redirectFactory = $redirectFactory;
+        $this->urlRewriteFactory = $urlRewriteFactory;
         parent::__construct($request, $resourceConnection);
     }
 
@@ -55,4 +65,20 @@ class Redirects extends AbstractRepository implements RedirectsInterface
         }
         return $ret;
     }
+
+    public function createRedirect($requestPath, $redirectType, $idPath, $targetPath, $storeId, $description)
+    {
+        $urlRewriteModel = $this->urlRewriteFactory->create();
+        $urlRewriteModel->setEntityType('custom');
+        $urlRewriteModel->setStoreId($storeId);
+        $urlRewriteModel->setIsSystem(0);
+        $urlRewriteModel->setIdPath($idPath);
+        $urlRewriteModel->setRequestPath($requestPath);
+        $urlRewriteModel->setTargetPath($targetPath);
+        $urlRewriteModel->setRedirectType($redirectType);
+        $urlRewriteModel->setDescription($description);
+        $urlRewriteModel->save();
+        return $urlRewriteModel;
+    }
+
 }

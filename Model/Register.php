@@ -7,6 +7,7 @@ use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Sales\Model\Order\Config as OrderConfig;
 use Springbot\Main\Helper\Data;
+use Springbot\Main\Model\Api\Redirects;
 
 /**
  * Class Register
@@ -25,6 +26,7 @@ class Register
     private $storeConfig;
     private $scopeConfigInterface;
     private $oauth;
+    private $redirects;
 
     /**
      * @param Api $api
@@ -35,6 +37,7 @@ class Register
      * @param UrlInterface $urlInterface
      * @param StoreConfiguration $storeConfig
      * @param Oauth $oauth
+     * @param Redirects $redirects
      */
     public function __construct(
         Api $api,
@@ -44,7 +47,8 @@ class Register
         StoreManagerInterface $storeManager,
         UrlInterface $urlInterface,
         StoreConfiguration $storeConfig,
-        Oauth $oauth
+        Oauth $oauth,
+        Redirects $redirects
     ) {
         $this->api = $api;
         $this->scopeConfigInterface = $scopeConfigInterface;
@@ -54,6 +58,7 @@ class Register
         $this->urlInterface = $urlInterface;
         $this->storeConfig = $storeConfig;
         $this->oauth = $oauth;
+        $this->redirects = $redirects;
     }
 
     /**
@@ -96,12 +101,26 @@ class Register
                 $this->storeConfig->saveGlobalValue('security_token', $securityToken);
                 foreach ($storesArray as $guid => $storeArray) {
                     if ($returnedStoreArray = $responseArray['stores'][$guid]) {
-                        $this->storeConfig->saveValues($returnedStoreArray['json_data']['store_id'],
+                        $localStoreId = $returnedStoreArray['json_data']['store_id'];
+                        $this->storeConfig->saveValues($localStoreId,
                             [
                                 'store_guid' => $guid,
                                 'store_id' => $returnedStoreArray['springbot_store_id'],
                                 'security_token' => $securityToken
                             ]);
+
+                        $target = $this->scopeConfigInterface->getValue('springbot/configuration/app_url')
+                            . '/i/'
+                            . $returnedStoreArray['springbot_store_id'];
+
+                        $this->redirects->createRedirect(
+                            'i',
+                            '301',
+                            "springbot/{$localStoreId}",
+                            $target,
+                            $localStoreId,
+                            "Springbot Instagram redirect for store {$localStoreId}"
+                        );
                     }
                 }
 

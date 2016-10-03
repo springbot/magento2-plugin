@@ -17,4 +17,15 @@ interface RedirectsInterface
      */
     public function getRedirects($storeId);
 
+    /**
+     * @param string $requestPath
+     * @param string $redirectType
+     * @param string $idPath
+     * @param string $targetPath
+     * @param string $storeId
+     * @param string $description
+     * @return \Springbot\Main\Api\RedirectInterface
+     */
+    public function createRedirect($requestPath, $redirectType, $idPath, $targetPath, $storeId, $description);
+
 }

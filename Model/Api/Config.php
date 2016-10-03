@@ -57,7 +57,7 @@ class Config extends AbstractModel implements ConfigInterface
             throw new \Exception("Path must consist of 3 parts");
         }
         else {
-            $this->configResource ->saveConfig($path, $value, 'default', 0);
+            $this->configResource->saveConfig($path, $value, 'default', 0);
         }
         return $this;
     }

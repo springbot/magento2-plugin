@@ -44,6 +44,13 @@
             <resource ref="Springbot_Main::api"/>
         </resources>
     </route>
+    <route url="/V1/springbot/main/:storeId/redirects" method="POST">
+        <service class="Springbot\Main\Api\RedirectsInterface" method="createRedirect"/>
+        <resources>
+            <resource ref="Springbot_Main::api" />
+        </resources>
+    </route>
+
     <route url="/V1/springbot/main/stores/:storeId/counts" method="GET">
         <service class="Springbot\Main\Api\CountsInterface" method="getCounts"/>
         <resources>
