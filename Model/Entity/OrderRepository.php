@@ -9,7 +9,7 @@ use Magento\Framework\App\Request\Http as HttpRequest;
 
 /**
  *  OrderRepository
- * @package Springbot\Main\Api
+ * @package Springbot\Main\Model\Entity;
  */
 class OrderRepository extends AbstractRepository implements OrderRepositoryInterface
 {
@@ -42,9 +42,9 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
         return $this->getSpringbotModel()->load($orderId);
     }
 
-    public function create($storeId, $customer, $address, $quote, $items)
+    public function create($storeId, $customer, $address, $quote, $items, $marketplaces)
     {
-        return $this->orderBuilder->buildOrder($storeId, $customer, $address, $quote, $items);
+        return $this->orderBuilder->buildOrder($storeId, $customer, $address, $quote, $items, $marketplaces);
     }
 
     public function getSpringbotModel()
