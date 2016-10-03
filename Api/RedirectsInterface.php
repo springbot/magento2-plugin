@@ -12,8 +12,9 @@ interface RedirectsInterface
     /**
      * Return a list of all redirects
      *
-     * @return array
+     * @param int $storeId
+     * @return \Springbot\Main\Api\RedirectInterface[]
      */
-    public function getRedirects();
+    public function getRedirects($storeId);
 
 }

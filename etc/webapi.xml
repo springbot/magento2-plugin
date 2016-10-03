@@ -16,12 +16,6 @@
             <resource ref="Springbot_Main::api" />
         </resources>
     </route>
-    <route url="/V1/springbot/main/redirects" method="GET">
-        <service class="Springbot\Main\Api\RedirectsInterface" method="getRedirects"/>
-        <resources>
-            <resource ref="Springbot_Main::api"/>
-        </resources>
-    </route>
     <route url="/V1/springbot/main/modules" method="GET">
         <service class="Springbot\Main\Api\ModulesInterface" method="getModules"/>
         <resources>
@@ -44,6 +38,12 @@
 
 
     <!-- Begin store endpoints -->
+    <route url="/V1/springbot/main/:storeId/redirects" method="GET">
+        <service class="Springbot\Main\Api\RedirectsInterface" method="getRedirects"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
     <route url="/V1/springbot/main/stores/:storeId/counts" method="GET">
         <service class="Springbot\Main\Api\CountsInterface" method="getCounts"/>
         <resources>
