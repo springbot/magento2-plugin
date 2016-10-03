@@ -2,6 +2,7 @@
 
 namespace Springbot\Main\Block;
 
+use Magento\Catalog\Block\Product\Context;
 use Magento\Framework\View\Element\Template;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
@@ -25,17 +26,25 @@ class EnhancedPixel extends Template
 
     /**
      * EnhancedPixel constructor.
+     * @param Context $context
      * @param OrderFactory $orderFactory
      * @param Api $api
      * @param Session $session
      * @param StoreConfiguration $storeConfig
      */
-    public function __construct(OrderFactory $orderFactory, Api $api, Session $session, StoreConfiguration $storeConfig)
+    public function __construct(
+        Context $context,
+        OrderFactory $orderFactory,
+        Api $api,
+        Session $session,
+        StoreConfiguration $storeConfig
+    )
     {
         $this->orderFactory = $orderFactory;
         $this->api = $api;
         $this->session = $session;
         $this->storeConfig = $storeConfig;
+        parent::__construct($context);
     }
 
 
