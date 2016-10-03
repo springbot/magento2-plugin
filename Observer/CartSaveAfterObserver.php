@@ -3,27 +3,38 @@
 namespace Springbot\Main\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
-use Psr\Log\LoggerInterface;
-use Springbot\Queue\Model\Queue;
 use Magento\Framework\Event\Observer;
 use Magento\Quote\Model\Quote as MagentoQuote;
+use Magento\Framework\Stdlib\CookieManagerInterface;
+use Psr\Log\LoggerInterface;
 use Springbot\Main\Model\Handler\CartHandler;
+use Springbot\Main\Model\SpringbotQuoteRedirect;
+use Springbot\Queue\Model\Queue;
 
 class CartSaveAfterObserver implements ObserverInterface
 {
     private $logger;
     private $queue;
+    private $quoteRedirect;
+    private $session;
 
     /**
-     * ProductSaveAfterObserver constructor
-     *
      * @param LoggerInterface $loggerInterface
      * @param Queue $queue
+     * @param SpringbotQuoteRedirect $quoteRedirect
+     * @param CookieManagerInterface $session
      */
-    public function __construct(LoggerInterface $loggerInterface, Queue $queue)
+    public function __construct(
+        LoggerInterface $loggerInterface,
+        Queue $queue,
+        SpringbotQuoteRedirect $quoteRedirect,
+        CookieManagerInterface $session
+    )
     {
         $this->logger = $loggerInterface;
         $this->queue = $queue;
+        $this->quoteRedirect = $quoteRedirect;
+        $this->session = $session;
     }
 
     /**
