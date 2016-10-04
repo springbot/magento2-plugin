@@ -13,15 +13,6 @@ class IndexTest extends \PHPUnit_Framework_TestCase
     /** @var \Magento\Framework\TestFramework\Unit\Helper\ObjectManager */
     protected $objectManager;
 
-    public function setUp()
-    {
-        $this->indexControllerMock = $this->getControllerIndexMock(['getResultPageFactory']);
-        $this->authorization = $this->getMockBuilder('Magento\Framework\AuthorizationInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
-    }
-
     /**
      * @covers \Springbot\Main\Controller\Adminhtml\Index\Index::execute
      */
