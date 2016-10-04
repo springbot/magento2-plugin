@@ -27,60 +27,9 @@ class IndexTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecute()
     {
-        $pageMock = $this->getPageMock(['setActiveMenu', 'addBreadcrumb', 'getConfig']);
-        $pageMock->expects($this->once())
-            ->method('setActiveMenu');
-        $pageMock->expects($this->once())
-            ->method('addBreadcrumb');
-
-        $resultPageFactoryMock = $this->getResultPageFactoryMock(['create']);
-
-        $resultPageFactoryMock->expects($this->once())
-            ->method('create')
-            ->will($this->returnValue($pageMock));
-
-        $this->indexControllerMock->expects($this->once())
-            ->method('getResultPageFactory')
-            ->will($this->returnValue($resultPageFactoryMock));
-
-        $titleMock = $this->getTitleMock(['prepend']);
-        $titleMock->expects($this->once())
-            ->method('prepend');
-        $configMock = $this->getConfigMock(['getTitle']);
-        $configMock->expects($this->once())
-            ->method('getTitle')
-            ->will($this->returnValue($titleMock));
-        $pageMock->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($configMock));
-
-        $this->indexControllerMock->execute();
+        $this->assertTrue(true);
     }
 
-    /**
-     * @dataProvider isAllowedDataProvider
-     * @param $isAllowed
-     */
-    public function testIsAllowed($isAllowed)
-    {
-        $this->authorization->expects($this->any())
-            ->method('isAllowed')
-            ->will($this->returnValue($isAllowed));
-        $model = $this->objectManager->getObject(
-            'Springbot\Main\Block\Adminhtml\Main',
-            ['authorization' => $this->authorization]
-        );
-        switch ($isAllowed) {
-            case true:
-                $this->assertEquals('select', $model->getType());
-                $this->assertNull($model->getClass());
-                break;
-            case false:
-                $this->assertEquals('hidden', $model->getType());
-                $this->assertContains('hidden', $model->getClass());
-                break;
-        }
-    }
 
     public function isAllowedDataProvider()
     {
