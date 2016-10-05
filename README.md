@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/springbot/magento2-plugin.svg?style=svg)](https://circleci.com/gh/springbot/magento2-plugin)
+[![GPL licensed](https://img.shields.io/badge/license-GPL-blue.svg)](https://raw.githubusercontent.com/springbot/magento2-plugin/master/LICENSE.md)
 
 ## Springbot Integration for Magento2
 
