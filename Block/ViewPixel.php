@@ -2,37 +2,43 @@
 
 namespace Springbot\Main\Block;
 
-use Magento\Catalog\Block\Product\Context;
-use Magento\Catalog\Block\Product\AbstractProduct;
-use Springbot\Main\Helper\Data as SpringbotHelper;
 use Magento\Framework\UrlInterface;
+use Magento\Catalog\Block\Product\View\AbstractView;
+use Magento\Catalog\Block\Product\Context;
+use Magento\Framework\Stdlib\ArrayUtils;
+use Springbot\Main\Helper\Data as SpringbotHelper;
 
 /**
  * Class Async
  *
  * @package Springbot\Main\Block
  */
-class ViewPixel extends AbstractProduct
+class ViewPixel extends AbstractView
 {
 
     protected $springbotHelper;
     protected $scopeConfig;
+
+    /* @var UrlInterface $urlInterface */
     protected $urlInterface;
 
     /**
+     * ViewPixel constructor.
      * @param Context $context
+     * @param ArrayUtils $arrayUtils
+     * @param array $data
      * @param SpringbotHelper $springbotHelper
-     * @param UrlInterface $urlInterface
      */
     public function __construct(
         Context $context,
-        SpringbotHelper $springbotHelper,
-        UrlInterface $urlInterface
+        ArrayUtils $arrayUtils,
+        array $data = [],
+        SpringbotHelper $springbotHelper
     ) {
-        $this->scopeConfig = $context->getScopeConfig();
         $this->springbotHelper = $springbotHelper;
-        $this->urlInterface = $urlInterface;
-        parent::__construct($context);
+        $this->scopeConfig = $context->getScopeConfig();
+        $this->urlInterface = $context->getUrlBuilder();
+        parent::__construct($context, $arrayUtils, $data);
     }
 
     /**
@@ -45,13 +51,18 @@ class ViewPixel extends AbstractProduct
         return $this->scopeConfig->getValue('springbot/configuration/api_url');
     }
 
+    /**
+     * Return the current page URL
+     *
+     * @return string
+     */
     public function getCurrentUrl()
     {
         return $this->urlInterface->getCurrentUrl();
     }
 
     /**
-     * Return the URL to the Magento2 API (ETL)
+     * Return the SKU for the current product
      *
      * @return string
      */
@@ -65,7 +76,7 @@ class ViewPixel extends AbstractProduct
     }
 
     /**
-     * Get the GUID for the async code
+     * Return the GUID for the current store
      *
      * @return string
      */

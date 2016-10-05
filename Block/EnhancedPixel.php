@@ -2,7 +2,7 @@
 
 namespace Springbot\Main\Block;
 
-use Magento\Catalog\Block\Product\Context;
+use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\View\Element\Template;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
