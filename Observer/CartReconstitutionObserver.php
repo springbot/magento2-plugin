@@ -3,7 +3,7 @@
 namespace Springbot\Main\Observer;
 
 use Magento\Checkout\Model\Session;
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -20,7 +20,7 @@ use Springbot\Main\Helper\Data as SpringbotHelper;
 class CartReconstitutionObserver implements ObserverInterface
 {
     private $session;
-    private $action;
+    private $request;
     private $messageManager;
     private $springbotHelper;
     private $loggerInterface;
@@ -28,7 +28,7 @@ class CartReconstitutionObserver implements ObserverInterface
     private $scopeConfig;
 
     /**
-     * @param Action $action
+     * @param HttpRequest $request
      * @param ManagerInterface $messageManager
      * @param Session $session
      * @param QuoteFactory $quoteFactory
@@ -37,7 +37,7 @@ class CartReconstitutionObserver implements ObserverInterface
      * @param LoggerInterface $loggerInterface
      */
     public function __construct(
-        Action $action,
+        HttpRequest $request,
         ManagerInterface $messageManager,
         Session $session,
         QuoteFactory $quoteFactory,
@@ -45,7 +45,7 @@ class CartReconstitutionObserver implements ObserverInterface
         SpringbotHelper $springbotHelper,
         LoggerInterface $loggerInterface
     ) {
-        $this->action = $action;
+        $this->request = $request;
         $this->session = $session;
         $this->quoteFactory = $quoteFactory;
         $this->scopeConfig = $scopeConfig;
@@ -62,8 +62,8 @@ class CartReconstitutionObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            if ($quoteId = $this->action->getRequest()->getParam('quote_id')) {
-                $suppliedSecurityHash = $this->action->getRequest()->getParam('sec_key');
+            if ($quoteId = $this->request->getParam('quote_id')) {
+                $suppliedSecurityHash = $this->request->getParam('sec_key');
                 $this->setQuote($quoteId, $suppliedSecurityHash);
             }
         } catch (LocalizedException $e) {
