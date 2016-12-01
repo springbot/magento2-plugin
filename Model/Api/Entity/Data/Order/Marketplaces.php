@@ -1,6 +1,6 @@
 <?php
 
-namespace Springbot\Main\Model\Entity\Data\Order;
+namespace Springbot\Main\Model\Api\Entity\Data\Order;
 
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Model\AbstractModel;

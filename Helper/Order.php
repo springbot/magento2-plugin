@@ -26,6 +26,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
      * @param \Magento\Quote\Api\Data\CartInterfaceFactory $cartFactory
      * @param \Magento\Quote\Model\Quote\Item\Repository $quoteItemRepository
+     * @param \Magento\Quote\Model\QuoteManagement $quoteManagement
      * @param \Magento\Framework\Logger\Monolog $logger
      */
     public function __construct(
@@ -41,6 +42,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Quote\Api\Data\CartInterfaceFactory $cartFactory,
         \Magento\Quote\Model\Quote\Item\Repository $quoteItemRepository,
+        \Magento\Quote\Model\QuoteManagement $quoteManagement,
         \Magento\Framework\Logger\Monolog $logger
     ) {
         $this->objectManager = $objectManager;
@@ -54,6 +56,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->quoteRepository = $quoteRepository;
         $this->cartFactory = $cartFactory;
         $this->quoteItemRepository = $quoteItemRepository;
+        $this->quoteManagement = $quoteManagement;
         $this->logger = $logger;
         parent::__construct($context);
     }
@@ -77,40 +80,56 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->marketplaces = $marketplacesData;
 
         if($this->findOrCreateCustomer()) {
-            $this->buildCart();
+            if($quote = $this->buildQuote()) {
+                $order = $this->quoteManagement->submit($quote);
+            }
         }
 
-
         // return order eventually
-        return;
+        return $order;
     }
 
-    private function buildCart()
+    private function buildQuote()
     {
         $this->quoteData->assignCustomer($this->customer);
 
-        $this->cart = $this->quoteData
+        $quote = $this->quoteData
             ->setStoreId($this->getStore()->getId())
             ->save();
+
+        $items = [];
 
         foreach($this->quoteItemsData as $item) {
             $product = $this->productRepository->get($item->getSku());
             $product->setPrice($item->getPrice());
-            $this->cart->addProduct(
+            $items[] = $quote->addProduct(
                 $product,
-                intval($item->getQty()),
-                \Magento\Catalog\Model\Product\Type\AbstractType::PROCESS_MODE_LITE
+                intval($item->getQty())
             );
         }
 
-        $this->quoteRepository->save($this->cart);
+        $quote->setItems($items);
 
-        eval(\Psy\sh());
+        $quote->getShippingAddress()
+            ->setQuote($quote)
+            ->importCustomerAddressData($this->customer->getAddresses()[0])
+            ->setShippingMethod('sbmarketplaces')
+            ->setCollectShippingRates(true)
+            ->collectShippingRates()
+            ;
+        $quote->save();
 
-        $this->cart->setTotalsCollectedFlag(true);
-        $this->cart->collectTotals();
+        $quote->setPaymentMethod('sbmarketplaces');
 
-        return $this->cart;
+        $this->quoteRepository->save($quote);
+
+        $quote->getPayment()->importData(['method' => 'sbmarketplaces']);
+
+        $quote->setTotalsCollectedFlag(true);
+        $quote->collectTotals();
+        $quote->save();
+
+        return $quote;
     }
 
     private function getStore()

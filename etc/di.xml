@@ -65,5 +65,5 @@
                 type="Springbot\Main\Model\Api\Entity\Data\Subscriber"/>
 
     <preference for="Springbot\Main\Api\Entity\Data\Order\MarketplacesInterface"
-                type="Springbot\Main\Model\Entity\Data\Order\Marketplaces"/>
+                type="Springbot\Main\Model\Api\Entity\Data\Order\Marketplaces"/>
 </config>
