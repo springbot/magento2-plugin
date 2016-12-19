@@ -8,6 +8,8 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Sales\Model\Order\Config as OrderConfig;
 use Springbot\Main\Helper\Data;
 use Springbot\Main\Model\Api\Redirects;
+use Magento\Framework\App\Cache\Manager;
+use Psr\Log\LoggerInterface as Logger;
 
 /**
  * Class Register
@@ -27,6 +29,8 @@ class Register
     private $scopeConfigInterface;
     private $oauth;
     private $redirects;
+    private $cacheManager;
+    private $logger;
 
     /**
      * @param Api $api
@@ -38,6 +42,8 @@ class Register
      * @param StoreConfiguration $storeConfig
      * @param Oauth $oauth
      * @param Redirects $redirects
+     * @param Manager $cacheManager
+     * @param Logger $logger
      */
     public function __construct(
         Api $api,
@@ -48,7 +54,9 @@ class Register
         UrlInterface $urlInterface,
         StoreConfiguration $storeConfig,
         Oauth $oauth,
-        Redirects $redirects
+        Redirects $redirects,
+        Manager $cacheManager,
+        Logger $logger
     ) {
         $this->api = $api;
         $this->scopeConfigInterface = $scopeConfigInterface;
@@ -59,6 +67,8 @@ class Register
         $this->storeConfig = $storeConfig;
         $this->oauth = $oauth;
         $this->redirects = $redirects;
+        $this->cacheManager = $cacheManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -113,22 +123,28 @@ class Register
                             . '/i/'
                             . $returnedStoreArray['springbot_store_id'];
 
-                        $this->redirects->createRedirect(
-                            'i',
-                            '301',
-                            "springbot/{$localStoreId}",
-                            $target,
-                            $localStoreId,
-                            "Springbot Instagram redirect for store {$localStoreId}"
-                        );
+                        try {
+                            $this->redirects->createRedirect(
+                                'i',
+                                '301',
+                                "springbot/{$localStoreId}",
+                                $target,
+                                $localStoreId,
+                                "Springbot Instagram redirect for store {$localStoreId}"
+                            );
+                        }
+                        catch (\Throwable $e) {
+                            $this->logger->addNotice($e->getMessage());
+                        }
                     }
                 }
-
+                $this->cacheManager->clean();
                 return true;
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            $this->logger->addNotice($e->getMessage());
             return false;
         }
     }
