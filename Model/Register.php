@@ -10,6 +10,7 @@ use Springbot\Main\Helper\Data;
 use Springbot\Main\Model\Api\Redirects;
 use Magento\Framework\App\Cache\Manager;
 use Psr\Log\LoggerInterface as Logger;
+use Magento\Framework\App\Cache\Type\Config as CacheTypeConfig;
 
 /**
  * Class Register
@@ -138,7 +139,7 @@ class Register
                         }
                     }
                 }
-                $this->cacheManager->clean();
+                $this->cacheManager->clean(['config','layout','block_html','translate','collections','eav','config_api','config_api2']);
                 return true;
             } else {
                 return false;
