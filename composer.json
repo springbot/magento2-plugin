@@ -18,6 +18,7 @@
     }
   },
   "require-dev": {
-    "psy/psysh": "^0.7.2"
+    "psy/psysh": "^0.7.2",
+    "phpunit/phpunit": "~4.0"
   }
 }
