@@ -40,9 +40,9 @@ class Data extends AbstractHelper
      *
      * @return string
      */
-    public function getStoreGuid()
+    public function getStoreGuid($storeId)
     {
-        $storeId = $this->storeManager->getStore()->getId();
+        $store = $storeManager->getStore($storeId);
 
         $guid = $this->scopeConfig
             ->getValue('springbot/configuration/store_guid_' . $storeId);
@@ -50,10 +50,8 @@ class Data extends AbstractHelper
         if (empty($guid)) {
 
             $baseUrl = $this->scopeConfig->getValue('web/unsecure/base_url');
-            $storeName = $this->storeManager->getStore()->getName();
-            $storeCode = $this->storeManager->getStore()->getCode();
 
-            $charid = strtoupper(md5($baseUrl . $storeId . $storeName . $storeCode));
+            $charid = strtoupper(md5($baseUrl . $storeId . $store->getName() . $store->getCode()));
 
             $guid = substr($charid, 0, 8)  . '-'
                   . substr($charid, 8, 4)  . '-'

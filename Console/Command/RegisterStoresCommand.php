@@ -7,6 +7,7 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface as StoreManager;
 use Springbot\Main\Model\Register as Register;
 use Springbot\Main\Model\StoreConfiguration;
+use Springbot\Main\Helper\Data as SpringbotHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,19 +29,24 @@ class RegisterStoresCommand extends Command
     private $storeConfig;
     private $register;
 
+    protected $springbotHelper;
+
     /**
      * @param StoreManager       $storeManager
      * @param Register           $register
      * @param StoreConfiguration $storeConfig
+     * @param SpringbotHelper    $springbotHelper
      */
     public function __construct(
         StoreManager $storeManager,
         Register $register,
-        StoreConfiguration $storeConfig
+        StoreConfiguration $storeConfig,
+        SpringbotHelper $springbotHelper
     ) {
         $this->register = $register;
         $this->storeManager = $storeManager;
         $this->storeConfig = $storeConfig;
+        $this->springbotHelper = $springbotHelper;
         parent::__construct();
     }
 
@@ -114,7 +120,9 @@ class RegisterStoresCommand extends Command
     private function addToTable(TextTable $table, StoreInterface $store, $message, $appendIfUnregistered = false)
     {
         $springbotStoreId = $this->storeConfig->getSpringbotStoreId($store->getId());
-        $springbotGuid = strtolower($this->storeConfig->getGuid($store->getId()));
+
+        $springbotGuid = str_replace('-', '', strtolower($this->springbotHelper->getStoreGuid($store->getId())));
+
         if (($springbotStoreId && $springbotGuid) || $appendIfUnregistered) {
             $table->appendRow([substr($store->getName(), 0, 23), $store->getId(), $springbotStoreId, $message]);
 

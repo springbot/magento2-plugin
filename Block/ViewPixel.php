@@ -6,6 +6,7 @@ use Magento\Framework\UrlInterface;
 use Magento\Catalog\Block\Product\View\AbstractView;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Framework\Stdlib\ArrayUtils;
+use Magento\Store\Model\StoreManagerInterface as StoreManager;
 use Springbot\Main\Helper\Data as SpringbotHelper;
 
 /**
@@ -18,6 +19,7 @@ class ViewPixel extends AbstractView
 
     protected $springbotHelper;
     protected $scopeConfig;
+    protected $storeManager;
 
     /* @var UrlInterface $urlInterface */
     protected $urlInterface;
@@ -28,16 +30,19 @@ class ViewPixel extends AbstractView
      * @param ArrayUtils $arrayUtils
      * @param array $data
      * @param SpringbotHelper $springbotHelper
+     * @param StoreManager $storeManager
      */
     public function __construct(
         Context $context,
         ArrayUtils $arrayUtils,
         array $data = [],
-        SpringbotHelper $springbotHelper
+        SpringbotHelper $springbotHelper,
+        StoreManager $storeManager
     ) {
         $this->springbotHelper = $springbotHelper;
         $this->scopeConfig = $context->getScopeConfig();
         $this->urlInterface = $context->getUrlBuilder();
+        $this->storeManager = $storeManager;
         parent::__construct($context, $arrayUtils, $data);
     }
 
@@ -82,6 +87,8 @@ class ViewPixel extends AbstractView
      */
     public function getStoreGuid()
     {
-        return str_replace('-', '', strtolower($this->springbotHelper->getStoreGuid()));
+        $guid = $this->springbotHelper->getStoreGuid($this->storeManager->getStore()->getId());
+
+        return str_replace('-', '', strtolower($guid));
     }
 }
