@@ -64,7 +64,6 @@ class Register
         $this->oauth = $oauth;
         $this->redirects = $redirects;
         $this->cacheManager = $cacheManager;
-        $this->logger = $logger;
     }
 
     /**
@@ -119,7 +118,6 @@ class Register
                             . '/i/'
                             . $returnedStoreArray['springbot_store_id'];
 
-                        try {
                             $this->redirects->createRedirect(
                                 'i',
                                 '301',
@@ -128,10 +126,6 @@ class Register
                                 $localStoreId,
                                 "Springbot Instagram redirect for store {$localStoreId}"
                             );
-                        }
-                        catch (\Throwable $e) {
-                            $this->logger->addNotice($e->getMessage());
-                        }
                     }
                 }
 
@@ -142,7 +136,6 @@ class Register
                 return false;
             }
         } catch (\Throwable $e) {
-            $this->logger->addNotice($e->getMessage());
             return false;
         }
     }
