@@ -42,7 +42,7 @@ class Data extends AbstractHelper
      */
     public function getStoreGuid($storeId)
     {
-        $store = $storeManager->getStore($storeId);
+        $store = $this->storeManager->getStore($storeId);
 
         $guid = $this->scopeConfig
             ->getValue('springbot/configuration/store_guid_' . $storeId);
