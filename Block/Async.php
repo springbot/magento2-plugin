@@ -4,7 +4,6 @@ namespace Springbot\Main\Block;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Store\Model\StoreManagerInterface as StoreManager;
 use Springbot\Main\Helper\Data as SpringbotHelper;
 
 /**
@@ -26,13 +25,11 @@ class Async extends Template
      */
     public function __construct(
         Context $context,
-        SpringbotHelper $springbotHelper,
-        StoreManager $storeManager
+        SpringbotHelper $springbotHelper
     ) {
         $this->scopeConfig = $context->getScopeConfig();
         $this->springbotHelper = $springbotHelper;
-        $this->storeManager = $storeManager;
-
+        $this->storeManager = $context->getStoreManager();
         parent::__construct($context);
     }
 

@@ -7,7 +7,6 @@ use Magento\Framework\View\Element\Template;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Checkout\Model\Session;
-use Magento\Store\Model\StoreManagerInterface as StoreManager;
 use Springbot\Main\Model\Api;
 use Springbot\Main\Model\StoreConfiguration;
 use Springbot\Main\Helper\Data as SpringbotHelper;
@@ -26,8 +25,8 @@ class EnhancedPixel extends Template
     private $session;
     private $storeConfig;
 
-    protected $storeManager;
     protected $springbotHelper;
+    protected $storeManager;
 
     /**
      * EnhancedPixel constructor.
@@ -37,7 +36,6 @@ class EnhancedPixel extends Template
      * @param Session $session
      * @param StoreConfiguration $storeConfig
      * @param SpringbotHelper $springbotHelper
-     * @param StoreManager $storeManager
      */
     public function __construct(
         Context $context,
@@ -45,8 +43,7 @@ class EnhancedPixel extends Template
         Api $api,
         Session $session,
         StoreConfiguration $storeConfig,
-        SpringbotHelper $springbotHelper,
-        StoreManager $storeManager
+        SpringbotHelper $springbotHelper
     )
     {
         $this->orderFactory = $orderFactory;
@@ -54,7 +51,7 @@ class EnhancedPixel extends Template
         $this->session = $session;
         $this->storeConfig = $storeConfig;
         $this->springbotHelper = $springbotHelper;
-        $this->storeManager = $storeManager;
+        $this->storeManager = $context->getStoreManager();
         parent::__construct($context);
     }
 

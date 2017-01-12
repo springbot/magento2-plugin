@@ -6,7 +6,6 @@ use Magento\Framework\UrlInterface;
 use Magento\Catalog\Block\Product\View\AbstractView;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Framework\Stdlib\ArrayUtils;
-use Magento\Store\Model\StoreManagerInterface as StoreManager;
 use Springbot\Main\Helper\Data as SpringbotHelper;
 
 /**
@@ -36,13 +35,12 @@ class ViewPixel extends AbstractView
         Context $context,
         ArrayUtils $arrayUtils,
         array $data = [],
-        SpringbotHelper $springbotHelper,
-        StoreManager $storeManager
+        SpringbotHelper $springbotHelper
     ) {
         $this->springbotHelper = $springbotHelper;
         $this->scopeConfig = $context->getScopeConfig();
         $this->urlInterface = $context->getUrlBuilder();
-        $this->storeManager = $storeManager;
+        $this->storeManager = $context->getStoreManager();
         parent::__construct($context, $arrayUtils, $data);
     }
 
