@@ -9,7 +9,6 @@ use Magento\Sales\Model\Order\Config as OrderConfig;
 use Springbot\Main\Helper\Data;
 use Springbot\Main\Model\Api\Redirects;
 use Magento\Framework\App\Cache\Manager;
-use Psr\Log\LoggerInterface as Logger;
 
 /**
  * Class Register
@@ -30,7 +29,6 @@ class Register
     private $oauth;
     private $redirects;
     private $cacheManager;
-    private $logger;
 
     /**
      * @param Api $api
@@ -43,7 +41,6 @@ class Register
      * @param Oauth $oauth
      * @param Redirects $redirects
      * @param Manager $cacheManager
-     * @param Logger $logger
      */
     public function __construct(
         Api $api,
@@ -55,8 +52,7 @@ class Register
         StoreConfiguration $storeConfig,
         Oauth $oauth,
         Redirects $redirects,
-        Manager $cacheManager,
-        Logger $logger
+        Manager $cacheManager
     ) {
         $this->api = $api;
         $this->scopeConfigInterface = $scopeConfigInterface;
@@ -138,7 +134,9 @@ class Register
                         }
                     }
                 }
-                $this->cacheManager->clean();
+
+                $this->cacheManager->flush(['config','block_html','config_api','config_api2']);
+
                 return true;
             } else {
                 return false;
