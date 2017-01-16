@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="Test/bootstrap.php">
+<phpunit>
     <testsuites>
         <testsuite name="Main">
             <directory suffix="Test.php">./Test/</directory>
