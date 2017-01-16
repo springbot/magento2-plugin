@@ -118,23 +118,24 @@ class Register
                             . '/i/'
                             . $returnedStoreArray['springbot_store_id'];
 
-                        $this->redirects->createRedirect(
-                            'i',
-                            '301',
-                            "springbot/{$localStoreId}",
-                            $target,
-                            $localStoreId,
-                            "Springbot Instagram redirect for store {$localStoreId}"
-                        );
+                            $this->redirects->createRedirect(
+                                'i',
+                                '301',
+                                "springbot/{$localStoreId}",
+                                $target,
+                                $localStoreId,
+                                "Springbot Instagram redirect for store {$localStoreId}"
+                            );
                     }
                 }
+
                 $this->cacheManager->flush(['config','block_html','config_api','config_api2']);
 
                 return true;
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return false;
         }
     }
@@ -147,7 +148,7 @@ class Register
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             if (!$this->storeConfig->getSpringbotStoreId($store->getId()) ||
-                !$this->storeConfig->getGuid($store->getId())
+                !$this->helper->getStoreGuid($store->getId())
             ) {
                 return false;
             }
@@ -164,8 +165,11 @@ class Register
     public function getStoresArray($stores)
     {
         $storesArray = [];
+
         foreach ($stores as $store) {
-            $guid = $this->helper->getStoreGuid();
+
+            $guid = $this->helper->getStoreGuid($store->getId());
+
             $storesArray[$guid] = [
                 'guid' => $guid,
                 'url' => $store->getBaseUrl(),
@@ -194,4 +198,3 @@ class Register
             $this->scopeConfigInterface->getValue('general/store_information/address'));
     }
 }
-

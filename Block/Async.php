@@ -16,10 +16,12 @@ class Async extends Template
 
     protected $springbotHelper;
     protected $scopeConfig;
+    protected $storeManager;
 
     /**
      * @param Context $context
      * @param SpringbotHelper $springbotHelper
+     * @param StoreManager $storeManager
      */
     public function __construct(
         Context $context,
@@ -27,6 +29,7 @@ class Async extends Template
     ) {
         $this->scopeConfig = $context->getScopeConfig();
         $this->springbotHelper = $springbotHelper;
+        $this->storeManager = $context->getStoreManager();
         parent::__construct($context);
     }
 
@@ -41,12 +44,14 @@ class Async extends Template
     }
 
     /**
-     * Get the GUID for the async code
+     * Return the GUID for the current store
      *
      * @return string
      */
     public function getStoreGuid()
     {
-        return str_replace('-', '', strtolower($this->springbotHelper->getStoreGuid()));
+        $guid = $this->springbotHelper->getStoreGuid($this->storeManager->getStore()->getId());
+
+        return str_replace('-', '', strtolower($guid));
     }
 }
