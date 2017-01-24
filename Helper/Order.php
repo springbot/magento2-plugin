@@ -42,7 +42,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Quote\Api\Data\CartInterfaceFactory $cartFactory,
         \Magento\Quote\Model\Quote\Item\Repository $quoteItemRepository,
-        \Magento\Quote\Model\QuoteManagement $quoteManagement,
+        \Magento\Quote\Api\CartManagementInterface $quoteManagement,
         \Magento\Framework\Logger\Monolog $logger
     ) {
         $this->objectManager = $objectManager;
@@ -97,28 +97,30 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             ->setStoreId($this->getStore()->getId())
             ->save();
 
-        $items = [];
-
-        foreach($this->quoteItemsData as $item) {
-            $product = $this->productRepository->get($item->getSku());
-            $product->setPrice($item->getPrice());
-            $items[] = $quote->addProduct(
-                $product,
-                intval($item->getQty())
-            );
+        foreach ($this->quoteItemsData as $itemData) {
+          $product = $this->productRepository->get($itemData->getSku());
+          $quote->addProduct($product, $itemData->getQty());
         }
 
-        $quote->setItems($items);
+        $shippingAddress = $quote->getShippingAddress();
 
-        $quote->getShippingAddress()
-            ->setQuote($quote)
-            ->importCustomerAddressData($this->customer->getAddresses()[0])
-            ->setShippingMethod('sbmarketplaces')
-            ->setCollectShippingRates(true)
-            ->collectShippingRates()
-            ;
-        $quote->save();
+        $shippingAddress->setQuote($quote)
+                        ->importCustomerAddressData($this->customer->getAddresses()[0])
+                        ->setShippingMethod('sbmarketplaces_sbmarketplaces')
+                        ->setCollectShippingRates(true)
+                        ->save();
 
+        $rates = $shippingAddress->collectShippingRates()->getGroupedAllShippingRates();
+
+        foreach ($rates as $carrier) {
+            foreach ($carrier as $rate) {
+                $rate->setPrice($this->marketplaces->getShippingTotal());
+                $rate->save();
+            }
+        }
+
+
+        $quote->setShippingAddress($shippingAddress);
         $quote->setPaymentMethod('sbmarketplaces');
 
         $this->quoteRepository->save($quote);
