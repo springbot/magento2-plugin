@@ -1,0 +1,43 @@
+{
+  "customer": {
+    "email": "test@example.com",
+    "firstname": "Test",
+    "lastname": "User",
+    "website_id": 0,
+    "group_id": 0,
+    "created_in": "amazon",
+    "store_id": 1,
+    "confirmation": "588282158315b"
+  },
+  "address": {
+    "street": ["JS MEDICAL OFFICE CONSULTING LLC", "JS MEDICAL OFFICE CONSULTING LLC 1600 W UNIVERSITY AVE STE 207 BLDG 3"],
+    "city": "FLAGSTAFF",
+    "countryId": "US",
+    "region": "AZ",
+    "firstname": "Test",
+    "lastname": " User",
+    "company": "Test User",
+    "postcode": "86001-3154",
+    "telephone": "000-000-0000"
+  },
+  "quote": {},
+  "items": [{
+      "sku": "WSH12-31-Green",
+      "qty": "3",
+      "price": "10.00"
+    },
+    {
+      "sku": "WSH12-32-Purple",
+      "qty": "1",
+      "price": "10.00"
+    }
+  ],
+  "marketplaces": {
+    "currency_code": "USD",
+    "shipping_total": "6.22",
+    "tax": "6.0",
+    "region": "Michigan",
+    "marketplace_type": "Magento",
+    "remote_order_id": "108-6836329-5009835"
+  }
+}
