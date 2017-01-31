@@ -7,6 +7,7 @@ use Springbot\Main\Api\ConfigItemInterface;
 
 /**
  * Class Config
+ *
  * @package Springbot\Main\Api
  */
 class ConfigItem extends AbstractModel implements ConfigItemInterface

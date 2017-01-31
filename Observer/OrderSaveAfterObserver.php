@@ -24,12 +24,12 @@ class OrderSaveAfterObserver implements ObserverInterface
     private $request;
 
     /**
-     * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param LoggerInterface        $loggerInterface
+     * @param Queue                  $queue
      * @param SpringbotOrderRedirect $orderRedirect
      * @param CookieManagerInterface $cookieManager
-     * @param SpringbotTrackable $springbotTrackable
-     * @param Http $request
+     * @param SpringbotTrackable     $springbotTrackable
+     * @param Http                   $request
      */
     public function __construct(
         LoggerInterface $loggerInterface,
@@ -38,8 +38,8 @@ class OrderSaveAfterObserver implements ObserverInterface
         CookieManagerInterface $cookieManager,
         SpringbotTrackable $springbotTrackable,
         Http $request
-    )
-    {
+    ) {
+    
         $this->logger = $loggerInterface;
         $this->queue = $queue;
         $this->orderRedirect = $orderRedirect;
@@ -51,7 +51,7 @@ class OrderSaveAfterObserver implements ObserverInterface
     /**
      * Pull the order data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)

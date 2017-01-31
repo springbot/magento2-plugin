@@ -10,6 +10,7 @@ use Springbot\Main\Model\Api\Entity\Data\RuleFactory;
 
 /**
  *  RuleRepository
+ *
  * @package Springbot\Main\Api
  */
 class RuleRepository extends AbstractRepository implements RuleRepositoryInterface
@@ -18,16 +19,17 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
 
     /**
      * RuleRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     *
+     * @param \Magento\Framework\App\Request\Http               $request
+     * @param \Magento\Framework\App\ResourceConnection         $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\RuleFactory $factory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         RuleFactory $factory
-    )
-    {
+    ) {
+    
         $this->ruleFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }

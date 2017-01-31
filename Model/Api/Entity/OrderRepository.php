@@ -9,6 +9,7 @@ use Magento\Framework\App\ResourceConnection;
 
 /**
  *  OrderRepository
+ *
  * @package Springbot\Main\Api
  */
 class OrderRepository extends AbstractRepository implements OrderRepositoryInterface
@@ -21,18 +22,19 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
 
     /**
      * OrderRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     *
+     * @param \Magento\Framework\App\Request\Http                $request
+     * @param \Magento\Framework\App\ResourceConnection          $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\OrderFactory $factory
-     * @param \Springbot\Main\Helper\Order $orderBuilder
+     * @param \Springbot\Main\Helper\Order                       $orderBuilder
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         OrderFactory $factory,
         \Springbot\Main\Helper\Order $orderBuilder
-    )
-    {
+    ) {
+    
         $this->orderBuilder = $orderBuilder;
         $this->orderFactory = $factory;
         parent::__construct($request, $resourceConnection);

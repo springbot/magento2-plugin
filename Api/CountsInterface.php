@@ -5,6 +5,7 @@ namespace Springbot\Main\Api;
 
 /**
  * Interface CountsInterface
+ *
  * @package Springbot\Main\Api
  */
 interface CountsInterface

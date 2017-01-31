@@ -17,8 +17,8 @@ class Counts implements CountsInterface
 
     /**
      * @param \Magento\Framework\App\ResourceConnection $resourceConnection
-     * @param CountFactory $countFactory
-     * @param StoreManagerInterface $storeManager
+     * @param CountFactory                              $countFactory
+     * @param StoreManagerInterface                     $storeManager
      */
     public function __construct(ResourceConnection $resourceConnection, CountFactory $countFactory, StoreManagerInterface $storeManager)
     {

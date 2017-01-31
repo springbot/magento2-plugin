@@ -4,6 +4,7 @@ namespace Springbot\Main\Api;
 
 /**
  * Interface StoresInterface
+ *
  * @package Springbot\Main\Api
  */
 interface StoresInterface

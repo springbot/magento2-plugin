@@ -11,62 +11,64 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
     private $customerData;
     private $addressData;
     private $quoteData;
-    private $itemsData;
 
     /**
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
-     * @param \Magento\Catalog\Model\ProductRepository $productRepository
-     * @param \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerFactory
-     * @param \Magento\Customer\Model\ResourceModel\AddressRepository $addressRepository
+     * @var \Magento\Sales\Model\Service\InvoiceService
+     */
+    private $invoiceService;
+
+    /**
+     * @var \Magento\Framework\DB\Transaction
+     */
+    private $transaction;
+
+    /**
+     * @var \Magento\Sales\Model\Order\Email\Sender\InvoiceSender
+     */
+    private $invoiceSender;
+
+    /**
+     * @param \Magento\Framework\App\Helper\Context                    $context
+     * @param \Magento\Catalog\Model\ProductRepository                 $productRepository
      * @param \Magento\Customer\Model\ResourceModel\CustomerRepository $customerRepository
-     * @param \Magento\Customer\Model\StoreRepository $storeRepository
-     * @param \Magento\Directory\Helper\Data $regionHelper
-     * @param \Magento\Directory\Model\Region $region
-     * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepository
-     * @param \Magento\Quote\Api\Data\CartInterfaceFactory $cartFactory
-     * @param \Magento\Quote\Model\Quote\Item\Repository $quoteItemRepository
-     * @param \Magento\Quote\Model\QuoteManagement $quoteManagement
-     * @param \Magento\Framework\Logger\Monolog $logger
+     * @param \Magento\Customer\Model\StoreRepository                  $storeRepository
+     * @param \Magento\Directory\Helper\Data                           $regionHelper
+     * @param \Magento\Directory\Model\Region                          $region
+     * @param \Magento\Quote\Api\CartRepositoryInterface               $quoteRepository
+     * @param \Magento\Quote\Model\QuoteManagement                     $quoteManagement
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Catalog\Model\ProductRepository $productRepository,
-        \Magento\Customer\Model\CustomerFactory $customerFactory,
-        \Magento\Customer\Model\ResourceModel\AddressRepository $addressRepository,
         \Magento\Customer\Model\ResourceModel\CustomerRepository $customerRepository,
         \Magento\Store\Model\StoreRepository $storeRepository,
         \Magento\Directory\Helper\Data $regionHelper,
         \Magento\Directory\Model\Region $region,
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
-        \Magento\Quote\Api\Data\CartInterfaceFactory $cartFactory,
-        \Magento\Quote\Model\Quote\Item\Repository $quoteItemRepository,
         \Magento\Quote\Api\CartManagementInterface $quoteManagement,
-        \Magento\Framework\Logger\Monolog $logger
+        \Magento\Sales\Model\Service\InvoiceService $invoiceService,
+        \Magento\Framework\DB\Transaction $transaction,
+        \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender
     ) {
-        $this->objectManager = $objectManager;
         $this->productRepository = $productRepository;
-        $this->customerFactory = $customerFactory;
-        $this->addressRepository = $addressRepository;
         $this->customerRepository = $customerRepository;
         $this->storeRepository = $storeRepository;
         $this->regionHelper = $regionHelper;
         $this->region = $region;
         $this->quoteRepository = $quoteRepository;
-        $this->cartFactory = $cartFactory;
-        $this->quoteItemRepository = $quoteItemRepository;
         $this->quoteManagement = $quoteManagement;
-        $this->logger = $logger;
+        $this->invoiceService = $invoiceService;
+        $this->transaction = $transaction;
+        $this->invoiceSender = $invoiceSender;
         parent::__construct($context);
     }
 
     /**
-     * @param int $storeId
-     * @param \Magento\Customer\Api\Data\CustomerInterface $customerData
-     * @param \Magento\Customer\Api\Data\AddressInterface $addressData
-     * @param \Magento\Quote\Api\Data\CartInterface $quoteData
-     * @param \Magento\Quote\Api\Data\CartItemInterface[] $itemsData
+     * @param int                                                         $storeId
+     * @param \Magento\Customer\Api\Data\CustomerInterface                $customerData
+     * @param \Magento\Customer\Api\Data\AddressInterface                 $addressData
+     * @param \Magento\Quote\Api\Data\CartInterface                       $quoteData
+     * @param \Magento\Quote\Api\Data\CartItemInterface[]                 $itemsData
      * @param \Springbot\Main\Api\Entity\Data\Order\MarketplacesInterface $marketplaces
      * @return \Springbot\Main\Api\Entity\Data\OrderInterface
      */
@@ -82,11 +84,36 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         if($this->findOrCreateCustomer()) {
             if($quote = $this->buildQuote()) {
                 $order = $this->quoteManagement->submit($quote);
+
+                if($order->canInvoice()) {
+                    $invoice = $this->invoiceService->prepareInvoice($order);
+
+                    //                   $invoice->setShippingAmount($shippingAmount);
+                    //                   $invoice->setSubtotal($subTotal);
+                    //                   $invoice->setBaseSubtotal($baseSubtotal);
+                    //                   $invoice->setGrandTotal($grandTotal);
+                    //                   $invoice->setBaseGrandTotal($baseGrandTotal);
+
+                    $invoice->register();
+                    $transactionSave = $this->transaction->addObject(
+                        $invoice
+                    )->addObject(
+                        $invoice->getOrder()
+                    );
+                    $transactionSave->save();
+                    $this->invoiceSender->send($invoice);
+
+                    // $order->addStatusHistoryComment(
+                    // __('Notified customer about invoice #%1.', $invoice->getId())
+                    //)
+                    //->setIsCustomerNotified(true)
+                    //->save();
+
+                    $order->setState("processing")->setStatus("processing");
+                    $order->save();
+                }
             }
         }
-
-        // return order eventually
-        return $order;
     }
 
     private function buildQuote()
@@ -98,17 +125,17 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             ->save();
 
         foreach ($this->quoteItemsData as $itemData) {
-          $product = $this->productRepository->get($itemData->getSku());
-          $quote->addProduct($product, $itemData->getQty());
+            $product = $this->productRepository->get($itemData->getSku());
+            $quote->addProduct($product, $itemData->getQty());
         }
 
         $shippingAddress = $quote->getShippingAddress();
 
         $shippingAddress->setQuote($quote)
-                        ->importCustomerAddressData($this->customer->getAddresses()[0])
-                        ->setShippingMethod('sbmarketplaces_sbmarketplaces')
-                        ->setCollectShippingRates(true)
-                        ->save();
+            ->importCustomerAddressData($this->customer->getAddresses()[0])
+            ->setShippingMethod('sbmarketplaces_sbmarketplaces')
+            ->setCollectShippingRates(true)
+            ->save();
 
         $rates = $shippingAddress->collectShippingRates()->getGroupedAllShippingRates();
 

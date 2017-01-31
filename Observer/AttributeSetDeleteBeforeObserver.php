@@ -18,16 +18,17 @@ class AttributeSetDeleteBeforeObserver implements ObserverInterface
 
     /**
      * AttributeSetDeleteBeforeObserver constructor.
-     * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     *
+     * @param LoggerInterface       $loggerInterface
+     * @param Queue                 $queue
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         LoggerInterface $loggerInterface,
         Queue $queue,
         StoreManagerInterface $storeManager
-    )
-    {
+    ) {
+    
         $this->logger = $loggerInterface;
         $this->queue = $queue;
         $this->storeManager = $storeManager;
@@ -36,7 +37,7 @@ class AttributeSetDeleteBeforeObserver implements ObserverInterface
     /**
      * Pull the attribute data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
@@ -45,9 +46,11 @@ class AttributeSetDeleteBeforeObserver implements ObserverInterface
             $attributeSet = $observer->getEvent()->getObject();
             /* @var MagentoAttribute $attribute */
             foreach ($this->storeManager->getStores() as $store) {
-                $this->queue->scheduleJob(AttributeSetHandler::class,
+                $this->queue->scheduleJob(
+                    AttributeSetHandler::class,
                     'handleDelete',
-                    [$store->getId(), $attributeSet->getAttributeSetId()]);
+                    [$store->getId(), $attributeSet->getAttributeSetId()]
+                );
             }
             $this->logger->debug("Deleted attribute set: " . $attributeSet->getId());
         } catch (\Exception $e) {

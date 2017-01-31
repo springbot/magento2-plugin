@@ -19,7 +19,7 @@ class SubscriberSaveAfterObserver implements ObserverInterface
      * SubscriberSaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param Queue           $queue
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
@@ -30,7 +30,7 @@ class SubscriberSaveAfterObserver implements ObserverInterface
     /**
      * Pull the subscriber data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
@@ -38,9 +38,11 @@ class SubscriberSaveAfterObserver implements ObserverInterface
         try {
             $subscriber = $observer->getEvent()->getSubscriber();
             /* @var MagentoSubscriber $subscriber */
-            $this->queue->scheduleJob(SubscriberHandler::class,
+            $this->queue->scheduleJob(
+                SubscriberHandler::class,
                 'handle',
-                [$subscriber->getStoreId(), $subscriber->getId()]);
+                [$subscriber->getStoreId(), $subscriber->getId()]
+            );
             $this->logger->debug("Scheduled sync job for subscriber ID: {$subscriber->getId()}, Store ID: {$subscriber->getStoreId()}");
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());

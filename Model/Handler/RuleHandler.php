@@ -4,6 +4,7 @@ namespace Springbot\Main\Model\Handler;
 
 /**
  * Class RuleHandler
+ *
  * @package Springbot\Main\Model\Handler
  */
 class RuleHandler extends AbstractHandler

@@ -6,6 +6,7 @@ use Springbot\Main\Api\Entity\Data\Product\ProductAttributeInterface;
 
 /**
  * Class ProductAttribute
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Product
  */
 class ProductAttribute implements ProductAttributeInterface
@@ -16,6 +17,7 @@ class ProductAttribute implements ProductAttributeInterface
 
     /**
      * ProductAttribute constructor.
+     *
      * @param $name
      * @param $value
      */

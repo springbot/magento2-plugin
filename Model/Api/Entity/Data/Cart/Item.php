@@ -8,6 +8,7 @@ use Springbot\Main\Model\Api\Entity\ProductRepository;
 
 /**
  * Class Item
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Cart
  */
 class Item implements ItemInterface
@@ -26,6 +27,7 @@ class Item implements ItemInterface
 
     /**
      * Customer constructor.
+     *
      * @param ProductRepository $productRepository
      */
     public function __construct(ProductRepository $productRepository)

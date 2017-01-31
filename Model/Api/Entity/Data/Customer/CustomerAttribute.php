@@ -6,6 +6,7 @@ use Springbot\Main\Api\Entity\Data\Customer\CustomerAttributeInterface;
 
 /**
  * Class CustomerAttribute
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Customer
  */
 class CustomerAttribute implements CustomerAttributeInterface

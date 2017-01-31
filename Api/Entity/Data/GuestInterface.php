@@ -26,7 +26,8 @@ interface GuestInterface
      * @return void
      */
     public function setValues($storeId, $orderId, $firstname, $lastname, $email, $createdAt, $updatedAt,
-        $billingAddressId, $shippingAddressId);
+        $billingAddressId, $shippingAddressId
+    );
 
     /**
      * @return int

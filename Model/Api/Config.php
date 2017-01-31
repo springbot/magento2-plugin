@@ -11,6 +11,7 @@ use Magento\Config\Model\ResourceModel\Config as ConfigResource;
 
 /**
  * Class Config
+ *
  * @package Springbot\Main\Api
  */
 class Config extends AbstractModel implements ConfigInterface
@@ -21,16 +22,15 @@ class Config extends AbstractModel implements ConfigInterface
 
     /**
      * @param ScopeConfigInterface $scopeConfig
-     * @param Context $context
-     * @param Registry $registry
-     * @param ConfigResource $configResource
+     * @param Context              $context
+     * @param Registry             $registry
+     * @param ConfigResource       $configResource
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         Context $context,
         Registry $registry,
         ConfigResource $configResource
-
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->configResource = $configResource;

@@ -9,6 +9,7 @@ use Springbot\Main\Model\Api\Entity\Data\Order\ShipmentFactory;
 
 /**
  * Class Order
+ *
  * @package Springbot\Main\Model\Api\Entity\Data
  */
 class Order implements OrderInterface
@@ -45,8 +46,8 @@ class Order implements OrderInterface
         ResourceConnection $productRepository,
         ItemFactory $factory,
         ShipmentFactory $shipmentFactory
-    )
-    {
+    ) {
+    
         $this->resourceConnection = $productRepository;
         $this->itemFactory = $factory;
         $this->shipmentFactory = $shipmentFactory;

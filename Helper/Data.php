@@ -21,8 +21,8 @@ class Data extends AbstractHelper
     /**
      * Data constructor.
      *
-     * @param Context $context
-     * @param Config $config
+     * @param Context               $context
+     * @param Config                $config
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(

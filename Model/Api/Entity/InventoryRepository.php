@@ -10,6 +10,7 @@ use Magento\Store\Model\StoreManagerInterface;
 
 /**
  *  InventoryRepository
+ *
  * @package Springbot\Main\Api
  */
 class InventoryRepository extends AbstractRepository implements InventoryRepositoryInterface
@@ -22,18 +23,19 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
 
     /**
      * OrderRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     *
+     * @param \Magento\Framework\App\Request\Http                    $request
+     * @param \Magento\Framework\App\ResourceConnection              $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\InventoryFactory $factory
-     * @param StoreManagerInterface $storeManager
+     * @param StoreManagerInterface                                  $storeManager
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         InventoryFactory $factory,
         StoreManagerInterface $storeManager
-    )
-    {
+    ) {
+    
         $this->inventoryFactory = $factory;
         $this->storeManager = $storeManager;
         parent::__construct($request, $resourceConnection);

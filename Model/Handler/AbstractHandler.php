@@ -36,10 +36,12 @@ abstract class AbstractHandler
 
     /**
      * Handler constructor.
+     *
      * @param StoreConfiguration $storeConfig
-     * @param Api $api
+     * @param Api                $api
      */
-    public function __construct(StoreConfiguration $storeConfig, Api $api) {
+    public function __construct(StoreConfiguration $storeConfig, Api $api) 
+    {
         $this->storeConfig = $storeConfig;
         $this->api = $api;
     }

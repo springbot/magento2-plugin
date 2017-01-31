@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data\Order;
 
 /**
  * Interface ItemInterface
+ *
  * @package Springbot\Main\Api\Entity\Data\Order
  */
 interface ItemInterface

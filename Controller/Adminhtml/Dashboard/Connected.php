@@ -10,6 +10,7 @@ use Springbot\Main\Model\Api;
 
 /**
  * Class Index
+ *
  * @package Springbot\Main\Controller\Adminhtml\Dashboard
  */
 class Connected extends Action
@@ -21,10 +22,10 @@ class Connected extends Action
     /**
      * Index constructor.
      *
-     * @param Context $context
-     * @param PageFactory $resultPageFactory
+     * @param Context         $context
+     * @param PageFactory     $resultPageFactory
      * @param AssetRepository $assetRepository
-     * @param Api $api
+     * @param Api             $api
      */
     public function __construct(
         Context $context,

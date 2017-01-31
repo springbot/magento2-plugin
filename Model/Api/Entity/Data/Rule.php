@@ -8,6 +8,7 @@ use Springbot\Main\Api\Entity\Data\RuleInterface;
 
 /**
  *  Rule
+ *
  * @package Springbot\Main\Api\Data
  */
 class Rule implements RuleInterface
@@ -40,6 +41,7 @@ class Rule implements RuleInterface
 
     /**
      * Inventory constructor.
+     *
      * @param \Magento\Framework\App\ResourceConnection $connectionResource
      */
     public function __construct(ResourceConnection $connectionResource)

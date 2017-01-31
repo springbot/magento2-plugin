@@ -20,9 +20,10 @@ class Oauth
 
     /**
      * @param IntegrationService $integrationService
-     * @param OauthService $oauthService
+     * @param OauthService       $oauthService
      */
-    public function __construct(IntegrationService $integrationService, OauthService $oauthService) {
+    public function __construct(IntegrationService $integrationService, OauthService $oauthService) 
+    {
         $this->integrationService = $integrationService;
         $this->oauthService = $oauthService;
     }
@@ -38,12 +39,14 @@ class Oauth
     {
         $integration = $this->integrationService->findByName(self::name);
         if ($integration->isEmpty()) {
-            $integration = $this->integrationService->create([
+            $integration = $this->integrationService->create(
+                [
                 'name' => self::name,
                 'email' => self::email,
                 'status' => 1,
                 'all_resources' => 1,
-            ]);
+                ]
+            );
         }
 
         if ($consumerId = $integration->getConsumerId()) {

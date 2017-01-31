@@ -31,43 +31,50 @@ class UpgradeSchema implements UpgradeSchemaInterface
     protected function addTrackableTable(SchemaSetupInterface $setup)
     {
         $table = $setup->getConnection()->newTable(
-            $setup->getTable('springbot_trackable'))
+            $setup->getTable('springbot_trackable')
+        )
             ->addColumn(
                 'id',
                 Table::TYPE_INTEGER,
                 11,
                 ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
-                'ID')
+                'ID'
+            )
             ->addColumn(
                 'quote_id',
                 Table::TYPE_INTEGER,
                 11,
                 ['nullable' => true],
-                'Quote Id')
+                'Quote Id'
+            )
             ->addColumn(
                 'customer_id',
                 Table::TYPE_INTEGER,
                 11,
                 ['nullable' => true],
-                'Customer Id')
+                'Customer Id'
+            )
             ->addColumn(
                 'order_id',
                 Table::TYPE_INTEGER,
                 11,
                 ['nullable' => true],
-                'Order Id')
+                'Order Id'
+            )
             ->addColumn(
                 'type',
                 Table::TYPE_TEXT,
                 null,
                 ['nullable' => false],
-                'Trackable type')
+                'Trackable type'
+            )
             ->addColumn(
                 'value',
                 Table::TYPE_TEXT,
                 null,
                 ['nullable' => false],
-                'Trackable value')
+                'Trackable value'
+            )
             ->setComment('Springbot Trackables Table');
 
         $setup->getConnection()->createTable($table);
@@ -85,40 +92,47 @@ class UpgradeSchema implements UpgradeSchemaInterface
                     Table::TYPE_INTEGER,
                     11,
                     ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
-                    'ID')
+                    'ID'
+                )
                 ->addColumn(
                     'order_id',
                     Table::TYPE_INTEGER,
                     11,
                     ['nullable' => false],
-                    'Customer Order ID')
+                    'Customer Order ID'
+                )
                 ->addColumn(
                     'increment_id',
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     32,
                     [],
-                    'Magento Order Increment Id')
+                    'Magento Order Increment Id'
+                )
                 ->addColumn(
                     'remote_order_id',
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     32,
                     [],
-                    'Order ID in Remote Marketplace')
+                    'Order ID in Remote Marketplace'
+                )
                 ->addColumn(
                     'marketplace_type',
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     32,
                     [],
-                    'Marketplace of Origin')
+                    'Marketplace of Origin'
+                )
                 ->setComment('Springbot join table for remote orders')
                 ->addIndex(
                     $setup->getIdxName($tableName, ['remote_order_id']),
                     ['remote_order_id'],
-                    ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE])
+                    ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]
+                )
                 ->addIndex(
                     $setup->getIdxName($tableName, ['increment_id']),
                     ['increment_id'],
-                    ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]);
+                    ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]
+                );
             $setup->getConnection()->createTable($table);
         }
     }

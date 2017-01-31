@@ -21,8 +21,8 @@ class ProductSaveAfterObserver implements ObserverInterface
     /**
      * ProductSaveAfterObserver constructor
      *
-     * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param LoggerInterface      $loggerInterface
+     * @param Queue                $queue
      * @param StockRegistryFactory $stockFactory
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue, StockRegistryFactory $stockFactory)
@@ -35,7 +35,7 @@ class ProductSaveAfterObserver implements ObserverInterface
     /**
      * Pull the product data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)

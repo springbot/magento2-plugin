@@ -20,8 +20,8 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
     /**
      * ProductSaveAfterObserver constructor
      *
-     * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param LoggerInterface        $loggerInterface
+     * @param Queue                  $queue
      * @param CookieManagerInterface $cookieManager
      * @param SpringbotOrderRedirect $orderRedirect
      */
@@ -40,7 +40,7 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
     /**
      * Pull the order data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)

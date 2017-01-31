@@ -6,6 +6,7 @@ use Springbot\Main\Api\RedirectInterface;
 
 /**
  * Class Redirects
+ *
  * @package Springbot\Main\Model
  */
 class Redirect implements RedirectInterface

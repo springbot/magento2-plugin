@@ -7,6 +7,7 @@ use Magento\Framework\App\ResourceConnection;
 
 /**
  * Class Shipment
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Order
  */
 class ShipmentItem implements ShipmentItemInterface
@@ -21,8 +22,9 @@ class ShipmentItem implements ShipmentItemInterface
 
     /**
      * ShipmentItem constructor.
+     *
      * @param ResourceConnection $resourceConnection
-     * @param ItemFactory $factory
+     * @param ItemFactory        $factory
      */
     public function __construct(ResourceConnection $resourceConnection, ItemFactory $factory)
     {
@@ -32,10 +34,11 @@ class ShipmentItem implements ShipmentItemInterface
 
     /**
      * ShipmentItem constructor.
-     * @param $sku
-     * @param $name
-     * @param $productId
-     * @param $qty
+     *
+     * @param  $sku
+     * @param  $name
+     * @param  $productId
+     * @param  $qty
      * @return void
      */
     public function setValues($sku, $name, $productId, $qty)

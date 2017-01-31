@@ -10,6 +10,7 @@ use Springbot\Main\Api\Entity\Data\Order\MarketplacesInterface;
 
 /**
  * Class Item
+ *
  * @package Springbot\Main\Model\Entity\Data\Order
  */
 class Marketplaces implements MarketplacesInterface
@@ -35,7 +36,7 @@ class Marketplaces implements MarketplacesInterface
     /**
      * Set currencyCode.
      *
-     * @param null|string $currencycode
+     * @param  null|string $currencycode
      * @return $this
      */
     public function setCurrencyCode($currencyCode)
@@ -57,7 +58,7 @@ class Marketplaces implements MarketplacesInterface
     /**
      * Set shippingTotal.
      *
-     * @param float $shippingTotal
+     * @param  float $shippingTotal
      * @return $this
      */
     public function setShippingTotal($shippingTotal = 0.0)
@@ -79,7 +80,7 @@ class Marketplaces implements MarketplacesInterface
     /**
      * Set shippingTax.
      *
-     * @param float $shippingTax
+     * @param  float $shippingTax
      * @return $this
      */
     public function setShippingTax($shippingTax = 0.0)
@@ -101,7 +102,7 @@ class Marketplaces implements MarketplacesInterface
     /**
      * Set tax.
      *
-     * @param float $tax
+     * @param  float $tax
      * @return $this
      */
     public function setTax($tax = 0.0)
@@ -123,7 +124,7 @@ class Marketplaces implements MarketplacesInterface
     /**
      * Set region.
      *
-     * @param string|null $region
+     * @param  string|null $region
      * @return $this
      */
     public function setRegion($region)
@@ -145,7 +146,7 @@ class Marketplaces implements MarketplacesInterface
     /**
      * Set marketplaceType.
      *
-     * @param string $marketplaceType
+     * @param  string $marketplaceType
      * @return $this
      */
     public function setMarketplaceType($marketplaceType = 'amazon')
@@ -167,7 +168,7 @@ class Marketplaces implements MarketplacesInterface
     /**
      * Set remoteOrderId.
      *
-     * @param string $remoteOrderId
+     * @param  string $remoteOrderId
      * @return $this
      */
     public function setRemoteOrderId($remoteOrderId)

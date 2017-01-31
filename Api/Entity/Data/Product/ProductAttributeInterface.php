@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data\Product;
 
 /**
  * Interface ProductAttributeInterface
+ *
  * @package Springbot\Main\Api\Entity\Data\Product
  */
 interface ProductAttributeInterface

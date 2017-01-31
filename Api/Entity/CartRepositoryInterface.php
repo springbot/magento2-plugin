@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity;
 
 /**
  * Interface CartRepositoryInterface
+ *
  * @package Springbot\Main\Api
  */
 interface CartRepositoryInterface

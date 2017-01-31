@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class Login
+ *
  * @package Springbot\Main\Controller\Adminhtml\Dashboard
  */
 class Login extends Action
@@ -18,9 +19,10 @@ class Login extends Action
 
     /**
      * Login constructor.
-     * @param Context $context
+     *
+     * @param Context         $context
      * @param LoggerInterface $logger
-     * @param Register $register
+     * @param Register        $register
      */
     public function __construct(
         Context $context,

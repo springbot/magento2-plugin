@@ -4,6 +4,7 @@ namespace Springbot\Main\Model\Api\Entity\Data\Order;
 
 /**
  * Class Item
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Order
  */
 class ItemAttribute
@@ -14,6 +15,7 @@ class ItemAttribute
 
     /**
      * ItemAttribute constructor.
+     *
      * @param $name
      * @param $value
      */

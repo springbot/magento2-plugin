@@ -9,6 +9,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Class Store
+ *
  * @package Springbot\Main\Model\Api
  */
 class Store implements StoreInterface

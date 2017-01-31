@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data\Order;
 
 /**
  * MarketplacesInterface
+ *
  * @package Springbot\Main\Api\Entity\Data\Order
  */
 interface MarketplacesInterface

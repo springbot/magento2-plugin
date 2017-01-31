@@ -19,9 +19,9 @@ class Async extends Template
     protected $storeManager;
 
     /**
-     * @param Context $context
+     * @param Context         $context
      * @param SpringbotHelper $springbotHelper
-     * @param StoreManager $storeManager
+     * @param StoreManager    $storeManager
      */
     public function __construct(
         Context $context,

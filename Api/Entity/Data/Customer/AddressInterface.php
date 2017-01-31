@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data\Customer;
 
 /**
  * Interface ItemInterface
+ *
  * @package Springbot\Main\Api\Entity\Data\Cart
  */
 interface AddressInterface

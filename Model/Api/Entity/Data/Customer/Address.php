@@ -6,6 +6,7 @@ use Springbot\Main\Api\Entity\Data\Customer\AddressInterface;
 
 /**
  * Class Address
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Customer
  */
 class Address implements AddressInterface

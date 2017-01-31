@@ -12,6 +12,7 @@ use Springbot\Main\Model\Api\Entity\AbstractRepository;
 
 /**
  * Class Redirects
+ *
  * @package Springbot\Main\Model
  */
 class Redirects extends AbstractRepository implements RedirectsInterface
@@ -22,17 +23,17 @@ class Redirects extends AbstractRepository implements RedirectsInterface
     
     /**
      * @param \Magento\Framework\App\Request\Http $request
-     * @param ResourceConnection $resourceConnection
-     * @param RedirectFactory $redirectFactory
-     * @param UrlRewriteFactory $urlRewriteFactory
+     * @param ResourceConnection                  $resourceConnection
+     * @param RedirectFactory                     $redirectFactory
+     * @param UrlRewriteFactory                   $urlRewriteFactory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         RedirectFactory $redirectFactory,
         UrlRewriteFactory $urlRewriteFactory
-    )
-    {
+    ) {
+    
         $this->redirectFactory = $redirectFactory;
         $this->urlRewriteFactory = $urlRewriteFactory;
         parent::__construct($request, $resourceConnection);

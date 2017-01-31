@@ -4,6 +4,7 @@ namespace Springbot\Main\Api;
 
 /**
  * Interface RedirectInterface
+ *
  * @package Springbot\Main\Api
  */
 interface RedirectInterface

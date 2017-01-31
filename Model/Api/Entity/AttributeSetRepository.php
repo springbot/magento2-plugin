@@ -10,6 +10,7 @@ use Magento\Framework\App\ResourceConnection;
 
 /**
  * Class AttributeSetRepository
+ *
  * @package Springbot\Main\Model\Api\Entity
  */
 class AttributeSetRepository extends AbstractRepository implements AttributeSetRepositoryInterface
@@ -17,16 +18,16 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
     private $attributeSetFactory;
 
     /**
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     * @param \Magento\Framework\App\Request\Http                       $request
+     * @param \Magento\Framework\App\ResourceConnection                 $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\AttributeSetFactory $factory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         AttributeSetFactory $factory
-    )
-    {
+    ) {
+    
         $this->attributeSetFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }

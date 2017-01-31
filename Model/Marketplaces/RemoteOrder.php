@@ -12,8 +12,8 @@ class RemoteOrder extends AbstractModel
     private $_remoteOrderFactory;
 
     /**
-     * @param Context $context
-     * @param Registry $registry
+     * @param Context            $context
+     * @param Registry           $registry
      * @param RemoteOrderFactory $remoteOrderFactory
      */
     public function __construct(
@@ -30,12 +30,14 @@ class RemoteOrder extends AbstractModel
     {
         try {
             $remoteOrder = $this->_remoteOrderFactory->create();
-            $remoteOrder->addData([
+            $remoteOrder->addData(
+                [
                 'remote_order_id' => $remoteOrderId,
                 'order_id' => $order->getEntityId(),
                 'increment_id' => $order->getIncrementId(),
                 'marketplace_type' => $marketplace
-            ]);
+                ]
+            );
             $remoteOrder->save();
         } catch (Exception $e) {
             eval(\Psy\sh());

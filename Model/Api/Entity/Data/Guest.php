@@ -34,8 +34,9 @@ class Guest implements GuestInterface
 
     /**
      * Guest constructor.
+     *
      * @param ResourceConnection $resourceConnection
-     * @param AddressFactory $addressFactory
+     * @param AddressFactory     $addressFactory
      */
     public function __construct(ResourceConnection $resourceConnection, AddressFactory $addressFactory)
     {
@@ -56,8 +57,9 @@ class Guest implements GuestInterface
      * @return void
      */
     public function setValues($storeId, $orderId, $firstname, $lastname, $email, $createdAt, $updatedAt,
-        $billingAddressId, $shippingAddressId)
-    {
+        $billingAddressId, $shippingAddressId
+    ) {
+    
         $this->storeId = $storeId;
         $this->orderId = $orderId;
         $this->firstname = $firstname;

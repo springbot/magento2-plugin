@@ -9,6 +9,7 @@ use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 
 /**
  * Class Item
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Order
  */
 class Item implements ItemInterface

@@ -9,6 +9,7 @@ use Magento\Framework\App\Request\Http;
 
 /**
  * Class CartRepository
+ *
  * @package Springbot\Main\Model\Api\Entity
  */
 class CartRepository extends AbstractRepository implements CartRepositoryInterface
@@ -18,16 +19,17 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
     
     /**
      * CartRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     *
+     * @param \Magento\Framework\App\Request\Http               $request
+     * @param \Magento\Framework\App\ResourceConnection         $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\CartFactory $factory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         CartFactory $factory
-    )
-    {
+    ) {
+    
         $this->cartFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
