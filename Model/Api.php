@@ -124,6 +124,7 @@ class Api
     {
         $this->client = new \Zend_Http_Client();
         $this->client->setMethod($method);
+        $this->client->setConfig(['maxredirects' => 0, 'timeout' => 30]);
         return $this->client;
     }
 

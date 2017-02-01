@@ -40,18 +40,24 @@ class Data extends AbstractHelper
      *
      * @return string
      */
-    public function getStoreGuid()
+    public function getStoreGuid($storeId)
     {
-        $storeId = $this->storeManager->getStore()->getId();
+        $store = $this->storeManager->getStore($storeId);
+
         $guid = $this->scopeConfig
             ->getValue('springbot/configuration/store_guid_' . $storeId);
+
         if (empty($guid)) {
-            $charid = strtoupper(md5(uniqid(rand(), true)));
-            $guid = substr($charid, 0, 8) . '-'
-                . substr($charid, 8, 4) . '-'
-                . substr($charid, 12, 4) . '-'
-                . substr($charid, 16, 4) . '-'
-                . substr($charid, 20, 12);
+
+            $baseUrl = $this->scopeConfig->getValue('web/unsecure/base_url');
+
+            $charid = strtoupper(md5($baseUrl . $storeId . $store->getName() . $store->getCode()));
+
+            $guid = substr($charid, 0, 8)  . '-'
+                  . substr($charid, 8, 4)  . '-'
+                  . substr($charid, 12, 4) . '-'
+                  . substr($charid, 16, 4) . '-'
+                  . substr($charid, 20, 12);
         }
         return $guid;
     }

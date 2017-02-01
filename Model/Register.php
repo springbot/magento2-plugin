@@ -134,8 +134,7 @@ class Register
                 $this->cacheManager->flush(['config', 'block_html', 'config_api', 'config_api2']);
 
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         } catch (\Throwable $e) {
@@ -168,8 +167,11 @@ class Register
     public function getStoresArray($stores)
     {
         $storesArray = [];
+
         foreach ($stores as $store) {
-            $guid = $this->helper->getStoreGuid();
+
+            $guid = $this->helper->getStoreGuid($store->getId());
+
             $storesArray[$guid] = [
                 'guid'                => $guid,
                 'url'                 => $store->getBaseUrl(),
