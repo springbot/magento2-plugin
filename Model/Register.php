@@ -8,6 +8,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Sales\Model\Order\Config as OrderConfig;
 use Springbot\Main\Helper\Data;
 use Springbot\Main\Model\Api\Redirects;
+use Magento\Framework\App\Cache\Manager;
 
 /**
  * Class Register
@@ -27,6 +28,7 @@ class Register
     private $scopeConfigInterface;
     private $oauth;
     private $redirects;
+    private $cacheManager;
 
     /**
      * @param Api $api
@@ -38,6 +40,7 @@ class Register
      * @param StoreConfiguration $storeConfig
      * @param Oauth $oauth
      * @param Redirects $redirects
+     * @param Manager $cacheManager
      */
     public function __construct(
         Api $api,
@@ -48,7 +51,8 @@ class Register
         UrlInterface $urlInterface,
         StoreConfiguration $storeConfig,
         Oauth $oauth,
-        Redirects $redirects
+        Redirects $redirects,
+        Manager $cacheManager
     ) {
         $this->api = $api;
         $this->scopeConfigInterface = $scopeConfigInterface;
@@ -59,6 +63,7 @@ class Register
         $this->storeConfig = $storeConfig;
         $this->oauth = $oauth;
         $this->redirects = $redirects;
+        $this->cacheManager = $cacheManager;
     }
 
     /**
@@ -88,10 +93,10 @@ class Register
 
             $response = $this->api->post($url,
                 json_encode([
-                    'stores' => $storesArray,
+                    'stores'       => $storesArray,
                     'access_token' => $this->oauth->create(),
-                    'credentials' => [
-                        'email' => $email,
+                    'credentials'  => [
+                        'email'    => $email,
                         'password' => $password
                     ]
                 ]));
@@ -102,33 +107,38 @@ class Register
                 foreach ($storesArray as $guid => $storeArray) {
                     if ($returnedStoreArray = $responseArray['stores'][$guid]) {
                         $localStoreId = $returnedStoreArray['json_data']['store_id'];
-                        $this->storeConfig->saveValues($localStoreId,
-                            [
-                                'store_guid' => $guid,
-                                'store_id' => $returnedStoreArray['springbot_store_id'],
-                                'security_token' => $securityToken
-                            ]);
+                        $this->storeConfig->saveValues($localStoreId, [
+                            'store_guid'     => $guid,
+                            'store_id'       => $returnedStoreArray['springbot_store_id'],
+                            'security_token' => $securityToken
+                        ]);
 
                         $target = $this->scopeConfigInterface->getValue('springbot/configuration/app_url')
                             . '/i/'
                             . $returnedStoreArray['springbot_store_id'];
 
-                        $this->redirects->createRedirect(
-                            'i',
-                            '301',
-                            "springbot/{$localStoreId}",
-                            $target,
-                            $localStoreId,
-                            "Springbot Instagram redirect for store {$localStoreId}"
-                        );
+                        try {
+                            $this->redirects->createRedirect(
+                                'i',
+                                '301',
+                                "springbot/{$localStoreId}",
+                                $target,
+                                $localStoreId,
+                                "Springbot Instagram redirect for store {$localStoreId}"
+                            );
+                        } catch (\Throwable $e) {
+                            return false;
+                        }
                     }
                 }
+                $this->cacheManager->flush(['config', 'block_html', 'config_api', 'config_api2']);
 
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return false;
         }
     }
@@ -161,21 +171,21 @@ class Register
         foreach ($stores as $store) {
             $guid = $this->helper->getStoreGuid();
             $storesArray[$guid] = [
-                'guid' => $guid,
-                'url' => $store->getBaseUrl(),
-                'name' => $store->getName(),
-                'logo_src' => $this->scopeConfigInterface->getValue('design/header/logo_src'),
-                'logo_alt_tag' => $this->scopeConfigInterface->getValue('design/header/logo_atl'),
-                'web_id' => $store->getWebsiteId(),
-                'store_id' => $store->getId(),
-                'store_name' => $store->getName(),
-                'store_code' => $store->getCode(),
-                'store_active' => $store->isActive(),
-                'store_url' => $store->getBaseUrl(),
-                'media_url' => $this->urlInterface->getBaseUrl(UrlInterface::URL_TYPE_MEDIA),
-                'store_mail_address' => $this->getStoreAddress(),
+                'guid'                => $guid,
+                'url'                 => $store->getBaseUrl(),
+                'name'                => $store->getName(),
+                'logo_src'            => $this->scopeConfigInterface->getValue('design/header/logo_src'),
+                'logo_alt_tag'        => $this->scopeConfigInterface->getValue('design/header/logo_atl'),
+                'web_id'              => $store->getWebsiteId(),
+                'store_id'            => $store->getId(),
+                'store_name'          => $store->getName(),
+                'store_code'          => $store->getCode(),
+                'store_active'        => $store->isActive(),
+                'store_url'           => $store->getBaseUrl(),
+                'media_url'           => $this->urlInterface->getBaseUrl(UrlInterface::URL_TYPE_MEDIA),
+                'store_mail_address'  => $this->getStoreAddress(),
                 'store_custsrv_email' => $this->scopeConfigInterface->getValue('trans_email/ident_support/email'),
-                'store_statuses' => $this->orderConfig->getStatuses(),
+                'store_statuses'      => $this->orderConfig->getStatuses(),
             ];
         }
         return $storesArray;
