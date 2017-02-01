@@ -117,22 +117,19 @@ class Register
                             . '/i/'
                             . $returnedStoreArray['springbot_store_id'];
 
-                        try {
-                            $this->redirects->createRedirect(
-                                'i',
-                                '301',
-                                "springbot/{$localStoreId}",
-                                $target,
-                                $localStoreId,
-                                "Springbot Instagram redirect for store {$localStoreId}"
-                            );
-                        } catch (\Throwable $e) {
-                            return false;
-                        }
+                        $this->redirects->createRedirect(
+                            'i',
+                            '301',
+                            "springbot/{$localStoreId}",
+                            $target,
+                            $localStoreId,
+                            "Springbot Instagram redirect for store {$localStoreId}"
+                        );
+
                     }
                 }
-                $this->cacheManager->flush(['config', 'block_html', 'config_api', 'config_api2']);
 
+                $this->cacheManager->flush(['config','block_html','config_api','config_api2']);
                 return true;
             } else {
                 return false;
