@@ -36,7 +36,7 @@ class SalesRuleSaveAfterObserver implements ObserverInterface
     {
         try {
             $ruleIds = $observer->getEvent()->getAppliedRuleIds();
-            foreach($ruleIds as $ruleId) {
+            foreach ($ruleIds as $ruleId) {
                 $this->queue->scheduleJob(RuleHandler::class, 'handle', [$ruleId]);
                 $this->logger->debug("Scheduled sync job for rule ID: {$ruleId}");
             }

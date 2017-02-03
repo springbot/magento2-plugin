@@ -1,0 +1,1185 @@
+--- Helper/Order.php
++++ PHP_CodeSniffer
+@@ -76,11 +76,11 @@
+         $this->quoteItemsData = $itemsData;
+         $this->marketplaces = $marketplacesData;
+ 
+-        if($this->findOrCreateCustomer()) {
+-            if($quote = $this->buildQuote()) {
++        if ($this->findOrCreateCustomer()) {
++            if ($quote = $this->buildQuote()) {
+                 $order = $this->quoteManagement->submit($quote);
+ 
+-                if($order->canInvoice()) {
++                if ($order->canInvoice()) {
+                     $invoice = $this->invoiceService->prepareInvoice($order);
+                     $invoice->register();
+                     $transactionSave = $this->transaction->addObject(
+--- Helper/Data.php
++++ PHP_CodeSniffer
+@@ -48,7 +48,6 @@
+             ->getValue('springbot/configuration/store_guid_' . $storeId);
+ 
+         if (empty($guid)) {
+-
+             $baseUrl = $this->scopeConfig->getValue('web/unsecure/base_url');
+ 
+             $charid = strtoupper(md5($baseUrl . $storeId . $store->getName() . $store->getCode()));
+@@ -61,5 +60,4 @@
+         }
+         return $guid;
+     }
+-
+ }
+--- Controller/Adminhtml/Dashboard/Login.php
++++ PHP_CodeSniffer
+@@ -53,4 +53,4 @@
+             $this->_redirect('*/dashboard', ['unauthorized']);
+         }
+     }
+-}
+\ No newline at end of file
++}
+--- Model/Carrier/Marketplaces.php
++++ PHP_CodeSniffer
+@@ -53,12 +53,12 @@
+         }
+ 
+         /**
+- * @var \Magento\Shipping\Model\Rate\Result $result 
++ * @var \Magento\Shipping\Model\Rate\Result $result
+ */
+         $result = $this->_rateResultFactory->create();
+ 
+         /**
+- * @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method 
++ * @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method
+ */
+         $method = $this->_rateMethodFactory->create();
+ 
+--- Model/SpringbotQuoteRedirect.php
++++ PHP_CodeSniffer
+@@ -42,5 +42,4 @@
+         );
+         $redirectModel->save();
+     }
+-
+ }
+--- Model/SpringbotOrderRedirect.php
++++ PHP_CodeSniffer
+@@ -40,5 +40,4 @@
+             $redirectModel->save();
+         }
+     }
+-
+ }
+--- Model/Handler/AbstractHandler.php
++++ PHP_CodeSniffer
+@@ -40,7 +40,7 @@
+      * @param StoreConfiguration $storeConfig
+      * @param Api                $api
+      */
+-    public function __construct(StoreConfiguration $storeConfig, Api $api) 
++    public function __construct(StoreConfiguration $storeConfig, Api $api)
+     {
+         $this->storeConfig = $storeConfig;
+         $this->api = $api;
+--- Model/Oauth.php
++++ PHP_CodeSniffer
+@@ -22,7 +22,7 @@
+      * @param IntegrationService $integrationService
+      * @param OauthService       $oauthService
+      */
+-    public function __construct(IntegrationService $integrationService, OauthService $oauthService) 
++    public function __construct(IntegrationService $integrationService, OauthService $oauthService)
+     {
+         $this->integrationService = $integrationService;
+         $this->oauthService = $oauthService;
+--- Model/Register.php
++++ PHP_CodeSniffer
+@@ -153,7 +153,7 @@
+     {
+         $stores = $this->storeManager->getStores();
+         foreach ($stores as $store) {
+-            if (!$this->storeConfig->getSpringbotStoreId($store->getId()) 
++            if (!$this->storeConfig->getSpringbotStoreId($store->getId())
+                 || !$this->helper->getStoreGuid($store->getId())
+             ) {
+                 return false;
+@@ -173,7 +173,6 @@
+         $storesArray = [];
+ 
+         foreach ($stores as $store) {
+-
+             $guid = $this->helper->getStoreGuid($store->getId());
+ 
+             $storesArray[$guid] = [
+--- Model/SpringbotTrackable.php
++++ PHP_CodeSniffer
+@@ -45,5 +45,4 @@
+         );
+         $trackable->save();
+     }
+-
+ }
+--- Model/Api/Redirects.php
++++ PHP_CodeSniffer
+@@ -3,7 +3,8 @@
+ namespace Springbot\Main\Model\Api;
+ 
+ use Magento\Framework\App\Request\Http;
+-use Magento\Framework\App\Config\ScopeConfigInterface;;
++use Magento\Framework\App\Config\ScopeConfigInterface;
++;
+ use Magento\Framework\App\ResourceConnection;
+ use Magento\UrlRewrite\Model\UrlRewriteFactory;
+ use Springbot\Main\Api\RedirectsInterface;
+@@ -81,5 +82,4 @@
+         $urlRewriteModel->save();
+         return $urlRewriteModel;
+     }
+-
+-}
+\ No newline at end of file
++}
+--- Model/Api/ConfigItem.php
++++ PHP_CodeSniffer
+@@ -31,5 +31,4 @@
+     {
+         return $this->value;
+     }
+-
+ }
+--- Model/Api/Config.php
++++ PHP_CodeSniffer
+@@ -39,7 +39,7 @@
+ 
+     public function getConfig()
+     {
+-        $ret = array();
++        $ret = [];
+         foreach ($this->scopeConfig->getValue('springbot') as $section => $values) {
+             foreach ($values as $key => $value) {
+                 $ret[] = new ConfigItem("springbot/{$section}/{$key}", $value);
+@@ -52,11 +52,9 @@
+     {
+         if (substr($path, 0, strlen('springbot/')) !== 'springbot/') {
+             throw new \Exception("Config path must be in springbot namespace");
+-        }
+-        else if (substr_count($path, '/') !== 2) {
++        } elseif (substr_count($path, '/') !== 2) {
+             throw new \Exception("Path must consist of 3 parts");
+-        }
+-        else {
++        } else {
+             $this->configResource->saveConfig($path, $value, 'default', 0);
+         }
+         return $this;
+--- Model/Api/Stores.php
++++ PHP_CodeSniffer
+@@ -86,5 +86,4 @@
+         );
+         return $store;
+     }
+-
+ }
+--- Model/Api/Modules.php
++++ PHP_CodeSniffer
+@@ -19,4 +19,4 @@
+     {
+         return $this->moduleList->getAll();
+     }
+-}
+\ No newline at end of file
++}
+--- Model/Api/Store.php
++++ PHP_CodeSniffer
+@@ -2,7 +2,6 @@
+ 
+ namespace Springbot\Main\Model\Api;
+ 
+-
+ use Magento\Framework\App\ResourceConnection;
+ use Springbot\Main\Api\StoreInterface;
+ use Magento\Framework\App\Config\ScopeConfigInterface;
+@@ -126,7 +125,4 @@
+     {
+         return $this->scopeConfig->getValue('springbot/configuration/store_id_' . $this->storeId);
+     }
+-
+-
+-
+ }
+--- Model/Api/Counts.php
++++ PHP_CodeSniffer
+@@ -73,6 +73,4 @@
+         $result = $query->fetch();
+         return $result['count'];
+     }
+-
+-
+ }
+--- Model/Api/Entity/CategoryRepository.php
++++ PHP_CodeSniffer
+@@ -95,6 +95,4 @@
+         );
+         return $category;
+     }
+-
+-
+ }
+--- Model/Api/Entity/Data/AttributeSet/AttributeSetAttribute.php
++++ PHP_CodeSniffer
+@@ -64,5 +64,4 @@
+     {
+         return $this->options;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Cart/Item.php
++++ PHP_CodeSniffer
+@@ -81,8 +81,7 @@
+     {
+         if (isset($this->product)) {
+             return $this->product;
+-        }
+-        else {
++        } else {
+             if (!($productId = $this->parentProductId)) {
+                 $productId = $this->productId;
+             }
+@@ -111,5 +110,4 @@
+     {
+         return $this->productType;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Subscriber.php
++++ PHP_CodeSniffer
+@@ -49,5 +49,4 @@
+     {
+         return $this->subscriberId;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Order.php
++++ PHP_CodeSniffer
+@@ -360,8 +360,7 @@
+ 
+             if ($row['parent_sku']) {
+                 $parentSku = $row['parent_sku'];
+-            }
+-            else {
++            } else {
+                 $parentSku = $row['sku'];
+             }
+ 
+@@ -405,5 +404,4 @@
+             return $row['value'];
+         }
+     }
+-
+ }
+--- Model/Api/Entity/Data/Order/ShipmentItem.php
++++ PHP_CodeSniffer
+@@ -80,5 +80,4 @@
+     {
+         return $this->qty;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Order/Shipment.php
++++ PHP_CodeSniffer
+@@ -116,5 +116,4 @@
+         }
+         return $shipmentItems;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Order/Item.php
++++ PHP_CodeSniffer
+@@ -74,8 +74,7 @@
+         $this->productType = $productType;
+         if ($parentProductId) {
+             $this->product =  $this->productRepository->getFromId($this->storeId, $parentProductId);
+-        }
+-        else {
++        } else {
+             $this->product =  $this->productRepository->getFromId($this->storeId, $productId);
+         }
+     }
+@@ -229,5 +228,4 @@
+         }
+         return null;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Order/ItemAttribute.php
++++ PHP_CodeSniffer
+@@ -56,5 +56,4 @@
+     {
+         $this->value = $value;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Product.php
++++ PHP_CodeSniffer
+@@ -88,7 +88,7 @@
+      * @param $updatedAt
+      * @param $customAttributeSetId
+      */
+-    public function setValues($storeId, $productId, $sku, $type,  $createdAt, $updatedAt,  $customAttributeSetId)
++    public function setValues($storeId, $productId, $sku, $type, $createdAt, $updatedAt, $customAttributeSetId)
+     {
+         $this->storeId = $storeId;
+         $this->productId = $productId;
+@@ -313,7 +313,8 @@
+             LEFT JOIN {$conn->getTableName('catalog_product_entity')} cpe
+               ON (cper.parent_id = cpe.entity_id)
+                 WHERE cper.child_id = :entity_id
+-        ", ['entity_id' => $this->productId]
++        ",
++            ['entity_id' => $this->productId]
+         );
+         $skus = [];
+         foreach ($query->fetchAll() as $parentRow) {
+@@ -356,55 +357,57 @@
+               LEFT JOIN {$conn->getTableName('catalog_product_entity_varchar')} eav ON (cpe.entity_id = eav.entity_id)
+               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+             WHERE (cpe.entity_id = :entity_id);
+-        ", ['entity_id' => $this->productId]
++        ",
++            ['entity_id' => $this->productId]
+         );
+ 
+-        foreach($query->fetchAll() as $attributeRow) {
++        foreach ($query->fetchAll() as $attributeRow) {
+             $value = $attributeRow['value'];
+-            switch($attributeRow['code']) {
+-            case 'name':
+-                $this->name = $value;
+-                break;
+-            case 'cost':
+-                $this->cost = $value;
+-                break;
+-            case 'msrp':
+-                $this->msrp = $value;
+-                break;
+-            case 'url_key':
+-                $this->urlKey = $value;
+-                break;
+-            case 'weight':
+-                $this->weight = $value;
+-                break;
+-            case 'description':
+-                $this->description = $value;
+-                break;
+-            case 'short_description':
+-                $this->shortDescription = $value;
+-                break;
+-            case 'price':
+-                $this->price = $value;
+-                break;
+-            case 'image_label':
+-                $this->imageLabel = $value;
+-                break;
+-            case 'visibility':
+-                $this->visibility = $value;
+-                break;
+-            case 'status':
+-                $this->status = $value;
+-                break;
+-            case 'special_price':
+-                $this->specialPrice = $value;
+-                break;
+-            case 'image':
+-                $this->imagePath = $value;
+-                break;
+-            default:
+-                if ($value !== null) {
+-                    $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value); ;
+-                }
++            switch ($attributeRow['code']) {
++                case 'name':
++                    $this->name = $value;
++                    break;
++                case 'cost':
++                    $this->cost = $value;
++                    break;
++                case 'msrp':
++                    $this->msrp = $value;
++                    break;
++                case 'url_key':
++                    $this->urlKey = $value;
++                    break;
++                case 'weight':
++                    $this->weight = $value;
++                    break;
++                case 'description':
++                    $this->description = $value;
++                    break;
++                case 'short_description':
++                    $this->shortDescription = $value;
++                    break;
++                case 'price':
++                    $this->price = $value;
++                    break;
++                case 'image_label':
++                    $this->imageLabel = $value;
++                    break;
++                case 'visibility':
++                    $this->visibility = $value;
++                    break;
++                case 'status':
++                    $this->status = $value;
++                    break;
++                case 'special_price':
++                    $this->specialPrice = $value;
++                    break;
++                case 'image':
++                    $this->imagePath = $value;
++                    break;
++                default:
++                    if ($value !== null) {
++                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
++                        ;
++                    }
+             }
+         }
+     }
+@@ -415,7 +418,8 @@
+         $query = $conn->query(
+             "SELECT * FROM {$conn->getTableName('catalog_category_product')}  ccp
+           LEFT JOIN catalog_category_entity cce ON (ccp.category_id = cce.entity_id)
+-          WHERE product_id = :entity_id", ['entity_id' => $this->productId]
++          WHERE product_id = :entity_id",
++            ['entity_id' => $this->productId]
+         );
+         foreach ($query->fetchAll() as $row) {
+             $allParents = explode('/', $row['path']);
+@@ -424,6 +428,4 @@
+         }
+         $this->allCategoryIds = array_unique($this->allCategoryIds);
+     }
+-
+-
+ }
+--- Model/Api/Entity/Data/Cart.php
++++ PHP_CodeSniffer
+@@ -249,5 +249,4 @@
+             return $row['value'];
+         }
+     }
+-
+ }
+--- Model/Api/Entity/Data/Guest.php
++++ PHP_CodeSniffer
+@@ -56,8 +56,16 @@
+      * @param $shippingAddressId
+      * @return void
+      */
+-    public function setValues($storeId, $orderId, $firstname, $lastname, $email, $createdAt, $updatedAt,
+-        $billingAddressId, $shippingAddressId
++    public function setValues(
++        $storeId,
++        $orderId,
++        $firstname,
++        $lastname,
++        $email,
++        $createdAt,
++        $updatedAt,
++        $billingAddressId,
++        $shippingAddressId
+     ) {
+     
+         $this->storeId = $storeId;
+@@ -150,5 +158,4 @@
+         }
+         return null;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Category.php
++++ PHP_CodeSniffer
+@@ -168,25 +168,23 @@
+               LEFT JOIN {$conn->getTableName('catalog_category_entity_varchar')} eav ON (cce.entity_id = eav.entity_id)
+               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+             WHERE (cce.entity_id = :entity_id);
+-        ", ['entity_id' => $this->categoryId]
++        ",
++            ['entity_id' => $this->categoryId]
+         );
+ 
+-        foreach($query->fetchAll() as $attributeRow) {
++        foreach ($query->fetchAll() as $attributeRow) {
+             $value = $attributeRow['value'];
+-            switch($attributeRow['code']) {
+-            case 'name':
+-                $this->name = $value;
+-                break;
+-            case 'description':
+-                $this->description = $value;
+-                break;
+-            default:
+-                if ($value !== null) {
+-
+-                }
++            switch ($attributeRow['code']) {
++                case 'name':
++                    $this->name = $value;
++                    break;
++                case 'description':
++                    $this->description = $value;
++                    break;
++                default:
++                    if ($value !== null) {
++                    }
+             }
+         }
+     }
+-
+-
+ }
+--- Model/Api/Entity/Data/AttributeSet.php
++++ PHP_CodeSniffer
+@@ -86,18 +86,19 @@
+             LEFT JOIN {$conn->getTableName('eav_attribute')} ea
+                 ON (ea.attribute_id = eaa.attribute_id)
+             WHERE eaa.attribute_set_id = :attribute_set_id 
+-        ", ['attribute_set_id' => $this->getAttributeSetId()]
++        ",
++            ['attribute_set_id' => $this->getAttributeSetId()]
+         );
+ 
+         $attributes = [];
+         foreach ($query->fetchAll() as $row) {
+-
+             $optionQuery = $conn->query(
+                 "SELECT * FROM {$conn->getTableName('eav_attribute_option')} eao
+             LEFT JOIN {$conn->getTableName('eav_attribute_option_value')} eaov
+                 ON (eao.option_id = eaov.option_id)
+             WHERE eao.attribute_id = :attribute_id 
+-        ", ['attribute_id' => $row['attribute_id']]
++        ",
++                ['attribute_id' => $row['attribute_id']]
+             );
+ 
+             $options = [];
+--- Model/Api/Entity/Data/Customer/CustomerAttribute.php
++++ PHP_CodeSniffer
+@@ -41,5 +41,4 @@
+     {
+         return $this->value;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Customer/Address.php
++++ PHP_CodeSniffer
+@@ -185,5 +185,4 @@
+     {
+         return $this->telephone;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Inventory.php
++++ PHP_CodeSniffer
+@@ -151,7 +151,8 @@
+             LEFT JOIN {$conn->getTableName('catalog_product_entity')} cpe
+               ON (cper.parent_id = cpe.entity_id)
+                 WHERE cper.child_id = :entity_id
+-        ", ['entity_id' => $this->productId]
++        ",
++            ['entity_id' => $this->productId]
+         );
+         $skus = [];
+         foreach ($query->fetchAll() as $parentRow) {
+@@ -159,5 +160,4 @@
+         }
+         return $skus;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Customer.php
++++ PHP_CodeSniffer
+@@ -7,6 +7,7 @@
+ use Springbot\Main\Api\Entity\Data\CustomerInterface;
+ use Springbot\Main\Model\Api\Entity\Data\Customer\AddressFactory;
+ use Springbot\Main\Model\Api\Entity\Data\Customer\CustomerAttributeFactory;
++
+ /**
+  * Class Customer
+  *
+@@ -57,8 +58,15 @@
+      * @param $shippingAddressId
+      * @return void
+      */
+-    public function setValues($storeId, $customerId, $firstName, $lastName, $email, $attributeSetId,
+-        $billingAddressId, $shippingAddressId
++    public function setValues(
++        $storeId,
++        $customerId,
++        $firstName,
++        $lastName,
++        $email,
++        $attributeSetId,
++        $billingAddressId,
++        $shippingAddressId
+     ) {
+     
+         $this->storeId = $storeId;
+@@ -156,10 +164,11 @@
+               LEFT JOIN {$conn->getTableName('customer_entity_varchar')} eav ON (ce.entity_id = eav.entity_id)
+               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+             WHERE (ce.entity_id = :entity_id);
+-        ", ['entity_id' => $this->customerId]
++        ",
++            ['entity_id' => $this->customerId]
+         );
+         $attributes = [];
+-        foreach($query->fetchAll() as $attributeRow) {
++        foreach ($query->fetchAll() as $attributeRow) {
+             if ($attributeRow['value'] !== null) {
+                 $attribute = $this->attributeFactory->create();
+                 $attribute->setValues($attributeRow['code'], $attributeRow['value']);
+@@ -208,5 +217,4 @@
+         }
+         return null;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Rule.php
++++ PHP_CodeSniffer
+@@ -326,5 +326,4 @@
+         }
+         return $groupIds;
+     }
+-
+ }
+--- Model/Api/Entity/Data/Product/ProductAttribute.php
++++ PHP_CodeSniffer
+@@ -42,5 +42,4 @@
+     {
+         return $this->value;
+     }
+-
+ }
+--- Model/Api/Entity/ProductRepository.php
++++ PHP_CodeSniffer
+@@ -82,11 +82,10 @@
+             $row['entity_id'],
+             $row['sku'],
+             $row['type_id'],
+-            $row['created_at'], 
++            $row['created_at'],
+             $row['updated_at'],
+             $row['attribute_set_id']
+         );
+         return $product;
+     }
+-
+ }
+--- Model/Api/Entity/RuleRepository.php
++++ PHP_CodeSniffer
+@@ -46,7 +46,6 @@
+             $ret[] = $this->createProduct($storeId, $row);
+         }
+         return $ret;
+-
+     }
+ 
+     public function getFromId($storeId, $ruleId)
+@@ -92,6 +91,4 @@
+         );
+         return $rule;
+     }
+-
+-
+ }
+--- Model/Api/Entity/SubscriberRepository.php
++++ PHP_CodeSniffer
+@@ -7,7 +7,6 @@
+ use Magento\Framework\App\ResourceConnection;
+ use Springbot\Main\Model\Api\Entity\Data\SubscriberFactory;
+ 
+-
+ /**
+  * SubscriberRepository
+  *
+--- Model/Api/Entity/AttributeSetRepository.php
++++ PHP_CodeSniffer
+@@ -7,7 +7,6 @@
+ use Magento\Framework\App\Request\Http;
+ use Magento\Framework\App\ResourceConnection;
+ 
+-
+ /**
+  * Class AttributeSetRepository
+  *
+@@ -82,8 +81,7 @@
+         $attributeSet = $this->attributeSetFactory->create();
+         if ($row['entity_type_code'] == 'customer') {
+             $type = 'customer';
+-        }
+-        else {
++        } else {
+             $type = 'product';
+         }
+         $attributeSet->setValues(
+--- Model/Api/Entity/InventoryRepository.php
++++ PHP_CodeSniffer
+@@ -94,5 +94,4 @@
+             )
+             ->where('website_id = ?', $websiteId);
+     }
+-
+ }
+--- Model/Api/Entity/CustomerRepository.php
++++ PHP_CodeSniffer
+@@ -95,5 +95,4 @@
+         }
+         return null;
+     }
+-
+ }
+--- Model/Api/Entity/OrderRepository.php
++++ PHP_CodeSniffer
+@@ -107,5 +107,4 @@
+         );
+         return $order;
+     }
+-
+ }
+--- Model/Api/Entity/AbstractRepository.php
++++ PHP_CodeSniffer
+@@ -46,5 +46,4 @@
+ 
+         $select->limitPage((int)$page, (int)$limit);
+     }
+-
+ }
+--- Model/Api/Entity/CartRepository.php
++++ PHP_CodeSniffer
+@@ -93,7 +93,4 @@
+         );
+         return $category;
+     }
+-
+-
+-
+ }
+--- Model/Api/Count.php
++++ PHP_CodeSniffer
+@@ -2,7 +2,6 @@
+ 
+ namespace Springbot\Main\Model\Api;
+ 
+-
+ class Count
+ {
+     private $entityType;
+@@ -39,6 +38,4 @@
+     {
+         $this->count = $count;
+     }
+-
+-
+ }
+--- Model/Api/Redirect.php
++++ PHP_CodeSniffer
+@@ -58,6 +58,4 @@
+     {
+         return $this->description;
+     }
+-
+-
+-}
+\ No newline at end of file
++}
+--- Observer/CartReconstitutionObserver.php
++++ PHP_CodeSniffer
+@@ -84,7 +84,6 @@
+             $quote->load($quoteId);
+ 
+             if ($quote) {
+-
+                 // Only set the quote if they don't already have one
+                 if (!$this->session->hasQuote()) {
+                     $quote->setIsActive(true)->save();
+--- Observer/SalesRuleSaveAfterObserver.php
++++ PHP_CodeSniffer
+@@ -36,7 +36,7 @@
+     {
+         try {
+             $ruleIds = $observer->getEvent()->getAppliedRuleIds();
+-            foreach($ruleIds as $ruleId) {
++            foreach ($ruleIds as $ruleId) {
+                 $this->queue->scheduleJob(RuleHandler::class, 'handle', [$ruleId]);
+                 $this->logger->debug("Scheduled sync job for rule ID: {$ruleId}");
+             }
+--- Observer/ProductDeleteBeforeObserver.php
++++ PHP_CodeSniffer
+@@ -39,7 +39,6 @@
+             $product = $observer->getEvent()->getProduct();
+             /* @var MagentoProduct $product */
+             foreach ($product->getStoreIds() as $storeId) {
+-
+                 // Enqueue a job to sync this product for every store it belongs to
+                 $this->queue->scheduleJob(
+                     ProductHandler::class,
+--- Observer/ProductSaveAfterObserver.php
++++ PHP_CodeSniffer
+@@ -44,7 +44,6 @@
+             $product = $observer->getEvent()->getProduct();
+             /* @var MagentoProduct $product */
+             foreach ($product->getStoreIds() as $storeId) {
+-
+                 // Enqueue a job to sync this product for every store it belongs to
+                 $this->queue->scheduleJob(ProductHandler::class, 'handle', [$storeId, $product->getId()]);
+ 
+--- Observer/OrderSaveAfterObserver.php
++++ PHP_CodeSniffer
+@@ -13,7 +13,6 @@
+ use Springbot\Main\Model\SpringbotOrderRedirect;
+ use Springbot\Queue\Model\Queue;
+ 
+-
+ class OrderSaveAfterObserver implements ObserverInterface
+ {
+     private $logger;
+--- Observer/SalesRuleDeleteAfterObserver.php
++++ PHP_CodeSniffer
+@@ -36,7 +36,7 @@
+     {
+         try {
+             $ruleIds = $observer->getEvent()->getAppliedRuleIds();
+-            foreach($ruleIds as $ruleId) {
++            foreach ($ruleIds as $ruleId) {
+                 $this->queue->scheduleJob(RuleHandler::class, 'handleDelete', [$ruleId]);
+                 $this->logger->debug("Scheduled deleted sync job for rule ID: {$ruleId}");
+             }
+--- Observer/InventoryDeleteAfterObserver.php
++++ PHP_CodeSniffer
+@@ -38,7 +38,7 @@
+         try {
+             $items = $observer->getEvent()->getItems();
+             /* @var MagentoInventoryStock $inventory */
+-            foreach($items as $item) {
++            foreach ($items as $item) {
+                 $this->queue->scheduleJob(InventoryHandler::class, 'handleDelete', [$item->getItemId()]);
+                 $this->logger->debug("Scheduled deleted sync job for inventory item ID: {$item->getId()}");
+             }
+--- Test/Unit/Controller/Index/IndexTest.php
++++ PHP_CodeSniffer
+@@ -5,18 +5,18 @@
+ class IndexTest extends \PHPUnit_Framework_TestCase
+ {
+     /**
+- * @var \PHPUnit_Framework_MockObject_MockObject| \Springbot\Main\Controller\Adminhtml\Index\Index 
+-*/
++     * @var \PHPUnit_Framework_MockObject_MockObject| \Springbot\Main\Controller\Adminhtml\Index\Index
++     */
+     private $indexControllerMock;
+ 
+     /**
+- * @var \Magento\Framework\AuthorizationInterface 
+-*/
++     * @var \Magento\Framework\AuthorizationInterface
++     */
+     protected $authorization;
+ 
+     /**
+- * @var \Magento\Framework\TestFramework\Unit\Helper\ObjectManager 
+-*/
++     * @var \Magento\Framework\TestFramework\Unit\Helper\ObjectManager
++     */
+     protected $objectManager;
+ 
+     /**
+--- Test/bootstrap.php
++++ PHP_CodeSniffer
+@@ -1,3 +1,3 @@
+ <?php
+ 
+-require __DIR__ . '/../vendor/autoload.php';
+\ No newline at end of file
++require __DIR__ . '/../vendor/autoload.php';
+--- Api/StoresInterface.php
++++ PHP_CodeSniffer
+@@ -22,5 +22,4 @@
+      * @return \Springbot\Main\Api\StoreInterface
+      */
+     public function getFromId($storeId);
+-
+-}
+\ No newline at end of file
++}
+--- Api/RedirectInterface.php
++++ PHP_CodeSniffer
+@@ -50,5 +50,4 @@
+      * @return string
+      */
+     public function getDescription();
+-
+-}
+\ No newline at end of file
++}
+--- Api/RedirectsInterface.php
++++ PHP_CodeSniffer
+@@ -28,5 +28,4 @@
+      * @return \Springbot\Main\Api\RedirectInterface
+      */
+     public function createRedirect($requestPath, $redirectType, $idPath, $targetPath, $storeId, $description);
+-
+-}
+\ No newline at end of file
++}
+--- Api/CountInterface.php
++++ PHP_CodeSniffer
+@@ -2,7 +2,6 @@
+ 
+ namespace Springbot\Main\Api;
+ 
+-
+ interface CountInterface
+ {
+ 
+@@ -28,6 +27,4 @@
+      * @return void
+      */
+     public function setCount($count);
+-
+-
+ }
+--- Api/StoreInterface.php
++++ PHP_CodeSniffer
+@@ -64,6 +64,4 @@
+      * @return string
+      */
+     public function getSpringbotStoreId();
+-
+-
+-}
+\ No newline at end of file
++}
+--- Api/CountsInterface.php
++++ PHP_CodeSniffer
+@@ -2,7 +2,6 @@
+ 
+ namespace Springbot\Main\Api;
+ 
+-
+ /**
+  * Interface CountsInterface
+  *
+@@ -16,5 +15,4 @@
+      * @return \Springbot\Main\Api\CountInterface[]
+      */
+     public function getCounts($storeId);
+-
+ }
+--- Api/ModulesInterface.php
++++ PHP_CodeSniffer
+@@ -15,4 +15,4 @@
+      * @return array
+      */
+     public function getModules();
+-}
+\ No newline at end of file
++}
+--- Api/Entity/CartRepositoryInterface.php
++++ PHP_CodeSniffer
+@@ -21,5 +21,4 @@
+      * @return \Springbot\Main\Api\Entity\Data\CartInterface
+      */
+     public function getFromId($storeId, $cartId);
+-
+ }
+--- Api/Entity/Data/AttributeSet/AttributeSetAttributeInterface.php
++++ PHP_CodeSniffer
+@@ -40,6 +40,4 @@
+      * @return array
+      */
+     public function getOptions();
+-
+-
+ }
+--- Api/Entity/Data/Cart/ItemInterface.php
++++ PHP_CodeSniffer
+@@ -67,5 +67,4 @@
+      * @return string
+      */
+     public function getProductType();
+-
+ }
+--- Api/Entity/Data/CategoryInterface.php
++++ PHP_CodeSniffer
+@@ -55,5 +55,4 @@
+      * @return string
+      */
+     public function getDescription();
+-
+ }
+--- Api/Entity/Data/ProductInterface.php
++++ PHP_CodeSniffer
+@@ -20,7 +20,7 @@
+      * @param $customAttributeSetId
+      * @return void
+      */
+-    public function setValues($storeId, $productId, $sku, $type,  $createdAt, $updatedAt, $customAttributeSetId);
++    public function setValues($storeId, $productId, $sku, $type, $createdAt, $updatedAt, $customAttributeSetId);
+ 
+     /**
+      * @return int
+@@ -151,5 +151,4 @@
+      * @return \Springbot\Main\Api\Entity\Data\Product\ProductAttributeInterface[]
+      */
+     public function getProductAttributes();
+-
+ }
+--- Api/Entity/Data/Order/ItemInterface.php
++++ PHP_CodeSniffer
+@@ -115,6 +115,4 @@
+      * @return \Springbot\Main\Api\Entity\Data\Order\ItemAttributeInterface[]
+      */
+     public function getProductAttributes();
+-
+-
+ }
+--- Api/Entity/Data/Order/ShipmentInterface.php
++++ PHP_CodeSniffer
+@@ -55,5 +55,4 @@
+      * @return \Springbot\Main\Api\Entity\Data\Order\ShipmentItemInterface[]
+      */
+     public function getItems();
+-
+ }
+--- Api/Entity/Data/Order/ItemAttributeInterface.php
++++ PHP_CodeSniffer
+@@ -31,6 +31,4 @@
+      * @return null
+      */
+     public function setValue($value);
+-
+-
+ }
+--- Api/Entity/Data/Order/ShipmentItemInterface.php
++++ PHP_CodeSniffer
+@@ -40,6 +40,4 @@
+      * @return string
+      */
+     public function getQty();
+-
+-
+ }
+--- Api/Entity/Data/RuleInterface.php
++++ PHP_CodeSniffer
+@@ -186,5 +186,4 @@
+      * @return array
+      */
+     public function getCustomerGroupIds();
+-
+ }
+--- Api/Entity/Data/Customer/CustomerAttributeInterface.php
++++ PHP_CodeSniffer
+@@ -27,5 +27,4 @@
+      * @return string
+      */
+     public function getValue();
+-
+ }
+--- Api/Entity/Data/Customer/AddressInterface.php
++++ PHP_CodeSniffer
+@@ -84,6 +84,4 @@
+      * @return string
+      */
+     public function getTelephone();
+-
+-
+ }
+--- Api/Entity/Data/GuestInterface.php
++++ PHP_CodeSniffer
+@@ -25,8 +25,16 @@
+      * @param $shippingAddressId
+      * @return void
+      */
+-    public function setValues($storeId, $orderId, $firstname, $lastname, $email, $createdAt, $updatedAt,
+-        $billingAddressId, $shippingAddressId
++    public function setValues(
++        $storeId,
++        $orderId,
++        $firstname,
++        $lastname,
++        $email,
++        $createdAt,
++        $updatedAt,
++        $billingAddressId,
++        $shippingAddressId
+     );
+ 
+     /**
+@@ -63,5 +71,4 @@
+      * @return \Springbot\Main\Api\Entity\Data\Customer\AddressInterface
+      */
+     public function getShippingAddress();
+-
+ }
+--- Api/Entity/Data/SubscriberInterface.php
++++ PHP_CodeSniffer
+@@ -28,5 +28,4 @@
+      * @return string
+      */
+     public function getOptinStatus();
+-
+ }
+--- Api/Entity/Data/CustomerInterface.php
++++ PHP_CodeSniffer
+@@ -54,5 +54,4 @@
+      * @return \Springbot\Main\Api\Entity\Data\Customer\AddressInterface
+      */
+     public function getBillingAddress();
+-
+ }
+--- Api/Entity/Data/AttributeSetInterface.php
++++ PHP_CodeSniffer
+@@ -38,5 +38,4 @@
+      * @return \Springbot\Main\Api\Entity\Data\AttributeSet\AttributeSetAttributeInterface[]
+      */
+     public function getAttributes();
+-
+-}
+\ No newline at end of file
++}
+--- Api/Entity/Data/CartInterface.php
++++ PHP_CodeSniffer
+@@ -125,5 +125,4 @@
+      * @return string
+      */
+     public function getCustomerEmail();
+-
+ }
+--- Api/Entity/Data/InventoryInterface.php
++++ PHP_CodeSniffer
+@@ -80,5 +80,4 @@
+      * @return string
+      */
+     public function getSkuFulfillment();
+-
+ }
+--- Api/Entity/Data/Product/ProductAttributeInterface.php
++++ PHP_CodeSniffer
+@@ -19,5 +19,4 @@
+      * @return string
+      */
+     public function getValue();
+-
+ }
+--- Api/Entity/Data/OrderInterface.php
++++ PHP_CodeSniffer
+@@ -183,6 +183,4 @@
+      * @return string
+      */
+     public function getOrderUserAgent();
+-
+-
+ }
+

@@ -153,7 +153,7 @@ class Register
     {
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
-            if (!$this->storeConfig->getSpringbotStoreId($store->getId()) 
+            if (!$this->storeConfig->getSpringbotStoreId($store->getId())
                 || !$this->helper->getStoreGuid($store->getId())
             ) {
                 return false;
@@ -173,7 +173,6 @@ class Register
         $storesArray = [];
 
         foreach ($stores as $store) {
-
             $guid = $this->helper->getStoreGuid($store->getId());
 
             $storesArray[$guid] = [

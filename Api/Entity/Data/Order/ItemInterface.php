@@ -115,6 +115,4 @@ interface ItemInterface
      * @return \Springbot\Main\Api\Entity\Data\Order\ItemAttributeInterface[]
      */
     public function getProductAttributes();
-
-
 }

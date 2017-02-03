@@ -74,8 +74,7 @@ class Item implements ItemInterface
         $this->productType = $productType;
         if ($parentProductId) {
             $this->product =  $this->productRepository->getFromId($this->storeId, $parentProductId);
-        }
-        else {
+        } else {
             $this->product =  $this->productRepository->getFromId($this->storeId, $productId);
         }
     }
@@ -229,5 +228,4 @@ class Item implements ItemInterface
         }
         return null;
     }
-
 }

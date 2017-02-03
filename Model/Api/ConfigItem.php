@@ -31,5 +31,4 @@ class ConfigItem extends AbstractModel implements ConfigItemInterface
     {
         return $this->value;
     }
-
 }

@@ -7,7 +7,6 @@ use Springbot\Main\Model\Api\Entity\Data\AttributeSetFactory;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\ResourceConnection;
 
-
 /**
  * Class AttributeSetRepository
  *
@@ -82,8 +81,7 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
         $attributeSet = $this->attributeSetFactory->create();
         if ($row['entity_type_code'] == 'customer') {
             $type = 'customer';
-        }
-        else {
+        } else {
             $type = 'product';
         }
         $attributeSet->setValues(

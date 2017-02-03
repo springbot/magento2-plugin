@@ -73,6 +73,4 @@ class Counts implements CountsInterface
         $result = $query->fetch();
         return $result['count'];
     }
-
-
 }

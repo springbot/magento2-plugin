@@ -2,7 +2,6 @@
 
 namespace Springbot\Main\Api;
 
-
 /**
  * Interface CountsInterface
  *
@@ -16,5 +15,4 @@ interface CountsInterface
      * @return \Springbot\Main\Api\CountInterface[]
      */
     public function getCounts($storeId);
-
 }

@@ -360,8 +360,7 @@ class Order implements OrderInterface
 
             if ($row['parent_sku']) {
                 $parentSku = $row['parent_sku'];
-            }
-            else {
+            } else {
                 $parentSku = $row['sku'];
             }
 
@@ -405,5 +404,4 @@ class Order implements OrderInterface
             return $row['value'];
         }
     }
-
 }

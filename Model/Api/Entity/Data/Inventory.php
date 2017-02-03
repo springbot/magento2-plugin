@@ -151,7 +151,8 @@ class Inventory implements InventoryInterface
             LEFT JOIN {$conn->getTableName('catalog_product_entity')} cpe
               ON (cper.parent_id = cpe.entity_id)
                 WHERE cper.child_id = :entity_id
-        ", ['entity_id' => $this->productId]
+        ",
+            ['entity_id' => $this->productId]
         );
         $skus = [];
         foreach ($query->fetchAll() as $parentRow) {
@@ -159,5 +160,4 @@ class Inventory implements InventoryInterface
         }
         return $skus;
     }
-
 }

@@ -125,5 +125,4 @@ interface CartInterface
      * @return string
      */
     public function getCustomerEmail();
-
 }

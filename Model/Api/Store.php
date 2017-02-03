@@ -2,7 +2,6 @@
 
 namespace Springbot\Main\Model\Api;
 
-
 use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Api\StoreInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -126,7 +125,4 @@ class Store implements StoreInterface
     {
         return $this->scopeConfig->getValue('springbot/configuration/store_id_' . $this->storeId);
     }
-
-
-
 }

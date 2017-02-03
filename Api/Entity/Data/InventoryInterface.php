@@ -80,5 +80,4 @@ interface InventoryInterface
      * @return string
      */
     public function getSkuFulfillment();
-
 }

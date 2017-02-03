@@ -88,7 +88,7 @@ class Product implements ProductInterface
      * @param $updatedAt
      * @param $customAttributeSetId
      */
-    public function setValues($storeId, $productId, $sku, $type,  $createdAt, $updatedAt,  $customAttributeSetId)
+    public function setValues($storeId, $productId, $sku, $type, $createdAt, $updatedAt, $customAttributeSetId)
     {
         $this->storeId = $storeId;
         $this->productId = $productId;
@@ -313,7 +313,8 @@ class Product implements ProductInterface
             LEFT JOIN {$conn->getTableName('catalog_product_entity')} cpe
               ON (cper.parent_id = cpe.entity_id)
                 WHERE cper.child_id = :entity_id
-        ", ['entity_id' => $this->productId]
+        ",
+            ['entity_id' => $this->productId]
         );
         $skus = [];
         foreach ($query->fetchAll() as $parentRow) {
@@ -356,55 +357,57 @@ class Product implements ProductInterface
               LEFT JOIN {$conn->getTableName('catalog_product_entity_varchar')} eav ON (cpe.entity_id = eav.entity_id)
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.entity_id = :entity_id);
-        ", ['entity_id' => $this->productId]
+        ",
+            ['entity_id' => $this->productId]
         );
 
-        foreach($query->fetchAll() as $attributeRow) {
+        foreach ($query->fetchAll() as $attributeRow) {
             $value = $attributeRow['value'];
-            switch($attributeRow['code']) {
-            case 'name':
-                $this->name = $value;
-                break;
-            case 'cost':
-                $this->cost = $value;
-                break;
-            case 'msrp':
-                $this->msrp = $value;
-                break;
-            case 'url_key':
-                $this->urlKey = $value;
-                break;
-            case 'weight':
-                $this->weight = $value;
-                break;
-            case 'description':
-                $this->description = $value;
-                break;
-            case 'short_description':
-                $this->shortDescription = $value;
-                break;
-            case 'price':
-                $this->price = $value;
-                break;
-            case 'image_label':
-                $this->imageLabel = $value;
-                break;
-            case 'visibility':
-                $this->visibility = $value;
-                break;
-            case 'status':
-                $this->status = $value;
-                break;
-            case 'special_price':
-                $this->specialPrice = $value;
-                break;
-            case 'image':
-                $this->imagePath = $value;
-                break;
-            default:
-                if ($value !== null) {
-                    $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value); ;
-                }
+            switch ($attributeRow['code']) {
+                case 'name':
+                    $this->name = $value;
+                    break;
+                case 'cost':
+                    $this->cost = $value;
+                    break;
+                case 'msrp':
+                    $this->msrp = $value;
+                    break;
+                case 'url_key':
+                    $this->urlKey = $value;
+                    break;
+                case 'weight':
+                    $this->weight = $value;
+                    break;
+                case 'description':
+                    $this->description = $value;
+                    break;
+                case 'short_description':
+                    $this->shortDescription = $value;
+                    break;
+                case 'price':
+                    $this->price = $value;
+                    break;
+                case 'image_label':
+                    $this->imageLabel = $value;
+                    break;
+                case 'visibility':
+                    $this->visibility = $value;
+                    break;
+                case 'status':
+                    $this->status = $value;
+                    break;
+                case 'special_price':
+                    $this->specialPrice = $value;
+                    break;
+                case 'image':
+                    $this->imagePath = $value;
+                    break;
+                default:
+                    if ($value !== null) {
+                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
+                        ;
+                    }
             }
         }
     }
@@ -415,7 +418,8 @@ class Product implements ProductInterface
         $query = $conn->query(
             "SELECT * FROM {$conn->getTableName('catalog_category_product')}  ccp
           LEFT JOIN catalog_category_entity cce ON (ccp.category_id = cce.entity_id)
-          WHERE product_id = :entity_id", ['entity_id' => $this->productId]
+          WHERE product_id = :entity_id",
+            ['entity_id' => $this->productId]
         );
         foreach ($query->fetchAll() as $row) {
             $allParents = explode('/', $row['path']);
@@ -424,6 +428,4 @@ class Product implements ProductInterface
         }
         $this->allCategoryIds = array_unique($this->allCategoryIds);
     }
-
-
 }

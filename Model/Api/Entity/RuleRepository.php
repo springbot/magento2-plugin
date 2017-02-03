@@ -46,7 +46,6 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
             $ret[] = $this->createProduct($storeId, $row);
         }
         return $ret;
-
     }
 
     public function getFromId($storeId, $ruleId)
@@ -92,6 +91,4 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
         );
         return $rule;
     }
-
-
 }

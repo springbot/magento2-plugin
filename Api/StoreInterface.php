@@ -64,6 +64,4 @@ interface StoreInterface
      * @return string
      */
     public function getSpringbotStoreId();
-
-
 }

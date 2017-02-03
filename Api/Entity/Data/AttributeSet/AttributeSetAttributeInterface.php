@@ -40,6 +40,4 @@ interface AttributeSetAttributeInterface
      * @return array
      */
     public function getOptions();
-
-
 }

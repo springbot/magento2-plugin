@@ -3,7 +3,8 @@
 namespace Springbot\Main\Model\Api;
 
 use Magento\Framework\App\Request\Http;
-use Magento\Framework\App\Config\ScopeConfigInterface;;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+;
 use Magento\Framework\App\ResourceConnection;
 use Magento\UrlRewrite\Model\UrlRewriteFactory;
 use Springbot\Main\Api\RedirectsInterface;
@@ -81,5 +82,4 @@ class Redirects extends AbstractRepository implements RedirectsInterface
         $urlRewriteModel->save();
         return $urlRewriteModel;
     }
-
 }

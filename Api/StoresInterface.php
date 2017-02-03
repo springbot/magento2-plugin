@@ -22,5 +22,4 @@ interface StoresInterface
      * @return \Springbot\Main\Api\StoreInterface
      */
     public function getFromId($storeId);
-
 }

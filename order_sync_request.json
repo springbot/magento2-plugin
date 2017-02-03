@@ -9,6 +9,25 @@
     "store_id": 1,
     "confirmation": "588282158315b"
   },
+    "payment": {
+    "account_status": null,
+    "additional_information": [
+      null
+    ],
+    "amount_ordered": 27.87,
+    "amount_paid": 27.87,
+    "base_amount_ordered": 27.87,
+    "base_amount_paid": 27.87,
+    "base_shipping_amount": 6.22,
+    "base_shipping_captured": 6.22,
+    "cc_last4": null,
+    "entity_id": 30,
+    "method": "sbmarketplaces",
+    "parent_id": 30,
+    "shipping_amount": 6.22,
+    "shipping_captured": 6.22,
+    "extension_attributes": []
+  },
   "address": {
     "street": ["JS MEDICAL OFFICE CONSULTING LLC", "JS MEDICAL OFFICE CONSULTING LLC 1600 W UNIVERSITY AVE STE 207 BLDG 3"],
     "city": "FLAGSTAFF",
@@ -35,10 +54,9 @@
   "marketplaces": {
     "currency_code": "USD",
     "shipping_total": "6.22",
-    "tax": "0.0",
+    "tax": "2.0",
     "region": "Michigan",
     "marketplace_type": "Magento",
     "remote_order_id": "108-6836329-5009835"
   }
 }
-

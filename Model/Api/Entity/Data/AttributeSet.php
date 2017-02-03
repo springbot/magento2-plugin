@@ -86,18 +86,19 @@ class AttributeSet implements AttributeSetInterface
             LEFT JOIN {$conn->getTableName('eav_attribute')} ea
                 ON (ea.attribute_id = eaa.attribute_id)
             WHERE eaa.attribute_set_id = :attribute_set_id 
-        ", ['attribute_set_id' => $this->getAttributeSetId()]
+        ",
+            ['attribute_set_id' => $this->getAttributeSetId()]
         );
 
         $attributes = [];
         foreach ($query->fetchAll() as $row) {
-
             $optionQuery = $conn->query(
                 "SELECT * FROM {$conn->getTableName('eav_attribute_option')} eao
             LEFT JOIN {$conn->getTableName('eav_attribute_option_value')} eaov
                 ON (eao.option_id = eaov.option_id)
             WHERE eao.attribute_id = :attribute_id 
-        ", ['attribute_id' => $row['attribute_id']]
+        ",
+                ['attribute_id' => $row['attribute_id']]
             );
 
             $options = [];

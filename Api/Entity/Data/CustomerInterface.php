@@ -54,5 +54,4 @@ interface CustomerInterface
      * @return \Springbot\Main\Api\Entity\Data\Customer\AddressInterface
      */
     public function getBillingAddress();
-
 }

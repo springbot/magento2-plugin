@@ -42,5 +42,4 @@ class SpringbotQuoteRedirect extends AbstractModel
         );
         $redirectModel->save();
     }
-
 }

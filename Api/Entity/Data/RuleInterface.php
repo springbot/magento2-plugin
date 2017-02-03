@@ -186,5 +186,4 @@ interface RuleInterface
      * @return array
      */
     public function getCustomerGroupIds();
-
 }

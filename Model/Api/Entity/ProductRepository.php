@@ -82,11 +82,10 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
             $row['entity_id'],
             $row['sku'],
             $row['type_id'],
-            $row['created_at'], 
+            $row['created_at'],
             $row['updated_at'],
             $row['attribute_set_id']
         );
         return $product;
     }
-
 }

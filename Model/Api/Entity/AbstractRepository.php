@@ -46,5 +46,4 @@ abstract class AbstractRepository
 
         $select->limitPage((int)$page, (int)$limit);
     }
-
 }

@@ -19,5 +19,4 @@ interface ProductAttributeInterface
      * @return string
      */
     public function getValue();
-
 }

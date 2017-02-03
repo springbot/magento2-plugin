@@ -326,5 +326,4 @@ class Rule implements RuleInterface
         }
         return $groupIds;
     }
-
 }

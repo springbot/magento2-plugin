@@ -7,7 +7,6 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Model\Api\Entity\Data\SubscriberFactory;
 
-
 /**
  * SubscriberRepository
  *

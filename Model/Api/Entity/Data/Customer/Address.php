@@ -185,5 +185,4 @@ class Address implements AddressInterface
     {
         return $this->telephone;
     }
-
 }

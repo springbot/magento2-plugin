@@ -84,7 +84,6 @@ class CartReconstitutionObserver implements ObserverInterface
             $quote->load($quoteId);
 
             if ($quote) {
-
                 // Only set the quote if they don't already have one
                 if (!$this->session->hasQuote()) {
                     $quote->setIsActive(true)->save();

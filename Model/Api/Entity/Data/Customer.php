@@ -7,6 +7,7 @@ use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Api\Entity\Data\CustomerInterface;
 use Springbot\Main\Model\Api\Entity\Data\Customer\AddressFactory;
 use Springbot\Main\Model\Api\Entity\Data\Customer\CustomerAttributeFactory;
+
 /**
  * Class Customer
  *
@@ -57,8 +58,15 @@ class Customer implements CustomerInterface
      * @param $shippingAddressId
      * @return void
      */
-    public function setValues($storeId, $customerId, $firstName, $lastName, $email, $attributeSetId,
-        $billingAddressId, $shippingAddressId
+    public function setValues(
+        $storeId,
+        $customerId,
+        $firstName,
+        $lastName,
+        $email,
+        $attributeSetId,
+        $billingAddressId,
+        $shippingAddressId
     ) {
     
         $this->storeId = $storeId;
@@ -156,10 +164,11 @@ class Customer implements CustomerInterface
               LEFT JOIN {$conn->getTableName('customer_entity_varchar')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id);
-        ", ['entity_id' => $this->customerId]
+        ",
+            ['entity_id' => $this->customerId]
         );
         $attributes = [];
-        foreach($query->fetchAll() as $attributeRow) {
+        foreach ($query->fetchAll() as $attributeRow) {
             if ($attributeRow['value'] !== null) {
                 $attribute = $this->attributeFactory->create();
                 $attribute->setValues($attributeRow['code'], $attributeRow['value']);
@@ -208,5 +217,4 @@ class Customer implements CustomerInterface
         }
         return null;
     }
-
 }

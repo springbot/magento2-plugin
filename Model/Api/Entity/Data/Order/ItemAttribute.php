@@ -56,5 +56,4 @@ class ItemAttribute
     {
         $this->value = $value;
     }
-
 }

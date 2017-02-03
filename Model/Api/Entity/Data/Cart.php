@@ -249,5 +249,4 @@ class Cart implements CartInterface
             return $row['value'];
         }
     }
-
 }

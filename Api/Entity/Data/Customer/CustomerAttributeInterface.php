@@ -27,5 +27,4 @@ interface CustomerAttributeInterface
      * @return string
      */
     public function getValue();
-
 }

@@ -56,8 +56,16 @@ class Guest implements GuestInterface
      * @param $shippingAddressId
      * @return void
      */
-    public function setValues($storeId, $orderId, $firstname, $lastname, $email, $createdAt, $updatedAt,
-        $billingAddressId, $shippingAddressId
+    public function setValues(
+        $storeId,
+        $orderId,
+        $firstname,
+        $lastname,
+        $email,
+        $createdAt,
+        $updatedAt,
+        $billingAddressId,
+        $shippingAddressId
     ) {
     
         $this->storeId = $storeId;
@@ -150,5 +158,4 @@ class Guest implements GuestInterface
         }
         return null;
     }
-
 }

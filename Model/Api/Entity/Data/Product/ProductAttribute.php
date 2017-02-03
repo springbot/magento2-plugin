@@ -42,5 +42,4 @@ class ProductAttribute implements ProductAttributeInterface
     {
         return $this->value;
     }
-
 }

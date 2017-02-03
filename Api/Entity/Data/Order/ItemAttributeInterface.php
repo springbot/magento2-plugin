@@ -31,6 +31,4 @@ interface ItemAttributeInterface
      * @return null
      */
     public function setValue($value);
-
-
 }

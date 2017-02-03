@@ -34,7 +34,7 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
         OrderFactory $factory,
         \Springbot\Main\Helper\Order $orderBuilder
     ) {
-    
+
         $this->orderBuilder = $orderBuilder;
         $this->orderFactory = $factory;
         parent::__construct($request, $resourceConnection);
@@ -107,5 +107,4 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
         );
         return $order;
     }
-
 }

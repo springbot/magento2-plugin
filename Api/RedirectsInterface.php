@@ -28,5 +28,4 @@ interface RedirectsInterface
      * @return \Springbot\Main\Api\RedirectInterface
      */
     public function createRedirect($requestPath, $redirectType, $idPath, $targetPath, $storeId, $description);
-
 }

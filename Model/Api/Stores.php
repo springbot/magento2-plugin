@@ -86,5 +86,4 @@ class Stores implements StoresInterface
         );
         return $store;
     }
-
 }

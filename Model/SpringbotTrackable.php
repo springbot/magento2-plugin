@@ -45,5 +45,4 @@ class SpringbotTrackable extends AbstractModel
         );
         $trackable->save();
     }
-
 }

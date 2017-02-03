@@ -183,6 +183,4 @@ interface OrderInterface
      * @return string
      */
     public function getOrderUserAgent();
-
-
 }

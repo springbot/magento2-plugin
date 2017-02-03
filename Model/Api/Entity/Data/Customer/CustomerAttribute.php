@@ -41,5 +41,4 @@ class CustomerAttribute implements CustomerAttributeInterface
     {
         return $this->value;
     }
-
 }

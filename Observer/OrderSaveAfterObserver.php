@@ -13,7 +13,6 @@ use Springbot\Main\Model\SpringbotTrackable;
 use Springbot\Main\Model\SpringbotOrderRedirect;
 use Springbot\Queue\Model\Queue;
 
-
 class OrderSaveAfterObserver implements ObserverInterface
 {
     private $logger;

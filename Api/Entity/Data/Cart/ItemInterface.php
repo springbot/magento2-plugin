@@ -67,5 +67,4 @@ interface ItemInterface
      * @return string
      */
     public function getProductType();
-
 }

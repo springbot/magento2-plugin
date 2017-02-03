@@ -94,5 +94,4 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
             )
             ->where('website_id = ?', $websiteId);
     }
-
 }

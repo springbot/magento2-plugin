@@ -55,5 +55,4 @@ interface ShipmentInterface
      * @return \Springbot\Main\Api\Entity\Data\Order\ShipmentItemInterface[]
      */
     public function getItems();
-
 }

@@ -40,6 +40,4 @@ interface ShipmentItemInterface
      * @return string
      */
     public function getQty();
-
-
 }

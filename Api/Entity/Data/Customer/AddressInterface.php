@@ -84,6 +84,4 @@ interface AddressInterface
      * @return string
      */
     public function getTelephone();
-
-
 }

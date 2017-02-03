@@ -39,7 +39,6 @@ class ProductDeleteBeforeObserver implements ObserverInterface
             $product = $observer->getEvent()->getProduct();
             /* @var MagentoProduct $product */
             foreach ($product->getStoreIds() as $storeId) {
-
                 // Enqueue a job to sync this product for every store it belongs to
                 $this->queue->scheduleJob(
                     ProductHandler::class,

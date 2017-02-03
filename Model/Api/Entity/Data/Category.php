@@ -168,25 +168,23 @@ class Category implements CategoryInterface
               LEFT JOIN {$conn->getTableName('catalog_category_entity_varchar')} eav ON (cce.entity_id = eav.entity_id)
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cce.entity_id = :entity_id);
-        ", ['entity_id' => $this->categoryId]
+        ",
+            ['entity_id' => $this->categoryId]
         );
 
-        foreach($query->fetchAll() as $attributeRow) {
+        foreach ($query->fetchAll() as $attributeRow) {
             $value = $attributeRow['value'];
-            switch($attributeRow['code']) {
-            case 'name':
-                $this->name = $value;
-                break;
-            case 'description':
-                $this->description = $value;
-                break;
-            default:
-                if ($value !== null) {
-
-                }
+            switch ($attributeRow['code']) {
+                case 'name':
+                    $this->name = $value;
+                    break;
+                case 'description':
+                    $this->description = $value;
+                    break;
+                default:
+                    if ($value !== null) {
+                    }
             }
         }
     }
-
-
 }

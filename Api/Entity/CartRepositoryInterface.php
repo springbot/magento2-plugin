@@ -21,5 +21,4 @@ interface CartRepositoryInterface
      * @return \Springbot\Main\Api\Entity\Data\CartInterface
      */
     public function getFromId($storeId, $cartId);
-
 }

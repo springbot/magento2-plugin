@@ -36,7 +36,7 @@ class SalesRuleDeleteAfterObserver implements ObserverInterface
     {
         try {
             $ruleIds = $observer->getEvent()->getAppliedRuleIds();
-            foreach($ruleIds as $ruleId) {
+            foreach ($ruleIds as $ruleId) {
                 $this->queue->scheduleJob(RuleHandler::class, 'handleDelete', [$ruleId]);
                 $this->logger->debug("Scheduled deleted sync job for rule ID: {$ruleId}");
             }

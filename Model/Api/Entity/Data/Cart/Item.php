@@ -81,8 +81,7 @@ class Item implements ItemInterface
     {
         if (isset($this->product)) {
             return $this->product;
-        }
-        else {
+        } else {
             if (!($productId = $this->parentProductId)) {
                 $productId = $this->productId;
             }
@@ -111,5 +110,4 @@ class Item implements ItemInterface
     {
         return $this->productType;
     }
-
 }

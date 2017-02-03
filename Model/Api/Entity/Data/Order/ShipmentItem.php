@@ -80,5 +80,4 @@ class ShipmentItem implements ShipmentItemInterface
     {
         return $this->qty;
     }
-
 }

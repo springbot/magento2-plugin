@@ -116,5 +116,4 @@ class Shipment implements ShipmentInterface
         }
         return $shipmentItems;
     }
-
 }

@@ -95,6 +95,4 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
         );
         return $category;
     }
-
-
 }

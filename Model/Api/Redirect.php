@@ -58,6 +58,4 @@ class Redirect implements RedirectInterface
     {
         return $this->description;
     }
-
-
 }

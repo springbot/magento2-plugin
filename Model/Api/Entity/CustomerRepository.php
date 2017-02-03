@@ -95,5 +95,4 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         }
         return null;
     }
-
 }

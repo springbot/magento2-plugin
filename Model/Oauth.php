@@ -22,7 +22,7 @@ class Oauth
      * @param IntegrationService $integrationService
      * @param OauthService       $oauthService
      */
-    public function __construct(IntegrationService $integrationService, OauthService $oauthService) 
+    public function __construct(IntegrationService $integrationService, OauthService $oauthService)
     {
         $this->integrationService = $integrationService;
         $this->oauthService = $oauthService;

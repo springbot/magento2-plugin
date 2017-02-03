@@ -55,5 +55,4 @@ interface CategoryInterface
      * @return string
      */
     public function getDescription();
-
 }

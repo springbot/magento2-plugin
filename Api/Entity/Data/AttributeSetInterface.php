@@ -38,5 +38,4 @@ interface AttributeSetInterface
      * @return \Springbot\Main\Api\Entity\Data\AttributeSet\AttributeSetAttributeInterface[]
      */
     public function getAttributes();
-
 }

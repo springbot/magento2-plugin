@@ -53,12 +53,12 @@ class Marketplaces extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
         }
 
         /**
- * @var \Magento\Shipping\Model\Rate\Result $result 
+ * @var \Magento\Shipping\Model\Rate\Result $result
 */
         $result = $this->_rateResultFactory->create();
 
         /**
- * @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method 
+ * @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method
 */
         $method = $this->_rateMethodFactory->create();
 

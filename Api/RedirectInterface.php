@@ -50,5 +50,4 @@ interface RedirectInterface
      * @return string
      */
     public function getDescription();
-
 }

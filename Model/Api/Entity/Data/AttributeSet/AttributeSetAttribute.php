@@ -64,5 +64,4 @@ class AttributeSetAttribute implements AttributeSetAttributeInterface
     {
         return $this->options;
     }
-
 }
