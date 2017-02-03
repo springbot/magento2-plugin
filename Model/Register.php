@@ -31,16 +31,16 @@ class Register
     private $cacheManager;
 
     /**
-     * @param Api                   $api
-     * @param Data                  $data
-     * @param OrderConfig           $orderConfig
-     * @param ScopeConfigInterface  $scopeConfigInterface
+     * @param Api $api
+     * @param Data $data
+     * @param OrderConfig $orderConfig
+     * @param ScopeConfigInterface $scopeConfigInterface
      * @param StoreManagerInterface $storeManager
-     * @param UrlInterface          $urlInterface
-     * @param StoreConfiguration    $storeConfig
-     * @param Oauth                 $oauth
-     * @param Redirects             $redirects
-     * @param Manager               $cacheManager
+     * @param UrlInterface $urlInterface
+     * @param StoreConfiguration $storeConfig
+     * @param Oauth $oauth
+     * @param Redirects $redirects
+     * @param Manager $cacheManager
      */
     public function __construct(
         Api $api,
@@ -80,9 +80,9 @@ class Register
     /**
      * Register all stores with Springbot via the ETL.
      *
-     * @param  $email
-     * @param  $password
-     * @param  \Magento\Store\Api\Data\StoreInterface[]
+     * @param $email
+     * @param $password
+     * @param \Magento\Store\Api\Data\StoreInterface[]
      * @return bool
      */
     public function registerStores($email, $password, $stores)
@@ -91,19 +91,15 @@ class Register
             $url = $this->api->getApiUrl(Api::store_registration_path);
             $storesArray = $this->getStoresArray($stores);
 
-            $response = $this->api->post(
-                $url,
-                json_encode(
-                    [
-                    'stores' => $storesArray,
+            $response = $this->api->post($url,
+                json_encode([
+                    'stores'       => $storesArray,
                     'access_token' => $this->oauth->create(),
-                    'credentials' => [
-                    'email' => $email,
-                    'password' => $password
+                    'credentials'  => [
+                        'email'    => $email,
+                        'password' => $password
                     ]
-                    ]
-                )
-            );
+                ]));
 
             if ($responseArray = json_decode($response->getBody(), true)) {
                 $securityToken = $responseArray['security_token'];
@@ -111,18 +107,15 @@ class Register
                 foreach ($storesArray as $guid => $storeArray) {
                     if ($returnedStoreArray = $responseArray['stores'][$guid]) {
                         $localStoreId = $returnedStoreArray['json_data']['store_id'];
-                        $this->storeConfig->saveValues(
-                            $localStoreId,
-                            [
-                            'store_guid' => $guid,
-                            'store_id' => $returnedStoreArray['springbot_store_id'],
+                        $this->storeConfig->saveValues($localStoreId, [
+                            'store_guid'     => $guid,
+                            'store_id'       => $returnedStoreArray['springbot_store_id'],
                             'security_token' => $securityToken
-                            ]
-                        );
+                        ]);
 
                         $target = $this->scopeConfigInterface->getValue('springbot/configuration/app_url')
-                        . '/i/'
-                        . $returnedStoreArray['springbot_store_id'];
+                            . '/i/'
+                            . $returnedStoreArray['springbot_store_id'];
 
                         $this->redirects->createRedirect(
                             'i',
@@ -132,11 +125,11 @@ class Register
                             $localStoreId,
                             "Springbot Instagram redirect for store {$localStoreId}"
                         );
+
                     }
                 }
 
                 $this->cacheManager->flush(['config','block_html','config_api','config_api2']);
-
                 return true;
             } else {
                 return false;
@@ -153,8 +146,8 @@ class Register
     {
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
-            if (!$this->storeConfig->getSpringbotStoreId($store->getId())
-                || !$this->helper->getStoreGuid($store->getId())
+            if (!$this->storeConfig->getSpringbotStoreId($store->getId()) ||
+                !$this->storeConfig->getGuid($store->getId())
             ) {
                 return false;
             }
@@ -165,7 +158,7 @@ class Register
     /**
      * Returns an array of all stores on the instance with the necessary data to register the store with Springbot.
      *
-     * @param  \Magento\Store\Model\Store[] $stores
+     * @param \Magento\Store\Model\Store[] $stores
      * @return array
      */
     public function getStoresArray($stores)
@@ -173,24 +166,25 @@ class Register
         $storesArray = [];
 
         foreach ($stores as $store) {
+
             $guid = $this->helper->getStoreGuid($store->getId());
 
             $storesArray[$guid] = [
-                'guid' => $guid,
-                'url' => $store->getBaseUrl(),
-                'name' => $store->getName(),
-                'logo_src' => $this->scopeConfigInterface->getValue('design/header/logo_src'),
-                'logo_alt_tag' => $this->scopeConfigInterface->getValue('design/header/logo_atl'),
-                'web_id' => $store->getWebsiteId(),
-                'store_id' => $store->getId(),
-                'store_name' => $store->getName(),
-                'store_code' => $store->getCode(),
-                'store_active' => $store->isActive(),
-                'store_url' => $store->getBaseUrl(),
-                'media_url' => $this->urlInterface->getBaseUrl(UrlInterface::URL_TYPE_MEDIA),
-                'store_mail_address' => $this->getStoreAddress(),
+                'guid'                => $guid,
+                'url'                 => $store->getBaseUrl(),
+                'name'                => $store->getName(),
+                'logo_src'            => $this->scopeConfigInterface->getValue('design/header/logo_src'),
+                'logo_alt_tag'        => $this->scopeConfigInterface->getValue('design/header/logo_atl'),
+                'web_id'              => $store->getWebsiteId(),
+                'store_id'            => $store->getId(),
+                'store_name'          => $store->getName(),
+                'store_code'          => $store->getCode(),
+                'store_active'        => $store->isActive(),
+                'store_url'           => $store->getBaseUrl(),
+                'media_url'           => $this->urlInterface->getBaseUrl(UrlInterface::URL_TYPE_MEDIA),
+                'store_mail_address'  => $this->getStoreAddress(),
                 'store_custsrv_email' => $this->scopeConfigInterface->getValue('trans_email/ident_support/email'),
-                'store_statuses' => $this->orderConfig->getStatuses(),
+                'store_statuses'      => $this->orderConfig->getStatuses(),
             ];
         }
         return $storesArray;
@@ -198,10 +192,8 @@ class Register
 
     protected function getStoreAddress()
     {
-        return str_replace(
-            ["\n", "\r"],
+        return str_replace(["\n", "\r"],
             "|",
-            $this->scopeConfigInterface->getValue('general/store_information/address')
-        );
+            $this->scopeConfigInterface->getValue('general/store_information/address'));
     }
 }
