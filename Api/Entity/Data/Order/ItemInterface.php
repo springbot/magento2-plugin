@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data\Order;
 
 /**
  * Interface ItemInterface
+ *
  * @package Springbot\Main\Api\Entity\Data\Order
  */
 interface ItemInterface
@@ -114,6 +115,4 @@ interface ItemInterface
      * @return \Springbot\Main\Api\Entity\Data\Order\ItemAttributeInterface[]
      */
     public function getProductAttributes();
-
-
 }

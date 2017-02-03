@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface CustomerInterface
+ *
  * @package Springbot\Main\Api\Entity\Data
  */
 interface CustomerInterface
@@ -53,5 +54,4 @@ interface CustomerInterface
      * @return \Springbot\Main\Api\Entity\Data\Customer\AddressInterface
      */
     public function getBillingAddress();
-
 }

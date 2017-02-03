@@ -26,7 +26,7 @@ class ListStoresCommand extends Command
     protected $springbotHelper;
 
     /**
-     * @param Oauth $oauth
+     * @param Oauth              $oauth
      * @param StoreManager       $storeManager
      * @param StoreConfiguration $storeConfig
      * @param SpringbotHelper    $springbotHelper
@@ -54,19 +54,21 @@ class ListStoresCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return string
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $table = new TextTable([
+        $table = new TextTable(
+            [
             'columnWidths' => [25, 10, 20, 36],
             'decorator' => 'ascii',
             'AutoSeparate' => TextTable::AUTO_SEPARATE_HEADER,
             'padding' => 1
-        ]);
+            ]
+        );
 
         $table->appendRow(['store_name', 'store_id', 'springbot_store_id', 'springbot_guid']);
         foreach ($this->storeManager->getStores() as $store) {

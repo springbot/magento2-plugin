@@ -25,8 +25,17 @@ interface GuestInterface
      * @param $shippingAddressId
      * @return void
      */
-    public function setValues($storeId, $orderId, $firstname, $lastname, $email, $createdAt, $updatedAt,
-        $billingAddressId, $shippingAddressId);
+    public function setValues(
+        $storeId,
+        $orderId,
+        $firstname,
+        $lastname,
+        $email,
+        $createdAt,
+        $updatedAt,
+        $billingAddressId,
+        $shippingAddressId
+    );
 
     /**
      * @return int
@@ -62,5 +71,4 @@ interface GuestInterface
      * @return \Springbot\Main\Api\Entity\Data\Customer\AddressInterface
      */
     public function getShippingAddress();
-
 }

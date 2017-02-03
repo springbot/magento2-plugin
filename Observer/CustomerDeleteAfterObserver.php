@@ -18,7 +18,7 @@ class CustomerDeleteAfterObserver implements ObserverInterface
      * ProductSaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param Queue           $queue
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
@@ -29,7 +29,7 @@ class CustomerDeleteAfterObserver implements ObserverInterface
     /**
      * Pull the customer data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
@@ -37,9 +37,11 @@ class CustomerDeleteAfterObserver implements ObserverInterface
         try {
             $customer = $observer->getEvent()->getCustomer();
             /* @var MagentoCustomer $customer */
-            $this->queue->scheduleJob(CustomerHandler::class,
+            $this->queue->scheduleJob(
+                CustomerHandler::class,
                 'handleDelete',
-                [$customer->getStoreId(), $customer->getId()]);
+                [$customer->getStoreId(), $customer->getId()]
+            );
             $this->logger->debug("Deleted Customer ID: " . $customer->getId());
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());

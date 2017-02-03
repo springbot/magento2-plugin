@@ -142,6 +142,14 @@
             <resource ref="Springbot_Main::api"/>
         </resources>
     </route>
+
+    <route url="/V1/springbot/main/stores/:storeId/orders" method="PUT">
+        <service class="Springbot\Main\Api\Entity\OrderRepositoryInterface" method="create"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
     <route url="/V1/springbot/main/stores/:storeId/orders/:orderId" method="GET">
         <service class="Springbot\Main\Api\Entity\OrderRepositoryInterface" method="getFromId"/>
         <resources>

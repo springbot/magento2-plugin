@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface OrderInterface
+ *
  * @package Springbot\Main\Api\Entity\Data
  */
 interface OrderInterface
@@ -182,6 +183,4 @@ interface OrderInterface
      * @return string
      */
     public function getOrderUserAgent();
-
-
 }

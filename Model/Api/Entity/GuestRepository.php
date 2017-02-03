@@ -10,6 +10,7 @@ use Magento\Framework\App\Request\Http;
 
 /**
  *  GuestRepository
+ *
  * @package Springbot\Main\Api
  */
 class GuestRepository extends AbstractRepository implements GuestRepositoryInterface
@@ -19,16 +20,17 @@ class GuestRepository extends AbstractRepository implements GuestRepositoryInter
 
     /**
      * OrderRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     *
+     * @param \Magento\Framework\App\Request\Http                $request
+     * @param \Magento\Framework\App\ResourceConnection          $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\GuestFactory $factory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         GuestFactory $factory
-    )
-    {
+    ) {
+    
         $this->guestFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }

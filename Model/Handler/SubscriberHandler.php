@@ -4,6 +4,7 @@ namespace Springbot\Main\Model\Handler;
 
 /**
  * Class SubscriberHandler
+ *
  * @package Springbot\Main\Model\Handler
  */
 class SubscriberHandler extends AbstractHandler

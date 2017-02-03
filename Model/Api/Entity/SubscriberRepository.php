@@ -7,9 +7,9 @@ use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Model\Api\Entity\Data\SubscriberFactory;
 
-
 /**
  * SubscriberRepository
+ *
  * @package Springbot\Main\Api
  */
 class SubscriberRepository extends AbstractRepository implements SubscriberRepositoryInterface
@@ -19,16 +19,17 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
 
     /**
      * OrderRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     *
+     * @param \Magento\Framework\App\Request\Http                     $request
+     * @param \Magento\Framework\App\ResourceConnection               $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\SubscriberFactory $factory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         SubscriberFactory $factory
-    )
-    {
+    ) {
+    
         $this->subscriberFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }

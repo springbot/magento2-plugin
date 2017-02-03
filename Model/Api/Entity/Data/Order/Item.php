@@ -9,6 +9,7 @@ use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 
 /**
  * Class Item
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Order
  */
 class Item implements ItemInterface
@@ -73,8 +74,7 @@ class Item implements ItemInterface
         $this->productType = $productType;
         if ($parentProductId) {
             $this->product =  $this->productRepository->getFromId($this->storeId, $parentProductId);
-        }
-        else {
+        } else {
             $this->product =  $this->productRepository->getFromId($this->storeId, $productId);
         }
     }
@@ -228,5 +228,4 @@ class Item implements ItemInterface
         }
         return null;
     }
-
 }

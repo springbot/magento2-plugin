@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity;
 
 /**
  * Interface CustomerRepositoryInterface
+ *
  * @package Springbot\Main\Api
  */
 interface CustomerRepositoryInterface

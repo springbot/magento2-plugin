@@ -2,7 +2,6 @@
 
 namespace Springbot\Main\Model\Api;
 
-
 class Count
 {
     private $entityType;
@@ -39,6 +38,4 @@ class Count
     {
         $this->count = $count;
     }
-
-
 }

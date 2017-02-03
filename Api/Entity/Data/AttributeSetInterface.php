@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface AttributeSetInterface
+ *
  * @package Springbot\Main\Api\Entity\Data
  */
 interface AttributeSetInterface
@@ -37,5 +38,4 @@ interface AttributeSetInterface
      * @return \Springbot\Main\Api\Entity\Data\AttributeSet\AttributeSetAttributeInterface[]
      */
     public function getAttributes();
-
 }

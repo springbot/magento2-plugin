@@ -11,6 +11,7 @@ use Magento\Config\Model\ResourceModel\Config as ConfigResource;
 
 /**
  * Class Config
+ *
  * @package Springbot\Main\Api
  */
 class Config extends AbstractModel implements ConfigInterface
@@ -21,16 +22,15 @@ class Config extends AbstractModel implements ConfigInterface
 
     /**
      * @param ScopeConfigInterface $scopeConfig
-     * @param Context $context
-     * @param Registry $registry
-     * @param ConfigResource $configResource
+     * @param Context              $context
+     * @param Registry             $registry
+     * @param ConfigResource       $configResource
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         Context $context,
         Registry $registry,
         ConfigResource $configResource
-
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->configResource = $configResource;
@@ -39,7 +39,7 @@ class Config extends AbstractModel implements ConfigInterface
 
     public function getConfig()
     {
-        $ret = array();
+        $ret = [];
         foreach ($this->scopeConfig->getValue('springbot') as $section => $values) {
             foreach ($values as $key => $value) {
                 $ret[] = new ConfigItem("springbot/{$section}/{$key}", $value);
@@ -52,11 +52,9 @@ class Config extends AbstractModel implements ConfigInterface
     {
         if (substr($path, 0, strlen('springbot/')) !== 'springbot/') {
             throw new \Exception("Config path must be in springbot namespace");
-        }
-        else if (substr_count($path, '/') !== 2) {
+        } elseif (substr_count($path, '/') !== 2) {
             throw new \Exception("Path must consist of 3 parts");
-        }
-        else {
+        } else {
             $this->configResource->saveConfig($path, $value, 'default', 0);
         }
         return $this;

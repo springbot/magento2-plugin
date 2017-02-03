@@ -8,6 +8,7 @@ use Magento\Framework\App\ResourceConnection;
 
 /**
  * Class Cart
+ *
  * @package Springbot\Main\Model\Api\Entity\Data
  */
 class Cart implements CartInterface
@@ -34,8 +35,9 @@ class Cart implements CartInterface
 
     /**
      * Cart constructor.
+     *
      * @param ResourceConnection $resourceConnection
-     * @param ItemFactory $itemFactory
+     * @param ItemFactory        $itemFactory
      */
     public function __construct(ResourceConnection $resourceConnection, ItemFactory $itemFactory)
     {
@@ -247,5 +249,4 @@ class Cart implements CartInterface
             return $row['value'];
         }
     }
-
 }

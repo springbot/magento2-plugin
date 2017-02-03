@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data\Customer;
 
 /**
  * Interface ItemInterface
+ *
  * @package Springbot\Main\Api\Entity\Data\Cart
  */
 interface AddressInterface
@@ -83,6 +84,4 @@ interface AddressInterface
      * @return string
      */
     public function getTelephone();
-
-
 }

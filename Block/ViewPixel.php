@@ -25,11 +25,12 @@ class ViewPixel extends AbstractView
 
     /**
      * ViewPixel constructor.
-     * @param Context $context
-     * @param ArrayUtils $arrayUtils
-     * @param array $data
+     *
+     * @param Context         $context
+     * @param ArrayUtils      $arrayUtils
+     * @param array           $data
      * @param SpringbotHelper $springbotHelper
-     * @param StoreManager $storeManager
+     * @param StoreManager    $storeManager
      */
     public function __construct(
         Context $context,

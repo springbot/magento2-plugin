@@ -7,6 +7,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Class StoreConfiguration
+ *
  * @package Springbot\Main\Model
  */
 class StoreConfiguration
@@ -16,7 +17,7 @@ class StoreConfiguration
     private $scopeConfig;
 
     /**
-     * @param Config $config
+     * @param Config               $config
      * @param ScopeConfigInterface $scopeConfigInterface
      */
     public function __construct(
@@ -57,7 +58,7 @@ class StoreConfiguration
     /**
      * Takes an associative array of variables which will be
      *
-     * @param int $storeId
+     * @param int   $storeId
      * @param array $vars
      */
     public function saveValues($storeId, $vars)

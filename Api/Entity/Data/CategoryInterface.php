@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface CategoryInterface
+ *
  * @package Springbot\Main\Api\Entity\Data
  */
 interface CategoryInterface
@@ -54,5 +55,4 @@ interface CategoryInterface
      * @return string
      */
     public function getDescription();
-
 }

@@ -6,6 +6,7 @@ use Springbot\Main\Api\Entity\Data\AttributeSet\AttributeSetAttributeInterface;
 
 /**
  * Class AttributeSetAttribute
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\AttributeSet
  */
 class AttributeSetAttribute implements AttributeSetAttributeInterface
@@ -18,10 +19,11 @@ class AttributeSetAttribute implements AttributeSetAttributeInterface
 
     /**
      * AttributeSetAttribute constructor.
-     * @param int $id
+     *
+     * @param int    $id
      * @param string $label
      * @param string $code
-     * @param array $options
+     * @param array  $options
      */
     public function setValues($id, $label, $code, $options = [])
     {
@@ -62,5 +64,4 @@ class AttributeSetAttribute implements AttributeSetAttributeInterface
     {
         return $this->options;
     }
-
 }

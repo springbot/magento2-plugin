@@ -10,6 +10,7 @@ use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class ProductRepository
+ *
  * @package Springbot\Main\Model\Api\Entity
  */
 class ProductRepository extends AbstractRepository implements ProductRepositoryInterface
@@ -22,18 +23,19 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 
     /**
      * OrderRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     *
+     * @param \Magento\Framework\App\Request\Http                  $request
+     * @param \Magento\Framework\App\ResourceConnection            $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\ProductFactory $factory
-     * @param StoreManagerInterface $storeManager
+     * @param StoreManagerInterface                                $storeManager
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         ProductFactory $factory,
         StoreManagerInterface $storeManager
-    )
-    {
+    ) {
+    
         $this->storeManager = $storeManager;
         $this->productFactory = $factory;
         parent::__construct($request, $resourceConnection);
@@ -80,11 +82,10 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
             $row['entity_id'],
             $row['sku'],
             $row['type_id'],
-            $row['created_at'], 
+            $row['created_at'],
             $row['updated_at'],
             $row['attribute_set_id']
         );
         return $product;
     }
-
 }

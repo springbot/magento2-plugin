@@ -68,12 +68,14 @@ class RegisterStoresCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $table = new TextTable([
+        $table = new TextTable(
+            [
             'columnWidths' => [25, 10, 20, 42],
             'decorator'    => 'ascii',
             'AutoSeparate' => TextTable::AUTO_SEPARATE_HEADER,
             'padding'      => 1
-        ]);
+            ]
+        );
 
         $table->appendRow(['store_name', 'store_id', 'springbot_store_id', 'action']);
         $storesToRegister = [];

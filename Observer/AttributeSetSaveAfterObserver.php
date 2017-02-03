@@ -16,7 +16,7 @@ class AttributeSetSaveAfterObserver implements ObserverInterface
 
     /**
      * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param Queue           $queue
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
@@ -27,7 +27,7 @@ class AttributeSetSaveAfterObserver implements ObserverInterface
     /**
      * Pull the attribute data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      * @throws \Exception
      */

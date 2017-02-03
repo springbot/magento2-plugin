@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity;
 
 /**
  * Interface GuestRepositoryInterface
+ *
  * @package Springbot\Main\Api
  */
 interface GuestRepositoryInterface

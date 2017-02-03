@@ -30,12 +30,13 @@ class EnhancedPixel extends Template
 
     /**
      * EnhancedPixel constructor.
-     * @param Context $context
-     * @param OrderFactory $orderFactory
-     * @param Api $api
-     * @param Session $session
+     *
+     * @param Context            $context
+     * @param OrderFactory       $orderFactory
+     * @param Api                $api
+     * @param Session            $session
      * @param StoreConfiguration $storeConfig
-     * @param SpringbotHelper $springbotHelper
+     * @param SpringbotHelper    $springbotHelper
      */
     public function __construct(
         Context $context,
@@ -44,8 +45,8 @@ class EnhancedPixel extends Template
         Session $session,
         StoreConfiguration $storeConfig,
         SpringbotHelper $springbotHelper
-    )
-    {
+    ) {
+    
         $this->orderFactory = $orderFactory;
         $this->api = $api;
         $this->session = $session;

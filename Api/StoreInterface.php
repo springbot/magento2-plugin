@@ -4,6 +4,7 @@ namespace Springbot\Main\Api;
 
 /**
  * Interface StoresInterface
+ *
  * @package Springbot\Main\Api
  */
 interface StoreInterface
@@ -63,6 +64,4 @@ interface StoreInterface
      * @return string
      */
     public function getSpringbotStoreId();
-
-
 }

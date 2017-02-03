@@ -7,6 +7,7 @@ use Springbot\Main\Api\ConfigItemInterface;
 
 /**
  * Class Config
+ *
  * @package Springbot\Main\Api
  */
 class ConfigItem extends AbstractModel implements ConfigItemInterface
@@ -30,5 +31,4 @@ class ConfigItem extends AbstractModel implements ConfigItemInterface
     {
         return $this->value;
     }
-
 }

@@ -9,6 +9,7 @@ use Springbot\Main\Model\SpringbotTrackableFactory;
 
 /**
  * Class SpringbotTrackable
+ *
  * @package Springbot\Main\Model
  */
 class SpringbotTrackable extends AbstractModel
@@ -17,8 +18,8 @@ class SpringbotTrackable extends AbstractModel
     private $trackableFactory;
 
     /**
-     * @param Context $context
-     * @param Registry $registry
+     * @param Context                   $context
+     * @param Registry                  $registry
      * @param SpringbotTrackableFactory $trackableFactory
      */
     public function __construct(
@@ -34,13 +35,14 @@ class SpringbotTrackable extends AbstractModel
     public function insert($quoteId, $orderId, $type, $value)
     {
         $trackable = $this->trackableFactory->create();
-        $trackable->addData([
+        $trackable->addData(
+            [
             'quote_id' => $quoteId,
             'order_id' => $orderId,
             'type' => $type,
             'value' => $value
-        ]);
+            ]
+        );
         $trackable->save();
     }
-
 }

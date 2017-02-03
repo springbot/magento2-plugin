@@ -15,47 +15,55 @@ class InstallSchema implements InstallSchemaInterface
         $installer->startSetup();
 
         $table = $installer->getConnection()->newTable(
-            $installer->getTable('springbot_quote_redirect'))
+            $installer->getTable('springbot_quote_redirect')
+        )
             ->addColumn(
                 'id',
                 Table::TYPE_INTEGER,
                 11,
                 ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
-                'ID')
+                'ID'
+            )
             ->addColumn(
                 'redirect_string',
                 Table::TYPE_TEXT,
                 null,
                 ['nullable' => false],
-                'Cookie redirect string')
+                'Cookie redirect string'
+            )
             ->addColumn(
                 'quote_id',
                 Table::TYPE_INTEGER,
                 11,
                 ['nullable' => false],
-                'Customer Quote ID')
+                'Customer Quote ID'
+            )
             ->setComment('Springbot Mongo ID Quote Redirect Table');
         $installer->getConnection()->createTable($table);
         $table = $installer->getConnection()->newTable(
-            $installer->getTable('springbot_order_redirect'))
+            $installer->getTable('springbot_order_redirect')
+        )
             ->addColumn(
                 'id',
                 Table::TYPE_INTEGER,
                 11,
                 ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
-                'ID')
+                'ID'
+            )
             ->addColumn(
                 'redirect_string',
                 Table::TYPE_TEXT,
                 null,
                 ['nullable' => false],
-                'Cookie redirect string')
+                'Cookie redirect string'
+            )
             ->addColumn(
                 'order_id',
                 Table::TYPE_INTEGER,
                 11,
                 ['nullable' => false],
-                'Customer Order ID')
+                'Customer Order ID'
+            )
             ->setComment('Springbot Mongo ID Order Redirect Table');
         $installer->getConnection()->createTable($table);
         $installer->endSetup();

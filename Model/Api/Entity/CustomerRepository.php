@@ -10,6 +10,7 @@ use Magento\Framework\App\Request\Http;
 
 /**
  *  CustomerRepository
+ *
  * @package Springbot\Main\Api
  */
 class CustomerRepository extends AbstractRepository implements CustomerRepositoryInterface
@@ -22,16 +23,17 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
 
     /**
      * OrderRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     *
+     * @param \Magento\Framework\App\Request\Http                   $request
+     * @param \Magento\Framework\App\ResourceConnection             $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\CustomerFactory $factory
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         CustomerFactory $factory
-    )
-    {
+    ) {
+    
         $this->customerFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
@@ -93,5 +95,4 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         }
         return null;
     }
-
 }
