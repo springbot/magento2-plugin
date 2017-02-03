@@ -83,9 +83,14 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
                 $order = $this->cartManagement->submit($quote);
 
-                $baseTaxAmount = $this->marketplaces->getTax();
+                $tax = $this->marketplaces->getTax();
 
-                $order->setBaseTaxAmount($baseTaxAmount)->save();
+                $order->setTaxAmount($order->getTaxAmount() + $tax);
+                $order->setBaseTaxAmount($order->getBaseTaxAmount() + $tax);
+                $order->setGrandTotal($order->getGrandTotal() + $tax);
+                $order->setBaseGrandTotal($order->getBaseGrandTotal() + $tax);
+
+                $order->save();
 
                 if ($order->canInvoice()) {
 
