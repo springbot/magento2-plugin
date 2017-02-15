@@ -5,6 +5,7 @@ namespace Springbot\Main\Model\Api\Entity\Data;
 use Magento\Framework\App\ResourceConnection;
 use Magento\SalesRule\Model\Rule as MagentoRule;
 use Springbot\Main\Api\Entity\Data\RuleInterface;
+use Magento\Framework\App\ProductMetadataInterface;
 
 /**
  *  Rule
@@ -37,14 +38,17 @@ class Rule implements RuleInterface
     public $isRss;
 
     private $connectionResource;
+    private $productMetadata;
 
     /**
      * Inventory constructor.
      * @param \Magento\Framework\App\ResourceConnection $connectionResource
+     * @param ProductMetadataInterface $productMetadata
      */
-    public function __construct(ResourceConnection $connectionResource)
+    public function __construct(ResourceConnection $connectionResource, ProductMetadataInterface $productMetadata)
     {
         $this->connectionResource = $connectionResource;
+        $this->productMetadata = $productMetadata;
     }
 
     public function setValues(
@@ -297,9 +301,10 @@ class Rule implements RuleInterface
     public function getWebsiteIds()
     {
         $conn = $this->connectionResource->getConnection();
+        $idColumnName = $this->getIdColumnName();
         $select = $conn->select()
             ->from([$conn->getTableName('salesrule_website')])
-            ->where('rule_id = ?', $this->ruleId);
+            ->where($idColumnName . ' = ?', $this->ruleId);
 
         $websiteIds = [];
         foreach ($conn->fetchAll($select) as $row) {
@@ -314,15 +319,32 @@ class Rule implements RuleInterface
     public function getCustomerGroupIds()
     {
         $conn = $this->connectionResource->getConnection();
+        $idColumnName = $this->getIdColumnName();
         $select = $conn->select()
             ->from([$conn->getTableName('salesrule_customer_group')])
-            ->where('rule_id = ?', $this->ruleId);
+            ->where($idColumnName . ' = ?', $this->ruleId);
 
         $groupIds = [];
         foreach ($conn->fetchAll($select) as $row) {
             $groupIds[] = $row['customer_group_id'];
         }
         return $groupIds;
+    }
+
+    /**
+     * @return string
+     */
+    private function getIdColumnName()
+    {
+        $version = $this->productMetadata->getVersion();
+        $edition = $this->productMetadata->getEdition();
+
+        if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
+            return 'row_id';
+        }
+        else {
+            return 'rule_id';
+        }
     }
 
 }
