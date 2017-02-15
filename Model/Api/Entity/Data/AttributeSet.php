@@ -90,10 +90,10 @@ class AttributeSet implements AttributeSetInterface
         foreach ($query->fetchAll() as $row) {
 
             $optionQuery = $conn->query("SELECT * FROM {$conn->getTableName('eav_attribute_option')} eao
-            LEFT JOIN {$conn->getTableName('eav_attribute_option_value')} eaov
-                ON (eao.option_id = eaov.option_id)
-            WHERE eao.attribute_id = :attribute_id 
-        ", ['attribute_id' => $row['attribute_id']]);
+                LEFT JOIN {$conn->getTableName('eav_attribute_option_value')} eaov
+                    ON (eao.option_id = eaov.option_id)
+                WHERE eao.attribute_id = :attribute_id 
+            ", ['attribute_id' => $row['attribute_id']]);
 
             $options = [];
             foreach ($optionQuery->fetchAll() as $optionRow) {

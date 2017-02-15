@@ -292,12 +292,18 @@ class Product implements ProductInterface
             . $this->scopeConfigInterface->getValue('catalog/seo/product_url_suffix');
     }
 
+    /**
+     * @return string
+     */
     public function getUrlIdPath()
     {
         $store = $this->storeManager->getStore($this->storeId);
         return $store->getBaseUrl(UrlInterface::URL_TYPE_WEB) . 'catalog/product/view/id/' . $this->getProductId();
     }
 
+    /**
+     * @return null|string
+     */
     public function getImageUrl()
     {
         if (!$this->imagePath) {
@@ -307,7 +313,9 @@ class Product implements ProductInterface
         return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->imagePath;
     }
 
-
+    /**
+     * @return array
+     */
     public function getParentSkus()
     {
         $idColumnName = $this->getIdColumnName();
