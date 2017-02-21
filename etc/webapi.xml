@@ -4,6 +4,12 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
 
     <!-- Begin instance endpoints -->
+    <route url="/V1/springbot/main/cache/clean" method="POST">
+        <service class="Springbot\Main\Api\CacheInterface" method="clean"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
     <route url="/V1/springbot/main/config" method="GET">
         <service class="Springbot\Main\Api\ConfigInterface" method="getConfig"/>
         <resources>
