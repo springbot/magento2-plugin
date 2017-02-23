@@ -104,7 +104,7 @@ class AttributeSet implements AttributeSetInterface
             $attribute->setValues(
                 $row['attribute_id'],
                 $row['frontend_label'],
-                $row['attribute_code'],
+                $row['attribute_code'], 
                 $options
             );
             $attributes[] = $attribute;

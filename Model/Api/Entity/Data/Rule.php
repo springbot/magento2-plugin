@@ -347,4 +347,4 @@ class Rule implements RuleInterface
         }
     }
 
-}
+} 

@@ -196,4 +196,4 @@ class Register
             "|",
             $this->scopeConfigInterface->getValue('general/store_information/address'));
     }
-}
+} 
