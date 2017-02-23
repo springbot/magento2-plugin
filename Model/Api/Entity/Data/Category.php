@@ -8,10 +8,10 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Backend\Model\UrlInterface;
+use Magento\Framework\App\ProductMetadataInterface;
 
 /**
  * Class Category
- *
  * @package Springbot\Main\Model\Api\Entity\Data
  */
 class Category implements CategoryInterface
@@ -32,23 +32,26 @@ class Category implements CategoryInterface
     private $resourceConnection;
     private $scopeConfig;
     private $storeManager;
+    private $productMetadata;
 
     /**
      * Guest constructor.
-     *
-     * @param ResourceConnection    $resourceConnection
-     * @param ScopeConfigInterface  $scopeConfig
+     * @param ResourceConnection $resourceConnection
+     * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
+     * @param ProductMetadataInterface $productMetadata
      */
     public function __construct(
         ResourceConnection $resourceConnection,
         ScopeConfigInterface $scopeConfig,
-        StoreManagerInterface $storeManager
-    ) {
-    
+        StoreManagerInterface $storeManager,
+        ProductMetadataInterface $productMetadata
+    )
+    {
         $this->resourceConnection = $resourceConnection;
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
+        $this->productMetadata = $productMetadata;
     }
 
     /**
@@ -136,45 +139,52 @@ class Category implements CategoryInterface
 
     private function loadAttributes()
     {
+        $version = $this->productMetadata->getVersion();
+        $edition = $this->productMetadata->getEdition();
+
+        if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
+            $idColumnName = 'row_id';
+        }
+        else {
+            $idColumnName = 'entity_id';
+        }
+
         $conn = $this->resourceConnection->getConnection();
-        $query = $conn->query(
-            "
+        $query = $conn->query("
             SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
             FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_datetime')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_datetime')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.entity_id = :entity_id)
+            WHERE (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_decimal')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_decimal')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.entity_id = :entity_id)
+            WHERE (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_int')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_int')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.entity_id = :entity_id)
+            WHERE (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_text')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_text')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.entity_id = :entity_id)
+            WHERE (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_varchar')} eav ON (cce.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_category_entity_varchar')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.entity_id = :entity_id);
-        ",
-            ['entity_id' => $this->categoryId]
-        );
+            WHERE (cce.{$idColumnName} = :{$idColumnName});
+        ", [$idColumnName => $this->categoryId]);
 
-        foreach ($query->fetchAll() as $attributeRow) {
+        foreach($query->fetchAll() as $attributeRow) {
             $value = $attributeRow['value'];
-            switch ($attributeRow['code']) {
+            switch($attributeRow['code']) {
                 case 'name':
                     $this->name = $value;
                     break;
@@ -183,8 +193,11 @@ class Category implements CategoryInterface
                     break;
                 default:
                     if ($value !== null) {
+
                     }
             }
         }
     }
+
+
 }

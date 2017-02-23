@@ -11,10 +11,10 @@ use Magento\Store\Model\StoreManagerInterface;
 use Springbot\Main\Api\Entity\Data\ProductInterface;
 use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Springbot\Main\Model\Api\Entity\Data\Product\ProductAttribute;
+use Magento\Framework\App\ProductMetadataInterface;
 
 /**
  * Class Product
- *
  * @package Springbot\Main\Model\Api\Entity\Data
  */
 class Product implements ProductInterface
@@ -54,29 +54,32 @@ class Product implements ProductInterface
     protected $scopeConfigInterface;
 
     private $imagePath;
+    private $productMetadata;
 
     /**
      * Product constructor.
-     *
-     * @param \Magento\Framework\App\ResourceConnection             $connectionResource
+     * @param \Magento\Framework\App\ResourceConnection $connectionResource
      * @param \Springbot\Main\Api\Entity\ProductRepositoryInterface $productRepository
-     * @param \Magento\Store\Model\StoreManagerInterface            $storeManager
-     * @param \Magento\Backend\Model\UrlInterface                   $urlInterface
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface    $scopeConfig
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Backend\Model\UrlInterface $urlInterface
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param ProductMetadataInterface $productMetadata
      */
     public function __construct(
         ResourceConnection $connectionResource,
         ProductRepositoryInterface $productRepository,
         StoreManagerInterface $storeManager,
         UrlInterface $urlInterface,
-        ScopeConfigInterface $scopeConfig
-    ) {
-    
+        ScopeConfigInterface $scopeConfig,
+        ProductMetadataInterface $productMetadata
+    )
+    {
         $this->productRepository = $productRepository;
         $this->connectionResource = $connectionResource;
         $this->storeManager = $storeManager;
         $this->urlInterface = $urlInterface;
         $this->scopeConfigInterface = $scopeConfig;
+        $this->productMetadata = $productMetadata;
     }
 
     /**
@@ -88,7 +91,7 @@ class Product implements ProductInterface
      * @param $updatedAt
      * @param $customAttributeSetId
      */
-    public function setValues($storeId, $productId, $sku, $type, $createdAt, $updatedAt, $customAttributeSetId)
+    public function setValues($storeId, $productId, $sku, $type,  $createdAt, $updatedAt,  $customAttributeSetId)
     {
         $this->storeId = $storeId;
         $this->productId = $productId;
@@ -289,12 +292,18 @@ class Product implements ProductInterface
             . $this->scopeConfigInterface->getValue('catalog/seo/product_url_suffix');
     }
 
+    /**
+     * @return string
+     */
     public function getUrlIdPath()
     {
         $store = $this->storeManager->getStore($this->storeId);
         return $store->getBaseUrl(UrlInterface::URL_TYPE_WEB) . 'catalog/product/view/id/' . $this->getProductId();
     }
 
+    /**
+     * @return null|string
+     */
     public function getImageUrl()
     {
         if (!$this->imagePath) {
@@ -304,18 +313,18 @@ class Product implements ProductInterface
         return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->imagePath;
     }
 
-
+    /**
+     * @return array
+     */
     public function getParentSkus()
     {
+        $idColumnName = $this->getIdColumnName();
         $conn = $this->connectionResource->getConnection();
-        $query = $conn->query(
-            "SELECT cpe.sku FROM {$conn->getTableName('catalog_product_relation')} cper
+        $query = $conn->query("SELECT cpe.sku FROM {$conn->getTableName('catalog_product_relation')} cper
             LEFT JOIN {$conn->getTableName('catalog_product_entity')} cpe
-              ON (cper.parent_id = cpe.entity_id)
-                WHERE cper.child_id = :entity_id
-        ",
-            ['entity_id' => $this->productId]
-        );
+              ON (cper.parent_id = cpe.{$idColumnName})
+                WHERE cper.child_id = :{$idColumnName}
+        ", [$idColumnName => $this->productId]);
         $skus = [];
         foreach ($query->fetchAll() as $parentRow) {
             $skus[] = $parentRow['sku'];
@@ -325,45 +334,43 @@ class Product implements ProductInterface
 
     private function loadAttributes()
     {
+        $idColumnName = $this->getIdColumnName();
         $conn = $this->connectionResource->getConnection();
-        $query = $conn->query(
-            "
+        $query = $conn->query("
             SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
             FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_datetime')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_datetime')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cpe.entity_id = :entity_id)
+            WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_decimal')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_decimal')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cpe.entity_id = :entity_id)
+            WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_int')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_int')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cpe.entity_id = :entity_id)
+            WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_text')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_text')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cpe.entity_id = :entity_id)
+            WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_varchar')} eav ON (cpe.entity_id = eav.entity_id)
+              LEFT JOIN {$conn->getTableName('catalog_product_entity_varchar')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cpe.entity_id = :entity_id);
-        ",
-            ['entity_id' => $this->productId]
-        );
+            WHERE (cpe.{$idColumnName} = :{$idColumnName});
+        ", [$idColumnName => $this->productId]);
 
-        foreach ($query->fetchAll() as $attributeRow) {
+        foreach($query->fetchAll() as $attributeRow) {
             $value = $attributeRow['value'];
-            switch ($attributeRow['code']) {
+            switch($attributeRow['code']) {
                 case 'name':
                     $this->name = $value;
                     break;
@@ -405,8 +412,7 @@ class Product implements ProductInterface
                     break;
                 default:
                     if ($value !== null) {
-                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
-                        ;
+                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value); ;
                     }
             }
         }
@@ -414,13 +420,11 @@ class Product implements ProductInterface
 
     private function loadCategories()
     {
+        $idColumnName = $this->getIdColumnName();
         $conn = $this->connectionResource->getConnection();
-        $query = $conn->query(
-            "SELECT * FROM {$conn->getTableName('catalog_category_product')}  ccp
-          LEFT JOIN catalog_category_entity cce ON (ccp.category_id = cce.entity_id)
-          WHERE product_id = :entity_id",
-            ['entity_id' => $this->productId]
-        );
+        $query = $conn->query("SELECT * FROM {$conn->getTableName('catalog_category_product')}  ccp
+          LEFT JOIN catalog_category_entity cce ON (ccp.category_id = cce.{$idColumnName})
+          WHERE product_id = :{$idColumnName}", [$idColumnName => $this->productId]);
         foreach ($query->fetchAll() as $row) {
             $allParents = explode('/', $row['path']);
             $this->categoryIds[] = $row['category_id'];
@@ -428,4 +432,22 @@ class Product implements ProductInterface
         }
         $this->allCategoryIds = array_unique($this->allCategoryIds);
     }
+
+    /**
+     * @return string
+     */
+    private function getIdColumnName()
+    {
+        $version = $this->productMetadata->getVersion();
+        $edition = $this->productMetadata->getEdition();
+
+        if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
+            return 'row_id';
+        }
+        else {
+            return 'entity_id';
+        }
+    }
+
+
 }
