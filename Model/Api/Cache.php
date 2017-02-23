@@ -37,7 +37,6 @@ class Cache extends AbstractModel implements CacheInterface
 
     protected $cacheTypes = array
     (
-        'config',
         'layout',
         'block_html',
         'collections',
@@ -52,7 +51,9 @@ class Cache extends AbstractModel implements CacheInterface
     );
 
     /**
-     * @param Context $context
+     * @param TypeListInterface $cacheTypeList
+     * @param StateInterface $cacheState
+     * @param Pool $pool
      */
     public function __construct(
         TypeListInterface $cacheTypeList,
@@ -72,17 +73,44 @@ class Cache extends AbstractModel implements CacheInterface
      */
     public function clean($cacheType=null)
     {
-        try {
-            if ($cacheType) {
+        if ($cacheType) {
+            if (in_array($cacheType, $this->cacheTypes, true)) {
                 $this->cacheTypeList->cleanType($cacheType);
-            } else {
-                foreach ($this->cacheTypes as $type) {
-                    $this->cacheTypeList->cleanType($type);
-                }
             }
-        } catch(Exception $e) {
-            return $e->getMessage();
+        } else {
+            foreach ($this->cacheTypes as $type) {
+                $this->cacheTypeList->cleanType($type);
+            }
         }
-        return 'success';
+        return array('success');
     }
+
+
+    /**
+     * @return array
+     */
+    public function getAvailableTypes()
+    {
+        $result = [];
+        foreach ($this->cacheTypeList->getTypes() as $type) {
+            $result[] = $type['id'];
+        }
+        return $result;
+    }
+
+
+    /**
+     * Presents summary about cache status
+     *
+     * @return array
+     */
+    public function getStatus()
+    {
+        $result = [];
+        foreach ($this->cacheTypeList->getTypes() as $type) {
+            $result[$type['id']] = $type['status'];
+        }
+        return $result;
+    }
+
 }

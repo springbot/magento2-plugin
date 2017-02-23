@@ -14,4 +14,18 @@ interface CacheInterface
      * @return string|null
      */
     public function clean($cacheType=null);
+
+
+    /**
+     * @return array
+     */
+    public function getAvailableTypes();
+
+
+    /**
+     * Presents summary about cache status
+     *
+     * @return array
+     */
+    public function getStatus();
 }
