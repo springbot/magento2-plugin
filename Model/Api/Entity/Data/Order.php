@@ -374,6 +374,11 @@ class Order implements OrderInterface
                 $parentSku = $row['sku'];
             }
 
+            $price = $row['price'];
+            if ($row['parent_price'] !== null) {
+                $price = $row['parent_price'];
+            }
+
             $item->setValues(
                 $this->storeId,
                 $parentSku,
@@ -381,7 +386,7 @@ class Order implements OrderInterface
                 $row['qty_ordered'],
                 $row['weight'],
                 $row['name'],
-                $row['price'],
+                $price,
                 $row['product_id'],
                 $row['parent_product_id'],
                 $row['product_type']
