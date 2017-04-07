@@ -9,7 +9,6 @@ use Springbot\Main\Model\Api\Entity\Data\Order\ShipmentFactory;
 
 /**
  * Class Order
- *
  * @package Springbot\Main\Model\Api\Entity\Data
  */
 class Order implements OrderInterface
@@ -47,7 +46,6 @@ class Order implements OrderInterface
         ItemFactory $factory,
         ShipmentFactory $shipmentFactory
     ) {
-    
         $this->resourceConnection = $productRepository;
         $this->itemFactory = $factory;
         $this->shipmentFactory = $shipmentFactory;
@@ -349,19 +347,36 @@ class Order implements OrderInterface
             ->joinLeft(
                 ['soip' => $conn->getTableName('sales_order_item')],
                 'soi.parent_item_id = soip.item_id',
-                ['soip.product_id AS parent_product_id', 'soip.sku AS parent_sku']
+                ['soip.product_id AS parent_product_id']
+            )
+            ->joinLeft(
+                ['pp' => $conn->getTableName('catalog_product_entity')],
+                'pp.entity_id = soip.product_id',
+                ['pp.sku AS parent_sku']
             )
             ->where('soi.order_id = ?', $this->orderId);
 
         $ret = [];
+
+        $toRemove = [];
+
         foreach ($conn->fetchAll($select) as $row) {
             $item = $this->itemFactory->create();
             /* @var \Springbot\Main\Model\Api\Entity\Data\Order\Item $item */
 
             if ($row['parent_sku']) {
                 $parentSku = $row['parent_sku'];
-            } else {
+
+                // Magento creates two items for parent/child products, but we only want one
+                $toRemove[] = $row['parent_item_id'];
+            }
+            else {
                 $parentSku = $row['sku'];
+            }
+
+            $price = $row['price'];
+            if ($row['parent_price'] !== null) {
+                $price = $row['parent_price'];
             }
 
             $item->setValues(
@@ -371,16 +386,22 @@ class Order implements OrderInterface
                 $row['qty_ordered'],
                 $row['weight'],
                 $row['name'],
-                $row['price'],
+                $price,
                 $row['product_id'],
                 $row['parent_product_id'],
                 $row['product_type']
             );
-            $ret[] = $item;
+            $ret[$row['item_id']] = $item;
         }
-        return $ret;
-    }
 
+        // Remove the duplicate line items for parent/child items
+        foreach ($toRemove as $itemIdToRemove) {
+            unset($ret[$itemIdToRemove]);
+        }
+
+        return array_values($ret);
+
+    }
 
     public function getCartUserAgent()
     {
@@ -404,4 +425,5 @@ class Order implements OrderInterface
             return $row['value'];
         }
     }
+
 }
