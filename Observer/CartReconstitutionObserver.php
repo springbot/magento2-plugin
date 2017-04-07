@@ -15,6 +15,7 @@ use Springbot\Main\Helper\Data as SpringbotHelper;
 
 /**
  * Class CartReconstitutionObserver
+ *
  * @package Springbot\Main\Observer
  */
 class CartReconstitutionObserver implements ObserverInterface
@@ -28,13 +29,13 @@ class CartReconstitutionObserver implements ObserverInterface
     private $scopeConfig;
 
     /**
-     * @param HttpRequest $request
-     * @param ManagerInterface $messageManager
-     * @param Session $session
-     * @param QuoteFactory $quoteFactory
+     * @param HttpRequest          $request
+     * @param ManagerInterface     $messageManager
+     * @param Session              $session
+     * @param QuoteFactory         $quoteFactory
      * @param ScopeConfigInterface $scopeConfig
-     * @param SpringbotHelper $springbotHelper
-     * @param LoggerInterface $loggerInterface
+     * @param SpringbotHelper      $springbotHelper
+     * @param LoggerInterface      $loggerInterface
      */
     public function __construct(
         HttpRequest $request,
@@ -83,7 +84,6 @@ class CartReconstitutionObserver implements ObserverInterface
             $quote->load($quoteId);
 
             if ($quote) {
-
                 // Only set the quote if they don't already have one
                 if (!$this->session->hasQuote()) {
                     $quote->setIsActive(true)->save();

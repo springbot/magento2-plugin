@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface ProductInterface
+ *
  * @package Springbot\Main\Api
  */
 interface ProductInterface
@@ -19,7 +20,7 @@ interface ProductInterface
      * @param $customAttributeSetId
      * @return void
      */
-    public function setValues($storeId, $productId, $sku, $type,  $createdAt, $updatedAt, $customAttributeSetId);
+    public function setValues($storeId, $productId, $sku, $type, $createdAt, $updatedAt, $customAttributeSetId);
 
     /**
      * @return int
@@ -150,5 +151,4 @@ interface ProductInterface
      * @return \Springbot\Main\Api\Entity\Data\Product\ProductAttributeInterface[]
      */
     public function getProductAttributes();
-
 }

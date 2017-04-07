@@ -21,11 +21,11 @@ class CartSaveAfterObserver implements ObserverInterface
     private $request;
 
     /**
-     * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
-     * @param SpringbotTrackable $springbotTrackable
+     * @param LoggerInterface        $loggerInterface
+     * @param Queue                  $queue
+     * @param SpringbotTrackable     $springbotTrackable
      * @param CookieManagerInterface $session
-     * @param Http $request
+     * @param Http                   $request
      */
     public function __construct(
         LoggerInterface $loggerInterface,
@@ -33,8 +33,8 @@ class CartSaveAfterObserver implements ObserverInterface
         SpringbotTrackable $springbotTrackable,
         CookieManagerInterface $session,
         Http $request
-    )
-    {
+    ) {
+    
         $this->logger = $loggerInterface;
         $this->queue = $queue;
         $this->springbotTrackable = $springbotTrackable;
@@ -45,7 +45,7 @@ class CartSaveAfterObserver implements ObserverInterface
     /**
      * Pull the cart data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)

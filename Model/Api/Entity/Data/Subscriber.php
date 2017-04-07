@@ -49,5 +49,4 @@ class Subscriber implements SubscriberInterface
     {
         return $this->subscriberId;
     }
-
 }

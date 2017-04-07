@@ -11,6 +11,7 @@ use Springbot\Main\Model\Api;
 
 /**
  * Class Index
+ *
  * @package Springbot\Main\Controller\Adminhtml\Dashboard
  */
 class Index extends Action
@@ -23,11 +24,11 @@ class Index extends Action
     /**
      * Index constructor.
      *
-     * @param Context $context
+     * @param Context       $context
      * @param HelperContext $helperContext
-     * @param PageFactory $resultPageFactory
-     * @param Register $register
-     * @param Api $api
+     * @param PageFactory   $resultPageFactory
+     * @param Register      $register
+     * @param Api           $api
      */
     public function __construct(
         Context $context,

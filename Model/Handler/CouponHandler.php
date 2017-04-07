@@ -4,6 +4,7 @@ namespace Springbot\Main\Model\Handler;
 
 /**
  * Class CouponHandler
+ *
  * @package Springbot\Main\Model\Handler
  */
 class CouponHandler extends AbstractHandler

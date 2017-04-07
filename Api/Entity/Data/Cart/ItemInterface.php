@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data\Cart;
 
 /**
  * Interface ItemInterface
+ *
  * @package Springbot\Main\Api\Entity\Data\Cart
  */
 interface ItemInterface
@@ -66,5 +67,4 @@ interface ItemInterface
      * @return string
      */
     public function getProductType();
-
 }

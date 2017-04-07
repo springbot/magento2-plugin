@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data\Order;
 
 /**
  * Interface ItemInterface
+ *
  * @package Springbot\Main\Api\Entity\Data\Order
  */
 interface ItemAttributeInterface
@@ -30,6 +31,4 @@ interface ItemAttributeInterface
      * @return null
      */
     public function setValue($value);
-
-
 }

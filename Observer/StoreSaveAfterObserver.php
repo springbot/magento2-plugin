@@ -18,7 +18,7 @@ class StoreSaveAfterObserver implements ObserverInterface
      * InventorySaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param Queue           $queue
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
@@ -29,7 +29,7 @@ class StoreSaveAfterObserver implements ObserverInterface
     /**
      * Pull the inventory data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)

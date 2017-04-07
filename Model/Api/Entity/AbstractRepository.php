@@ -8,6 +8,7 @@ use Magento\Framework\DB\Select;
 
 /**
  * Class ProductRepository
+ *
  * @package Springbot\Main\Model\Api\Entity
  */
 abstract class AbstractRepository
@@ -17,7 +18,8 @@ abstract class AbstractRepository
 
     /**
      * AbstractRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
+     *
+     * @param \Magento\Framework\App\Request\Http       $request
      * @param \Magento\Framework\App\ResourceConnection $resourceConnection
      */
     public function __construct(Http $request, ResourceConnection $resourceConnection)
@@ -44,5 +46,4 @@ abstract class AbstractRepository
 
         $select->limitPage((int)$page, (int)$limit);
     }
-
 }

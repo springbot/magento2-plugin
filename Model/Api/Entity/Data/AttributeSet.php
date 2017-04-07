@@ -83,7 +83,7 @@ class AttributeSet implements AttributeSetInterface
         $query = $conn->query("SELECT * FROM {$conn->getTableName('eav_entity_attribute')} eaa
             LEFT JOIN {$conn->getTableName('eav_attribute')} ea
                 ON (ea.attribute_id = eaa.attribute_id)
-            WHERE eaa.attribute_set_id = :attribute_set_id 
+            WHERE eaa.attribute_set_id = :attribute_set_id
         ", ['attribute_set_id' => $this->getAttributeSetId()]);
 
         $attributes = [];
@@ -92,7 +92,7 @@ class AttributeSet implements AttributeSetInterface
             $optionQuery = $conn->query("SELECT * FROM {$conn->getTableName('eav_attribute_option')} eao
                 LEFT JOIN {$conn->getTableName('eav_attribute_option_value')} eaov
                     ON (eao.option_id = eaov.option_id)
-                WHERE eao.attribute_id = :attribute_id 
+                WHERE eao.attribute_id = :attribute_id
             ", ['attribute_id' => $row['attribute_id']]);
 
             $options = [];
@@ -104,7 +104,7 @@ class AttributeSet implements AttributeSetInterface
             $attribute->setValues(
                 $row['attribute_id'],
                 $row['frontend_label'],
-                $row['attribute_code'],
+                $row['attribute_code'], 
                 $options
             );
             $attributes[] = $attribute;

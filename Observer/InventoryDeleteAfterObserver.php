@@ -19,7 +19,7 @@ class InventoryDeleteAfterObserver implements ObserverInterface
      * InventoryDeleteAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param Queue           $queue
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
@@ -30,7 +30,7 @@ class InventoryDeleteAfterObserver implements ObserverInterface
     /**
      * Pull the inventory data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
@@ -38,7 +38,7 @@ class InventoryDeleteAfterObserver implements ObserverInterface
         try {
             $items = $observer->getEvent()->getItems();
             /* @var MagentoInventoryStock $inventory */
-            foreach($items as $item) {
+            foreach ($items as $item) {
                 $this->queue->scheduleJob(InventoryHandler::class, 'handleDelete', [$item->getItemId()]);
                 $this->logger->debug("Scheduled deleted sync job for inventory item ID: {$item->getId()}");
             }

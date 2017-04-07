@@ -4,6 +4,7 @@ namespace Springbot\Main\Api;
 
 /**
  * Interface ConfigItemInterface
+ *
  * @package Springbot\Main\Api
  */
 interface ConfigItemInterface

@@ -2,7 +2,6 @@
 
 namespace Springbot\Main\Api;
 
-
 interface CountInterface
 {
 
@@ -28,6 +27,4 @@ interface CountInterface
      * @return void
      */
     public function setCount($count);
-
-
 }

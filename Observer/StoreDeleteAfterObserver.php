@@ -18,7 +18,7 @@ class StoreDeleteAfterObserver implements ObserverInterface
      * RuleSaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param Queue           $queue
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
@@ -29,7 +29,7 @@ class StoreDeleteAfterObserver implements ObserverInterface
     /**
      * Pull the rule data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)

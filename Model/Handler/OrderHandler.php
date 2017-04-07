@@ -4,6 +4,7 @@ namespace Springbot\Main\Model\Handler;
 
 /**
  * Class OrderHandler
+ *
  * @package Springbot\Main\Model\Handler
  */
 class OrderHandler extends AbstractHandler

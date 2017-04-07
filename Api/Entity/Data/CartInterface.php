@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity\Data;
 
 /**
  * Interface CartInterface
+ *
  * @package Springbot\Main\Api\Entity\Data
  */
 interface CartInterface
@@ -124,5 +125,4 @@ interface CartInterface
      * @return string
      */
     public function getCustomerEmail();
-
 }

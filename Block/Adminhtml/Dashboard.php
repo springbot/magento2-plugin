@@ -14,6 +14,7 @@ class Dashboard extends Template
 {
     /**
      * Main constructor.
+     *
      * @param Context $context
      */
     public function __construct(Context $context)

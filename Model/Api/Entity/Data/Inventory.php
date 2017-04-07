@@ -7,6 +7,7 @@ use Magento\Framework\App\ResourceConnection;
 
 /**
  * Class Inventory
+ *
  * @package Springbot\Main\Model\Api\Entity\Data
  */
 class Inventory implements InventoryInterface
@@ -25,6 +26,7 @@ class Inventory implements InventoryInterface
 
     /**
      * Inventory constructor.
+     *
      * @param \Magento\Framework\App\ResourceConnection $connectionResource
      */
     public function __construct(ResourceConnection $connectionResource)
@@ -34,15 +36,16 @@ class Inventory implements InventoryInterface
 
     /**
      * Inventory constructor.
-     * @param $storeId
-     * @param $productId
-     * @param $systemManaged
-     * @param $outOfStockQty
-     * @param $quantity
-     * @param $itemId
-     * @param $isInStock
-     * @param $minSaleQty
-     * @param $skuFulfillment
+     *
+     * @param  $storeId
+     * @param  $productId
+     * @param  $systemManaged
+     * @param  $outOfStockQty
+     * @param  $quantity
+     * @param  $itemId
+     * @param  $isInStock
+     * @param  $minSaleQty
+     * @param  $skuFulfillment
      * @return void
      */
     public function setValues(
@@ -143,16 +146,18 @@ class Inventory implements InventoryInterface
     public function getParentSkus()
     {
         $conn = $this->connectionResource->getConnection();
-        $query = $conn->query("SELECT cpe.sku FROM {$conn->getTableName('catalog_product_relation')} cper
+        $query = $conn->query(
+            "SELECT cpe.sku FROM {$conn->getTableName('catalog_product_relation')} cper
             LEFT JOIN {$conn->getTableName('catalog_product_entity')} cpe
               ON (cper.parent_id = cpe.entity_id)
                 WHERE cper.child_id = :entity_id
-        ", ['entity_id' => $this->productId]);
+        ",
+            ['entity_id' => $this->productId]
+        );
         $skus = [];
         foreach ($query->fetchAll() as $parentRow) {
             $skus[] = $parentRow['sku'];
         }
         return $skus;
     }
-
 }

@@ -4,6 +4,24 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
 
     <!-- Begin instance endpoints -->
+    <route url="/V1/springbot/main/cache/clean" method="POST">
+        <service class="Springbot\Main\Api\CacheInterface" method="clean"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V1/springbot/main/cache/types" method="GET">
+        <service class="Springbot\Main\Api\CacheInterface" method="getAvailableTypes"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V1/springbot/main/cache/status" method="GET">
+        <service class="Springbot\Main\Api\CacheInterface" method="getStatus"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
     <route url="/V1/springbot/main/config" method="GET">
         <service class="Springbot\Main\Api\ConfigInterface" method="getConfig"/>
         <resources>
@@ -142,6 +160,14 @@
             <resource ref="Springbot_Main::api"/>
         </resources>
     </route>
+
+    <route url="/V1/springbot/main/stores/:storeId/orders" method="PUT">
+        <service class="Springbot\Main\Api\Entity\OrderRepositoryInterface" method="create"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
     <route url="/V1/springbot/main/stores/:storeId/orders/:orderId" method="GET">
         <service class="Springbot\Main\Api\Entity\OrderRepositoryInterface" method="getFromId"/>
         <resources>

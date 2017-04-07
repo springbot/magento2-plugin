@@ -12,6 +12,7 @@
         </arguments>
     </type>
 
+    <preference for="Springbot\Main\Api\CacheInterface" type="Springbot\Main\Model\Api\Cache"/>
     <preference for="Springbot\Main\Api\ConfigInterface" type="Springbot\Main\Model\Api\Config"/>
     <preference for="Springbot\Main\Api\ConfigItemInterface" type="Springbot\Main\Model\Api\ConfigItem"/>
     <preference for="Springbot\Main\Api\CountsInterface" type="Springbot\Main\Model\Api\Counts"/>
@@ -64,4 +65,6 @@
     <preference for="Springbot\Main\Api\Entity\Data\SubscriberInterface"
                 type="Springbot\Main\Model\Api\Entity\Data\Subscriber"/>
 
+    <preference for="Springbot\Main\Api\Entity\Data\Order\MarketplacesInterface"
+                type="Springbot\Main\Model\Api\Entity\Data\Order\Marketplaces"/>
 </config>

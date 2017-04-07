@@ -10,6 +10,7 @@ use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * CategoryRepository
+ *
  * @package Springbot\Main\Api
  */
 class CategoryRepository extends AbstractRepository implements CategoryRepositoryInterface
@@ -23,18 +24,19 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
 
     /**
      * CategoryRepository constructor.
-     * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Framework\App\ResourceConnection $resourceConnection
+     *
+     * @param \Magento\Framework\App\Request\Http                   $request
+     * @param \Magento\Framework\App\ResourceConnection             $resourceConnection
      * @param \Springbot\Main\Model\Api\Entity\Data\CategoryFactory $factory
-     * @param StoreManagerInterface $storeManager;
+     * @param StoreManagerInterface                                 $storeManager;
      */
     public function __construct(
         Http $request,
         ResourceConnection $resourceConnection,
         CategoryFactory $factory,
         StoreManagerInterface $storeManager
-    )
-    {
+    ) {
+    
         $this->categoryFactory = $factory;
         $this->storeManager = $storeManager;
         parent::__construct($request, $resourceConnection);
@@ -93,6 +95,4 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
         );
         return $category;
     }
-
-
 }

@@ -8,6 +8,7 @@ use Springbot\Main\Model\Api\Entity\ProductRepository;
 
 /**
  * Class Item
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Cart
  */
 class Item implements ItemInterface
@@ -26,6 +27,7 @@ class Item implements ItemInterface
 
     /**
      * Customer constructor.
+     *
      * @param ProductRepository $productRepository
      */
     public function __construct(ProductRepository $productRepository)
@@ -79,8 +81,7 @@ class Item implements ItemInterface
     {
         if (isset($this->product)) {
             return $this->product;
-        }
-        else {
+        } else {
             if (!($productId = $this->parentProductId)) {
                 $productId = $this->productId;
             }
@@ -109,5 +110,4 @@ class Item implements ItemInterface
     {
         return $this->productType;
     }
-
 }

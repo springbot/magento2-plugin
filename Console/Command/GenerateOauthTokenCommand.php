@@ -36,7 +36,7 @@ class GenerateOauthTokenCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return string

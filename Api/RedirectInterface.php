@@ -4,6 +4,7 @@ namespace Springbot\Main\Api;
 
 /**
  * Interface RedirectInterface
+ *
  * @package Springbot\Main\Api
  */
 interface RedirectInterface
@@ -49,5 +50,4 @@ interface RedirectInterface
      * @return string
      */
     public function getDescription();
-
 }

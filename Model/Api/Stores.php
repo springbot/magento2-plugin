@@ -8,6 +8,7 @@ use Magento\Framework\App\ResourceConnection;
 
 /**
  * Class Stores
+ *
  * @package Springbot\Main\Model\Api
  */
 class Stores implements StoresInterface
@@ -19,8 +20,9 @@ class Stores implements StoresInterface
 
     /**
      * OrderRepository constructor.
+     *
      * @param ResourceConnection $resourceConnection
-     * @param StoreFactory $factory
+     * @param StoreFactory       $factory
      */
     public function __construct(ResourceConnection $resourceConnection, StoreFactory $factory)
     {
@@ -84,5 +86,4 @@ class Stores implements StoresInterface
         );
         return $store;
     }
-
 }

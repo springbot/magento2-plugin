@@ -21,8 +21,8 @@ class Data extends AbstractHelper
     /**
      * Data constructor.
      *
-     * @param Context $context
-     * @param Config $config
+     * @param Context               $context
+     * @param Config                $config
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
@@ -48,7 +48,6 @@ class Data extends AbstractHelper
             ->getValue('springbot/configuration/store_guid_' . $storeId);
 
         if (empty($guid)) {
-
             $baseUrl = $this->scopeConfig->getValue('web/unsecure/base_url');
 
             $charid = strtoupper(md5($baseUrl . $storeId . $store->getName() . $store->getCode()));
@@ -61,5 +60,4 @@ class Data extends AbstractHelper
         }
         return $guid;
     }
-
 }

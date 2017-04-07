@@ -13,6 +13,7 @@ use Springbot\Main\Model\Handler\RuleHandler;
 
 /**
  * Class RuleSaveAfterObserver
+ *
  * @package Springbot\Main\Observer
  */
 class RuleSaveAfterObserver implements ObserverInterface
@@ -25,8 +26,8 @@ class RuleSaveAfterObserver implements ObserverInterface
      * RuleSaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
-     * @param Website $website
+     * @param Queue           $queue
+     * @param Website         $website
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue, Website $website)
     {
@@ -38,7 +39,7 @@ class RuleSaveAfterObserver implements ObserverInterface
     /**
      * Pull the rule data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)

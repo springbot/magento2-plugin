@@ -19,7 +19,7 @@ class ProductDeleteBeforeObserver implements ObserverInterface
      * ProductSaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param Queue           $queue
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
@@ -30,7 +30,7 @@ class ProductDeleteBeforeObserver implements ObserverInterface
     /**
      * Pull the product data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
@@ -39,11 +39,12 @@ class ProductDeleteBeforeObserver implements ObserverInterface
             $product = $observer->getEvent()->getProduct();
             /* @var MagentoProduct $product */
             foreach ($product->getStoreIds() as $storeId) {
-
                 // Enqueue a job to sync this product for every store it belongs to
-                $this->queue->scheduleJob(ProductHandler::class,
+                $this->queue->scheduleJob(
+                    ProductHandler::class,
                     'handleDelete',
-                    [$product->getStoreId(), $product->getId()]);
+                    [$product->getStoreId(), $product->getId()]
+                );
                 $this->logger->debug("Scheduled deleted sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
             }
         } catch (Exception $e) {

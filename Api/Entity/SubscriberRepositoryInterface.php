@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity;
 
 /**
  * Interface SubscriberRepositoryInterface
+ *
  * @package Springbot\Main\Api
  */
 interface SubscriberRepositoryInterface

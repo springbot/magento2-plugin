@@ -4,6 +4,7 @@ namespace Springbot\Main\Model\Handler;
 
 /**
  * Class InventoryHandler
+ *
  * @package Springbot\Main\Model\Handler
  */
 class InventoryHandler extends AbstractHandler

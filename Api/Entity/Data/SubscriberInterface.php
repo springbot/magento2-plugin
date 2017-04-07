@@ -28,5 +28,4 @@ interface SubscriberInterface
      * @return string
      */
     public function getOptinStatus();
-
 }

@@ -26,9 +26,10 @@ class Api
 
     /**
      * Api constructor.
-     * @param Data $springbotHelper
+     *
+     * @param Data                 $springbotHelper
      * @param ScopeConfigInterface $scopeConfig
-     * @param StoreConfiguration $storeConfig
+     * @param StoreConfiguration   $storeConfig
      */
     public function __construct(
         Data $springbotHelper,
@@ -64,7 +65,7 @@ class Api
     /**
      * @param $storeId
      * @param $apiPath
-     * @param array $entitiesData
+     * @param array   $entitiesData
      * @throws \Exception
      */
     public function postEntities($storeId, $apiPath, array $entitiesData)
@@ -90,9 +91,11 @@ class Api
         $springbotApiToken = $this->storeConfig->getApiToken($storeId);
         if ($springbotStoreId && $springbotApiToken) {
             $body = json_encode([$apiPath => ['id' => $entityId, 'is_deleted' => true]]);
-            $this->post($this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}",
+            $this->post(
+                $this->getApiUrl('v1') . "/{$springbotStoreId}/{$apiPath}",
                 $body,
-                $this->getAuthHeaders($springbotApiToken));
+                $this->getAuthHeaders($springbotApiToken)
+            );
         }
     }
 

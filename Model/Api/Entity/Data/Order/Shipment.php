@@ -8,6 +8,7 @@ use Springbot\Main\Model\Api\Entity\Data\Order\ShipmentItemFactory;
 
 /**
  * Class Shipment
+ *
  * @package Springbot\Main\Model\Api\Entity\Data\Order
  */
 class Shipment implements ShipmentInterface
@@ -115,5 +116,4 @@ class Shipment implements ShipmentInterface
         }
         return $shipmentItems;
     }
-
 }

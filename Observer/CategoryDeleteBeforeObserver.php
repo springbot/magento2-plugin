@@ -18,7 +18,7 @@ class CategoryDeleteBeforeObserver implements ObserverInterface
      * ProductSaveAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
-     * @param Queue $queue
+     * @param Queue           $queue
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
@@ -29,7 +29,7 @@ class CategoryDeleteBeforeObserver implements ObserverInterface
     /**
      * Pull the category data from the event
      *
-     * @param Observer $observer
+     * @param  Observer $observer
      * @return void
      */
     public function execute(Observer $observer)

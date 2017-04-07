@@ -4,6 +4,7 @@ namespace Springbot\Main\Api\Entity;
 
 /**
  * Interface RuleRepositoryInterface
+ *
  * @package Springbot\Main\Api
  */
 interface RuleRepositoryInterface

@@ -13,8 +13,8 @@ class SpringbotOrderRedirect extends AbstractModel
     private $redirectFactory;
 
     /**
-     * @param Context $context
-     * @param Registry $registry
+     * @param Context                       $context
+     * @param Registry                      $registry
      * @param SpringbotOrderRedirectFactory $redirectFactory
      */
     public function __construct(
@@ -31,12 +31,13 @@ class SpringbotOrderRedirect extends AbstractModel
     {
         if ($orderId && (strlen($redirectMongoId) == self::redirect_string_length)) {
             $redirectModel = $this->redirectFactory->create();
-            $redirectModel->addData([
+            $redirectModel->addData(
+                [
                 'order_id' => $orderId,
                 'redirect_string' => $redirectMongoId
-            ]);
+                ]
+            );
             $redirectModel->save();
         }
     }
-
 }
