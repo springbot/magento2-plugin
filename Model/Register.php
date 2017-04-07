@@ -41,6 +41,7 @@ class Register
      * @param Oauth $oauth
      * @param Redirects $redirects
      * @param Manager $cacheManager
+     * @param ModuleContextInterface $context
      */
     public function __construct(
         Api $api,
@@ -90,15 +91,19 @@ class Register
         try {
             $url = $this->api->getApiUrl(Api::store_registration_path);
             $storesArray = $this->getStoresArray($stores);
-
+            $_storesArray = [];
+            foreach ($storesArray as $store) {
+              $store['plugin_version'] = '1.4.5.100';
+              $_storesArray[] = $store;
+            }
             $response = $this->api->post($url,
                 json_encode([
-                    'stores'       => $storesArray,
+                    'stores'       => $_storesArray,
                     'access_token' => $this->oauth->create(),
                     'credentials'  => [
                         'email'    => $email,
                         'password' => $password
-                    ]
+                      ]
                 ]));
 
             if ($responseArray = json_decode($response->getBody(), true)) {
