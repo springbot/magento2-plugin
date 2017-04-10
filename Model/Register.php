@@ -41,7 +41,6 @@ class Register
      * @param Oauth $oauth
      * @param Redirects $redirects
      * @param Manager $cacheManager
-     * @param ModuleContextInterface $context
      */
     public function __construct(
         Api $api,
@@ -79,14 +78,15 @@ class Register
     }
 
     /**
-     * Register all stores with Springbot via the ETL.
+     * Register all stores with Springbot via the ETL. Can be authed by either username/password or api_token.
      *
-     * @param $email
-     * @param $password
+     * @param string|null $email
+     * @param string|null $password
      * @param \Magento\Store\Api\Data\StoreInterface[]
+     * @param string|null $apiToken
      * @return bool
      */
-    public function registerStores($email, $password, $stores)
+    public function registerStores($email, $password, $stores, $apiToken = null)
     {
         try {
             $url = $this->api->getApiUrl(Api::store_registration_path);
@@ -102,7 +102,8 @@ class Register
                     'access_token' => $this->oauth->create(),
                     'credentials'  => [
                         'email'    => $email,
-                        'password' => $password
+                        'password' => $password,
+                        'api_token' => $apiToken
                       ]
                 ]));
 
