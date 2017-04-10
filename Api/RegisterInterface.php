@@ -10,7 +10,7 @@ interface RegisterInterface
 {
 
     /**
-     * @return \Springbot\Main\Api\ConfigInterface
+     * @return \Springbot\Main\Api\RegisterInterface
      */
     public function registerStores();
 
