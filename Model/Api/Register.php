@@ -13,26 +13,36 @@ use Magento\Framework\App\Cache\Manager;
 class Register implements RegisterInterface
 {
     private $registerFactory;
-    private $cacheManager;
+    private $scopeConfig;
 
     /**
      * Register constructor.
      * @param RegisterFactory $registerFactory
-     * @param Manager $cacheManager
+     * @param ScopeConfigInterface $scopeConfigInterface
      */
     public function __construct(
         RegisterFactory $registerFactory,
-        Manager $cacheManager
+        ScopeConfigInterface $scopeConfigInterface
     ) {
         $this->registerFactory = $registerFactory;
-        $this->cacheManager = $cacheManager;
+        $this->scopeConfig = $scopeConfigInterface;
     }
 
+    /**
+     * @return $this
+     * @throws \Exception
+     */
     public function registerStores()
     {
         $registerModel = $this->registerFactory->create();
+        $apiToken = $this->scopeConfigInterface->getValue('springbot/configuration/security_token');
 
-        // TODO: Register model needs to split out so authenticate and register are two separate methods
+        if (!$apiToken) {
+            throw new \Exception("Could not register stores, security token not set");
+        }
+
+        // Call the registerAllStores() method authenticating by apiToken instead of username/password
+        $registerModel->registerAllStores(null, null, $apiToken);
 
         return $this;
     }
