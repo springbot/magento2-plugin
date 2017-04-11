@@ -41,7 +41,6 @@ class Register
      * @param Oauth $oauth
      * @param Redirects $redirects
      * @param Manager $cacheManager
-     * @param ModuleContextInterface $context
      */
     public function __construct(
         Api $api,
@@ -70,40 +69,40 @@ class Register
     /**
      * @param string $email
      * @param string $password
+     * @param string|null $apiToken
      * @return bool
      */
-    public function registerAllStores($email, $password)
+    public function registerAllStores($email, $password, $apiToken = null)
     {
         $stores = $this->storeManager->getStores();
-        return $this->registerStores($email, $password, $stores);
+        return $this->registerStores($email, $password, $stores, $apiToken);
     }
 
     /**
-     * Register all stores with Springbot via the ETL.
+     * Register all stores with Springbot via the ETL. Can be authed by either username/password or api_token.
      *
-     * @param $email
-     * @param $password
+     * @param string|null $email
+     * @param string|null $password
      * @param \Magento\Store\Api\Data\StoreInterface[]
+     * @param string|null $apiToken
      * @return bool
      */
-    public function registerStores($email, $password, $stores)
+    public function registerStores($email, $password, $stores, $apiToken = null)
     {
         try {
             $url = $this->api->getApiUrl(Api::store_registration_path);
             $storesArray = $this->getStoresArray($stores);
-            $_storesArray = [];
-            foreach ($storesArray as $store) {
-              $store['plugin_version'] = '1.4.5.100';
-              $_storesArray[] = $store;
-            }
+
             $response = $this->api->post($url,
                 json_encode([
-                    'stores'       => $_storesArray,
-                    'access_token' => $this->oauth->create(),
-                    'credentials'  => [
-                        'email'    => $email,
-                        'password' => $password
-                      ]
+                    'stores'         => $storesArray,
+                    'plugin_version' => '1.4.5.200',
+                    'access_token'   => $this->oauth->create(),
+                    'credentials'    => [
+                        'email'     => $email,
+                        'password'  => $password,
+                        'api_token' => $apiToken
+                    ]
                 ]));
 
             if ($responseArray = json_decode($response->getBody(), true)) {
@@ -134,9 +133,10 @@ class Register
                     }
                 }
 
-                $this->cacheManager->flush(['config','block_html','config_api','config_api2']);
+                $this->cacheManager->flush(['config', 'block_html', 'config_api', 'config_api2']);
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
         } catch (\Throwable $e) {
