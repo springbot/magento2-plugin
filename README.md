@@ -21,6 +21,11 @@ php bin/magento setup:upgrade
 php bin/magento cache:clean
 ```
 
+If you have compilation enabled, re-run the compilation process:
+```bash
+php bin/magento setup:di:compile
+```
+
 Once you have installed the plugin you should see a Springbot menu item on your Magento admin menu. Enter your Springbot
 credentials here. 
 
