@@ -35,7 +35,7 @@
         </resources>
     </route>
     <route url="/V1/springbot/main/register" method="POST">
-        <service class="Springbot\Main\Api\RegisterInterface" method="registerStores"/>
+        <service class="Springbot\Main\Api\RegisterStoresInterface" method="registerStores"/>
         <resources>
             <resource ref="Springbot_Main::api" />
         </resources>

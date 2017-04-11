@@ -75,7 +75,7 @@ class Register
     public function registerAllStores($email, $password, $apiToken = null)
     {
         $stores = $this->storeManager->getStores();
-        return $this->registerStores($email, $password, $stores);
+        return $this->registerStores($email, $password, $stores, $apiToken);
     }
 
     /**

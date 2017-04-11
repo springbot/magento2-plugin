@@ -3,14 +3,14 @@
 namespace Springbot\Main\Api;
 
 /**
- * Interface RegisterInterface
+ * Interface RegisterStoresInterface
  * @package Springbot\Main\Api
  */
-interface RegisterInterface
+interface RegisterStoresInterface
 {
 
     /**
-     * @return \Springbot\Main\Api\RegisterInterface
+     * @return \Springbot\Main\Api\RegisterStoresInterface
      */
     public function registerStores();
 

@@ -18,7 +18,7 @@
     <preference for="Springbot\Main\Api\CountsInterface" type="Springbot\Main\Model\Api\Counts"/>
     <preference for="Springbot\Main\Api\ModulesInterface" type="Springbot\Main\Model\Api\Modules"/>
     <preference for="Springbot\Main\Api\RedirectsInterface" type="Springbot\Main\Model\Api\Redirects"/>
-    <preference for="Springbot\Main\Api\RegisterInterface" type="Springbot\Main\Model\Api\Register"/>
+    <preference for="Springbot\Main\Api\RegisterStoresInterface" type="Springbot\Main\Model\Api\RegisterStores"/>
     <preference for="Springbot\Main\Api\StoresInterface" type="Springbot\Main\Model\Api\Stores"/>
 
     <preference for="Springbot\Main\Api\Entity\AttributeSetRepositoryInterface"

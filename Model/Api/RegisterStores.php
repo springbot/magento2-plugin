@@ -2,15 +2,16 @@
 
 namespace Springbot\Main\Model\Api;
 
-use Springbot\Main\Api\RegisterInterface;
-use Magento\Framework\App\Cache\Manager;
+use Springbot\Main\Api\RegisterStoresInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Springbot\Main\Model\RegisterFactory;
 
 /**
- * Class Register
+ * Class RegisterStores
  *
  * @package Springbot\Main\Model
  */
-class Register implements RegisterInterface
+class RegisterStores implements RegisterStoresInterface
 {
     private $registerFactory;
     private $scopeConfig;
@@ -35,7 +36,7 @@ class Register implements RegisterInterface
     public function registerStores()
     {
         $registerModel = $this->registerFactory->create();
-        $apiToken = $this->scopeConfigInterface->getValue('springbot/configuration/security_token');
+        $apiToken = $this->scopeConfig->getValue('springbot/configuration/security_token');
 
         if (!$apiToken) {
             throw new \Exception("Could not register stores, security token not set");
