@@ -3,7 +3,7 @@
 namespace Springbot\Main\Model\Api;
 
 use Springbot\Main\Api\RegisterInterface;
-use Magento\Framework\App\Cache\Manager;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 /**
  * Class Register
