@@ -29,13 +29,13 @@ class CartReconstitutionObserver implements ObserverInterface
     private $scopeConfig;
 
     /**
-     * @param HttpRequest          $request
-     * @param ManagerInterface     $messageManager
-     * @param Session              $session
-     * @param QuoteFactory         $quoteFactory
+     * @param HttpRequest $request
+     * @param ManagerInterface $messageManager
+     * @param Session $session
+     * @param QuoteFactory $quoteFactory
      * @param ScopeConfigInterface $scopeConfig
-     * @param SpringbotHelper      $springbotHelper
-     * @param LoggerInterface      $loggerInterface
+     * @param SpringbotHelper $springbotHelper
+     * @param LoggerInterface $loggerInterface
      */
     public function __construct(
         HttpRequest $request,
@@ -60,6 +60,7 @@ class CartReconstitutionObserver implements ObserverInterface
      *
      * @return void
      */
+
     public function execute(Observer $observer)
     {
         try {
@@ -77,27 +78,37 @@ class CartReconstitutionObserver implements ObserverInterface
 
     public function setQuote($quoteId, $suppliedSecurityHash)
     {
-        // Check to make sure the cart is allowed to be restored
-        if ($this->scopeConfig->getValue('springbot/cart_restore/do_restore') == 1) {
+        $quote = $this->session->getQuote();
+
+        if (!is_object($quote)) {
+            $cartIsEmpty = true;
+        }
+        else if (!$quote->getItemsCount()) {
+            $cartIsEmpty = true;
+        }
+        else {
+            $cartIsEmpty = false;
+        }
+
+        // Check to make sure the cart is allowed to be restored and current cart is empty
+        if ($cartIsEmpty && ($this->scopeConfig->getValue('springbot/cart_restore/do_restore') == 1)) {
             // Instantiate Quote object and load the correct quote
             $quote = $this->quoteFactory->create();
             $quote->load($quoteId);
 
             if ($quote) {
-                // Only set the quote if they don't already have one
-                if (!$this->session->hasQuote()) {
-                    $quote->setIsActive(true)->save();
-                    $token = $this->scopeConfig->getValue('springbot/configuration/security_token');
-                    $correctSecurityHash = sha1($quoteId . $token);
-                    if ($suppliedSecurityHash == $correctSecurityHash) {
-                        if ($this->scopeConfig->getValue('springbot/cart_restore/retain_coupon') === 0) {
-                            $quote->setCouponCode('');
-                            $quote->save();
-                        }
-                        $this->session->setQuoteId($quoteId);
+                $quote->setIsActive(true)->save();
+                $token = $this->scopeConfig->getValue('springbot/configuration/security_token');
+                $correctSecurityHash = sha1($quoteId . $token);
+                if ($suppliedSecurityHash == $correctSecurityHash) {
+                    if ($this->scopeConfig->getValue('springbot/cart_restore/retain_coupon') === 0) {
+                        $quote->setCouponCode('');
+                        $quote->save();
                     }
+                    $this->session->setQuoteId($quoteId);
                 }
             }
         }
     }
+
 }
