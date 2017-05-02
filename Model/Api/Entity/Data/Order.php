@@ -364,7 +364,7 @@ class Order implements OrderInterface
             $item = $this->itemFactory->create();
             /* @var \Springbot\Main\Model\Api\Entity\Data\Order\Item $item */
 
-            if ($row['parent_sku']) {
+            if (isset($row['parent_sku']) && $row['parent_sku']) {
                 $parentSku = $row['parent_sku'];
 
                 // Magento creates two items for parent/child products, but we only want one
@@ -375,7 +375,7 @@ class Order implements OrderInterface
             }
 
             $price = $row['price'];
-            if ($row['parent_price'] !== null) {
+            if (isset($row['parent_price']) && ($row['parent_price'] !== null)) {
                 $price = $row['parent_price'];
             }
 
