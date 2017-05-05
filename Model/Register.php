@@ -9,6 +9,7 @@ use Magento\Sales\Model\Order\Config as OrderConfig;
 use Springbot\Main\Helper\Data;
 use Springbot\Main\Model\Api\Redirects;
 use Magento\Framework\App\Cache\Manager;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Register
@@ -29,6 +30,7 @@ class Register
     private $oauth;
     private $redirects;
     private $cacheManager;
+    private $logger;
 
     /**
      * @param Api $api
@@ -41,6 +43,7 @@ class Register
      * @param Oauth $oauth
      * @param Redirects $redirects
      * @param Manager $cacheManager
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Api $api,
@@ -52,7 +55,8 @@ class Register
         StoreConfiguration $storeConfig,
         Oauth $oauth,
         Redirects $redirects,
-        Manager $cacheManager
+        Manager $cacheManager,
+        LoggerInterface $logger
     ) {
         $this->api = $api;
         $this->scopeConfigInterface = $scopeConfigInterface;
@@ -64,6 +68,7 @@ class Register
         $this->oauth = $oauth;
         $this->redirects = $redirects;
         $this->cacheManager = $cacheManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -117,18 +122,24 @@ class Register
                             'security_token' => $securityToken
                         ]);
 
-                        $target = $this->scopeConfigInterface->getValue('springbot/configuration/app_url')
-                            . '/i/'
-                            . $returnedStoreArray['springbot_store_id'];
+                        // Attempt to create the redirect, catch exception if it already exists
+                        try {
+                            $target = $this->scopeConfigInterface->getValue('springbot/configuration/app_url')
+                                . '/i/'
+                                . $returnedStoreArray['springbot_store_id'];
 
-                        $this->redirects->createRedirect(
-                            'i',
-                            '301',
-                            "springbot/{$localStoreId}",
-                            $target,
-                            $localStoreId,
-                            "Springbot Instagram redirect for store {$localStoreId}"
-                        );
+                            $this->redirects->createRedirect(
+                                'i',
+                                '301',
+                                "springbot/{$localStoreId}",
+                                $target,
+                                $localStoreId,
+                                "Springbot Instagram redirect for store {$localStoreId}"
+                            );
+                        }
+                        catch (\Throwable $t) {
+                            $this->logger->error($t->getMessage());
+                        }
 
                     }
                 }
