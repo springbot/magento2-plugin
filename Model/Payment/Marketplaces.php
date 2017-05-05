@@ -25,6 +25,6 @@ class Marketplaces extends \Magento\Payment\Model\Method\AbstractMethod
      */
     public function getTitle()
     {
-        return $this->getInfoInstance()->getAdditionalInformation(self::INFO_KEY_TITLE);
+        return self::INFO_KEY_TITLE;
     }
 }
