@@ -14,12 +14,12 @@ class Marketplaces extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
     protected $_code = 'sbmarketplaces';
 
     /**
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface          $scopeConfig
-     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory  $rateErrorFactory
-     * @param \Psr\Log\LoggerInterface                                    $logger
-     * @param \Magento\Shipping\Model\Rate\ResultFactory                  $rateResultFactory
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory
      * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory
-     * @param array                                                       $data
+     * @param array $data
      */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
@@ -53,13 +53,13 @@ class Marketplaces extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
         }
 
         /**
- * @var \Magento\Shipping\Model\Rate\Result $result
-*/
+         * @var \Magento\Shipping\Model\Rate\Result $result
+         */
         $result = $this->_rateResultFactory->create();
 
         /**
- * @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method
-*/
+         * @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method
+         */
         $method = $this->_rateMethodFactory->create();
 
         $method->setCarrier($this->_code);
