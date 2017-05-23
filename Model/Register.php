@@ -19,6 +19,7 @@ use Psr\Log\LoggerInterface;
 class Register
 {
     const api_class = 'stores';
+    const plugin_version =  '1.4.5.200';
 
     private $api;
     private $helper;
@@ -101,7 +102,7 @@ class Register
             $response = $this->api->post($url,
                 json_encode([
                     'stores'         => $storesArray,
-                    'plugin_version' => '1.4.5.200',
+                    'plugin_version' => self::plugin_version,
                     'access_token'   => $this->oauth->create(),
                     'credentials'    => [
                         'email'     => $email,
