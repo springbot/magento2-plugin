@@ -28,6 +28,7 @@ class Item implements ItemInterface
 
     /* @var ProductInterface $product */
     private $product;
+    private $childProduct = null;
     private $productRepository;
 
     /**
@@ -74,6 +75,7 @@ class Item implements ItemInterface
         $this->productType = $productType;
         if ($parentProductId) {
             $this->product =  $this->productRepository->getFromId($this->storeId, $parentProductId);
+            $this->childProduct = $this->productRepository->getFromId($this->storeId, $productId);
         } else {
             $this->product =  $this->productRepository->getFromId($this->storeId, $productId);
         }
@@ -169,7 +171,12 @@ class Item implements ItemInterface
     public function getImageUrl()
     {
         if ($this->product) {
-            return $this->product->getImageUrl();
+            if ($url = $this->product->getImageUrl()) {
+                return $url;
+            }
+            else if ($this->childProduct) {
+                return $this->childProduct->getImageUrl();
+            }
         }
         return null;
     }

@@ -347,7 +347,7 @@ class Order implements OrderInterface
             ->joinLeft(
                 ['soip' => $conn->getTableName('sales_order_item')],
                 'soi.parent_item_id = soip.item_id',
-                ['soip.product_id AS parent_product_id']
+                ['parent_product_id' => 'soip.product_id', 'parent_price' => 'soip.price']
             )
             ->joinLeft(
                 ['pp' => $conn->getTableName('catalog_product_entity')],
@@ -375,7 +375,7 @@ class Order implements OrderInterface
             }
 
             $price = $row['price'];
-            if (isset($row['parent_price']) && ($row['parent_price'] !== null)) {
+            if (isset($row['parent_price']) && ($row['parent_price'] !== null) && ($row['parent_price'] > 0)) {
                 $price = $row['parent_price'];
             }
 
