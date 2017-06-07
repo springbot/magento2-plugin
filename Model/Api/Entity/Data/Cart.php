@@ -208,7 +208,12 @@ class Cart implements CartInterface
             ->joinLeft(
                 ['qip' => $conn->getTableName('quote_item')],
                 'qi.parent_item_id = qip.item_id',
-                ['qip.product_id as parent_product_id', 'qip.sku as parent_sku']
+                ['qip.product_id as parent_product_id']
+            )
+            ->joinLeft(
+                ['pp' => $conn->getTableName('catalog_product_entity')],
+                'qip.product_id = pp.entity_id',
+                ['pp.sku as parent_sku']
             )
             ->where('qi.quote_id = ?', $this->cartId)
             ->where('qi.quote_id IS NOT NULL');
