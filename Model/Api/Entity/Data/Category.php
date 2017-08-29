@@ -149,36 +149,37 @@ class Category implements CategoryInterface
             $idColumnName = 'entity_id';
         }
 
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $query = $conn->query("
             SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
-            FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_datetime')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$resource->getTableName('catalog_category_entity_datetime')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_decimal')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$resource->getTableName('catalog_category_entity_decimal')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_int')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$resource->getTableName('catalog_category_entity_int')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_text')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$resource->getTableName('catalog_category_entity_text')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('catalog_category_entity')} cce
-              LEFT JOIN {$conn->getTableName('catalog_category_entity_varchar')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_category_entity')} cce
+              LEFT JOIN {$resource->getTableName('catalog_category_entity_varchar')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cce.{$idColumnName} = :{$idColumnName});
         ", [$idColumnName => $this->categoryId]);
 

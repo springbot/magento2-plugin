@@ -40,9 +40,10 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
      */
     public function getList($storeId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['q' => $conn->getTableName('quote')])
+            ->from(['q' => $resource->getTableName('quote')])
             ->where('store_id = ?', $storeId);
         $this->filterResults($select);
         $ret = [];
@@ -59,9 +60,10 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
      */
     public function getFromId($storeId, $cartId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['q' => $conn->getTableName('quote')])
+            ->from(['q' => $resource->getTableName('quote')])
             ->where('store_id = ?', $storeId)
             ->where('entity_id = ?', $cartId);
         foreach ($conn->fetchAll($select) as $row) {

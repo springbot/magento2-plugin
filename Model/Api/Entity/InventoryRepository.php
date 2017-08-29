@@ -84,11 +84,12 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
         if (($store = $this->storeManager->getStore($storeId)) === null) {
             throw new \Exception("Store not found: {$storeId}");
         }
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         return $conn->select()
-            ->from(['stock' => $conn->getTableName('cataloginventory_stock_item')])
+            ->from(['stock' => $resource->getTableName('cataloginventory_stock_item')])
             ->joinLeft(
-                ['prod' => $conn->getTableName('catalog_product_entity')],
+                ['prod' => $resource->getTableName('catalog_product_entity')],
                 'prod.entity_id = stock.product_id'
             );
     }

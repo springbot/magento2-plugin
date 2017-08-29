@@ -202,16 +202,17 @@ class Cart implements CartInterface
 
     public function getItems()
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['qi' => $conn->getTableName('quote_item')])
+            ->from(['qi' => $resource->getTableName('quote_item')])
             ->joinLeft(
-                ['qip' => $conn->getTableName('quote_item')],
+                ['qip' => $resource->getTableName('quote_item')],
                 'qi.parent_item_id = qip.item_id',
                 ['qip.product_id as parent_product_id']
             )
             ->joinLeft(
-                ['pp' => $conn->getTableName('catalog_product_entity')],
+                ['pp' => $resource->getTableName('catalog_product_entity')],
                 'qip.product_id = pp.entity_id',
                 ['pp.sku as parent_sku']
             )
@@ -244,9 +245,10 @@ class Cart implements CartInterface
 
     private function fetchTrackable($column, $value, $type)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('springbot_trackable')])
+            ->from([$resource->getTableName('springbot_trackable')])
             ->where($column . ' = ?', $value)
             ->where('type = ?', $type)
             ->order('id', 'DESC');

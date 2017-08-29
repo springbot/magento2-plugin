@@ -35,26 +35,27 @@ class Counts implements CountsInterface
         }
         $websiteId = $store->getWebsiteId();
 
-        $conn = $this->resourceConnection->getConnection();
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('sales_order')} WHERE store_id = :store_id", ['store_id' => $storeId]);
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('sales_order')} WHERE store_id = :store_id", ['store_id' => $storeId]);
         $this->addCount('orders', $this->getCountFromQuery($query));
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('quote')} WHERE store_id = :store_id", ['store_id' => $storeId]);
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('quote')} WHERE store_id = :store_id", ['store_id' => $storeId]);
         $this->addCount('carts', $this->getCountFromQuery($query));
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('newsletter_subscriber')} WHERE store_id = :store_id", ['store_id' => $storeId]);
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('newsletter_subscriber')} WHERE store_id = :store_id", ['store_id' => $storeId]);
         $this->addCount('subscribers', $this->getCountFromQuery($query));
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('customer_entity')} WHERE store_id = :store_id", ['store_id' => $storeId]);
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('customer_entity')} WHERE store_id = :store_id", ['store_id' => $storeId]);
         $this->addCount('customers', $this->getCountFromQuery($query));
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('sales_order')} WHERE store_id = :store_id AND customer_is_guest = true", ['store_id' => $storeId]);
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('sales_order')} WHERE store_id = :store_id AND customer_is_guest = true", ['store_id' => $storeId]);
         $this->addCount('guests', $this->getCountFromQuery($query));
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('eav_attribute_set')}");
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('eav_attribute_set')}");
         $this->addCount('attribute-sets', $this->getCountFromQuery($query));
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('salesrule')}");
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('salesrule')}");
         $this->addCount('rules', $this->getCountFromQuery($query));
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('catalog_product_website')} WHERE website_id = :website_id", ['website_id' => $websiteId]);
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('catalog_product_website')} WHERE website_id = :website_id", ['website_id' => $websiteId]);
         $this->addCount('products', $this->getCountFromQuery($query));
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('cataloginventory_stock_item')} WHERE website_id = :website_id", ['website_id' => $websiteId]);
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('cataloginventory_stock_item')} WHERE website_id = :website_id", ['website_id' => $websiteId]);
         $this->addCount('inventory', $this->getCountFromQuery($query));
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('catalog_category_entity')}");
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('catalog_category_entity')}");
         $this->addCount('categories', $this->getCountFromQuery($query));
 
         return $this->counts;

@@ -37,9 +37,10 @@ class GuestRepository extends AbstractRepository implements GuestRepositoryInter
 
     public function getList($storeId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('sales_order')])
+            ->from([$resource->getTableName('sales_order')])
             ->where('store_id = ?', $storeId);
         $this->filterResults($select);
 
@@ -52,9 +53,10 @@ class GuestRepository extends AbstractRepository implements GuestRepositoryInter
 
     public function getFromId($storeId, $orderId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('sales_order')])
+            ->from([$resource->getTableName('sales_order')])
             ->where('entity_id = ?', $orderId);
         foreach ($conn->fetchAll($select) as $row) {
             return $this->createGuest($storeId, $row);

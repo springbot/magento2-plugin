@@ -79,9 +79,10 @@ class AttributeSet implements AttributeSetInterface
      */
     public function getAttributes()
     {
-        $conn = $this->resourceConnection->getConnection();
-        $query = $conn->query("SELECT * FROM {$conn->getTableName('eav_entity_attribute')} eaa
-            LEFT JOIN {$conn->getTableName('eav_attribute')} ea
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
+        $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_entity_attribute')} eaa
+            LEFT JOIN {$resource->getTableName('eav_attribute')} ea
                 ON (ea.attribute_id = eaa.attribute_id)
             WHERE eaa.attribute_set_id = :attribute_set_id
         ", ['attribute_set_id' => $this->getAttributeSetId()]);
@@ -89,8 +90,8 @@ class AttributeSet implements AttributeSetInterface
         $attributes = [];
         foreach ($query->fetchAll() as $row) {
 
-            $optionQuery = $conn->query("SELECT * FROM {$conn->getTableName('eav_attribute_option')} eao
-                LEFT JOIN {$conn->getTableName('eav_attribute_option_value')} eaov
+            $optionQuery = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option')} eao
+                LEFT JOIN {$resource->getTableName('eav_attribute_option_value')} eaov
                     ON (eao.option_id = eaov.option_id)
                 WHERE eao.attribute_id = :attribute_id
             ", ['attribute_id' => $row['attribute_id']]);

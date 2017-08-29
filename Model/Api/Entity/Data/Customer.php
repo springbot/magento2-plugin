@@ -125,44 +125,45 @@ class Customer implements CustomerInterface
     public function getHasPurchase()
     {
         $conn = $this->resourceConnection->getConnection();
-        $query = $conn->query("SELECT COUNT(*) AS count FROM {$conn->getTableName('sales_order')} WHERE customer_id = :customer_id", ['customer_id' => $this->customerId]);
+        $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('sales_order')} WHERE customer_id = :customer_id", ['customer_id' => $this->customerId]);
         $result = $query->fetch();
         return ($result['count'] > 0);
     }
 
     public function getCustomerAttributes()
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $query = $conn->query(
             " 
             SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
-            FROM {$conn->getTableName('customer_entity')} ce
-              LEFT JOIN {$conn->getTableName('customer_entity_datetime')} eav ON (ce.entity_id = eav.entity_id)
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('customer_entity')} ce
+              LEFT JOIN {$resource->getTableName('customer_entity_datetime')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('customer_entity')} ce
-              LEFT JOIN {$conn->getTableName('customer_entity_decimal')} eav ON (ce.entity_id = eav.entity_id)
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('customer_entity')} ce
+              LEFT JOIN {$resource->getTableName('customer_entity_decimal')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('customer_entity')} ce
-              LEFT JOIN {$conn->getTableName('customer_entity_int')} eav ON (ce.entity_id = eav.entity_id)
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('customer_entity')} ce
+              LEFT JOIN {$resource->getTableName('customer_entity_int')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('customer_entity')} ce
-              LEFT JOIN {$conn->getTableName('customer_entity_text')} eav ON (ce.entity_id = eav.entity_id)
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('customer_entity')} ce
+              LEFT JOIN {$resource->getTableName('customer_entity_text')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('customer_entity')} ce
-              LEFT JOIN {$conn->getTableName('customer_entity_varchar')} eav ON (ce.entity_id = eav.entity_id)
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('customer_entity')} ce
+              LEFT JOIN {$resource->getTableName('customer_entity_varchar')} eav ON (ce.entity_id = eav.entity_id)
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id);
         ",
             ['entity_id' => $this->customerId]
@@ -190,9 +191,10 @@ class Customer implements CustomerInterface
 
     private function fetchAddress($storeId, $id)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('customer_address_entity')])
+            ->from([$resource->getTableName('customer_address_entity')])
             ->where('entity_id = ?', $id);
         foreach ($conn->fetchAll($select) as $row) {
             $address = $this->addressFactory->create();

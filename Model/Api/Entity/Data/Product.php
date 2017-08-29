@@ -319,9 +319,10 @@ class Product implements ProductInterface
     public function getParentSkus()
     {
         $idColumnName = $this->getIdColumnName();
-        $conn = $this->connectionResource->getConnection();
-        $query = $conn->query("SELECT cpe.sku FROM {$conn->getTableName('catalog_product_relation')} cper
-            LEFT JOIN {$conn->getTableName('catalog_product_entity')} cpe
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
+        $query = $conn->query("SELECT cpe.sku FROM {$resource->getTableName('catalog_product_relation')} cper
+            LEFT JOIN {$resource->getTableName('catalog_product_entity')} cpe
               ON (cper.parent_id = cpe.{$idColumnName})
                 WHERE cper.child_id = :{$idColumnName}
         ", [$idColumnName => $this->productId]);
@@ -335,36 +336,37 @@ class Product implements ProductInterface
     private function loadAttributes()
     {
         $idColumnName = $this->getIdColumnName();
-        $conn = $this->connectionResource->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $query = $conn->query("
             SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
-            FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_datetime')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_datetime')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_decimal')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_decimal')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_int')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_int')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_text')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_text')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
-            FROM {$conn->getTableName('catalog_product_entity')} cpe
-              LEFT JOIN {$conn->getTableName('catalog_product_entity_varchar')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$conn->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_varchar')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName});
         ", [$idColumnName => $this->productId]);
 
@@ -421,8 +423,9 @@ class Product implements ProductInterface
     private function loadCategories()
     {
         $idColumnName = $this->getIdColumnName();
-        $conn = $this->connectionResource->getConnection();
-        $query = $conn->query("SELECT * FROM {$conn->getTableName('catalog_category_product')}  ccp
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
+        $query = $conn->query("SELECT * FROM {$resource->getTableName('catalog_category_product')}  ccp
           LEFT JOIN catalog_category_entity cce ON (ccp.category_id = cce.{$idColumnName})
           WHERE product_id = :{$idColumnName}", [$idColumnName => $this->productId]);
         foreach ($query->fetchAll() as $row) {

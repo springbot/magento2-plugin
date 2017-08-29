@@ -40,9 +40,10 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
 
     public function getList($storeId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['ce' => $conn->getTableName('customer_entity')])
+            ->from(['ce' => $resource->getTableName('customer_entity')])
             ->where('store_id = ?', $storeId);
         $this->filterResults($select);
         $ret = [];
@@ -54,9 +55,10 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
 
     public function getFromId($storeId, $customerId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('customer_entity')])
+            ->from([$resource->getTableName('customer_entity')])
             ->where('entity_id = ?', $customerId);
         foreach ($conn->fetchAll($select) as $row) {
             return $this->createCustomer($storeId, $row);
@@ -85,10 +87,11 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         if (isset($this->customerAttributeSetId)) {
             return $this->customerAttributeSetId;
         }
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['eas' => $conn->getTableName('eav_attribute_set')])
-            ->joinLeft(['eat' => $conn->getTableName('eav_entity_type')], 'eas.entity_type_id = eat.entity_type_id', ['eat.entity_type_code']);
+            ->from(['eas' => $resource->getTableName('eav_attribute_set')])
+            ->joinLeft(['eat' => $resource->getTableName('eav_entity_type')], 'eas.entity_type_id = eat.entity_type_id', ['eat.entity_type_code']);
         foreach ($conn->fetchAll($select) as $row) {
             $this->customerAttributeSetId = $row['attribute_set_id'];
             return $this->customerAttributeSetId;

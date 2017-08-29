@@ -131,9 +131,10 @@ class Guest implements GuestInterface
     
     private function fetchAddress($storeId, $id)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('sales_order_address')])
+            ->from([$resource->getTableName('sales_order_address')])
             ->where('entity_id = ?', $this->billingAddressId);
         foreach ($conn->fetchAll($select) as $row) {
             $address = $this->addressFactory->create();

@@ -35,11 +35,12 @@ class Stores implements StoresInterface
      */
     public function getStores()
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['s' => $conn->getTableName('store')])
+            ->from(['s' => $resource->getTableName('store')])
             ->joinLeft(
-                ['sw' => $conn->getTableName('store_website')],
+                ['sw' => $resource->getTableName('store_website')],
                 's.website_id = sw.website_id',
                 ['sw.code AS website_code', 'sw.name AS website_name']
             );
@@ -57,11 +58,12 @@ class Stores implements StoresInterface
      */
     public function getFromId($storeId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['s' => $conn->getTableName('store')])
+            ->from(['s' => $resource->getTableName('store')])
             ->joinLeft(
-                ['sw' => $conn->getTableName('store_website')],
+                ['sw' => $resource->getTableName('store_website')],
                 's.website_id = sw.website_id',
                 ['sw.code AS website_code', 'sw.name AS website_name']
             )

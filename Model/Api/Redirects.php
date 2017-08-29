@@ -46,9 +46,10 @@ class Redirects extends AbstractRepository implements RedirectsInterface
      */
     public function getRedirects($storeId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['ur' => $conn->getTableName('url_rewrite')])
+            ->from(['ur' => $resource->getTableName('url_rewrite')])
             ->where('store_id = ?', $storeId)
             ->where('entity_type = \'custom\'');
         $this->filterResults($select);

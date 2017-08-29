@@ -145,13 +145,13 @@ class Inventory implements InventoryInterface
 
     public function getParentSkus()
     {
-        $conn = $this->connectionResource->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $query = $conn->query(
-            "SELECT cpe.sku FROM {$conn->getTableName('catalog_product_relation')} cper
-            LEFT JOIN {$conn->getTableName('catalog_product_entity')} cpe
+            "SELECT cpe.sku FROM {$resource->getTableName('catalog_product_relation')} cper
+            LEFT JOIN {$resource->getTableName('catalog_product_entity')} cpe
               ON (cper.parent_id = cpe.entity_id)
-                WHERE cper.child_id = :entity_id
-        ",
+                WHERE cper.child_id = :entity_id",
             ['entity_id' => $this->productId]
         );
         $skus = [];

@@ -37,10 +37,11 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
      */
     public function getList($storeId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['eas' => $conn->getTableName('eav_attribute_set')])
-            ->joinLeft(['eat' => $conn->getTableName('eav_entity_type')], 'eat.entity_type_id = eas.entity_type_id', ['eat.entity_type_code'])
+            ->from(['eas' => $resource->getTableName('eav_attribute_set')])
+            ->joinLeft(['eat' => $resource->getTableName('eav_entity_type')], 'eat.entity_type_id = eas.entity_type_id', ['eat.entity_type_code'])
             ->where('entity_type_code = ?', 'customer')
             ->orWhere('entity_type_code = ?', 'catalog_product');
         $this->filterResults($select);
@@ -58,10 +59,11 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
      */
     public function getFromId($storeId, $attributeSetId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['eas' => $conn->getTableName('eav_attribute_set')])
-            ->joinLeft(['eat' => $conn->getTableName('eav_entity_type')], 'eat.entity_type_id = eas.entity_type_id', ['eat.entity_type_code'])
+            ->from(['eas' => $resource->getTableName('eav_attribute_set')])
+            ->joinLeft(['eat' => $resource->getTableName('eav_entity_type')], 'eat.entity_type_id = eas.entity_type_id', ['eat.entity_type_code'])
             ->where('attribute_set_id = ?', $attributeSetId);
         foreach ($conn->fetchAll($select) as $row) {
             if (in_array($row['entity_type_code'], ['catalog_product', 'customer'])) {

@@ -240,16 +240,17 @@ class Order implements OrderInterface
      */
     public function getShipments()
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['ss' => $conn->getTableName('sales_shipment')])
+            ->from(['ss' => $resource->getTableName('sales_shipment')])
             ->joinleft(
-                ['sst' => $conn->getTableName('sales_shipment_track')],
+                ['sst' => $resource->getTableName('sales_shipment_track')],
                 'ss.entity_id = sst.parent_id',
                 ['sst.track_number', 'sst.carrier_code', 'sst.title']
             )
             ->joinleft(
-                ['soa' => $conn->getTableName('sales_order_address')],
+                ['soa' => $resource->getTableName('sales_order_address')],
                 'soa.entity_id = ss.shipping_address_id',
                 ['soa.prefix', 'soa.firstname', 'soa.middlename', 'soa.lastname', 'soa.suffix']
             )
@@ -277,9 +278,10 @@ class Order implements OrderInterface
      */
     public function getPayment()
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('sales_order_payment')])
+            ->from([$resource->getTableName('sales_order_payment')])
             ->where('entity_id = ?', $this->orderId);
         foreach ($conn->fetchAll($select) as $payment) {
             return $payment['method'];
@@ -322,9 +324,10 @@ class Order implements OrderInterface
         if (isset($this->redirectMongoIds)) {
             return $this->redirectMongoIds;
         }
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('springbot_order_redirect')])
+            ->from([$resource->getTableName('springbot_order_redirect')])
             ->where('order_id = ?', $this->orderId)
             ->order('id', 'DESC');
 
@@ -341,16 +344,17 @@ class Order implements OrderInterface
      */
     public function getItems()
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['soi' => $conn->getTableName('sales_order_item')])
+            ->from(['soi' => $resource->getTableName('sales_order_item')])
             ->joinLeft(
-                ['soip' => $conn->getTableName('sales_order_item')],
+                ['soip' => $resource->getTableName('sales_order_item')],
                 'soi.parent_item_id = soip.item_id',
                 ['parent_product_id' => 'soip.product_id', 'parent_price' => 'soip.price']
             )
             ->joinLeft(
-                ['pp' => $conn->getTableName('catalog_product_entity')],
+                ['pp' => $resource->getTableName('catalog_product_entity')],
                 'pp.entity_id = soip.product_id',
                 ['pp.sku AS parent_sku']
             )
@@ -415,9 +419,10 @@ class Order implements OrderInterface
 
     private function fetchTrackable($column, $value, $type)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('springbot_trackable')])
+            ->from([$resource->getTableName('springbot_trackable')])
             ->where($column . ' = ?', $value)
             ->where('type = ?', $type)
             ->order('id', 'DESC');

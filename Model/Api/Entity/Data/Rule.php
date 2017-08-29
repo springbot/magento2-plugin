@@ -285,7 +285,7 @@ class Rule implements RuleInterface
     {
         $conn = $this->connectionResource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('salesrule_coupon')])
+            ->from([$resource->getTableName('salesrule_coupon')])
             ->where('rule_id = ?', $this->ruleId);
 
         $coupons = [];
@@ -303,7 +303,7 @@ class Rule implements RuleInterface
         $conn = $this->connectionResource->getConnection();
         $idColumnName = $this->getIdColumnName();
         $select = $conn->select()
-            ->from([$conn->getTableName('salesrule_website')])
+            ->from([$resource->getTableName('salesrule_website')])
             ->where($idColumnName . ' = ?', $this->ruleId);
 
         $websiteIds = [];
@@ -318,10 +318,11 @@ class Rule implements RuleInterface
      */
     public function getCustomerGroupIds()
     {
-        $conn = $this->connectionResource->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $idColumnName = $this->getIdColumnName();
         $select = $conn->select()
-            ->from([$conn->getTableName('salesrule_customer_group')])
+            ->from([$resource->getTableName('salesrule_customer_group')])
             ->where($idColumnName . ' = ?', $this->ruleId);
 
         $groupIds = [];

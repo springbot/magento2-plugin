@@ -49,10 +49,11 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
      */
     public function getList($storeId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['cce' => $conn->getTableName('catalog_category_entity')])
-            ->joinLeft(['ur' => $conn->getTableName('url_rewrite')], 'ur.entity_id = cce.entity_id')
+            ->from(['cce' => $resource->getTableName('catalog_category_entity')])
+            ->joinLeft(['ur' => $resource->getTableName('url_rewrite')], 'ur.entity_id = cce.entity_id')
             ->where('entity_type = ?', 'category');
         $this->filterResults($select);
         $ret = [];
@@ -69,10 +70,11 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
      */
     public function getFromId($storeId, $categoryId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['cce' => $conn->getTableName('catalog_category_entity')])
-            ->joinLeft(['ur' => $conn->getTableName('url_rewrite')], 'ur.entity_id = cce.entity_id')
+            ->from(['cce' => $resource->getTableName('catalog_category_entity')])
+            ->joinLeft(['ur' => $resource->getTableName('url_rewrite')], 'ur.entity_id = cce.entity_id')
             ->where('cce.entity_id = ?', $categoryId);
         foreach ($conn->fetchAll($select) as $row) {
             return $this->createCategory($storeId, $row);

@@ -47,10 +47,11 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
             throw new \Exception("Store not found");
         }
         $websiteId = $store->getWebsiteId();
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['cpw' => $conn->getTableName('catalog_product_website')])
-            ->joinLeft(['cpe' => $conn->getTableName('catalog_product_entity')], 'cpe.entity_id = cpw.product_id', ['cpe.*'])
+            ->from(['cpw' => $resource->getTableName('catalog_product_website')])
+            ->joinLeft(['cpe' => $resource->getTableName('catalog_product_entity')], 'cpe.entity_id = cpw.product_id', ['cpe.*'])
             ->where('website_id = ?', $websiteId);
         $this->filterResults($select);
 
@@ -63,9 +64,10 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 
     public function getFromId($storeId, $productId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('catalog_product_entity')])
+            ->from([$resource->getTableName('catalog_product_entity')])
             ->where('entity_id = ?', $productId);
 
         foreach ($conn->fetchAll($select) as $row) {

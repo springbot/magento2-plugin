@@ -99,9 +99,10 @@ class Shipment implements ShipmentInterface
 
     public function getItems()
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from(['ssi' => $conn->getTableName('sales_shipment_item')])
+            ->from(['ssi' => $resource->getTableName('sales_shipment_item')])
             ->where('ssi.parent_id = ?', $this->shipmentId);
         $shipmentItems = [];
         foreach ($conn->fetchAll($select) as $row) {

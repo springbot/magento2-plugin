@@ -40,9 +40,10 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
      */
     public function getList($storeId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('newsletter_subscriber')])
+            ->from([$resource->getTableName('newsletter_subscriber')])
             ->where('store_id = ?', $storeId);
         $this->filterResults($select);
 
@@ -60,9 +61,10 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
      */
     public function getFromId($storeId, $subscriberId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('newsletter_subscriber')])
+            ->from([$resource->getTableName('newsletter_subscriber')])
             ->where('subscriber_id = ?', $subscriberId);
 
         foreach ($conn->fetchAll($select) as $row) {

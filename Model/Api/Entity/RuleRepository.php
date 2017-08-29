@@ -36,9 +36,10 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
 
     public function getList($storeId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('salesrule')]);
+            ->from([$resource->getTableName('salesrule')]);
         $this->filterResults($select);
 
         $ret = [];
@@ -50,9 +51,10 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
 
     public function getFromId($storeId, $ruleId)
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $select = $conn->select()
-            ->from([$conn->getTableName('salesrule')])
+            ->from([$resource->getTableName('salesrule')])
             ->where('rule_id = ?', $ruleId);
         foreach ($conn->fetchAll($select) as $row) {
             return $this->createProduct($storeId, $row);
