@@ -41,7 +41,7 @@ class Customer implements CustomerInterface
         AddressFactory $addressFactory,
         CustomerAttributeFactory $attributeFactory
     ) {
-    
+
         $this->resourceConnection = $resourceConnection;
         $this->addressFactory = $addressFactory;
         $this->attributeFactory = $attributeFactory;
@@ -68,7 +68,7 @@ class Customer implements CustomerInterface
         $billingAddressId,
         $shippingAddressId
     ) {
-    
+
         $this->storeId = $storeId;
         $this->customerId = $customerId;
         $this->firstName = $firstName;
@@ -124,7 +124,8 @@ class Customer implements CustomerInterface
      */
     public function getHasPurchase()
     {
-        $conn = $this->resourceConnection->getConnection();
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
         $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('sales_order')} WHERE customer_id = :customer_id", ['customer_id' => $this->customerId]);
         $result = $query->fetch();
         return ($result['count'] > 0);
@@ -135,7 +136,7 @@ class Customer implements CustomerInterface
         $resource =  $this->resourceConnection;
         $conn = $resource->getConnection();
         $query = $conn->query(
-            " 
+            "
             SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_datetime')} eav ON (ce.entity_id = eav.entity_id)
