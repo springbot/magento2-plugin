@@ -354,7 +354,7 @@ class Product implements ProductInterface
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$resource->getTableName('catalog_product_entity')} cpe
               LEFT JOIN {$resource->getTableName('catalog_product_entity_int')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
-              LEFT JOIN {$resource->getTableName('eav_attresourceConnectionribute')} ea ON (eav.attribute_id = ea.attribute_id)
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
