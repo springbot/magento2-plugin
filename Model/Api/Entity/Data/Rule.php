@@ -283,7 +283,8 @@ class Rule implements RuleInterface
      */
     public function getCouponCodes()
     {
-        $conn = $this->connectionResource->getConnection();
+        $resource = $this->connectionResource;
+        $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('salesrule_coupon')])
             ->where('rule_id = ?', $this->ruleId);
@@ -300,7 +301,8 @@ class Rule implements RuleInterface
      */
     public function getWebsiteIds()
     {
-        $conn = $this->connectionResource->getConnection();
+        $resource = $this->connectionResource;
+        $conn = $resource->getConnection();
         $idColumnName = $this->getIdColumnName();
         $select = $conn->select()
             ->from([$resource->getTableName('salesrule_website')])
@@ -318,7 +320,7 @@ class Rule implements RuleInterface
      */
     public function getCustomerGroupIds()
     {
-        $resource =  $this->resourceConnection;
+        $resource =  $this->connectionResource;
         $conn = $resource->getConnection();
         $idColumnName = $this->getIdColumnName();
         $select = $conn->select()

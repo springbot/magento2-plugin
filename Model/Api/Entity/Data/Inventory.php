@@ -145,7 +145,7 @@ class Inventory implements InventoryInterface
 
     public function getParentSkus()
     {
-        $resource =  $this->resourceConnection;
+        $resource =  $this->connectionResource;
         $conn = $resource->getConnection();
         $query = $conn->query(
             "SELECT cpe.sku FROM {$resource->getTableName('catalog_product_relation')} cper
