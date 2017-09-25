@@ -319,7 +319,7 @@ class Product implements ProductInterface
     public function getParentSkus()
     {
         $idColumnName = $this->getIdColumnName();
-        $resource =  $this->resourceConnection;
+        $resource =  $this->connectionResource;
         $conn = $resource->getConnection();
         $query = $conn->query("SELECT cpe.sku FROM {$resource->getTableName('catalog_product_relation')} cper
             LEFT JOIN {$resource->getTableName('catalog_product_entity')} cpe
@@ -336,7 +336,7 @@ class Product implements ProductInterface
     private function loadAttributes()
     {
         $idColumnName = $this->getIdColumnName();
-        $resource =  $this->resourceConnection;
+        $resource =  $this->connectionResource;
         $conn = $resource->getConnection();
         $query = $conn->query("
             SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
@@ -423,7 +423,7 @@ class Product implements ProductInterface
     private function loadCategories()
     {
         $idColumnName = $this->getIdColumnName();
-        $resource =  $this->resourceConnection;
+        $resource =  $this->connectionResource;
         $conn = $resource->getConnection();
         $query = $conn->query("SELECT * FROM {$resource->getTableName('catalog_category_product')}  ccp
           LEFT JOIN catalog_category_entity cce ON (ccp.category_id = cce.{$idColumnName})
@@ -453,4 +453,4 @@ class Product implements ProductInterface
     }
 
 
-} 
+}
