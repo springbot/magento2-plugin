@@ -36,11 +36,15 @@ class InventoryDeleteAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $items = $observer->getEvent()->getItems();
-            /* @var MagentoInventoryStock $inventory */
-            foreach ($items as $item) {
-                $this->queue->scheduleJob(InventoryHandler::class, 'handleDelete', [$item->getItemId()]);
-                $this->logger->debug("Scheduled deleted sync job for inventory item ID: {$item->getId()}");
+            if ($items = $observer->getEvent()->getItems()) {
+                /* @var MagentoInventoryStock $inventory */
+                foreach ($items as $item) {
+                    $this->queue->scheduleJob(InventoryHandler::class, 'handleDelete', [$item->getItemId()]);
+                    $this->logger->debug("Scheduled deleted sync job for inventory item ID: {$item->getId()}");
+                }
+            }
+            else {
+                throw new \Exception('No items returned');
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());

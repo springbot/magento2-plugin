@@ -43,16 +43,20 @@ class AttributeSetDeleteBeforeObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $attributeSet = $observer->getEvent()->getObject();
-            /* @var MagentoAttribute $attribute */
-            foreach ($this->storeManager->getStores() as $store) {
-                $this->queue->scheduleJob(
-                    AttributeSetHandler::class,
-                    'handleDelete',
-                    [$store->getId(), $attributeSet->getAttributeSetId()]
-                );
+            if ($attributeSet = $observer->getEvent()->getObject()) {
+                /* @var MagentoAttribute $attribute */
+                foreach ($this->storeManager->getStores() as $store) {
+                    $this->queue->scheduleJob(
+                        AttributeSetHandler::class,
+                        'handleDelete',
+                        [$store->getId(), $attributeSet->getAttributeSetId()]
+                    );
+                }
+                $this->logger->debug("Deleted attribute set: " . $attributeSet->getId());
             }
-            $this->logger->debug("Deleted attribute set: " . $attributeSet->getId());
+            else {
+                throw new \Exception('Attribute set is not an object');
+            }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }

@@ -45,15 +45,23 @@ class RuleSaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $rule = $observer->getEvent()->getRule();
-            /* @var MagentoRule $rule */
-            foreach ($rule->getWebsiteIds() as $websiteId) {
-                $website = $this->website->load($websiteId);
-                /* @var Website $website */
-                foreach ($website->getStoreIds() as $storeId) {
-                    $this->queue->scheduleJob(RuleHandler::class, 'handle', [$storeId, $rule->getId()], 1);
-                    $this->logger->debug("Scheduled sync job for Rule ID: {$rule->getId()} in store id: {$storeId}");
+            if ($rule = $observer->getEvent()->getRule()) {
+                /* @var MagentoRule $rule */
+                foreach ($rule->getWebsiteIds() as $websiteId) {
+                    if ($website = $this->website->load($websiteId)) {
+                        /* @var Website $website */
+                        foreach ($website->getStoreIds() as $storeId) {
+                            $this->queue->scheduleJob(RuleHandler::class, 'handle', [$storeId, $rule->getId()], 1);
+                            $this->logger->debug("Scheduled sync job for Rule ID: {$rule->getId()} in store id: {$storeId}");
+                        }
+                    }
+                    else {
+                        throw new \Exception("Website {$websiteId} not found");
+                    }
                 }
+            }
+            else {
+                throw new \Exception("Rule is not an object");
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());

@@ -36,16 +36,20 @@ class ProductDeleteBeforeObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $product = $observer->getEvent()->getProduct();
-            /* @var MagentoProduct $product */
-            foreach ($product->getStoreIds() as $storeId) {
-                // Enqueue a job to sync this product for every store it belongs to
-                $this->queue->scheduleJob(
-                    ProductHandler::class,
-                    'handleDelete',
-                    [$product->getStoreId(), $product->getId()]
-                );
-                $this->logger->debug("Scheduled deleted sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
+            if ($product = $observer->getEvent()->getProduct()) {
+                /* @var MagentoProduct $product */
+                foreach ($product->getStoreIds() as $storeId) {
+                    // Enqueue a job to sync this product for every store it belongs to
+                    $this->queue->scheduleJob(
+                        ProductHandler::class,
+                        'handleDelete',
+                        [$product->getStoreId(), $product->getId()]
+                    );
+                    $this->logger->debug("Scheduled deleted sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
+                }
+            }
+            else {
+                throw new \Exception('Product is not an object');
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());

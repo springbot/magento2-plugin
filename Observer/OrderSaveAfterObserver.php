@@ -56,18 +56,23 @@ class OrderSaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $order = $observer->getEvent()->getOrder();
-            /* @var MagentoOrder $order */
-            $orderId = $order->getId();
+            if ($order = $observer->getEvent()->getOrder()) {
+                /* @var MagentoOrder $order */
+                $orderId = $order->getId();
 
-            if ($redirects = $this->cookieManager->getCookie('springbot_redirect_queue')) {
-                foreach (explode('|', $redirects) as $redirect) {
-                    $this->orderRedirect->insert($orderId, $redirect);
+                if ($redirects = $this->cookieManager->getCookie('springbot_redirect_queue')) {
+                    foreach (explode('|', $redirects) as $redirect) {
+                        $this->orderRedirect->insert($orderId, $redirect);
+                    }
                 }
+                $this->springbotTrackable->insert(null, $orderId, 'order_user_agent',
+                    $this->request->getHeader('User-Agent'));
+                $this->queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
+                $this->logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
             }
-            $this->springbotTrackable->insert(null, $orderId, 'order_user_agent', $this->request->getHeader('User-Agent'));
-            $this->queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
-            $this->logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
+            else {
+                throw new \Exception('Order is not an object');
+            }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }

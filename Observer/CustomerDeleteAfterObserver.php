@@ -35,14 +35,18 @@ class CustomerDeleteAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $customer = $observer->getEvent()->getCustomer();
-            /* @var MagentoCustomer $customer */
-            $this->queue->scheduleJob(
-                CustomerHandler::class,
-                'handleDelete',
-                [$customer->getStoreId(), $customer->getId()]
-            );
-            $this->logger->debug("Deleted Customer ID: " . $customer->getId());
+            if ($customer = $observer->getEvent()->getCustomer()) {
+                /* @var MagentoCustomer $customer */
+                $this->queue->scheduleJob(
+                    CustomerHandler::class,
+                    'handleDelete',
+                    [$customer->getStoreId(), $customer->getId()]
+                );
+                $this->logger->debug("Deleted Customer ID: " . $customer->getId());
+            }
+            else {
+                throw new \Exception('Customer is not an object');
+            }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }

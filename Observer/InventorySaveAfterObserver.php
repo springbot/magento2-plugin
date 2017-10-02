@@ -36,12 +36,16 @@ class InventorySaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $items = $observer->getEvent()->getItems();
-            if (is_array($items)) {
-                foreach ($items as $item) {
-                    $this->queue->scheduleJob(InventoryHandler::class, 'handle', [$item->getItemId()]);
-                    $this->logger->debug("Scheduled sync job for item ID: {$item->getItemId()}");
+            if ($items = $observer->getEvent()->getItems()) {
+                if (is_array($items)) {
+                    foreach ($items as $item) {
+                        $this->queue->scheduleJob(InventoryHandler::class, 'handle', [$item->getItemId()]);
+                        $this->logger->debug("Scheduled sync job for item ID: {$item->getItemId()}");
+                    }
                 }
+            }
+            else {
+                throw new \Exception('No items returned');
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());

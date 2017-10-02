@@ -35,11 +35,15 @@ class CategoryDeleteBeforeObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $category = $observer->getEvent()->getCategory();
-            /* @var MagentoCategory $category */
-            foreach ($category->getStoreIds() as $storeId) {
-                $this->queue->scheduleJob(CategoryHandler::class, 'handleDelete', [$storeId, $category->getId()]);
-                $this->logger->debug("Deleted Category ID: " . $category->getEntityId());
+            if ($category = $observer->getEvent()->getCategory()) {
+                /* @var MagentoCategory $category */
+                foreach ($category->getStoreIds() as $storeId) {
+                    $this->queue->scheduleJob(CategoryHandler::class, 'handleDelete', [$storeId, $category->getId()]);
+                    $this->logger->debug("Deleted Category ID: " . $category->getEntityId());
+                }
+            }
+            else {
+                throw new \Exception('Category is not an object');
             }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());

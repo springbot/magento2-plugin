@@ -18,7 +18,7 @@ class SalesRuleDeleteAfterObserver implements ObserverInterface
      * RuleDeleteAfterObserver constructor
      *
      * @param LoggerInterface $loggerInterface
-     * @param Queue           $queue
+     * @param Queue $queue
      */
     public function __construct(LoggerInterface $loggerInterface, Queue $queue)
     {
@@ -35,13 +35,17 @@ class SalesRuleDeleteAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $ruleIds = $observer->getEvent()->getAppliedRuleIds();
-            foreach ($ruleIds as $ruleId) {
-                $this->queue->scheduleJob(RuleHandler::class, 'handleDelete', [$ruleId]);
-                $this->logger->debug("Scheduled deleted sync job for rule ID: {$ruleId}");
+            if ($ruleIds = $observer->getEvent()->getAppliedRuleIds()) {
+                foreach ($ruleIds as $ruleId) {
+                    $this->queue->scheduleJob(RuleHandler::class, 'handleDelete', [$ruleId]);
+                    $this->logger->debug("Scheduled deleted sync job for rule ID: {$ruleId}");
+                }
+            }
+            else {
+                throw new \Exception('No rule IDs returned');
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
-    }
+}
 }

@@ -45,14 +45,18 @@ class RuleDeleteAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $rule = $observer->getEvent()->getRule();
-            /* @var MagentoRule $rule */
-            foreach ($rule->getWebsiteIds() as $websiteId) {
-                $website = $this->website->load($websiteId);
-                foreach ($website->getStoreIds() as $storeId) {
-                    $this->queue->scheduleJob(RuleHandler::class, 'handleDelete', [$storeId, $rule->getId()], 1);
-                    $this->logger->debug("Scheduled deleted sync job for Rule ID: {$rule->getId()} in store id: {$storeId}");
+            if ($rule = $observer->getEvent()->getRule()) {
+                /* @var MagentoRule $rule */
+                foreach ($rule->getWebsiteIds() as $websiteId) {
+                    $website = $this->website->load($websiteId);
+                    foreach ($website->getStoreIds() as $storeId) {
+                        $this->queue->scheduleJob(RuleHandler::class, 'handleDelete', [$storeId, $rule->getId()], 1);
+                        $this->logger->debug("Scheduled deleted sync job for Rule ID: {$rule->getId()} in store id: {$storeId}");
+                    }
                 }
+            }
+            else {
+                throw new \Exception('Rule is not an object');
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());

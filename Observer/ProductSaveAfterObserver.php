@@ -41,20 +41,24 @@ class ProductSaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $product = $observer->getEvent()->getProduct();
-            /* @var MagentoProduct $product */
-            foreach ($product->getStoreIds() as $storeId) {
-                // Enqueue a job to sync this product for every store it belongs to
-                $this->queue->scheduleJob(ProductHandler::class, 'handle', [$storeId, $product->getId()]);
+            if ($product = $observer->getEvent()->getProduct()) {
+                /* @var MagentoProduct $product */
+                foreach ($product->getStoreIds() as $storeId) {
+                    // Enqueue a job to sync this product for every store it belongs to
+                    $this->queue->scheduleJob(ProductHandler::class, 'handle', [$storeId, $product->getId()]);
 
-                // Enqueue the stock item as well
-                $stockRegistry = $this->stockFactory->create();
-                $stockItem = $stockRegistry->getStockItem(
-                    $product->getId(),
-                    $product->getStore()->getWebsiteId()
-                );
-                $this->queue->scheduleJob(InventoryHandler::class, 'handle', [$storeId, $stockItem->getId()]);
-                $this->logger->debug("Scheduled sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
+                    // Enqueue the stock item as well
+                    $stockRegistry = $this->stockFactory->create();
+                    $stockItem = $stockRegistry->getStockItem(
+                        $product->getId(),
+                        $product->getStore()->getWebsiteId()
+                    );
+                    $this->queue->scheduleJob(InventoryHandler::class, 'handle', [$storeId, $stockItem->getId()]);
+                    $this->logger->debug("Scheduled sync job for product ID: {$product->getId()}, Store ID: {$storeId}");
+                }
+            }
+            else {
+                throw new \Exception('Product is not an object');
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());

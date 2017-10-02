@@ -35,13 +35,17 @@ class CategorySaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $category = $observer->getEvent()->getCategory();
-            /* @var MagentoCategory $category */
-            foreach ($category->getStoreIds() as $storeId) {
-                if ($storeId != 0) {
-                    $this->queue->scheduleJob(CategoryHandler::class, 'handle', [$storeId, $category->getId()]);
-                    $this->logger->debug("Created/Updated Category ID: " . $category->getEntityId());
+            if ($category = $observer->getEvent()->getCategory()) {
+                /* @var MagentoCategory $category */
+                foreach ($category->getStoreIds() as $storeId) {
+                    if ($storeId != 0) {
+                        $this->queue->scheduleJob(CategoryHandler::class, 'handle', [$storeId, $category->getId()]);
+                        $this->logger->debug("Created/Updated Category ID: " . $category->getEntityId());
+                    }
                 }
+            }
+            else {
+                throw new \Exception('Category is not an object');
             }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());

@@ -20,8 +20,8 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
     /**
      * ProductSaveAfterObserver constructor
      *
-     * @param LoggerInterface        $loggerInterface
-     * @param Queue                  $queue
+     * @param LoggerInterface $loggerInterface
+     * @param Queue $queue
      * @param CookieManagerInterface $cookieManager
      * @param SpringbotOrderRedirect $orderRedirect
      */
@@ -46,10 +46,14 @@ class CheckoutSubmitAllAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $order = $observer->getEvent()->getOrder();
-            /* @var MagentoOrder $order */
-            $orderId = $order->getEntityId();
-            $this->setRedirectIdsFromCookie($orderId);
+            if ($order = $observer->getEvent()->getOrder()) {
+                /* @var MagentoOrder $order */
+                $orderId = $order->getEntityId();
+                $this->setRedirectIdsFromCookie($orderId);
+            }
+            else {
+                throw new \Exception('Unable to get order');
+            }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }

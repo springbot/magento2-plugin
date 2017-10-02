@@ -51,12 +51,17 @@ class CartSaveAfterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $cart = $observer->getEvent()->getQuote();
-            /* @var MagentoQuote $cart */
-            $cartId = $cart->getEntityId();
-            $this->springbotTrackable->insert($cartId, null, 'cart_user_agent', $this->request->getHeader('User-Agent'));
-            $this->queue->scheduleJob(CartHandler::class, 'handle', [$cart->getStoreId(), $cartId]);
-            $this->logger->debug("Created/Updated Cart ID: {$cartId}");
+            if ($cart = $observer->getEvent()->getQuote()) {
+                /* @var MagentoQuote $cart */
+                $cartId = $cart->getEntityId();
+                $this->springbotTrackable->insert($cartId, null, 'cart_user_agent',
+                    $this->request->getHeader('User-Agent'));
+                $this->queue->scheduleJob(CartHandler::class, 'handle', [$cart->getStoreId(), $cartId]);
+                $this->logger->debug("Created/Updated Cart ID: {$cartId}");
+            }
+            else {
+                throw new \Exception('Cart is not an object');
+            }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }
