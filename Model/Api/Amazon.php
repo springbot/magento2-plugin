@@ -19,6 +19,7 @@ class Amazon implements AmazonInterface
     private $orderService;
     private $productFactory;
     private $quoteManagement;
+    private $request;
     private $shippingRate;
     private $storeManager;
 
@@ -27,6 +28,7 @@ class Amazon implements AmazonInterface
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Customer\Model\CustomerFactory $customerFactory,
         \Magento\Framework\App\Helper\Context $context,
+        \Magento\Framework\App\Request\Http $request,
         \Magento\Quote\Api\CartManagementInterface $cartManagementInterface,
         \Magento\Quote\Api\CartRepositoryInterface $cartRepositoryInterface,
         \Magento\Quote\Model\Quote\Address\Rate $shippingRate,
@@ -41,19 +43,21 @@ class Amazon implements AmazonInterface
         $this->orderService = $orderService;
         $this->productFactory = $productFactory;
         $this->quoteManagement = $quoteManagement;
+        $this->request = $request;
         $this->shippingRate = $shippingRate;
         $this->storeManager = $storeManager;
     }
 
     /**
-     * Create Order On Your Store
-     *
-     * @param array $orderData
-     * @return int $orderId
-     *
+     * @param \Springbot\Main\Api\Amazon\Order\ItemInterface[] $orderItems
+     * @return int
      */
-    public function createOrder($orderData)
+    public function createOrder($orderItems)
     {
+        foreach ($orderItems as $orderItem) {
+            echo $orderItem->getId() . "\n";
+        }
+        die;
         $orderData = [
             'currency_id'      => 'USD',
             'email'            => 'ejacobs+test@springbot.com',
@@ -91,15 +95,16 @@ class Amazon implements AmazonInterface
 
         // Init the store id and website id
         // TODO: Get store from request path
+        $storeId = $this->request->getAlias('storeId');
+        var_dump( $this->request); die;
         $store = $this->storeManager->getStore();
-        $websiteId = $store->getWebsiteId();
 
         // Init the customer
-        $customer = $this->customerFactory->create();
-        $customer->setWebsiteId($websiteId);
-
-        // Load customer by email address
-        $customer->loadByEmail($orderData['email']);
+        $websiteId = $store->getWebsiteId();
+        $customer = $this->customerFactory
+            ->create()
+            ->setWebsiteId($websiteId)
+            ->loadByEmail($orderData['email']);
 
         // Check the customer
         if (!$customer->getEntityId()) {
@@ -116,19 +121,19 @@ class Amazon implements AmazonInterface
 
         // Create the quote
         $cartId = $this->cartManagementInterface->createEmptyCart();
-        $cart = $this->cartRepositoryInterface->get($cartId);
-        $cart->setStore($store);
+        $cart = $this->cartRepositoryInterface
+            ->get($cartId)
+            ->setStore($store)
+            ->setCurrency();
 
         // if you have the buyer id then you can load customer directly
         $customer = $this->customerRepository->getById($customer->getEntityId());
-        $cart->setCurrency();
 
         // Assign quote to customer
         $cart->assignCustomer($customer);
 
         // Add items in quote
         foreach ($orderData['items'] as $item) {
-
             // TODO: Check for product id first, then use SKU
             $product = $this->productFactory->create()->load($item['product_id']);
             $product->setPrice($item['price']);
@@ -142,33 +147,44 @@ class Amazon implements AmazonInterface
         $this->shippingRate
             ->setCode('sbmarketplaces')
             ->getPrice(1);
-        $shippingAddress = $cart->getShippingAddress();
-        $shippingAddress->setCollectShippingRates(true)
+        $cart->getShippingAddress()
+            ->setCollectShippingRates(true)
             ->collectShippingRates()
             ->setShippingMethod('sbmarketplaces')
             ->addShippingRate($this->shippingRate);
 
         // Set sales order payment
-        $cart->getPayment()->importData(['method' => 'sbmarketplaces']);
+        $cart->getPayment()
+            ->importData(['method' => 'sbmarketplaces'])
+            ->collectTotals()
+            ->save();
 
-        // Collect total and save
-        $cart->collectTotals();
-
-        // Submit the quote and create the order
-        $cart->save();
-        $cart = $this->cartRepositoryInterface->get($cart->getId());
         $orderId = $this->cartManagementInterface->placeOrder($cart->getId());
 
-        $order = $this->getOrder($orderId);
-        $order->addStatusHistoryComment('This comment is programatically added to last order in this Magento setup')
+        $this->getOrder($orderId)
+            ->addStatusHistoryComment('This comment is programmatically added to last order in this Magento setup')
             ->save();
         return $orderId;
     }
 
+    public function getStoreId()
+    {
+
+    }
+
+    /**
+     * @param $orderId
+     * @return mixed
+     */
     private function getOrder($orderId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         return $objectManager->create('\Magento\Sales\Model\Order')->load($orderId);
+    }
+
+    private function convertFromAmazon($amazonOrderData)
+    {
+
     }
 
 }

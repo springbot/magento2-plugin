@@ -10,9 +10,9 @@ interface AmazonInterface
 {
 
     /**
-     * @param string $order
-     * @return string|null
+     *  @param \Springbot\Main\Api\Amazon\Order\ItemInterface[] $orderItems
+     *  @return int
      */
-    public function createOrder($order);
+    public function createOrder($orderItems);
 
 }

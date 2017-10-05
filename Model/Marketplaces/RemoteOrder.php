@@ -5,15 +5,14 @@ namespace Springbot\Main\Model\Marketplaces;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
-use Springbot\Main\Api\Entity\Data\RemoteOrderInterface;
 
 class RemoteOrder extends AbstractModel
 {
     private $_remoteOrderFactory;
 
     /**
-     * @param Context            $context
-     * @param Registry           $registry
+     * @param Context $context
+     * @param Registry $registry
      * @param RemoteOrderFactory $remoteOrderFactory
      */
     public function __construct(
@@ -30,17 +29,15 @@ class RemoteOrder extends AbstractModel
     {
         try {
             $remoteOrder = $this->_remoteOrderFactory->create();
-            $remoteOrder->addData(
-                [
-                'remote_order_id' => $remoteOrderId,
-                'order_id' => $order->getEntityId(),
-                'increment_id' => $order->getIncrementId(),
+            $remoteOrder->addData([
+                'remote_order_id'  => $remoteOrderId,
+                'order_id'         => $order->getEntityId(),
+                'increment_id'     => $order->getIncrementId(),
                 'marketplace_type' => $marketplace
-                ]
-            );
+            ]);
             $remoteOrder->save();
-        } catch (Exception $e) {
-            eval(\Psy\sh());
+        } catch (\Exception $e) {
+            $this->_logger->error("Error while adding data to marketplace order: " . $e->getMessage());
         }
     }
 }

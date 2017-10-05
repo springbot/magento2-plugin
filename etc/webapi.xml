@@ -62,6 +62,12 @@
 
 
     <!-- Begin store endpoints -->
+    <route url="/V1/springbot/main/stores/:storeId/amazon" method="POST">
+        <service class="Springbot\Main\Api\AmazonInterface" method="createOrder"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
     <route url="/V1/springbot/main/stores/:storeId/redirects" method="GET">
         <service class="Springbot\Main\Api\RedirectsInterface" method="getRedirects"/>
         <resources>
