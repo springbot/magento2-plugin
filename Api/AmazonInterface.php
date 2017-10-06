@@ -10,9 +10,15 @@ interface AmazonInterface
 {
 
     /**
-     *  @param \Springbot\Main\Api\Amazon\Order\ItemInterface[] $orderItems
-     *  @return int
+     * @param int $localStoreId
+     * @param int $storeId
+     * @param string $buyerEmail
+     * @param string $buyerName
+     * @param \Springbot\Main\Api\Amazon\Order\AddressInterface $shippingAddress
+     * @param \Springbot\Main\Api\Amazon\Order\ItemInterface[]  $orderItems
+     * @return int
+     * @throws \Exception
      */
-    public function createOrder($orderItems);
+    public function createOrder($localStoreId, $storeId, $buyerEmail, $buyerName, $shippingAddress, $orderItems);
 
 }

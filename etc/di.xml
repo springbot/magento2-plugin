@@ -13,6 +13,7 @@
     </type>
 
     <preference for="Springbot\Main\Api\AmazonInterface" type="Springbot\Main\Model\Api\Amazon"/>
+    <preference for="Springbot\Main\Api\Amazon\Order\AddressInterface" type="Springbot\Main\Model\Api\Amazon\Order\Address"/>
     <preference for="Springbot\Main\Api\Amazon\Order\ItemInterface" type="Springbot\Main\Model\Api\Amazon\Order\Item"/>
     <preference for="Springbot\Main\Api\Amazon\Order\Item\PriceInterface" type="Springbot\Main\Model\Api\Amazon\Order\Item\Price"/>
     <preference for="Springbot\Main\Api\CacheInterface" type="Springbot\Main\Model\Api\Cache"/>

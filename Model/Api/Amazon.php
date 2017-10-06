@@ -2,6 +2,8 @@
 
 namespace Springbot\Main\Model\Api;
 
+use Magento\Framework\Phrase;
+use Magento\Framework\Webapi\Exception;
 use Springbot\Main\Api\AmazonInterface;
 
 /**
@@ -18,9 +20,11 @@ class Amazon implements AmazonInterface
     private $customerRepository;
     private $orderService;
     private $productFactory;
+    private $productRepository;
     private $quoteManagement;
     private $request;
     private $shippingRate;
+    private $storeConfiguration;
     private $storeManager;
 
     public function __construct(
@@ -34,7 +38,9 @@ class Amazon implements AmazonInterface
         \Magento\Quote\Model\Quote\Address\Rate $shippingRate,
         \Magento\Quote\Model\QuoteManagement $quoteManagement,
         \Magento\Sales\Model\Service\OrderService $orderService,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        \Springbot\Main\Model\StoreConfiguration $storeConfiguration
     ) {
         $this->cartManagementInterface = $cartManagementInterface;
         $this->cartRepositoryInterface = $cartRepositoryInterface;
@@ -42,81 +48,51 @@ class Amazon implements AmazonInterface
         $this->customerRepository = $customerRepository;
         $this->orderService = $orderService;
         $this->productFactory = $productFactory;
+        $this->productRepository = $productRepository;
         $this->quoteManagement = $quoteManagement;
         $this->request = $request;
         $this->shippingRate = $shippingRate;
+        $this->storeConfiguration = $storeConfiguration;
         $this->storeManager = $storeManager;
     }
 
     /**
+     * @param int $localStoreId
+     * @param int $storeId
+     * @param string $buyerEmail
+     * @param string $buyerName
+     * @param \Springbot\Main\Api\Amazon\Order\AddressInterface $shippingAddress
      * @param \Springbot\Main\Api\Amazon\Order\ItemInterface[] $orderItems
      * @return int
+     * @throws \Exception
      */
-    public function createOrder($orderItems)
+    public function createOrder($localStoreId, $storeId, $buyerEmail, $buyerName, $shippingAddress, $orderItems)
     {
-        foreach ($orderItems as $orderItem) {
-            echo $orderItem->getId() . "\n";
+        // Load the store from the Springbot store ID
+        $checkStoreId = $this->storeConfiguration->getSpringbotStoreId($localStoreId);
+        if ($storeId != $checkStoreId) {
+            throw new Exception(
+                new Phrase("Local store ID {$localStoreId} does not correspond to springbot store {$storeId}")
+            );
         }
-        die;
-        $orderData = [
-            'currency_id'      => 'USD',
-            'email'            => 'ejacobs+test@springbot.com',
-            'note'             => 'Created by amazon. Amazon Order ID: xxxxxx',
-            'created_at'       => '',
-            'shipping_address' => [
-                'firstname'            => 'Shia',
-                'lastname'             => 'Deo',
-                'street'               => '1234 Fake St',
-                'city'                 => 'Atlanta',
-                'country_id'           => 'US',
-                'region'               => 'GA',
-                'postcode'             => '30365',
-                'telephone'            => '1231231234',
-                'fax'                  => '1231231234',
-                'save_in_address_book' => 1
-            ],
-            'billing_address'  => [
-                'firstname'            => 'Bill',
-                'lastname'             => 'Jacobs',
-                'street'               => '12 Peachtree St',
-                'city'                 => 'Atlanta',
-                'country_id'           => 'US',
-                'region'               => 'GA',
-                'postcode'             => '30324',
-                'telephone'            => '1231231234',
-                'fax'                  => '1231231234',
-                'save_in_address_book' => 1
-            ],
-            'items'            => [
-                ['product_id' => '1', 'qty' => 1, 'price' => 1, 'tax' => 44, 'sku' => 'foo'],
-                ['product_id' => '2', 'qty' => 2, 'price' => 1, 'tax' => 11, 'sku' => 'bar']
-            ]
-        ];
-
-        // Init the store id and website id
-        // TODO: Get store from request path
-        $storeId = $this->request->getAlias('storeId');
-        var_dump( $this->request); die;
-        $store = $this->storeManager->getStore();
+        $store = $this->storeManager->getStore($localStoreId);
 
         // Init the customer
         $websiteId = $store->getWebsiteId();
         $customer = $this->customerFactory
             ->create()
             ->setWebsiteId($websiteId)
-            ->loadByEmail($orderData['email']);
+            ->loadByEmail($buyerEmail);
 
-        // Check the customer
+        // Create the customer if it doesn't exist already
         if (!$customer->getEntityId()) {
-
-            // Create the customer if it doesn't exist already
             $customer->setWebsiteId($websiteId)
                 ->setStore($store)
-                ->setFirstname($orderData['shipping_address']['firstname'])
-                ->setLastname($orderData['shipping_address']['lastname'])
-                ->setEmail($orderData['email'])
-                ->setPassword($orderData['email']);
-            $customer->save();
+                ->setFirstname($this->getFirstName($buyerName))
+                ->setLastname($this->getLastName($buyerName))
+                ->setEmail($buyerEmail)
+                ->setPassword($this->randomPassword())
+                ->save();
         }
 
         // Create the quote
@@ -133,20 +109,26 @@ class Amazon implements AmazonInterface
         $cart->assignCustomer($customer);
 
         // Add items in quote
-        foreach ($orderData['items'] as $item) {
-            // TODO: Check for product id first, then use SKU
-            $product = $this->productFactory->create()->load($item['product_id']);
-            $product->setPrice($item['price']);
-            $cart->addProduct($product, intval($item['qty']));
+        $shippingTotal = 0;
+        foreach ($orderItems as $orderItem) {
+            $tax = $orderItem->getGiftWrapTax()->getAmount()
+                + $orderItem->getShippingTax()->getAmount()
+                + $orderItem->getItemTax()->getAmount();
+            $product = $this->productRepository->get($orderItem->getSellerSku());
+            $cart->addProduct($product, $orderItem->getQuantityOrdered())
+                ->setCustomPrice($orderItem->getItemPrice()->getAmount())
+                ->setOriginalCustomPrice($orderItem->getItemPrice()->getAmount())
+                ->setTaxAmount($tax);
+            $shippingTotal += $orderItem->getShippingPrice()->getAmount();
         }
 
-        $cart->getBillingAddress()->addData($orderData['billing_address']);
-        $cart->getShippingAddress()->addData($orderData['shipping_address']);
+        $cart->getBillingAddress()->addData($shippingAddress->toArray());
+        $cart->getShippingAddress()->addData($shippingAddress->toArray());
 
         // Collect Rates and Set Shipping & Payment Method
         $this->shippingRate
             ->setCode('sbmarketplaces')
-            ->getPrice(1);
+            ->setPrice($shippingTotal);
         $cart->getShippingAddress()
             ->setCollectShippingRates(true)
             ->collectShippingRates()
@@ -155,21 +137,14 @@ class Amazon implements AmazonInterface
 
         // Set sales order payment
         $cart->getPayment()
-            ->importData(['method' => 'sbmarketplaces'])
-            ->collectTotals()
+            ->importData(['method' => 'sbmarketplaces']);
+        $cart->collectTotals()
             ->save();
-
         $orderId = $this->cartManagementInterface->placeOrder($cart->getId());
-
         $this->getOrder($orderId)
-            ->addStatusHistoryComment('This comment is programmatically added to last order in this Magento setup')
+            ->addStatusHistoryComment('Order synced from Amazon. Order ID: ' . $orderId)
             ->save();
         return $orderId;
-    }
-
-    public function getStoreId()
-    {
-
     }
 
     /**
@@ -182,9 +157,37 @@ class Amazon implements AmazonInterface
         return $objectManager->create('\Magento\Sales\Model\Order')->load($orderId);
     }
 
-    private function convertFromAmazon($amazonOrderData)
+    /**
+     * @param $buyerName
+     * @return string
+     */
+    private function getFirstName($buyerName)
     {
+        return $buyerName;
+    }
 
+    /**
+     * @param $buyerName
+     * @return string
+     */
+    private function getLastName($buyerName)
+    {
+        return $buyerName;
+    }
+
+    /**
+     * @return string
+     */
+    private function randomPassword()
+    {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        $pass = [];
+        $alphaLength = strlen($alphabet) - 1;
+        for ($i = 0; $i < 8; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
+        }
+        return implode($pass);
     }
 
 }
