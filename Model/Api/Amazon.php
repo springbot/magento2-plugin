@@ -110,15 +110,20 @@ class Amazon implements AmazonInterface
 
         // Add items in quote
         $shippingTotal = 0;
+        $taxTotal = 0;
+        $itemTotal = 0;
+        $taxByProductId = [];
         foreach ($orderItems as $orderItem) {
             $tax = $orderItem->getGiftWrapTax()->getAmount()
                 + $orderItem->getShippingTax()->getAmount()
                 + $orderItem->getItemTax()->getAmount();
             $product = $this->productRepository->get($orderItem->getSellerSku());
+            $taxByProductId[$product->getId()] = $tax;
             $cart->addProduct($product, $orderItem->getQuantityOrdered())
                 ->setCustomPrice($orderItem->getItemPrice()->getAmount())
-                ->setOriginalCustomPrice($orderItem->getItemPrice()->getAmount())
-                ->setTaxAmount($tax);
+                ->setOriginalCustomPrice($orderItem->getItemPrice()->getAmount());
+            $itemTotal += $orderItem->getItemPrice()->getAmount();
+            $taxTotal += $tax;
             $shippingTotal += $orderItem->getShippingPrice()->getAmount();
         }
 
@@ -141,9 +146,17 @@ class Amazon implements AmazonInterface
         $cart->collectTotals()
             ->save();
         $orderId = $this->cartManagementInterface->placeOrder($cart->getId());
-        $this->getOrder($orderId)
-            ->addStatusHistoryComment('Order synced from Amazon. Order ID: ' . $orderId)
-            ->save();
+        $order = $this->getOrder($orderId);
+        $order->addStatusHistoryComment('Order synced from Amazon. Order ID: ' . $orderId);
+
+        foreach ($order->getAllItems() as $item) {
+            $item->setTaxAmount($taxByProductId[$item->getProductId()])
+                ->save();
+        }
+        $order->setSubtotal($itemTotal + $taxTotal);
+        $order->setGrandTotal($itemTotal + $taxTotal + $shippingTotal);
+        $order->setTotalPaid($itemTotal + $taxTotal + $shippingTotal);
+        $order->save();
         return $orderId;
     }
 
