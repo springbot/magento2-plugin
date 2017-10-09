@@ -5,6 +5,7 @@ namespace Springbot\Main\Model\Api;
 use Magento\Framework\Phrase;
 use Magento\Framework\Webapi\Exception;
 use Springbot\Main\Api\AmazonInterface;
+use Springbot\Main\Model\Api\Amazon\CreatedOrder;
 
 /**
  * Class Redirects
@@ -57,16 +58,18 @@ class Amazon implements AmazonInterface
     }
 
     /**
+     * @param string $id
+     * @param string $amazonOrderId
      * @param int $localStoreId
      * @param int $storeId
      * @param string $buyerEmail
      * @param string $buyerName
      * @param \Springbot\Main\Api\Amazon\Order\AddressInterface $shippingAddress
      * @param \Springbot\Main\Api\Amazon\Order\ItemInterface[] $orderItems
-     * @return int
+     * @return CreatedOrder
      * @throws \Exception
      */
-    public function createOrder($localStoreId, $storeId, $buyerEmail, $buyerName, $shippingAddress, $orderItems)
+    public function createOrder($id, $amazonOrderId, $localStoreId, $storeId, $buyerEmail, $buyerName, $shippingAddress, $orderItems)
     {
         // Load the store from the Springbot store ID
         $checkStoreId = $this->storeConfiguration->getSpringbotStoreId($localStoreId);
@@ -147,7 +150,7 @@ class Amazon implements AmazonInterface
             ->save();
         $orderId = $this->cartManagementInterface->placeOrder($cart->getId());
         $order = $this->getOrder($orderId);
-        $order->addStatusHistoryComment('Order synced from Amazon. Order ID: ' . $orderId);
+        $order->addStatusHistoryComment('Order synced from Amazon. Order ID: ' . $amazonOrderId);
 
         foreach ($order->getAllItems() as $item) {
             $item->setTaxAmount($taxByProductId[$item->getProductId()])
@@ -157,7 +160,7 @@ class Amazon implements AmazonInterface
         $order->setGrandTotal($itemTotal + $taxTotal + $shippingTotal);
         $order->setTotalPaid($itemTotal + $taxTotal + $shippingTotal);
         $order->save();
-        return $orderId;
+        return new CreatedOrder($id, $amazonOrderId, $orderId, $storeId);
     }
 
     /**
