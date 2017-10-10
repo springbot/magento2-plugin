@@ -326,4 +326,14 @@ interface ItemInterface
      */
     public function setStoreId($storeId);
 
+    /**
+     * @param @return string
+     */
+    public function getProductId();
+
+    /**
+     * @param string $productId
+     */
+    public function setProductId($productId);
+
 }

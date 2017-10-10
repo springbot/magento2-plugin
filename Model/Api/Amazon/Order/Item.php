@@ -44,6 +44,7 @@ class Item implements ItemInterface
     private $createdAt;
     private $updatedAt;
     private $storeId;
+    private $productId;
 
     /**
      * @return string
@@ -557,6 +558,20 @@ class Item implements ItemInterface
         $this->storeId = $storeId;
     }
 
+    /**
+     * @return string
+     */
+    public function getProductId()
+    {
+        return $this->productId;
+    }
 
+    /**
+     * @param string $productId
+     */
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+    }
 
 }
