@@ -51,7 +51,7 @@
         </carriers>
         <payment>
             <sbmarketplaces>
-                <active>1</active>
+                <active>0</active>
                 <model>Springbot\Main\Model\Payment\Marketplaces</model>
                 <order_status>pending</order_status>
                 <title>Payment source from marketplace</title>
