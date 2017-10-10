@@ -42,6 +42,7 @@ class Index extends Action
     public function execute()
     {
         if ($email = $this->request->getParam('email')) {
+            $email = str_replace(' ', '+', $email);
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $quote = $this->session->getQuote();
                 if (!$quote->getCustomerEmail()) {
