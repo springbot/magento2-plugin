@@ -4,6 +4,9 @@ namespace Springbot\Main\Model;
 
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Phrase;
+use Magento\Framework\Webapi\Exception;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class StoreConfiguration
@@ -15,17 +18,21 @@ class StoreConfiguration
 
     private $config;
     private $scopeConfig;
+    private $storeManager;
 
     /**
-     * @param Config               $config
-     * @param ScopeConfigInterface $scopeConfigInterface
+     * @param Config                $config
+     * @param ScopeConfigInterface  $scopeConfigInterface
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Config $config,
-        ScopeConfigInterface $scopeConfigInterface
+        ScopeConfigInterface $scopeConfigInterface,
+        StoreManagerInterface $storeManager
     ) {
         $this->config = $config;
         $this->scopeConfig = $scopeConfigInterface;
+        $this->storeManager = $storeManager;
     }
 
     /**
