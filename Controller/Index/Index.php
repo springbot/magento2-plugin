@@ -21,18 +21,14 @@ class Index extends Action
      *
      * @param \Magento\Framework\App\Action\Context $context,
      * @param \Magento\Checkout\Model\Session $session,
-     * @param \Magento\Framework\App\Request\Http $request,
-     * @param \Magento\Framework\Controller\ResultFactory $resultFactory
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Checkout\Model\Session $session,
-        \Magento\Framework\App\Request\Http $request,
-        \Magento\Framework\Controller\ResultFactory $resultFactory
+        \Magento\Checkout\Model\Session $session
     ) {
         $this->session = $session;
-        $this->request = $request;
-        $this->resultFactory = $resultFactory;
+        $this->request = $context->getRequest();
+        $this->resultFactory = $context->getResultFactory();
         parent::__construct($context);
     }
 
