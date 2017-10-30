@@ -426,7 +426,7 @@ class Product implements ProductInterface
         $resource =  $this->connectionResource;
         $conn = $resource->getConnection();
         $query = $conn->query("SELECT * FROM {$resource->getTableName('catalog_category_product')}  ccp
-          LEFT JOIN catalog_category_entity cce ON (ccp.category_id = cce.{$idColumnName})
+          LEFT JOIN {$resource->getTableName('catalog_category_entity')} cce ON (ccp.category_id = cce.{$idColumnName})
           WHERE product_id = :{$idColumnName}", [$idColumnName => $this->productId]);
         foreach ($query->fetchAll() as $row) {
             $allParents = explode('/', $row['path']);
