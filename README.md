@@ -16,9 +16,10 @@ To install via composer, run the following commands from your Magento2 root dire
 ```bash
 composer require springbot/magento2-plugin
 php bin/magento module:enable Springbot_Queue
-php bin/magento module:enable Springbot_Main --clear-static-content; 
+php bin/magento module:enable Springbot_Main --clear-static-content;
 php bin/magento setup:upgrade
 php bin/magento cache:clean
+php bin/magento setup:static-content:deploy
 ```
 
 If you have compilation enabled, re-run the compilation process:
