@@ -35,7 +35,7 @@
         </springbot>
         <carriers>
             <sbmarketplaces>
-                <active>1</active>
+                <active>0</active>
                 <sallowspecific>0</sallowspecific>
                 <model>Springbot\Main\Model\Carrier\Marketplaces</model>
                 <name>Marketplaces Shipping</name>
