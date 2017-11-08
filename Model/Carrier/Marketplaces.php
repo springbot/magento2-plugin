@@ -14,22 +14,6 @@ class Marketplaces extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
     protected $_code = 'sbmarketplaces';
 
     /**
-     * @var bool
-     */
-    protected $_isFixed = true;
-
-    /**
-     * @var \Magento\Shipping\Model\Rate\ResultFactory
-     */
-    protected $_rateResultFactory;
-
-    /**
-     * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
-     */
-    protected $_rateMethodFactory;
-
-
-    /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
      * @param \Psr\Log\LoggerInterface $logger
@@ -55,7 +39,7 @@ class Marketplaces extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
      */
     public function getAllowedMethods()
     {
-        return [$this->_code=> $this->getConfigData('name')];
+        return ['sbmarketplaces' => $this->getConfigData('name')];
     }
 
     /**
@@ -73,8 +57,6 @@ class Marketplaces extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
          */
         $result = $this->_rateResultFactory->create();
 
-        $amount = $this->getConfigData('price');
-
         /**
          * @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method
          */
@@ -85,6 +67,8 @@ class Marketplaces extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
 
         $method->setMethod($this->_code);
         $method->setMethodTitle($this->getConfigData('name'));
+
+        $amount = $this->getConfigData('price');
 
         $method->setPrice($amount);
         $method->setCost($amount);
