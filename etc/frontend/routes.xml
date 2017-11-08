@@ -5,8 +5,5 @@
     <route id="springbot_update" frontName="springbot_update">
       <module name="Springbot_Main"/>
     </route>
-    <route id="shipping" frontName="shipping">
-      <module name="Magento_Shipping"/>
-    </route>
   </router>
 </config>
