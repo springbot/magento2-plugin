@@ -1,63 +1,61 @@
 <?xml version="1.0"?>
 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
-    <default>
-        <springbot>
-            <configuration>
-                <segment_size>10</segment_size>
-                <show_notifications>1</show_notifications>
-                <email_selector>billing:email,login-email,newsletter</email_selector>
-                <api_url>https://prod-sb-etl.herokuapp.com</api_url>
-                <app_url>https://app.springbot.com</app_url>
-                <assets_domain>d2z0bn1jv8xwtk.cloudfront.net</assets_domain>
-            </configuration>
-            <images>
-                <use_cached_images>0</use_cached_images>
-            </images>
-            <debug>
-                <log_http>0</log_http>
-                <log_level>info</log_level>
-                <log_format>default</log_format>
-                <expire_time_days>10</expire_time_days>
-                <filesize_limit>10000000</filesize_limit>
-            </debug>
-            <advanced>
-                <harvester_type>prattler</harvester_type>
-                <extended_config>1</extended_config>
-                <send_inventory>0</send_inventory>
-                <max_job_time>60</max_job_time>
-            </advanced>
-            <cart_restore>
-                <do_restore>1</do_restore>
-                <retain_coupon>1</retain_coupon>
-            </cart_restore>
-        </springbot>
-        <carriers>
-            <sbmarketplaces>
-                <active>1</active>
-                <sallowspecific>0</sallowspecific>
-                <model>Springbot\Main\Model\Carrier\Marketplaces</model>
-                <name>Marketplaces Shipping</name>
-                <price>0</price>
-                <title>Marketplaces Shipping</title>
-                <type>I</type>
-                <showmethod>false</showmethod>
-                <specificerrmsg>
-                    This shipping method is intended for internal use only.  It is a placeholder for order originating
-                    from a remote marketplace.
-                </specificerrmsg>
-            </sbmarketplaces>
-        </carriers>
-        <payment>
-            <sbmarketplaces>
-                <active>0</active>
-                <model>Springbot\Main\Model\Payment\Marketplaces</model>
-                <order_status>pending</order_status>
-                <title>Payment source from marketplace</title>
-                <allowspecific>0</allowspecific>
-                <group>offline</group>
-            </sbmarketplaces>
-        </payment>
-    </default>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+  <default>
+    <springbot>
+      <configuration>
+        <segment_size>10</segment_size>
+        <show_notifications>1</show_notifications>
+        <email_selector>billing:email,login-email,newsletter</email_selector>
+        <api_url>https://prod-sb-etl.herokuapp.com</api_url>
+        <app_url>https://app.springbot.com</app_url>
+        <assets_domain>d2z0bn1jv8xwtk.cloudfront.net</assets_domain>
+      </configuration>
+      <images>
+        <use_cached_images>0</use_cached_images>
+      </images>
+      <debug>
+        <log_http>0</log_http>
+        <log_level>info</log_level>
+        <log_format>default</log_format>
+        <expire_time_days>10</expire_time_days>
+        <filesize_limit>10000000</filesize_limit>
+      </debug>
+      <advanced>
+        <harvester_type>prattler</harvester_type>
+        <extended_config>1</extended_config>
+        <send_inventory>0</send_inventory>
+        <max_job_time>60</max_job_time>
+      </advanced>
+      <cart_restore>
+        <do_restore>1</do_restore>
+        <retain_coupon>1</retain_coupon>
+      </cart_restore>
+    </springbot>
+    <carriers>
+      <sbmarketplaces>
+        <active>0</active>
+        <sallowspecific>0</sallowspecific>
+        <model>Springbot\Main\Model\Carrier\Marketplaces</model>
+        <name>Marketplaces Shipping</name>
+        <price>0</price>
+        <title>Marketplaces Shipping</title>
+        <type>I</type>
+        <showmethod>0</showmethod>
+        <specificerrmsg>
+          This shipping method is intended for internal use only. It is a placeholder for order originating from a remote marketplace.
+        </specificerrmsg>
+      </sbmarketplaces>
+    </carriers>
+    <payment>
+      <sbmarketplaces>
+        <active>1</active>
+        <model>Springbot\Main\Model\Payment\Marketplaces</model>
+        <order_status>pending</order_status>
+        <title>Payment source from marketplace</title>
+        <allowspecific>0</allowspecific>
+        <group>offline</group>
+      </sbmarketplaces>
+    </payment>
+  </default>
 </config>
