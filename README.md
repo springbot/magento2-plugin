@@ -56,6 +56,6 @@ tagged versions are pushed to packagist automatically:
 
 ```bash
 git commit -m "My Changes"
-git tag 1.0.0
+git tag 1.6.3
 git push origin --tags
 ```
