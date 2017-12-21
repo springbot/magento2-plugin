@@ -16,7 +16,8 @@ class Log extends AbstractModel implements LogInterface
      * @param StateInterface $logState
      * @param Pool $pool
      */
-    public function __construct() {
+    public function __construct()
+    {
         #
     }
 
@@ -26,8 +27,16 @@ class Log extends AbstractModel implements LogInterface
      * @param string $filename
      * @return string|null
      */
-    public function retrieve($filename="system.log")
+    public function retrieve($filename = "system.log")
     {
-        return array('success');
+        $unixFriendly = str_replace('\\', '/', __DIR__);
+        $fullArray = explode('/', $unixFriendly);
+        array_pop($fullArray);
+        array_pop($fullArray);
+        array_pop($fullArray);
+        array_pop($fullArray);
+        array_pop($fullArray);
+        $docroot = implode('/', $fullArray) . '/';
+        return file_get_contents($docroot . 'var/log/' . $filename);
     }
 }
