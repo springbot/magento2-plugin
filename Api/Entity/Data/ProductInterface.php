@@ -98,12 +98,12 @@ interface ProductInterface
     public function getShortDescription();
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getCategoryIds();
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getAllCategoryIds();
 
@@ -138,12 +138,12 @@ interface ProductInterface
     public function getImageLabel();
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getParentSkus();
 
     /**
-     * @return array
+     * @return int
      */
     public function getCustomAttributeSetId();
 

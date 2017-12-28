@@ -13,7 +13,7 @@ use Springbot\Main\Api\ModulesInterface;
 class Modules extends ModuleService implements ModulesInterface
 {
     /**
-     * @return array
+     * @return string[]
      */
     public function getModules()
     {

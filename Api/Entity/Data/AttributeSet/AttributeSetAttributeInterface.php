@@ -37,7 +37,7 @@ interface AttributeSetAttributeInterface
     public function getCode();
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getOptions();
 }

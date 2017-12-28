@@ -97,12 +97,12 @@ interface ItemInterface
     public function getProductType();
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getCategoryIds();
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getAllCategoryIds();
 

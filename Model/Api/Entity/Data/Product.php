@@ -314,7 +314,7 @@ class Product implements ProductInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getParentSkus()
     {

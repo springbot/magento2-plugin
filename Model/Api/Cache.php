@@ -87,7 +87,7 @@ class Cache extends AbstractModel implements CacheInterface
 
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getAvailableTypes()
     {
@@ -102,7 +102,7 @@ class Cache extends AbstractModel implements CacheInterface
     /**
      * Presents summary about cache status
      *
-     * @return array
+     * @return string[]
      */
     public function getStatus()
     {

@@ -128,7 +128,7 @@ interface RuleInterface
     public function getIsAdvanced();
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getProductIds();
 
@@ -178,12 +178,12 @@ interface RuleInterface
     public function getIsRss();
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getWebsiteIds();
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getCustomerGroupIds();
 }

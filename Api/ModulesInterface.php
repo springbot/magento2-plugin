@@ -12,7 +12,7 @@ interface ModulesInterface
     /**
      * Returns a list of all modules with setup version number
      *
-     * @return array
+     * @return string[]
      */
     public function getModules();
 }
