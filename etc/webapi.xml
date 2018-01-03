@@ -10,6 +10,18 @@
             <resource ref="Springbot_Main::api"/>
         </resources>
     </route>
+    <route url="/V1/springbot/main/log/lineCount" method="POST">
+        <service class="Springbot\Main\Api\LogInterface" method="lineCount"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V1/springbot/main/log/fileSize" method="POST">
+        <service class="Springbot\Main\Api\LogInterface" method="fileSize"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
     <route url="/V1/springbot/main/cache/clean" method="POST">
         <service class="Springbot\Main\Api\CacheInterface" method="clean"/>
         <resources>
