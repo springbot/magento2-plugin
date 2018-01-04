@@ -7,36 +7,39 @@ use Springbot\Main\Api\LogInterface;
 
 /**
  * Class Log
+ *
  * @package Springbot\Main\Api
  */
 class Log extends AbstractModel implements LogInterface
 {
     private static $docroot = null;
+
     /**
-     * @param TypeListInterface $logTypeList
-     * @param StateInterface $logState
-     * @param Pool $pool
+     * The constructor defines our docroot location.
      */
     public function __construct()
     {
         $unixFriendly = str_replace('\\', '/', __DIR__);
         $fullArray = explode('/', $unixFriendly);
-        array_pop($fullArray);
-        array_pop($fullArray);
-        array_pop($fullArray);
-        array_pop($fullArray);
-        array_pop($fullArray);
+        array_splice($fullArray, -5);
         self::$docroot = implode('/', $fullArray)  . '/var/log/';
     }
+
     /**
-     * @param  string
-     * @return [type]
+     * Returns the total line count for the specified file
+     *
+     * @param  string $filename
+     *
+     * @return int
      */
-    public function lineCount($filename = "system.log")
+    public function lineCount($filename = "system")
     {
-        $filename = self::$docroot + $filename;
+        $path = self::$docroot . $filename . '.log';
+        if (!file_exists($path)) {
+            return 'File not found: ' . self::$docroot . $filename;
+        }
         $linecount = 0;
-        $file = fopen($filename, "r");
+        $file = fopen($path, "r");
         while (!feof($file)) {
             $line = fgets($file);
             $linecount++;
@@ -45,14 +48,21 @@ class Log extends AbstractModel implements LogInterface
 
         return $linecount;
     }
+
     /**
-     * @param  string
-     * @param  integer
-     * @return [type]
+     * Returns the total filesize of the specified log
+     *
+     * @param  string $filename
+     * @param  integer $lineCount
+     *
+     * @return string
      */
-    public function fileSize($filename = "system.log", $precision = 2)
+    public function fileSize($filename = "system", $precision = 2)
     {
-        $bytes = fileSize(self::$docroot . $filename);
+        if (!file_exists(self::$docroot . $filename . '.log')) {
+            return 'File not found: ' . self::$docroot . $filename;
+        }
+        $bytes = fileSize(self::$docroot . $filename . '.log');
         $units = array("b", "kb", "mb", "gb", "tb");
 
         $bytes = max($bytes, 0);
@@ -63,19 +73,36 @@ class Log extends AbstractModel implements LogInterface
 
         return round($bytes, $precision) . " " . $units[$pow];
     }
+    
     /**
-     * Retrieve logs
+     * Retrieve logs from the specified file. Will return the last 100 lines by default.
+     * You may specify a specific line count to view.
+     *
+     * NOTES: The number of lines returned is counted backwards from the last line of the file.
      *
      * @param string $filename
      * @return string|null
      */
-    public function retrieve($filename = "system.log", $lineCount = 100)
+    public function retrieve($filename = "system", $lineCount = 100)
     {
-        $path = self::$docroot . $filename;
+        $path = self::$docroot . $filename . '.log';
+        if (!file_exists($path)) {
+            return 'File not found: ' . self::$docroot . $filename;
+        }
+        $total = $this->lineCount($filename);
+        if ($total > $lineCount) {
+            $startPoint = $total - $lineCount;
+        } else {
+            $startPoint = 0;
+        }
         $handle = fopen($path, "r");
-
+        $x = 0;
         while (!feof($handle)) {
-            $out[] = trim(fgets($handle));
+            $line = trim(fgets($handle));
+            if ($x >= $startPoint) {
+                $out[] = $line;
+            }
+            $x++;
         }
 
         fclose($handle);

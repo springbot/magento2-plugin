@@ -11,17 +11,19 @@ interface LogInterface
 
     /**
      * @param string $filename
-     * @return string|null
+     * @param int $lineCount
+     * @return array|string
      */
-    public function retrieve($filename = "system.log");
+    public function retrieve($filename = "system", $lineCount = 100);
     /**
      * @param string $filename
-     * @return string|null
+     * @return int|string
      */
-    public function lineCount($filename = "system.log");
+    public function lineCount($filename = "system");
     /**
      * @param string $filename
-     * @return string|null
+     * @param string $precision
+     * @return string
      */
-    public function fileSize($filename = "system.log");
+    public function fileSize($filename = "system", $precision = 2);
 }
