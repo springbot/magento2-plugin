@@ -2,7 +2,7 @@
 
 namespace Springbot\Main\Test\Unit\Controller\Index;
 
-class IndexTest extends \PHPUnit_Framework_TestCase
+class IndexTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject| \Springbot\Main\Controller\Adminhtml\Index\Index
