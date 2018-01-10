@@ -1,9 +1,0 @@
-.admin__menu .level-0.item-main > a::before {
-    content: url('../img/springbot-ctl.png');
-    margin-bottom: 10px;
-}
-.admin__menu .level-0.item-main._active>a, .admin__menu .level-0.item-main:hover>a::before {
-    color: #f7f3eb;
-    content: url('../img/springbot-ctl-hover.png');
-    margin-bottom: 10px;
-}
