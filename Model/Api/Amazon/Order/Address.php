@@ -75,7 +75,7 @@ class Address implements AddressInterface
     /**
      * Convert an amazon address into the format expected by Magento
      *
-     * @return array
+     * @return string[]
      */
     public function toArray()
     {

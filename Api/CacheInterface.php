@@ -17,7 +17,7 @@ interface CacheInterface
 
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getAvailableTypes();
 
@@ -25,7 +25,7 @@ interface CacheInterface
     /**
      * Presents summary about cache status
      *
-     * @return array
+     * @return string[]
      */
     public function getStatus();
 }

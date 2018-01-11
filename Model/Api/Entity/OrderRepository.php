@@ -42,7 +42,7 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
 
     /**
      * @param int $storeId
-     * @return array
+     * @return string[]
      */
     public function getList($storeId)
     {

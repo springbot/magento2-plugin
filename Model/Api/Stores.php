@@ -31,7 +31,7 @@ class Stores implements StoresInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getStores()
     {

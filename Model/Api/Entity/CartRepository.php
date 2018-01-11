@@ -36,7 +36,7 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
     
     /**
      * @param int $storeId
-     * @return array
+     * @return string[]
      */
     public function getList($storeId)
     {

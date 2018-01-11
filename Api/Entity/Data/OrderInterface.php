@@ -80,7 +80,7 @@ interface OrderInterface
     public function getRedirectMongoId();
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getRedirectMongoIds();
 

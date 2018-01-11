@@ -90,7 +90,7 @@ interface AddressInterface
     public function setStateOrRegion($stateOrRegion);
 
     /**
-     * @return array
+     * @return string[]
      */
     public function toArray();
 

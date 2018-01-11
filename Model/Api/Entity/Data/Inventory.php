@@ -142,7 +142,9 @@ class Inventory implements InventoryInterface
         return $this->skuFulfillment;
     }
 
-
+    /**
+     * @return string[]
+     */
     public function getParentSkus()
     {
         $resource =  $this->connectionResource;

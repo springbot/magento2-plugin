@@ -72,7 +72,7 @@ interface InventoryInterface
     public function getMinSaleQty();
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getParentSkus();
 

@@ -35,7 +35,7 @@ class Marketplaces extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getAllowedMethods()
     {

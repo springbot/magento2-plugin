@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
     <extension_attributes for="Magento\Quote\Api\Data\PaymentInterface">
-        <attribute code="marketplace_details" type="Springbot\Api\Entity\Data\RemoteOrderInterface[]" />
+        <attribute code="marketplace_details" type="Springbot\Main\Api\Entity\Data\RemoteOrderInterface[]" />
     </extension_attributes>
 </config>

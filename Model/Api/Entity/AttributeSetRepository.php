@@ -33,7 +33,7 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
 
     /**
      * @param int $storeId
-     * @return array
+     * @return string[]
      */
     public function getList($storeId)
     {

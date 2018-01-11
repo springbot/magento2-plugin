@@ -42,7 +42,7 @@ class Redirects extends AbstractRepository implements RedirectsInterface
 
     /**
      * @param int $storeId
-     * @return array
+     * @return string[]
      */
     public function getRedirects($storeId)
     {
