@@ -10,7 +10,7 @@
       <label>Configuration</label>
       <tab>springbot</tab>
       <resource>Springbot_Main::config_main</resource>
-      <group id="hellopage" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+      <group id="configuration" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
         <label>System Configuration</label>
         <field id="segment_size" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
           <label>Segment Size</label>
