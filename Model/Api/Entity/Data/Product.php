@@ -321,14 +321,16 @@ class Product implements ProductInterface
         $idColumnName = $this->getIdColumnName();
         $resource =  $this->connectionResource;
         $conn = $resource->getConnection();
-        $query = $conn->query("SELECT cpe.sku FROM {$resource->getTableName('catalog_product_relation')} cper
+        $query = $conn->query("SELECT cpe.sku,cpe.type_id FROM {$resource->getTableName('catalog_product_relation')} cper
             LEFT JOIN {$resource->getTableName('catalog_product_entity')} cpe
               ON (cper.parent_id = cpe.{$idColumnName})
                 WHERE cper.child_id = :{$idColumnName}
         ", [$idColumnName => $this->productId]);
         $skus = [];
         foreach ($query->fetchAll() as $parentRow) {
+          if ($parentRow['type_id'] != 'bundle') {
             $skus[] = $parentRow['sku'];
+          }
         }
         return $skus;
     }
