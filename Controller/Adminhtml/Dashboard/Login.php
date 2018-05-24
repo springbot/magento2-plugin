@@ -42,8 +42,9 @@ class Login extends Action
     public function execute()
     {
         // Pull values from the customer form for transit back to Springbot
-        $springbotEmail = $this->getRequest()->getParam('springbot-email');
-        $springbotPassword = $this->getRequest()->getParam('springbot-password');
+        $request = $this->getRequest();
+        $springbotEmail = $request->getParam('springbot-email');
+        $springbotPassword = $request->getParam('springbot-password');
         $registered = $this->register->registerAllStores($springbotEmail, $springbotPassword);
 
         if ($registered) {
