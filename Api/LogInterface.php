@@ -12,7 +12,7 @@ interface LogInterface
     /**
      * @param string $filename
      * @param int $lineCount
-     * @return array|string
+     * @return string
      */
     public function retrieve($filename = "system", $lineCount = 100);
     /**
