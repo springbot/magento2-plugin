@@ -217,6 +217,19 @@
             <resource ref="Springbot_Main::api"/>
         </resources>
     </route>
+	
+    <route url="/V2/springbot/main/stores/:storeId/products" method="GET">
+        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/products/:productId" method="GET">
+        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
 
     <route url="/V1/springbot/main/stores/:storeId/rules" method="GET">
         <service class="Springbot\Main\Api\Entity\RuleRepositoryInterface" method="getList"/>
