@@ -4,7 +4,6 @@ namespace Springbot\Main\Model\Api\Entity\Data;
 
 use Magento\Catalog\Model\Product as MagentoProduct;
 use Magento\Catalog\Model\Product\Image as MagentoProductImage;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Backend\Model\UrlInterface;
@@ -18,19 +17,71 @@ use Magento\Framework\App\ProductMetadataInterface;
  * Class Product
  * @package Springbot\Main\Model\Api\Entity\Data
  */
-class ProductV2 extends MagentoProduct implements ProductInterface
+class ProductV2 implements ProductInterface
 {
-
     public $storeId;
     public $productId;
+    public $name;
+    public $urlKey;
     public $sku;
     public $type;
+    public $status;
+    public $visibility;
+    public $msrp;
+    public $price;
+    public $cost;
+    public $weight;
     public $createdAt;
     public $updatedAt;
+    public $description;
+    public $shortDescription;
     public $categoryIds = [];
     public $allCategoryIds = [];
+    public $specialPrice;
+    public $defaultUrl;
+    public $urlInStore;
+    public $urlIdPath;
+    public $imageUrl;
+    public $imageLabel;
+    public $parentSkus;
     public $customAttributeSetId;
-	
+    public $productAttributes = [];
+
+    protected $productRepository;
+    protected $connectionResource;
+    protected $storeManager;
+    protected $urlInterface;
+    protected $scopeConfigInterface;
+
+    private $imagePath;
+    private $productMetadata;
+
+    /**
+     * Product constructor.
+     * @param \Magento\Framework\App\ResourceConnection $connectionResource
+     * @param \Springbot\Main\Api\Entity\ProductRepositoryInterface $productRepository
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Backend\Model\UrlInterface $urlInterface
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param ProductMetadataInterface $productMetadata
+     */
+    public function __construct(
+        ResourceConnection $connectionResource,
+        ProductRepositoryInterface $productRepository,
+        StoreManagerInterface $storeManager,
+        UrlInterface $urlInterface,
+        ScopeConfigInterface $scopeConfig,
+        ProductMetadataInterface $productMetadata
+    )
+    {
+        $this->productRepository = $productRepository;
+        $this->connectionResource = $connectionResource;
+        $this->storeManager = $storeManager;
+        $this->urlInterface = $urlInterface;
+        $this->scopeConfigInterface = $scopeConfig;
+        $this->productMetadata = $productMetadata;
+    }
+
     /**
      * @param $storeId
      * @param $productId
@@ -49,15 +100,17 @@ class ProductV2 extends MagentoProduct implements ProductInterface
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
         $this->customAttributeSetId = $customAttributeSetId;
+        $this->loadAttributes();
         $this->loadCategories();
     }
-	
+
+
     /**
      * @return mixed
      */
     public function getProductId()
     {
-        return parent::getEntityId();
+        return $this->productId;
     }
 
     /**
@@ -65,7 +118,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getName()
     {
-        return parent::getName();
+        return $this->name;
     }
 
     /**
@@ -73,7 +126,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getUrlKey()
     {
-        return parent::getUrlKey();
+        return $this->urlKey;
     }
 
     /**
@@ -81,7 +134,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getSku()
     {
-        return parent::getSku();
+        return $this->sku;
     }
 
     /**
@@ -89,7 +142,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getType()
     {
-        return parent::getTypeId();
+        return $this->type;
     }
 
     /**
@@ -97,7 +150,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getStatus()
     {
-        return parent::getStatus();
+        return $this->status;
     }
 
     /**
@@ -105,7 +158,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getVisibility()
     {
-        return parent::getVisibility();
+        return $this->visibility;
     }
 
     /**
@@ -113,7 +166,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getMsrp()
     {
-        return parent::getMsrp();
+        return $this->msrp;
     }
 
     /**
@@ -121,7 +174,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getPrice()
     {
-        return parent::getPrice();
+        return $this->price;
     }
 
     /**
@@ -129,7 +182,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getCost()
     {
-        return parent::getCost();
+        return $this->cost;
     }
 
     /**
@@ -137,7 +190,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getWeight()
     {
-        return parent::getWeight();
+        return $this->weight;
     }
 
     /**
@@ -145,7 +198,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getCreatedAt()
     {
-        return parent::getCreatedAt();
+        return $this->createdAt;
     }
 
     /**
@@ -153,7 +206,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getUpdatedAt()
     {
-        return parent::getUpdatedAt();
+        return $this->updatedAt;
     }
 
     /**
@@ -161,7 +214,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getDescription()
     {
-        return parent::getDescription();
+        return $this->description;
     }
 
     /**
@@ -169,7 +222,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getShortDescription()
     {
-        return parent::getShortDescription();
+        return $this->shortDescription;
     }
 
     /**
@@ -193,12 +246,15 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getSpecialPrice()
     {
-       return parent::getSpecialPrice();
+        return $this->specialPrice;
     }
-	
-    public function getUrlInStore($params = array())
+
+    /**
+     * @return mixed
+     */
+    public function getUrlInStore()
     {
-        return parent::getUrlInStore($params);
+        return $this->urlInStore;
     }
 
     /**
@@ -206,7 +262,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getImageLabel()
     {
-        return parent::getImageLabel();
+        return $this->imageLabel;
     }
 
     /**
@@ -214,7 +270,7 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getCustomAttributeSetId()
     {
-        return parent::getAttributeSetId();
+        return $this->customAttributeSetId;
     }
 
     /**
@@ -222,82 +278,155 @@ class ProductV2 extends MagentoProduct implements ProductInterface
      */
     public function getProductAttributes()
     {
-        $attributes = [];
-        foreach (parent::getCustomAttributes() as $customAttribute) {
-            $attributes[] = new ProductAttribute($customAttribute->getAttributeCode(), $customAttribute->getValue());
-        }
-        return $attributes;
+        return $this->productAttributes;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDefaultUrl()
-    {
-        return $this->getProductUrl();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUrlIdPath()
-    {
-        $om = ObjectManager::getInstance();
-        $store = $om->get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        return $store->getBaseUrl(UrlInterface::URL_TYPE_WEB) . 'catalog/product/view/id/' . $this->getId();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImageUrl()
-    {
-        $om = ObjectManager::getInstance();
-        $store = $om->get('Magento\Store\Model\StoreManagerInterface')->getStore();
-        return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->getImage();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getParentSkus()
-    {
-        $om = ObjectManager::getInstance();
-        $typeConfigurable = $om->get('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable');
-        $parentIds = $typeConfigurable->getParentIdsByChild($this->getId());
-        $skus = array();
-        $productLoader = $om->get('Magento\Catalog\Model\ProductFactory');
-        foreach ($parentIds as $parentId) {
-            $parent = $productLoader->create()->load($parentId);
-            $skus[] = $parent->getSku();
-        }
-        return $skus;
-    }
-	
     /**
      * @return string
      */
-    private function getIdColumnName()
+    public function getDefaultUrl()
     {
-        $om = ObjectManager::getInstance();
-		$productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
-        $version = $productMetadata->getVersion();
-        $edition = $productMetadata->getEdition();
-
-        if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
-            return 'row_id';
-        }
-        else {
-            return 'entity_id';
-        }
+        $store = $this->storeManager->getStore($this->storeId);
+        return $store->getBaseUrl(UrlInterface::URL_TYPE_WEB)
+            . $this->urlKey
+            . $this->scopeConfigInterface->getValue('catalog/seo/product_url_suffix');
     }
-	    
-	private function loadCategories()
+
+    /**
+     * @return string
+     */
+    public function getUrlIdPath()
+    {
+        $store = $this->storeManager->getStore($this->storeId);
+        return $store->getBaseUrl(UrlInterface::URL_TYPE_WEB) . 'catalog/product/view/id/' . $this->getProductId();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getImageUrl()
+    {
+        if (!$this->imagePath) {
+            return null;
+        }
+        $store = $this->storeManager->getStore($this->storeId);
+        return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->imagePath;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getParentSkus()
     {
         $idColumnName = $this->getIdColumnName();
-        $conn = ResourceConnection::getConnection();
-        $query = $conn->query("SELECT * FROM {ResourceConnection::getTableName('catalog_category_product')}  ccp
-          LEFT JOIN {ResourceConnection::getTableName('catalog_category_entity')} cce ON (ccp.category_id = cce.{$idColumnName})
+        $resource =  $this->connectionResource;
+        $conn = $resource->getConnection();
+        $query = $conn->query("SELECT cpe.sku FROM {$resource->getTableName('catalog_product_relation')} cper
+            LEFT JOIN {$resource->getTableName('catalog_product_entity')} cpe
+              ON (cper.parent_id = cpe.{$idColumnName})
+                WHERE cper.child_id = :{$idColumnName}
+        ", [$idColumnName => $this->productId]);
+        $skus = [];
+        foreach ($query->fetchAll() as $parentRow) {
+            $skus[] = $parentRow['sku'];
+        }
+        return $skus;
+    }
+
+    private function loadAttributes()
+    {
+        $idColumnName = $this->getIdColumnName();
+        $resource =  $this->connectionResource;
+        $conn = $resource->getConnection();
+        $query = $conn->query("
+            SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_datetime')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.{$idColumnName} = :{$idColumnName})
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_decimal')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.{$idColumnName} = :{$idColumnName})
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_int')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.{$idColumnName} = :{$idColumnName})
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_text')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.{$idColumnName} = :{$idColumnName})
+            UNION
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            FROM {$resource->getTableName('catalog_product_entity')} cpe
+              LEFT JOIN {$resource->getTableName('catalog_product_entity_varchar')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
+              LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
+            WHERE (cpe.{$idColumnName} = :{$idColumnName});
+        ", [$idColumnName => $this->productId]);
+
+        foreach($query->fetchAll() as $attributeRow) {
+            $value = $attributeRow['value'];
+            switch($attributeRow['code']) {
+                case 'name':
+                    $this->name = $value;
+                    break;
+                case 'cost':
+                    $this->cost = $value;
+                    break;
+                case 'msrp':
+                    $this->msrp = $value;
+                    break;
+                case 'url_key':
+                    $this->urlKey = $value;
+                    break;
+                case 'weight':
+                    $this->weight = $value;
+                    break;
+                case 'description':
+                    $this->description = $value;
+                    break;
+                case 'short_description':
+                    $this->shortDescription = $value;
+                    break;
+                case 'price':
+                    $this->price = $value;
+                    break;
+                case 'image_label':
+                    $this->imageLabel = $value;
+                    break;
+                case 'visibility':
+                    $this->visibility = $value;
+                    break;
+                case 'status':
+                    $this->status = $value;
+                    break;
+                case 'special_price':
+                    $this->specialPrice = $value;
+                    break;
+                case 'image':
+                    $this->imagePath = $value;
+                    break;
+                default:
+                    if ($value !== null) {
+                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value); ;
+                    }
+            }
+        }
+    }
+
+    private function loadCategories()
+    {
+        $idColumnName = $this->getIdColumnName();
+        $resource =  $this->connectionResource;
+        $conn = $resource->getConnection();
+        $query = $conn->query("SELECT * FROM {$resource->getTableName('catalog_category_product')}  ccp
+          LEFT JOIN {$resource->getTableName('catalog_category_entity')} cce ON (ccp.category_id = cce.{$idColumnName})
           WHERE product_id = :{$idColumnName}", [$idColumnName => $this->productId]);
         foreach ($query->fetchAll() as $row) {
             $allParents = explode('/', $row['path']);
@@ -306,4 +435,22 @@ class ProductV2 extends MagentoProduct implements ProductInterface
         }
         $this->allCategoryIds = array_unique($this->allCategoryIds);
     }
+
+    /**
+     * @return string
+     */
+    private function getIdColumnName()
+    {
+        $version = $this->productMetadata->getVersion();
+        $edition = $this->productMetadata->getEdition();
+
+        if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
+            return 'row_id';
+        }
+        else {
+            return 'entity_id';
+        }
+    }
+
+
 }

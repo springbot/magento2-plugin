@@ -219,13 +219,13 @@
     </route>
 	
     <route url="/V2/springbot/main/stores/:storeId/products" method="GET">
-        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterface" method="getList"/>
+        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterfaceV2" method="getList"/>
         <resources>
             <resource ref="Springbot_Main::api"/>
         </resources>
     </route>
     <route url="/V2/springbot/main/stores/:storeId/products/:productId" method="GET">
-        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterface" method="getFromId"/>
+        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterfaceV2" method="getFromId"/>
         <resources>
             <resource ref="Springbot_Main::api"/>
         </resources>
