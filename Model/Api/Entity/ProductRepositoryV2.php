@@ -2,25 +2,25 @@
 
 namespace Springbot\Main\Model\Api\Entity;
 
-use Magento\Framework\App\Request\Http;
-use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Model\AbstractModel;
 use Springbot\Main\Api\Entity\ProductRepositoryInterfaceV2;
+use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Model\Api\Entity\Data\ProductFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class ProductRepository
- *
  * @package Springbot\Main\Model\Api\Entity
  */
 class ProductRepositoryV2 extends AbstractRepository implements ProductRepositoryInterfaceV2
 {
-
+	
     /* @var ProductFactory $productFactory */
     protected $productFactory;
-
+	
     private $storeManager;
-
     /**
      * OrderRepository constructor.
      *
@@ -30,7 +30,7 @@ class ProductRepositoryV2 extends AbstractRepository implements ProductRepositor
      * @param StoreManagerInterface                                $storeManager
      */
     public function __construct(
-        Http $request,
+        HttpRequest $request,
         ResourceConnection $resourceConnection,
         ProductFactory $factory,
         StoreManagerInterface $storeManager
@@ -40,8 +40,8 @@ class ProductRepositoryV2 extends AbstractRepository implements ProductRepositor
         $this->productFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
-
-    public function getList($storeId)
+	
+	public function getList($storeId)
     {
         if (($store = $this->storeManager->getStore($storeId)) == null) {
             throw new \Exception("Store not found");
@@ -54,40 +54,20 @@ class ProductRepositoryV2 extends AbstractRepository implements ProductRepositor
             ->joinLeft(['cpe' => $resource->getTableName('catalog_product_entity')], 'cpe.entity_id = cpw.product_id', ['cpe.*'])
             ->where('website_id = ?', $websiteId);
         $this->filterResults($select);
-
         $ret = [];
         foreach ($conn->fetchAll($select) as $row) {
-            $ret[] = $this->createProduct($storeId, $row);
+            $ret[] = $this->getFromId($storeId, $row['entity_id']);
         }
         return $ret;
     }
-
+	
     public function getFromId($storeId, $productId)
     {
-        $resource =  $this->resourceConnection;
-        $conn = $resource->getConnection();
-        $select = $conn->select()
-            ->from([$resource->getTableName('catalog_product_entity')])
-            ->where('entity_id = ?', $productId);
-
-        foreach ($conn->fetchAll($select) as $row) {
-            return $this->createProduct($storeId, $row);
-        }
-        return null;
+        return $this->getSpringbotModel()->load($productId);
     }
-
-    private function createProduct($storeId, $row)
+    public function getSpringbotModel()
     {
-        $product = $this->productFactory->create();
-        $product->setValues(
-            $storeId,
-            $row['entity_id'],
-            $row['sku'],
-            $row['type_id'],
-            $row['created_at'],
-            $row['updated_at'],
-            $row['attribute_set_id']
-        );
-        return $product;
+		$om = ObjectManager::getInstance();
+        return $om->create('Springbot\Main\Model\Api\Entity\Data\ProductV2');
     }
 }

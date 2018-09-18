@@ -3,7 +3,7 @@
 namespace Springbot\Main\Api\Entity;
 
 /**
- * Interface ProductRepositoryInterface
+ * Interface ProductRepositoryInterfaceV2
  *
  * @package Springbot\Main\Api
  */
