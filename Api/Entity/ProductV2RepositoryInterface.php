@@ -7,7 +7,7 @@ namespace Springbot\Main\Api\Entity;
  *
  * @package Springbot\Main\Api
  */
-interface ProductRepositoryInterfaceV2
+interface ProductV2RepositoryInterface
 {
     /**
      * @param int $storeId
