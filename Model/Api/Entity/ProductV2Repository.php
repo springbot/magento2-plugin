@@ -13,7 +13,7 @@ use Magento\Store\Model\StoreManagerInterface;
  *
  * @package Springbot\Main\Model\Api\Entity
  */
-class ProductRepositoryV2 extends AbstractRepository implements ProductRepositoryInterfaceV2
+class ProductV2Repository extends AbstractRepository implements ProductRepositoryInterfaceV2
 {
 
     /* @var ProductFactory $productFactory */

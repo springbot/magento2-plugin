@@ -7,7 +7,7 @@ namespace Springbot\Main\Api\Entity\Data;
  *
  * @package Springbot\Main\Api
  */
-interface ProductInterfaceV2
+interface ProductV2Interface
 {
 
     /**
