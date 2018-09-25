@@ -16,11 +16,11 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class ProductRepositoryV2 extends AbstractRepository implements ProductRepositoryInterfaceV2
 {
-
     /* @var ProductFactory $productFactory */
     protected $productFactory;
 
     private $storeManager;
+
     /**
      * OrderRepository constructor.
      *
@@ -35,7 +35,6 @@ class ProductRepositoryV2 extends AbstractRepository implements ProductRepositor
         ProductFactory $factory,
         StoreManagerInterface $storeManager
     ) {
-
         $this->storeManager = $storeManager;
         $this->productFactory = $factory;
         parent::__construct($request, $resourceConnection);
@@ -56,18 +55,37 @@ class ProductRepositoryV2 extends AbstractRepository implements ProductRepositor
         $this->filterResults($select);
         $ret = [];
         foreach ($conn->fetchAll($select) as $row) {
-            $ret[] = $this->getFromId($storeId, $row['entity_id']);
+            $ret[] = $this->createProduct($storeId, $row);
         }
         return $ret;
     }
 
     public function getFromId($storeId, $productId)
     {
-        return $this->getSpringbotModel()->load($productId);
+        $resource =  $this->resourceConnection;
+        $conn = $resource->getConnection();
+        $select = $conn->select()
+            ->from([$resource->getTableName('catalog_product_entity')])
+            ->where('entity_id = ?', $productId);
+
+        foreach ($conn->fetchAll($select) as $row) {
+            return $this->createProduct($storeId, $row);
+        }
+        return null;
     }
-    public function getSpringbotModel()
+
+    private function createProduct($storeId, $row)
     {
-        $om = ObjectManager::getInstance();
-        return $om->create('Springbot\Main\Model\Api\Entity\Data\ProductV2');
+        $product = $this->productFactory->create();
+        $product->setValues(
+            $storeId,
+            $row['entity_id'],
+            $row['sku'],
+            $row['type_id'],
+            $row['created_at'],
+            $row['updated_at'],
+            $row['attribute_set_id']
+        );
+        return $product;
     }
 }
