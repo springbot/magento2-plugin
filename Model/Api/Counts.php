@@ -35,7 +35,7 @@ class Counts implements CountsInterface
         }
         $websiteId = $store->getWebsiteId();
 
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('sales_order')} WHERE store_id = :store_id", ['store_id' => $storeId]);
         $this->addCount('orders', $this->getCountFromQuery($query));

@@ -80,13 +80,11 @@ class CartReconstitutionObserver implements ObserverInterface
     {
         $quote = $this->session->getQuote();
 
-        if (!is_object($quote)) {
+        if (! is_object($quote)) {
             $cartIsEmpty = true;
-        }
-        else if (!$quote->getItemsCount()) {
+        } elseif (! $quote->getItemsCount()) {
             $cartIsEmpty = true;
-        }
-        else {
+        } else {
             $cartIsEmpty = false;
         }
 
@@ -110,5 +108,4 @@ class CartReconstitutionObserver implements ObserverInterface
             }
         }
     }
-
 }

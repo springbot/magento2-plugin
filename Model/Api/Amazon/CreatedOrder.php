@@ -58,5 +58,4 @@ class CreatedOrder implements CreatedOrderInterface
     {
         return $this->storeId;
     }
-
 }

@@ -16,10 +16,10 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class ProductRepositoryV2 extends AbstractRepository implements ProductRepositoryInterfaceV2
 {
-	
+
     /* @var ProductFactory $productFactory */
     protected $productFactory;
-	
+
     private $storeManager;
     /**
      * OrderRepository constructor.
@@ -35,19 +35,19 @@ class ProductRepositoryV2 extends AbstractRepository implements ProductRepositor
         ProductFactory $factory,
         StoreManagerInterface $storeManager
     ) {
-    
+
         $this->storeManager = $storeManager;
         $this->productFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
-	
-	public function getList($storeId)
+
+    public function getList($storeId)
     {
         if (($store = $this->storeManager->getStore($storeId)) == null) {
             throw new \Exception("Store not found");
         }
         $websiteId = $store->getWebsiteId();
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['cpw' => $resource->getTableName('catalog_product_website')])
@@ -60,14 +60,14 @@ class ProductRepositoryV2 extends AbstractRepository implements ProductRepositor
         }
         return $ret;
     }
-	
+
     public function getFromId($storeId, $productId)
     {
         return $this->getSpringbotModel()->load($productId);
     }
     public function getSpringbotModel()
     {
-		$om = ObjectManager::getInstance();
+        $om = ObjectManager::getInstance();
         return $om->create('Springbot\Main\Model\Api\Entity\Data\ProductV2');
     }
 }

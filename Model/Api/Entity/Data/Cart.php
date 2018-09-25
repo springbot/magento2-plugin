@@ -202,7 +202,7 @@ class Cart implements CartInterface
 
     public function getItems()
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['qi' => $resource->getTableName('quote_item')])
@@ -245,7 +245,7 @@ class Cart implements CartInterface
 
     private function fetchTrackable($column, $value, $type)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('springbot_trackable')])

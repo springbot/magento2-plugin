@@ -36,7 +36,7 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
         CategoryFactory $factory,
         StoreManagerInterface $storeManager
     ) {
-    
+
         $this->categoryFactory = $factory;
         $this->storeManager = $storeManager;
         parent::__construct($request, $resourceConnection);
@@ -49,7 +49,7 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
      */
     public function getList($storeId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['cce' => $resource->getTableName('catalog_category_entity')])
@@ -70,7 +70,7 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
      */
     public function getFromId($storeId, $categoryId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['cce' => $resource->getTableName('catalog_category_entity')])
@@ -81,7 +81,7 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
         }
         return null;
     }
-    
+
     private function createCategory($storeId, $row)
     {
         $category = $this->categoryFactory->create();

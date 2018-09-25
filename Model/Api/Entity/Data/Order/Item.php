@@ -74,10 +74,10 @@ class Item implements ItemInterface
         $this->parentProductId = $parentProductId;
         $this->productType = $productType;
         if ($parentProductId) {
-            $this->product =  $this->productRepository->getFromId($this->storeId, $parentProductId);
+            $this->product = $this->productRepository->getFromId($this->storeId, $parentProductId);
             $this->childProduct = $this->productRepository->getFromId($this->storeId, $productId);
         } else {
-            $this->product =  $this->productRepository->getFromId($this->storeId, $productId);
+            $this->product = $this->productRepository->getFromId($this->storeId, $productId);
         }
     }
 
@@ -173,8 +173,7 @@ class Item implements ItemInterface
         if ($this->product) {
             if ($url = $this->product->getImageUrl()) {
                 return $url;
-            }
-            else if ($this->childProduct) {
+            } elseif ($this->childProduct) {
                 return $this->childProduct->getImageUrl();
             }
         }

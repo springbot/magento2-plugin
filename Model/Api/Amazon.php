@@ -88,7 +88,7 @@ class Amazon implements AmazonInterface
             ->loadByEmail($buyerEmail);
 
         // Create the customer if it doesn't exist already
-        if (!$customer->getEntityId()) {
+        if (! $customer->getEntityId()) {
             $customer->setWebsiteId($websiteId)
                 ->setStore($store)
                 ->setFirstname($this->getFirstName($buyerName))
@@ -205,5 +205,4 @@ class Amazon implements AmazonInterface
         }
         return implode($pass);
     }
-
 }

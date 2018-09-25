@@ -21,7 +21,14 @@ interface AmazonInterface
      * @return \Springbot\Main\Api\Amazon\CreatedOrderInterface
      * @throws \Exception
      */
-    public function createOrder($id, $amazonOrderId, $localStoreId, $storeId, $buyerEmail, $buyerName, $shippingAddress,
-        $orderItems);
-
+    public function createOrder(
+        $id,
+        $amazonOrderId,
+        $localStoreId,
+        $storeId,
+        $buyerEmail,
+        $buyerName,
+        $shippingAddress,
+        $orderItems
+    );
 }

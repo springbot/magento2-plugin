@@ -13,5 +13,4 @@ interface RegisterStoresInterface
      * @return \Springbot\Main\Api\RegisterStoresInterface
      */
     public function registerStores();
-
 }

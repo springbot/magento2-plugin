@@ -35,7 +35,7 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
         InventoryFactory $factory,
         StoreManagerInterface $storeManager
     ) {
-    
+
         $this->inventoryFactory = $factory;
         $this->storeManager = $storeManager;
         parent::__construct($request, $resourceConnection);
@@ -84,7 +84,7 @@ class InventoryRepository extends AbstractRepository implements InventoryReposit
         if (($store = $this->storeManager->getStore($storeId)) === null) {
             throw new \Exception("Store not found: {$storeId}");
         }
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         return $conn->select()
             ->from(['stock' => $resource->getTableName('cataloginventory_stock_item')])

@@ -79,7 +79,7 @@ class AttributeSet implements AttributeSetInterface
      */
     public function getAttributes()
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_entity_attribute')} eaa
             LEFT JOIN {$resource->getTableName('eav_attribute')} ea
@@ -89,7 +89,6 @@ class AttributeSet implements AttributeSetInterface
 
         $attributes = [];
         foreach ($query->fetchAll() as $row) {
-
             $optionQuery = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option')} eao
                 LEFT JOIN {$resource->getTableName('eav_attribute_option_value')} eaov
                     ON (eao.option_id = eaov.option_id)
@@ -105,7 +104,7 @@ class AttributeSet implements AttributeSetInterface
             $attribute->setValues(
                 $row['attribute_id'],
                 $row['frontend_label'],
-                $row['attribute_code'], 
+                $row['attribute_code'],
                 $options
             );
             $attributes[] = $attribute;

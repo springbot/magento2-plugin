@@ -21,7 +21,7 @@ class Redirects extends AbstractRepository implements RedirectsInterface
 
     private $redirectFactory;
     private $urlRewriteFactory;
-    
+
     /**
      * @param \Magento\Framework\App\Request\Http $request
      * @param ResourceConnection                  $resourceConnection
@@ -34,7 +34,7 @@ class Redirects extends AbstractRepository implements RedirectsInterface
         RedirectFactory $redirectFactory,
         UrlRewriteFactory $urlRewriteFactory
     ) {
-    
+
         $this->redirectFactory = $redirectFactory;
         $this->urlRewriteFactory = $urlRewriteFactory;
         parent::__construct($request, $resourceConnection);
@@ -46,7 +46,7 @@ class Redirects extends AbstractRepository implements RedirectsInterface
      */
     public function getRedirects($storeId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['ur' => $resource->getTableName('url_rewrite')])

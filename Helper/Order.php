@@ -78,9 +78,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
         $this->marketplaces = $marketplacesData;
 
         if ($this->findOrCreateCustomer()) {
-
             if ($quote = $this->buildQuote()) {
-
                 $order = $this->cartManagement->submit($quote);
 
                 $tax = $this->marketplaces->getTax();
@@ -93,7 +91,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
                 $order->save();
 
                 if ($order->canInvoice()) {
-
                     $invoice = $this->invoiceService->prepareInvoice($order);
                     $invoice->register();
                     $transactionSave = $this->transaction->addObject(
@@ -120,7 +117,6 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
             ->save();
 
         foreach ($this->quoteItemsData as $itemData) {
-
             // Get product model by sku
             $product = $this->productRepository->get($itemData->getSku());
 
@@ -162,7 +158,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
     private function getStore()
     {
-        if (!isset($this->store)) {
+        if (! isset($this->store)) {
             $this->store = $this->storeRepository->getById($this->customerData->getStoreId());
         }
         return $this->store;
@@ -191,7 +187,7 @@ class Order extends \Magento\Framework\App\Helper\AbstractHelper
 
     private function findOrCreateCustomer()
     {
-        if (!isset($this->customer)) {
+        if (! isset($this->customer)) {
             try {
                 $this->customerData
                     ->setWebsiteId($this->getStore()->getWebsiteId())

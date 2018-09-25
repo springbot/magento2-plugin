@@ -79,7 +79,7 @@ class Address implements AddressInterface
      */
     public function toArray()
     {
-        $ret =  [
+        $ret = [
             "firstname"  => $this->getFirstName(),
             "lastname"   => $this->getLastName(),
             "telephone"  => $this->getPhone(),
@@ -225,7 +225,7 @@ class Address implements AddressInterface
      */
     private function getFirstName()
     {
-        $parts = explode(' ' , $this->getName());
+        $parts = explode(' ', $this->getName());
         array_pop($parts);
         return implode(' ', $parts);
     }
@@ -235,7 +235,7 @@ class Address implements AddressInterface
      */
     private function getLastName()
     {
-        $parts = explode(' ' , $this->getName());
+        $parts = explode(' ', $this->getName());
         return end($parts);
     }
 
@@ -259,10 +259,8 @@ class Address implements AddressInterface
         $upper = strtoupper($this->getStateOrRegion());
         if (isset($this->stateToCode[$upper])) {
             return $this->stateToCode[$upper];
-        }
-        else {
+        } else {
             return $upper;
         }
     }
-
 }

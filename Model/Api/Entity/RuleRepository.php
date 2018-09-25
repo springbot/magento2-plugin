@@ -29,14 +29,14 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
         ResourceConnection $resourceConnection,
         RuleFactory $factory
     ) {
-    
+
         $this->ruleFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
 
     public function getList($storeId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('salesrule')]);
@@ -51,7 +51,7 @@ class RuleRepository extends AbstractRepository implements RuleRepositoryInterfa
 
     public function getFromId($storeId, $ruleId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('salesrule')])

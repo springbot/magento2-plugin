@@ -29,7 +29,7 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
         ResourceConnection $resourceConnection,
         SubscriberFactory $factory
     ) {
-    
+
         $this->subscriberFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
@@ -40,7 +40,7 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
      */
     public function getList($storeId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('newsletter_subscriber')])
@@ -61,7 +61,7 @@ class SubscriberRepository extends AbstractRepository implements SubscriberRepos
      */
     public function getFromId($storeId, $subscriberId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('newsletter_subscriber')])

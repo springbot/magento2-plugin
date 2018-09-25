@@ -99,7 +99,7 @@ class Shipment implements ShipmentInterface
 
     public function getItems()
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['ssi' => $resource->getTableName('sales_shipment_item')])

@@ -45,7 +45,4 @@ class Price implements PriceInterface
     {
         $this->CurrencyCode = $CurrencyCode;
     }
-
-
-
 }

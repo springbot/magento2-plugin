@@ -67,7 +67,7 @@ class Guest implements GuestInterface
         $billingAddressId,
         $shippingAddressId
     ) {
-    
+
         $this->storeId = $storeId;
         $this->orderId = $orderId;
         $this->firstname = $firstname;
@@ -128,10 +128,10 @@ class Guest implements GuestInterface
     {
         return $this->fetchAddress($this->storeId, $this->shippingAddressId);
     }
-    
+
     private function fetchAddress($storeId, $id)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('sales_order_address')])

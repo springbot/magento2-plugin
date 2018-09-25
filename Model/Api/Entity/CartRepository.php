@@ -16,7 +16,7 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
 {
 
     private $cartFactory;
-    
+
     /**
      * CartRepository constructor.
      *
@@ -29,18 +29,18 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
         ResourceConnection $resourceConnection,
         CartFactory $factory
     ) {
-    
+
         $this->cartFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
-    
+
     /**
      * @param int $storeId
      * @return string[]
      */
     public function getList($storeId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['q' => $resource->getTableName('quote')])
@@ -60,7 +60,7 @@ class CartRepository extends AbstractRepository implements CartRepositoryInterfa
      */
     public function getFromId($storeId, $cartId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['q' => $resource->getTableName('quote')])

@@ -26,7 +26,7 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
         ResourceConnection $resourceConnection,
         AttributeSetFactory $factory
     ) {
-    
+
         $this->attributeSetFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
@@ -37,7 +37,7 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
      */
     public function getList($storeId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['eas' => $resource->getTableName('eav_attribute_set')])
@@ -59,7 +59,7 @@ class AttributeSetRepository extends AbstractRepository implements AttributeSetR
      */
     public function getFromId($storeId, $attributeSetId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['eas' => $resource->getTableName('eav_attribute_set')])

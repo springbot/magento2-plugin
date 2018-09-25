@@ -12,22 +12,22 @@ use Springbot\Main\Model\Api\Entity\Data\Product\ProductAttribute;
 /**
  * Class Order
  *
- *	Reference pages: 
+ *  Reference pages:
  *  Springbot\Main\Model\Api\Entity\AbstractRepository
  *  Springbot\Main\Model\Api\Entity\ProductRepository
- *	Springbot\Main\Api\Entity\Data\ProductRepositoryInterface
- *	Springbot\Main\Api\Entity\Data\ProductInterface
- *	
- *	
+ *  Springbot\Main\Api\Entity\Data\ProductRepositoryInterface
+ *  Springbot\Main\Api\Entity\Data\ProductInterface
+ *
+ *
  * @package Springbot\Main\Model\Handler
  */
- 
+
 class ProductV2 extends MagentoProduct implements ProductInterfaceV2
 {
-	public $categoryIds = [];
+    public $categoryIds = [];
     public $allCategoryIds = [];
-	
-	
+
+
     /**
      * @return mixed
      */
@@ -35,7 +35,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getEntityId();
     }
-	
+
     /**
      * @return mixed
      */
@@ -43,7 +43,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getName();
     }
-	
+
     /**
      * @return mixed
      */
@@ -51,7 +51,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getUrlKey();
     }
-	
+
     /**
      * @return mixed
      */
@@ -59,7 +59,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getSku();
     }
-	
+
     /**
      * @return mixed
      */
@@ -67,7 +67,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getTypeId();
     }
-	
+
     /**
      * @return mixed
      */
@@ -75,7 +75,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getStatus();
     }
-	
+
     /**
      * @return mixed
      */
@@ -83,7 +83,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getVisibility();
     }
-	
+
     /**
      * @return mixed
      */
@@ -91,7 +91,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getMsrp();
     }
-	
+
     /**
      * @return mixed
      */
@@ -99,7 +99,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getPrice();
     }
-	
+
     /**
      * @return mixed
      */
@@ -107,7 +107,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getCost();
     }
-	
+
     /**
      * @return mixed
      */
@@ -115,7 +115,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getWeight();
     }
-	
+
     /**
      * @return mixed
      */
@@ -123,7 +123,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getCreatedAt();
     }
-	
+
     /**
      * @return mixed
      */
@@ -131,7 +131,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getUpdatedAt();
     }
-	
+
     /**
      * @return mixed
      */
@@ -139,7 +139,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getDescription();
     }
-	
+
     /**
      * @return mixed
      */
@@ -147,7 +147,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getShortDescription();
     }
-	
+
     /**
      * @return mixed
      */
@@ -155,15 +155,15 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getCategoryIds();
     }
-	
+
     /**
      * @return mixed
      */
-	public function getRootCategoryIds()
-	{
+    public function getRootCategoryIds()
+    {
         return parent::getRootCategoryIds();
-	}
-	
+    }
+
     /**
      * @return mixed
      */
@@ -171,15 +171,14 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         $om = ObjectManager::getInstance();
         $resource = $om->get('Magento\Framework\App\ResourceConnection');
-		$version = $om->get('Magento\Framework\App\ProductMetadataInterface')->getVersion();
+        $version = $om->get('Magento\Framework\App\ProductMetadataInterface')->getVersion();
         $edition = $om->get('Magento\Framework\App\ProductMetadataInterface')->getEdition();
         if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
             $idColumnName = 'row_id';
-        }
-        else {
+        } else {
             $idColumnName = 'entity_id';
         }
-		
+
         $conn = $resource->getConnection();
         $query = $conn->query("SELECT * FROM {$resource->getTableName('catalog_category_product')}  ccp
           LEFT JOIN {$resource->getTableName('catalog_category_entity')} cce ON (ccp.category_id = cce.{$idColumnName})
@@ -191,23 +190,23 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
         }
         return array_unique($this->allCategoryIds);
     }
-	
+
     /**
      * @return mixed
      */
     public function getSpecialPrice()
     {
-       return parent::getSpecialPrice();
+        return parent::getSpecialPrice();
     }
-	
+
     /**
      * @return mixed
      */
-    public function getUrlInStore($params = array())
+    public function getUrlInStore($params = [])
     {
         return parent::getUrlInStore($params);
     }
-	
+
     /**
      * @return mixed
      */
@@ -215,16 +214,16 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getImageLabel();
     }
-	
+
     /**
      * @return mixed
      */
-	public function getCustomAttributeSetId()
+    public function getCustomAttributeSetId()
     {
         return parent::getAttributeSetId();
     }
-	    
-	/**
+
+    /**
      * @return mixed
      */
     public function getProductAttributes()
@@ -235,16 +234,16 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
         }
         return $attributes;
     }
-	
+
     /**
      * @return string
-     */	
+     */
     public function getDefaultUrl()
     {
         return $this->getProductUrl();
     }
-	    
-	/**
+
+    /**
      * @return string
      */
     public function getUrlIdPath()
@@ -253,8 +252,8 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
         $store = $om->get('Magento\Store\Model\StoreManagerInterface')->getStore();
         return $store->getBaseUrl(UrlInterface::URL_TYPE_WEB) . 'catalog/product/view/id/' . $this->getId();
     }
-	
-	/**
+
+    /**
      * @return null|string
      */
     public function getImageUrl()
@@ -263,8 +262,8 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
         $store = $om->get('Magento\Store\Model\StoreManagerInterface')->getStore();
         return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->getImage();
     }
-	
-	/**
+
+    /**
      * @return string[]
      */
     public function getParentSkus()
@@ -272,7 +271,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
         $om = ObjectManager::getInstance();
         $typeConfigurable = $om->get('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable');
         $parentIds = $typeConfigurable->getParentIdsByChild($this->getId());
-        $skus = array();
+        $skus = [];
         $productLoader = $om->get('Magento\Catalog\Model\ProductFactory');
         foreach ($parentIds as $parentId) {
             $parent = $productLoader->create()->load($parentId);
@@ -280,7 +279,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
         }
         return $skus;
     }
-	
+
     /**
      * @return string
      */
@@ -291,8 +290,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
         $edition = $om->get('Magento\Framework\App\ProductMetadataInterface')->getEdition();
         if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
             return 'row_id';
-        }
-        else {
+        } else {
             return 'entity_id';
         }
     }

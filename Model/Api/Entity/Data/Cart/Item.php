@@ -82,7 +82,7 @@ class Item implements ItemInterface
         if (isset($this->product)) {
             return $this->product;
         } else {
-            if (!($productId = $this->parentProductId)) {
+            if (! ($productId = $this->parentProductId)) {
                 $productId = $this->productId;
             }
             $this->product = $this->productRepository->getFromId($this->storeId, $productId);

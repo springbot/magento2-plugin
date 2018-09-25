@@ -28,5 +28,4 @@ interface CreatedOrderInterface
      * @return int
      */
     public function getStoreId();
-
 }
