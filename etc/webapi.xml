@@ -217,19 +217,6 @@
             <resource ref="Springbot_Main::api"/>
         </resources>
     </route>
-	
-    <route url="/V2/springbot/main/stores/:storeId/products" method="GET">
-        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterfaceV2" method="getList"/>
-        <resources>
-            <resource ref="Springbot_Main::api"/>
-        </resources>
-    </route>
-    <route url="/V2/springbot/main/stores/:storeId/products/:productId" method="GET">
-        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterfaceV2" method="getFromId"/>
-        <resources>
-            <resource ref="Springbot_Main::api"/>
-        </resources>
-    </route>
 
     <route url="/V1/springbot/main/stores/:storeId/rules" method="GET">
         <service class="Springbot\Main\Api\Entity\RuleRepositoryInterface" method="getList"/>
@@ -258,4 +245,245 @@
     </route>
     <!-- End store endpoints -->
 
+    <!-- Begin instance V2 endpoints -->
+    <route url="/V2/springbot/main/log/retrieve" method="POST">
+        <service class="Springbot\Main\Api\LogInterface" method="retrieve"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/log/lineCount" method="POST">
+        <service class="Springbot\Main\Api\LogInterface" method="lineCount"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/log/fileSize" method="POST">
+        <service class="Springbot\Main\Api\LogInterface" method="fileSize"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/cache/clean" method="POST">
+        <service class="Springbot\Main\Api\CacheInterface" method="clean"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/cache/types" method="GET">
+        <service class="Springbot\Main\Api\CacheInterface" method="getAvailableTypes"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/cache/status" method="GET">
+        <service class="Springbot\Main\Api\CacheInterface" method="getStatus"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/config" method="GET">
+        <service class="Springbot\Main\Api\ConfigInterface" method="getConfig"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/config" method="POST">
+        <service class="Springbot\Main\Api\ConfigInterface" method="saveConfig"/>
+        <resources>
+            <resource ref="Springbot_Main::api" />
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/register" method="POST">
+        <service class="Springbot\Main\Api\RegisterStoresInterface" method="registerStores"/>
+        <resources>
+            <resource ref="Springbot_Main::api" />
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/modules" method="GET">
+        <service class="Springbot\Main\Api\ModulesInterface" method="getModules"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores" method="GET">
+        <service class="Springbot\Main\Api\StoresInterface" method="getStores"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId" method="GET">
+        <service class="Springbot\Main\Api\StoresInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <!-- End instance V2 endpoints -->
+
+
+    <!-- Begin store V2 endpoints -->
+    <route url="/V2/springbot/main/stores/:localStoreId/amazon" method="POST">
+        <service class="Springbot\Main\Api\AmazonInterface" method="createOrder"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/redirects" method="GET">
+        <service class="Springbot\Main\Api\RedirectsInterface" method="getRedirects"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/redirects" method="POST">
+        <service class="Springbot\Main\Api\RedirectsInterface" method="createRedirect"/>
+        <resources>
+            <resource ref="Springbot_Main::api" />
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/counts" method="GET">
+        <service class="Springbot\Main\Api\CountsInterface" method="getCounts"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/attribute-sets" method="GET">
+        <service class="Springbot\Main\Api\Entity\AttributeSetRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/attribute-sets/:attributeSetId" method="GET">
+        <service class="Springbot\Main\Api\Entity\AttributeSetRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/carts" method="GET">
+        <service class="Springbot\Main\Api\Entity\CartRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/carts/:cartId" method="GET">
+        <service class="Springbot\Main\Api\Entity\CartRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/categories" method="GET">
+        <service class="Springbot\Main\Api\Entity\CategoryRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/categories/:categoryId" method="GET">
+        <service class="Springbot\Main\Api\Entity\CategoryRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/customers" method="GET">
+        <service class="Springbot\Main\Api\Entity\CustomerRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/customers/:customerId" method="GET">
+        <service class="Springbot\Main\Api\Entity\CustomerRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/guests" method="GET">
+        <service class="Springbot\Main\Api\Entity\GuestRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/guests/:guestId" method="GET">
+        <service class="Springbot\Main\Api\Entity\GuestRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/inventory" method="GET">
+        <service class="Springbot\Main\Api\Entity\InventoryRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/inventory/:inventoryId" method="GET">
+        <service class="Springbot\Main\Api\Entity\InventoryRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/orders" method="GET">
+        <service class="Springbot\Main\Api\Entity\OrderRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/orders" method="PUT">
+        <service class="Springbot\Main\Api\Entity\OrderRepositoryInterface" method="create"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/orders/:orderId" method="GET">
+        <service class="Springbot\Main\Api\Entity\OrderRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/products" method="GET">
+        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterfaceV2" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/products/:productId" method="GET">
+        <service class="Springbot\Main\Api\Entity\ProductRepositoryInterfaceV2" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/rules" method="GET">
+        <service class="Springbot\Main\Api\Entity\RuleRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/rules/:ruleId" method="GET">
+        <service class="Springbot\Main\Api\Entity\RuleRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+
+    <route url="/V2/springbot/main/stores/:storeId/subscribers" method="GET">
+        <service class="Springbot\Main\Api\Entity\SubscriberRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/stores/:storeId/subscribers/:subscriberId" method="GET">
+        <service class="Springbot\Main\Api\Entity\SubscriberRepositoryInterface" method="getFromId"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <!-- End store V2 endpoints -->
 </routes>
