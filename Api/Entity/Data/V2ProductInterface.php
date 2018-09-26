@@ -2,10 +2,10 @@
 namespace Springbot\Main\Api\Entity\Data;
 
 /**
- * Interface ProductInterfaceV2
+ * Interface V2ProductInterface
  * @package Springbot\Main\Api
  */
-interface ProductInterfaceV2
+interface V2ProductInterface
 {
     /**
      * @return int
@@ -112,7 +112,7 @@ interface ProductInterfaceV2
      */
     public function getCustomAttributeSetId();
     /**
-     * @return \Springbot\Main\Api\Entity\Data\Product\ProductAttributeInterfaceV2[]
+     * @return \Springbot\Main\Api\Entity\Data\Product\V2ProductAttributeInterface[]
      */
     public function getProductAttributes();
 }

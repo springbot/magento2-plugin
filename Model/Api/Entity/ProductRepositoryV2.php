@@ -4,7 +4,7 @@ namespace Springbot\Main\Model\Api\Entity;
 
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Model\AbstractModel;
-use Springbot\Main\Api\Entity\ProductRepositoryInterfaceV2;
+use Springbot\Main\Api\Entity\V2ProductRepositoryInterface;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\App\ResourceConnection;
 use Springbot\Main\Model\Api\Entity\Data\ProductFactory;
@@ -14,7 +14,7 @@ use Magento\Store\Model\StoreManagerInterface;
  * Class ProductRepository
  * @package Springbot\Main\Model\Api\Entity
  */
-class ProductRepositoryV2 extends AbstractRepository implements ProductRepositoryInterfaceV2
+class V2ProductRepository extends AbstractRepository implements V2ProductRepositoryInterface
 {
     /* @var ProductFactory $productFactory */
     protected $productFactory;
@@ -68,6 +68,6 @@ class ProductRepositoryV2 extends AbstractRepository implements ProductRepositor
     public function getSpringbotModel()
     {
         $om = ObjectManager::getInstance();
-        return $om->create('Springbot\Main\Model\Api\Entity\Data\ProductV2');
+        return $om->create('Springbot\Main\Model\Api\Entity\Data\V2Product');
     }
 }

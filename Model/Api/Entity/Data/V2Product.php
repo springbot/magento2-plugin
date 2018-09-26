@@ -2,7 +2,7 @@
 
 namespace Springbot\Main\Model\Api\Entity\Data;
 
-use Springbot\Main\Api\Entity\Data\ProductInterfaceV2;
+use Springbot\Main\Api\Entity\Data\V2ProductInterface;
 use Magento\Catalog\Model\Product\Image as MagentoProductImage;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\UrlInterface;
@@ -22,7 +22,7 @@ use Springbot\Main\Model\Api\Entity\Data\Product\ProductAttribute;
  * @package Springbot\Main\Model\Handler
  */
  
-class ProductV2 extends MagentoProduct implements ProductInterfaceV2
+class V2Product extends MagentoProduct implements V2ProductInterface
 {
     public $categoryIds = [];
     public $allCategoryIds = [];
