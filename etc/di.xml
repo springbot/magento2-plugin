@@ -62,6 +62,10 @@
     <preference for="Springbot\Main\Api\Entity\ProductRepositoryInterface"
                 type="Springbot\Main\Model\Api\Entity\ProductRepository"/>
     <preference for="Springbot\Main\Api\Entity\Data\ProductInterface" type="Springbot\Main\Model\Api\Entity\Data\Product"/>
+	
+    <preference for="Springbot\Main\Api\Entity\V2ProductRepositoryInterface"
+                type="Springbot\Main\Model\Api\Entity\V2ProductRepository"/>
+    <preference for="Springbot\Main\Api\Entity\Data\V2ProductInterface" type="Springbot\Main\Model\Api\Entity\Data\V2Product"/>
 
     <preference for="Springbot\Main\Api\Entity\RuleRepositoryInterface"
                 type="Springbot\Main\Model\Api\Entity\RuleRepository"/>
