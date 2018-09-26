@@ -21,13 +21,8 @@ use Springbot\Main\Model\Api\Entity\Data\Product\ProductAttribute;
  *
  * @package Springbot\Main\Model\Handler
  */
-<<<<<<< HEAD:Model/Api/Entity/Data/V2Product.php
-
-class ProductV2 extends MagentoProduct implements ProductInterfaceV2
-=======
  
 class V2Product extends MagentoProduct implements V2ProductInterface
->>>>>>> master:Model/Api/Entity/Data/V2Product.php
 {
     public $categoryIds = [];
     public $allCategoryIds = [];
@@ -298,23 +293,4 @@ class V2Product extends MagentoProduct implements V2ProductInterface
             return 'entity_id';
         }
     }
-<<<<<<< HEAD:Model/Api/Entity/Data/V2Product.php
-	    
-	private function loadCategories()
-    {
-        $idColumnName = $this->getIdColumnName();
-        $conn = ResourceConnection::getConnection();
-        $query = $conn->query("SELECT * FROM {ResourceConnection::getTableName('catalog_category_product')}  ccp
-          LEFT JOIN {ResourceConnection::getTableName('catalog_category_entity')} cce ON (ccp.category_id = cce.{$idColumnName})
-          WHERE product_id = :{$idColumnName}", [$idColumnName => $this->productId]);
-        foreach ($query->fetchAll() as $row) {
-            $allParents = explode('/', $row['path']);
-            $this->categoryIds[] = $row['category_id'];
-            $this->allCategoryIds = array_merge($allParents, $this->allCategoryIds);
-        }
-        $this->allCategoryIds = array_unique($this->allCategoryIds);
-    }
 }
-=======
-}
->>>>>>> master:Model/Api/Entity/Data/V2Product.php
