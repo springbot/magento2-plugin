@@ -309,8 +309,13 @@ class Product implements ProductInterface
         if (! $this->imagePath) {
             return null;
         }
+        if (mb_substr($this->imagePath, 0, 1) != '/') {
+          $bufferSlash = '/';
+        } else {
+          $bufferSlash = '';
+        }
         $store = $this->storeManager->getStore($this->storeId);
-        return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $this->imagePath;
+        return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $bufferSlash . $this->imagePath;
     }
 
     /**
