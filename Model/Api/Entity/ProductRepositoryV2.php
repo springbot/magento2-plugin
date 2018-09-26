@@ -55,37 +55,19 @@ class ProductRepositoryV2 extends AbstractRepository implements ProductRepositor
         $this->filterResults($select);
         $ret = [];
         foreach ($conn->fetchAll($select) as $row) {
-            $ret[] = $this->createProduct($storeId, $row);
+            $ret[] = $this->getFromId($storeId, $row['entity_id']);
         }
         return $ret;
     }
 
     public function getFromId($storeId, $productId)
     {
-        $resource =  $this->resourceConnection;
-        $conn = $resource->getConnection();
-        $select = $conn->select()
-            ->from([$resource->getTableName('catalog_product_entity')])
-            ->where('entity_id = ?', $productId);
-
-        foreach ($conn->fetchAll($select) as $row) {
-            return $this->createProduct($storeId, $row);
-        }
-        return null;
+        return $this->getSpringbotModel()->load($productId);
     }
 
-    private function createProduct($storeId, $row)
+    public function getSpringbotModel()
     {
-        $product = $this->productFactory->create();
-        $product->setValues(
-            $storeId,
-            $row['entity_id'],
-            $row['sku'],
-            $row['type_id'],
-            $row['created_at'],
-            $row['updated_at'],
-            $row['attribute_set_id']
-        );
-        return $product;
+        $om = ObjectManager::getInstance();
+        return $om->create('Springbot\Main\Model\Api\Entity\Data\ProductV2');
     }
 }
