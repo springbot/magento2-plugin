@@ -320,7 +320,7 @@ class Rule implements RuleInterface
      */
     public function getCustomerGroupIds()
     {
-        $resource =  $this->connectionResource;
+        $resource = $this->connectionResource;
         $conn = $resource->getConnection();
         $idColumnName = $this->getIdColumnName();
         $select = $conn->select()
@@ -344,10 +344,8 @@ class Rule implements RuleInterface
 
         if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
             return 'row_id';
-        }
-        else {
+        } else {
             return 'rule_id';
         }
     }
-
-} 
+}

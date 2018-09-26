@@ -48,7 +48,7 @@ class Marketplaces extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
      */
     public function collectRates(RateRequest $request)
     {
-        if (!$this->getConfigFlag('active')) {
+        if (! $this->getConfigFlag('active')) {
             return false;
         }
 

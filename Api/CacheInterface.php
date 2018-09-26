@@ -13,7 +13,7 @@ interface CacheInterface
      * @param string $cacheType
      * @return string|null
      */
-    public function clean($cacheType=null);
+    public function clean($cacheType = null);
 
 
     /**

@@ -35,7 +35,7 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         ProductFactory $factory,
         StoreManagerInterface $storeManager
     ) {
-    
+
         $this->storeManager = $storeManager;
         $this->productFactory = $factory;
         parent::__construct($request, $resourceConnection);
@@ -47,7 +47,7 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
             throw new \Exception("Store not found");
         }
         $websiteId = $store->getWebsiteId();
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['cpw' => $resource->getTableName('catalog_product_website')])
@@ -64,7 +64,7 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 
     public function getFromId($storeId, $productId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('catalog_product_entity')])

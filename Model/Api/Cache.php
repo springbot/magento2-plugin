@@ -35,8 +35,8 @@ class Cache extends AbstractModel implements CacheInterface
      */
     private $pool;
 
-    protected $cacheTypes = array
-    (
+    protected $cacheTypes =
+    [
         'layout',
         'block_html',
         'collections',
@@ -48,7 +48,7 @@ class Cache extends AbstractModel implements CacheInterface
         'full_page',
         'translate',
         'config_webservice'
-    );
+    ];
 
     /**
      * @param TypeListInterface $cacheTypeList
@@ -71,7 +71,7 @@ class Cache extends AbstractModel implements CacheInterface
      * @param string $cacheType
      * @return string|null
      */
-    public function clean($cacheType=null)
+    public function clean($cacheType = null)
     {
         if ($cacheType) {
             if (in_array($cacheType, $this->cacheTypes, true)) {
@@ -82,7 +82,7 @@ class Cache extends AbstractModel implements CacheInterface
                 $this->cacheTypeList->cleanType($type);
             }
         }
-        return array('success');
+        return ['success'];
     }
 
 
@@ -112,5 +112,4 @@ class Cache extends AbstractModel implements CacheInterface
         }
         return $result;
     }
-
 }

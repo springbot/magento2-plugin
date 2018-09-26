@@ -41,14 +41,14 @@ class Index extends Action
             $email = str_replace(' ', '+', $email);
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $quote = $this->session->getQuote();
-                if (!$quote->getCustomerEmail()) {
+                if (! $quote->getCustomerEmail()) {
                     $hasQuoteAlready = true;
-                    if (!$quote->hasEntityId()) {
+                    if (! $quote->hasEntityId()) {
                         $hasQuoteAlready = false;
                     }
                     $quote->setCustomerEmail($email);
                     $quote->save();
-                    if (!$hasQuoteAlready) {
+                    if (! $hasQuoteAlready) {
                         $this->session->setQuoteId($quote->getId());
                     }
                 }
@@ -60,5 +60,4 @@ class Index extends Action
         $resultJson->setData(new \stdClass());
         return $resultJson;
     }
-
 }

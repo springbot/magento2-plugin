@@ -35,12 +35,12 @@ class Log extends AbstractModel implements LogInterface
     public function lineCount($filename = "system")
     {
         $path = self::$docroot . $filename . '.log';
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             return 'File not found: ' . self::$docroot . $filename;
         }
         $linecount = 0;
         $file = fopen($path, "r");
-        while (!feof($file)) {
+        while (! feof($file)) {
             $line = fgets($file);
             $linecount++;
         }
@@ -59,11 +59,11 @@ class Log extends AbstractModel implements LogInterface
      */
     public function fileSize($filename = "system", $precision = 2)
     {
-        if (!file_exists(self::$docroot . $filename . '.log')) {
+        if (! file_exists(self::$docroot . $filename . '.log')) {
             return 'File not found: ' . self::$docroot . $filename;
         }
         $bytes = fileSize(self::$docroot . $filename . '.log');
-        $units = array("b", "kb", "mb", "gb", "tb");
+        $units = ["b", "kb", "mb", "gb", "tb"];
 
         $bytes = max($bytes, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
@@ -73,7 +73,7 @@ class Log extends AbstractModel implements LogInterface
 
         return round($bytes, $precision) . " " . $units[$pow];
     }
-    
+
     /**
      * Retrieve logs from the specified file. Will return the last 100 lines by default.
      * You may specify a specific line count to view.
@@ -86,7 +86,7 @@ class Log extends AbstractModel implements LogInterface
     public function retrieve($filename = "system", $lineCount = 100)
     {
         $path = self::$docroot . $filename . '.log';
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             return 'File not found: ' . self::$docroot . $filename;
         }
         $total = $this->lineCount($filename);
@@ -97,7 +97,7 @@ class Log extends AbstractModel implements LogInterface
         }
         $handle = fopen($path, "r");
         $x = 0;
-        while (!feof($handle)) {
+        while (! feof($handle)) {
             $line = trim(fgets($handle));
             if ($x >= $startPoint) {
                 $out[] = $line;

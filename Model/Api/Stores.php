@@ -35,7 +35,7 @@ class Stores implements StoresInterface
      */
     public function getStores()
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['s' => $resource->getTableName('store')])
@@ -58,7 +58,7 @@ class Stores implements StoresInterface
      */
     public function getFromId($storeId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['s' => $resource->getTableName('store')])

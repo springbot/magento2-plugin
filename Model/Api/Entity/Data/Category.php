@@ -46,8 +46,8 @@ class Category implements CategoryInterface
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
         ProductMetadataInterface $productMetadata
-    )
-    {
+    ) {
+
         $this->resourceConnection = $resourceConnection;
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
@@ -144,12 +144,11 @@ class Category implements CategoryInterface
 
         if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
             $idColumnName = 'row_id';
-        }
-        else {
+        } else {
             $idColumnName = 'entity_id';
         }
 
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $query = $conn->query("
             SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
@@ -183,9 +182,9 @@ class Category implements CategoryInterface
             WHERE (cce.{$idColumnName} = :{$idColumnName});
         ", [$idColumnName => $this->categoryId]);
 
-        foreach($query->fetchAll() as $attributeRow) {
+        foreach ($query->fetchAll() as $attributeRow) {
             $value = $attributeRow['value'];
-            switch($attributeRow['code']) {
+            switch ($attributeRow['code']) {
                 case 'name':
                     $this->name = $value;
                     break;
@@ -194,11 +193,8 @@ class Category implements CategoryInterface
                     break;
                 default:
                     if ($value !== null) {
-
                     }
             }
         }
     }
-
-
-} 
+}

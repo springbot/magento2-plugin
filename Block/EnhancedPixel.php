@@ -46,7 +46,7 @@ class EnhancedPixel extends Template
         StoreConfiguration $storeConfig,
         SpringbotHelper $springbotHelper
     ) {
-    
+
         $this->orderFactory = $orderFactory;
         $this->api = $api;
         $this->session = $session;
@@ -79,7 +79,7 @@ class EnhancedPixel extends Template
      */
     public function getLastOrder()
     {
-        if (!isset($this->order)) {
+        if (! isset($this->order)) {
             $this->order = $this->orderFactory->create()->load($this->getOrderId());
         }
         return $this->order;

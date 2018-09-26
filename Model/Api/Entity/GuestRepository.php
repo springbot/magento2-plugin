@@ -30,14 +30,14 @@ class GuestRepository extends AbstractRepository implements GuestRepositoryInter
         ResourceConnection $resourceConnection,
         GuestFactory $factory
     ) {
-    
+
         $this->guestFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
 
     public function getList($storeId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('sales_order')])
@@ -53,7 +53,7 @@ class GuestRepository extends AbstractRepository implements GuestRepositoryInter
 
     public function getFromId($storeId, $orderId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('sales_order')])

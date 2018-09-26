@@ -12,13 +12,13 @@ use Springbot\Main\Model\Api\Entity\Data\Product\ProductAttribute;
 /**
  * Class Order
  *
- *	Reference pages: 
+ *  Reference pages:
  *  Springbot\Main\Model\Api\Entity\AbstractRepository
  *  Springbot\Main\Model\Api\Entity\ProductRepository
- *	Springbot\Main\Api\Entity\Data\ProductRepositoryInterface
- *	Springbot\Main\Api\Entity\Data\ProductInterface
- *	
- *	
+ *  Springbot\Main\Api\Entity\Data\ProductRepositoryInterface
+ *  Springbot\Main\Api\Entity\Data\ProductInterface
+ *
+ *
  * @package Springbot\Main\Model\Handler
  */
  
@@ -174,8 +174,7 @@ class V2Product extends MagentoProduct implements V2ProductInterface
         $edition = $om->get('Magento\Framework\App\ProductMetadataInterface')->getEdition();
         if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
             $idColumnName = 'row_id';
-        }
-        else {
+        } else {
             $idColumnName = 'entity_id';
         }
 
@@ -196,13 +195,13 @@ class V2Product extends MagentoProduct implements V2ProductInterface
      */
     public function getSpecialPrice()
     {
-       return parent::getSpecialPrice();
+        return parent::getSpecialPrice();
     }
 
     /**
      * @return mixed
      */
-    public function getUrlInStore($params = array())
+    public function getUrlInStore($params = [])
     {
         return parent::getUrlInStore($params);
     }
@@ -271,7 +270,7 @@ class V2Product extends MagentoProduct implements V2ProductInterface
         $om = ObjectManager::getInstance();
         $typeConfigurable = $om->get('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable');
         $parentIds = $typeConfigurable->getParentIdsByChild($this->getId());
-        $skus = array();
+        $skus = [];
         $productLoader = $om->get('Magento\Catalog\Model\ProductFactory');
         foreach ($parentIds as $parentId) {
             $parent = $productLoader->create()->load($parentId);
@@ -290,8 +289,7 @@ class V2Product extends MagentoProduct implements V2ProductInterface
         $edition = $om->get('Magento\Framework\App\ProductMetadataInterface')->getEdition();
         if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
             return 'row_id';
-        }
-        else {
+        } else {
             return 'entity_id';
         }
     }

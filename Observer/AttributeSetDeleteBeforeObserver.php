@@ -28,7 +28,7 @@ class AttributeSetDeleteBeforeObserver implements ObserverInterface
         Queue $queue,
         StoreManagerInterface $storeManager
     ) {
-    
+
         $this->logger = $loggerInterface;
         $this->queue = $queue;
         $this->storeManager = $storeManager;

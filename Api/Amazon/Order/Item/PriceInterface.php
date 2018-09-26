@@ -28,5 +28,4 @@ interface PriceInterface
      * @param string $CurrencyCode
      */
     public function setCurrencyCode($CurrencyCode);
-
 }

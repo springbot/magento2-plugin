@@ -19,7 +19,7 @@ use Psr\Log\LoggerInterface;
 class Register
 {
     const api_class = 'stores';
-    const plugin_version =  '1.4.5.200';
+    const plugin_version = '1.4.5.200';
 
     private $api;
     private $helper;
@@ -99,7 +99,8 @@ class Register
             $url = $this->api->getApiUrl(Api::store_registration_path);
             $storesArray = $this->getStoresArray($stores);
 
-            $response = $this->api->post($url,
+            $response = $this->api->post(
+                $url,
                 json_encode([
                     'stores'         => $storesArray,
                     'plugin_version' => self::plugin_version,
@@ -109,7 +110,8 @@ class Register
                         'password'  => $password,
                         'api_token' => $apiToken
                     ]
-                ]));
+                ])
+            );
 
             if ($responseArray = json_decode($response->getBody(), true)) {
                 $securityToken = $responseArray['security_token'];
@@ -137,18 +139,15 @@ class Register
                                 $localStoreId,
                                 "Springbot Instagram redirect for store {$localStoreId}"
                             );
-                        }
-                        catch (\Throwable $t) {
+                        } catch (\Throwable $t) {
                             $this->logger->error($t->getMessage());
                         }
-
                     }
                 }
 
                 $this->cacheManager->flush(['config', 'block_html', 'config_api', 'config_api2']);
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         } catch (\Throwable $e) {
@@ -163,8 +162,8 @@ class Register
     {
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
-            if (!$this->storeConfig->getSpringbotStoreId($store->getId()) ||
-                !$this->storeConfig->getGuid($store->getId())
+            if (! $this->storeConfig->getSpringbotStoreId($store->getId()) ||
+                ! $this->storeConfig->getGuid($store->getId())
             ) {
                 return false;
             }
@@ -183,7 +182,6 @@ class Register
         $storesArray = [];
 
         foreach ($stores as $store) {
-
             $guid = $this->helper->getStoreGuid($store->getId());
 
             $storesArray[$guid] = [
@@ -209,8 +207,10 @@ class Register
 
     protected function getStoreAddress()
     {
-        return str_replace(["\n", "\r"],
+        return str_replace(
+            ["\n", "\r"],
             "|",
-            $this->scopeConfigInterface->getValue('general/store_information/address'));
+            $this->scopeConfigInterface->getValue('general/store_information/address')
+        );
     }
-} 
+}

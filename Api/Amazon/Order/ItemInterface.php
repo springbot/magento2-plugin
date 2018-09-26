@@ -335,5 +335,4 @@ interface ItemInterface
      * @param string $productId
      */
     public function setProductId($productId);
-
 }

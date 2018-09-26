@@ -52,7 +52,7 @@ class Oauth
         if ($consumerId = $integration->getConsumerId()) {
             $this->oauthService->createAccessToken($integration->getConsumerId());
             $accessToken = $this->oauthService->getAccessToken($integration->getConsumerId());
-            if (!$accessToken->isEmpty()) {
+            if (! $accessToken->isEmpty()) {
                 return $accessToken->getToken();
             }
         }

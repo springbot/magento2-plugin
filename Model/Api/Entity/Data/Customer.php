@@ -124,7 +124,7 @@ class Customer implements CustomerInterface
      */
     public function getHasPurchase()
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $query = $conn->query("SELECT COUNT(*) AS count FROM {$resource->getTableName('sales_order')} WHERE customer_id = :customer_id", ['customer_id' => $this->customerId]);
         $result = $query->fetch();
@@ -133,7 +133,7 @@ class Customer implements CustomerInterface
 
     public function getCustomerAttributes()
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $query = $conn->query(
             "
@@ -192,7 +192,7 @@ class Customer implements CustomerInterface
 
     private function fetchAddress($storeId, $id)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('customer_address_entity')])

@@ -38,7 +38,7 @@ class RegisterStores implements RegisterStoresInterface
         $registerModel = $this->registerFactory->create();
         $apiToken = $this->scopeConfig->getValue('springbot/configuration/security_token');
 
-        if (!$apiToken) {
+        if (! $apiToken) {
             throw new \Exception("Could not register stores, security token not set");
         }
 
@@ -47,5 +47,4 @@ class RegisterStores implements RegisterStoresInterface
 
         return $this;
     }
-
 }

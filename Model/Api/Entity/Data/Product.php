@@ -72,8 +72,8 @@ class Product implements ProductInterface
         UrlInterface $urlInterface,
         ScopeConfigInterface $scopeConfig,
         ProductMetadataInterface $productMetadata
-    )
-    {
+    ) {
+
         $this->productRepository = $productRepository;
         $this->connectionResource = $connectionResource;
         $this->storeManager = $storeManager;
@@ -91,7 +91,7 @@ class Product implements ProductInterface
      * @param $updatedAt
      * @param $customAttributeSetId
      */
-    public function setValues($storeId, $productId, $sku, $type,  $createdAt, $updatedAt,  $customAttributeSetId)
+    public function setValues($storeId, $productId, $sku, $type, $createdAt, $updatedAt, $customAttributeSetId)
     {
         $this->storeId = $storeId;
         $this->productId = $productId;
@@ -306,7 +306,7 @@ class Product implements ProductInterface
      */
     public function getImageUrl()
     {
-        if (!$this->imagePath) {
+        if (! $this->imagePath) {
             return null;
         }
         $store = $this->storeManager->getStore($this->storeId);
@@ -319,7 +319,7 @@ class Product implements ProductInterface
     public function getParentSkus()
     {
         $idColumnName = $this->getIdColumnName();
-        $resource =  $this->connectionResource;
+        $resource = $this->connectionResource;
         $conn = $resource->getConnection();
         $query = $conn->query("SELECT cpe.sku,cpe.type_id FROM {$resource->getTableName('catalog_product_relation')} cper
             LEFT JOIN {$resource->getTableName('catalog_product_entity')} cpe
@@ -328,9 +328,9 @@ class Product implements ProductInterface
         ", [$idColumnName => $this->productId]);
         $skus = [];
         foreach ($query->fetchAll() as $parentRow) {
-          if ($parentRow['type_id'] != 'bundle') {
-            $skus[] = $parentRow['sku'];
-          }
+            if ($parentRow['type_id'] != 'bundle') {
+                $skus[] = $parentRow['sku'];
+            }
         }
         return $skus;
     }
@@ -338,7 +338,7 @@ class Product implements ProductInterface
     private function loadAttributes()
     {
         $idColumnName = $this->getIdColumnName();
-        $resource =  $this->connectionResource;
+        $resource = $this->connectionResource;
         $conn = $resource->getConnection();
         $query = $conn->query("
             SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
@@ -372,9 +372,9 @@ class Product implements ProductInterface
             WHERE (cpe.{$idColumnName} = :{$idColumnName});
         ", [$idColumnName => $this->productId]);
 
-        foreach($query->fetchAll() as $attributeRow) {
+        foreach ($query->fetchAll() as $attributeRow) {
             $value = $attributeRow['value'];
-            switch($attributeRow['code']) {
+            switch ($attributeRow['code']) {
                 case 'name':
                     $this->name = $value;
                     break;
@@ -416,7 +416,8 @@ class Product implements ProductInterface
                     break;
                 default:
                     if ($value !== null) {
-                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value); ;
+                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
+                        ;
                     }
             }
         }
@@ -425,7 +426,7 @@ class Product implements ProductInterface
     private function loadCategories()
     {
         $idColumnName = $this->getIdColumnName();
-        $resource =  $this->connectionResource;
+        $resource = $this->connectionResource;
         $conn = $resource->getConnection();
         $query = $conn->query("SELECT * FROM {$resource->getTableName('catalog_category_product')}  ccp
           LEFT JOIN {$resource->getTableName('catalog_category_entity')} cce ON (ccp.category_id = cce.{$idColumnName})
@@ -448,11 +449,8 @@ class Product implements ProductInterface
 
         if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
             return 'row_id';
-        }
-        else {
+        } else {
             return 'entity_id';
         }
     }
-
-
 }

@@ -33,14 +33,14 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         ResourceConnection $resourceConnection,
         CustomerFactory $factory
     ) {
-    
+
         $this->customerFactory = $factory;
         parent::__construct($request, $resourceConnection);
     }
 
     public function getList($storeId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['ce' => $resource->getTableName('customer_entity')])
@@ -55,7 +55,7 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
 
     public function getFromId($storeId, $customerId)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('customer_entity')])
@@ -65,7 +65,7 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         }
         return null;
     }
-    
+
     private function createCustomer($storeId, $row)
     {
         $customer = $this->customerFactory->create();
@@ -87,7 +87,7 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
         if (isset($this->customerAttributeSetId)) {
             return $this->customerAttributeSetId;
         }
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['eas' => $resource->getTableName('eav_attribute_set')])

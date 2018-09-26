@@ -240,7 +240,7 @@ class Order implements OrderInterface
      */
     public function getShipments()
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['ss' => $resource->getTableName('sales_shipment')])
@@ -278,7 +278,7 @@ class Order implements OrderInterface
      */
     public function getPayment()
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('sales_order_payment')])
@@ -324,7 +324,7 @@ class Order implements OrderInterface
         if (isset($this->redirectMongoIds)) {
             return $this->redirectMongoIds;
         }
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('springbot_order_redirect')])
@@ -344,7 +344,7 @@ class Order implements OrderInterface
      */
     public function getItems()
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['soi' => $resource->getTableName('sales_order_item')])
@@ -373,8 +373,7 @@ class Order implements OrderInterface
 
                 // Magento creates two items for parent/child products, but we only want one
                 $toRemove[] = $row['parent_item_id'];
-            }
-            else {
+            } else {
                 $parentSku = $row['sku'];
             }
 
@@ -404,7 +403,6 @@ class Order implements OrderInterface
         }
 
         return array_values($ret);
-
     }
 
     public function getCartUserAgent()
@@ -419,7 +417,7 @@ class Order implements OrderInterface
 
     private function fetchTrackable($column, $value, $type)
     {
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from([$resource->getTableName('springbot_trackable')])
@@ -430,5 +428,4 @@ class Order implements OrderInterface
             return $row['value'];
         }
     }
-
 }

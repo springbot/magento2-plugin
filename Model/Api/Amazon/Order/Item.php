@@ -573,5 +573,4 @@ class Item implements ItemInterface
     {
         $this->productId = $productId;
     }
-
 }

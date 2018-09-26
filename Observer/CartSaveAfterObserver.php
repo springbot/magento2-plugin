@@ -34,7 +34,7 @@ class CartSaveAfterObserver implements ObserverInterface
         CookieManagerInterface $session,
         Http $request
     ) {
-    
+
         $this->logger = $loggerInterface;
         $this->queue = $queue;
         $this->springbotTrackable = $springbotTrackable;

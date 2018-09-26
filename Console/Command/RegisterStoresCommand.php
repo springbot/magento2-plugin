@@ -84,7 +84,7 @@ class RegisterStoresCommand extends Command
         foreach ($this->storeManager->getStores() as $store) {
             /* @var \Magento\Store\Model\Store\Interceptor $store */
             $registered = $this->addToTable($table, $store, 'Already registered, no action taken');
-            if (!$registered) {
+            if (! $registered) {
                 $storesToRegister[] = $store;
             }
         }

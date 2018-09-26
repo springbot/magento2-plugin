@@ -38,7 +38,7 @@ class OrderSaveAfterObserver implements ObserverInterface
         SpringbotTrackable $springbotTrackable,
         Http $request
     ) {
-    
+
         $this->logger = $loggerInterface;
         $this->queue = $queue;
         $this->orderRedirect = $orderRedirect;

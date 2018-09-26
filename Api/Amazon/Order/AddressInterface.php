@@ -93,5 +93,4 @@ interface AddressInterface
      * @return string[]
      */
     public function toArray();
-
 }

@@ -35,12 +35,12 @@ abstract class AbstractRepository
     public function filterResults(Select $select)
     {
         $page = $this->request->getQuery('page', 1);
-        if (!is_numeric($page)) {
+        if (! is_numeric($page)) {
             throw new \Exception("Page {$page} is not a valid integer");
         }
 
         $limit = $this->request->getQuery('limit', 100);
-        if (!is_numeric($limit)) {
+        if (! is_numeric($limit)) {
             throw new \Exception("Limit {$limit} is not a valid integer");
         }
 

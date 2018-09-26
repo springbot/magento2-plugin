@@ -46,7 +46,7 @@ class V2ProductRepository extends AbstractRepository implements V2ProductReposit
             throw new \Exception("Store not found");
         }
         $websiteId = $store->getWebsiteId();
-        $resource =  $this->resourceConnection;
+        $resource = $this->resourceConnection;
         $conn = $resource->getConnection();
         $select = $conn->select()
             ->from(['cpw' => $resource->getTableName('catalog_product_website')])
