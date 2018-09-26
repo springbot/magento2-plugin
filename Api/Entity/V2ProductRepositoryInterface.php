@@ -3,11 +3,11 @@
 namespace Springbot\Main\Api\Entity;
 
 /**
- * Interface ProductRepositoryInterfaceV2
+ * Interface V2ProductRepositoryInterface
  *
  * @package Springbot\Main\Api
  */
-interface ProductRepositoryInterfaceV2
+interface V2ProductRepositoryInterface
 {
     /**
      * @param int $storeId

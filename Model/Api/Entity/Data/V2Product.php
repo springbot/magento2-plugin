@@ -2,7 +2,7 @@
 
 namespace Springbot\Main\Model\Api\Entity\Data;
 
-use Springbot\Main\Api\Entity\Data\ProductInterfaceV2;
+use Springbot\Main\Api\Entity\Data\V2ProductInterface;
 use Magento\Catalog\Model\Product\Image as MagentoProductImage;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\UrlInterface;
@@ -21,40 +21,17 @@ use Springbot\Main\Model\Api\Entity\Data\Product\ProductAttribute;
  *
  * @package Springbot\Main\Model\Handler
  */
+<<<<<<< HEAD:Model/Api/Entity/Data/V2Product.php
 
 class ProductV2 extends MagentoProduct implements ProductInterfaceV2
+=======
+ 
+class V2Product extends MagentoProduct implements V2ProductInterface
+>>>>>>> master:Model/Api/Entity/Data/V2Product.php
 {
     public $categoryIds = [];
     public $allCategoryIds = [];
-    public $storeId;
-    public $productId;
-    public $sku;
-    public $type;
-    public $createdAt;
-    public $updatedAt;
-    public $customAttributeSetId;
-	
-    /**
-     * @param $storeId
-     * @param $productId
-     * @param $sku
-     * @param $type
-     * @param $createdAt
-     * @param $updatedAt
-     * @param $customAttributeSetId
-     */
-    public function setValues($storeId, $productId, $sku, $type,  $createdAt, $updatedAt,  $customAttributeSetId)
-    {
-        $this->storeId = $storeId;
-        $this->productId = $productId;
-        $this->sku = $sku;
-        $this->type = $type;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
-        $this->customAttributeSetId = $customAttributeSetId;
-        $this->loadCategories();
-    }
-	
+
     /**
      * @return mixed
      */
@@ -249,7 +226,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     {
         return parent::getAttributeSetId();
     }
-
+    
     /**
      * @return mixed
      */
@@ -263,15 +240,15 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     }
 
     /**
-     * @return mixed
-     */
+     * @return string
+     */	
     public function getDefaultUrl()
     {
         return $this->getProductUrl();
     }
-
+    
     /**
-     * @return mixed
+     * @return string
      */
     public function getUrlIdPath()
     {
@@ -281,7 +258,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
     public function getImageUrl()
     {
@@ -291,7 +268,7 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     }
 
     /**
-     * @return mixed
+     * @return string[]
      */
     public function getParentSkus()
     {
@@ -313,15 +290,15 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
     private function getIdColumnName()
     {
         $om = ObjectManager::getInstance();
-		$productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
-        $version = $productMetadata->getVersion();
-        $edition = $productMetadata->getEdition();
+        $version = $om->get('Magento\Framework\App\ProductMetadataInterface')->getVersion();
+        $edition = $om->get('Magento\Framework\App\ProductMetadataInterface')->getEdition();
         if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
             return 'row_id';
         } else {
             return 'entity_id';
         }
     }
+<<<<<<< HEAD:Model/Api/Entity/Data/V2Product.php
 	    
 	private function loadCategories()
     {
@@ -338,3 +315,6 @@ class ProductV2 extends MagentoProduct implements ProductInterfaceV2
         $this->allCategoryIds = array_unique($this->allCategoryIds);
     }
 }
+=======
+}
+>>>>>>> master:Model/Api/Entity/Data/V2Product.php
