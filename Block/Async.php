@@ -54,4 +54,14 @@ class Async extends Template
 
         return str_replace('-', '', strtolower($guid));
     }
+
+    /**
+     * Return the current URL for the store
+     *
+     * @return string
+     */
+    public function getCurrentUrl()
+    {
+        return $this->_storeManager->getStore()->getCurrentUrl();
+    }
 }
