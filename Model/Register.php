@@ -104,7 +104,7 @@ class Register
                 $url,
                 json_encode([
                     'stores'         => $storesArray,
-                    'plugin_version' => $om->get('Magento\Framework\Module\ModuleList')->getOne('Springbot_Main'),
+                    'plugin_version' => $om->get('Magento\Framework\Module\ModuleList')->getOne('Springbot_Main')['setup_version'] . ".200",
                     'platform' => self::platform,
                     'access_token'   => $this->oauth->create(),
                     'credentials'    => [
