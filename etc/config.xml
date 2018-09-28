@@ -10,6 +10,7 @@
         <api_url>https://prod-sb-etl.herokuapp.com</api_url>
         <app_url>https://app.springbot.com</app_url>
         <assets_domain>d2z0bn1jv8xwtk.cloudfront.net</assets_domain>
+        <guest_offset>100000000</guest_offset>
       </configuration>
       <images>
         <use_cached_images>0</use_cached_images>

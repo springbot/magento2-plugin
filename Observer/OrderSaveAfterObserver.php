@@ -59,7 +59,6 @@ class OrderSaveAfterObserver implements ObserverInterface
             $order = $observer->getEvent()->getOrder();
             /* @var MagentoOrder $order */
             $orderId = $order->getId();
-
             if ($redirects = $this->cookieManager->getCookie('springbot_redirect_queue')) {
                 foreach (explode('|', $redirects) as $redirect) {
                     $this->orderRedirect->insert($orderId, $redirect);
@@ -67,7 +66,12 @@ class OrderSaveAfterObserver implements ObserverInterface
             }
             $this->springbotTrackable->insert(null, $orderId, 'order_user_agent', $this->request->getHeader('User-Agent'));
             $this->queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
-            $this->logger->debug("Scheduled sync job for product ID: {$orderId}, Store ID: {$order->getStoreId()}");
+            if ($order->getCustomerIsGuest()) {
+                $this->queue->scheduleJob(GuestHandler::class, 'handle', [$order->getStoreId(), $orderId]);
+            } else {
+                $this->queue->scheduleJob(CustomerHandler::class, 'handle', [$order->getStoreId(), $order->getCustomerId()]);
+            }
+            $this->logger->debug("Scheduled sync job for order ID: {$orderId}, Store ID: {$order->getStoreId()}");
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }
