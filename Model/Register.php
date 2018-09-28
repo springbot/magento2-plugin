@@ -19,7 +19,7 @@ use Psr\Log\LoggerInterface;
 class Register
 {
     const api_class = 'stores';
-    const plugin_version = '1.4.5.200';
+    const platform = 'magento2';
 
     private $api;
     private $helper;
@@ -103,7 +103,8 @@ class Register
                 $url,
                 json_encode([
                     'stores'         => $storesArray,
-                    'plugin_version' => self::plugin_version,
+                    'plugin_version' => $this->_objectManager->get('Magento\Framework\Module\ModuleList')->getOne('Springbot_Main'),
+                    'platform' => self::platform,
                     'access_token'   => $this->oauth->create(),
                     'credentials'    => [
                         'email'     => $email,
