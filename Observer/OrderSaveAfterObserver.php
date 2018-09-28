@@ -65,13 +65,8 @@ class OrderSaveAfterObserver implements ObserverInterface
                 }
             }
             $this->springbotTrackable->insert(null, $orderId, 'order_user_agent', $this->request->getHeader('User-Agent'));
-            $this->queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
-            if ($order->getCustomerIsGuest()) {
-                $this->queue->scheduleJob(GuestHandler::class, 'handle', [$order->getStoreId(), $orderId]);
-            } else {
-                $this->queue->scheduleJob(CustomerHandler::class, 'handle', [$order->getStoreId(), $order->getCustomerId()]);
-            }
             $this->logger->debug("Scheduled sync job for order ID: {$orderId}, Store ID: {$order->getStoreId()}");
+            $this->queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }
