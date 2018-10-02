@@ -54,5 +54,4 @@ class Async extends Template
 
         return str_replace('-', '', strtolower($guid));
     }
-
 }
