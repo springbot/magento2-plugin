@@ -4,6 +4,7 @@ namespace Springbot\Main\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\UrlInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Sales\Model\Order\Config as OrderConfig;
 use Springbot\Main\Helper\Data;
@@ -19,7 +20,7 @@ use Psr\Log\LoggerInterface;
 class Register
 {
     const api_class = 'stores';
-    const plugin_version = '1.4.5.200';
+    const platform = 'magento2';
 
     private $api;
     private $helper;
@@ -98,12 +99,13 @@ class Register
         try {
             $url = $this->api->getApiUrl(Api::store_registration_path);
             $storesArray = $this->getStoresArray($stores);
-
+            $om = ObjectManager::getInstance();
             $response = $this->api->post(
                 $url,
                 json_encode([
                     'stores'         => $storesArray,
-                    'plugin_version' => self::plugin_version,
+                    'plugin_version' => $om->get('Magento\Framework\Module\ModuleList')->getOne('Springbot_Main')['setup_version'] . ".200",
+                    'platform' => self::platform,
                     'access_token'   => $this->oauth->create(),
                     'credentials'    => [
                         'email'     => $email,
@@ -151,7 +153,7 @@ class Register
                 return false;
             }
         } catch (\Throwable $e) {
-            return false;
+            return json_encode(var_export($e->getMessage(), true));
         }
     }
 
