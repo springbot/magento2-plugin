@@ -122,6 +122,6 @@ class EnhancedPixel extends Template
      */
     public function getCurrentUrl()
     {
-        return $this->storeManager->getStore()->getCurrentUrl();
+        return urlencode($this->storeManager->getStore()->getCurrentUrl());
     }
 }
