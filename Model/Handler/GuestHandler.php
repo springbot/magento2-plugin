@@ -7,7 +7,7 @@ namespace Springbot\Main\Model\Handler;
  *
  * @package Springbot\Main\Model\Handler
  */
-class GuestrHandler extends AbstractHandler
+class GuestHandler extends AbstractHandler
 {
     const api_path = 'guests';
 
@@ -17,7 +17,7 @@ class GuestrHandler extends AbstractHandler
      */
     public function handle($storeId, $customerId)
     {
-        $this->api->postEntities($storeId, self::api_path, ['id' => ($customerId + $this->scopeConfig->getValue('springbot/configuration/guest_offset'))]);
+        $this->api->postEntities($storeId, self::api_path, ['id' => ($customerId + $this->api->getGuestOffset())]);
     }
 
     /**
@@ -26,6 +26,6 @@ class GuestrHandler extends AbstractHandler
      */
     public function handleDelete($storeId, $customerId)
     {
-        $this->api->deleteEntity($storeId, self::api_path, ['id' => ($customerId + $this->scopeConfig->getValue('springbot/configuration/guest_offset'))]);
+        $this->api->deleteEntity($storeId, self::api_path, ['id' => ($customerId + $this->api->getGuestOffset())]);
     }
 }

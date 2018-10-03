@@ -9,6 +9,7 @@ use Magento\Sales\Model\Order as MagentoOrder;
 use Magento\Framework\App\Request\Http;
 use Psr\Log\LoggerInterface;
 use Springbot\Main\Model\Handler\OrderHandler;
+use Springbot\Main\Model\Handler\GuestHandler;
 use Springbot\Main\Model\SpringbotTrackable;
 use Springbot\Main\Model\SpringbotOrderRedirect;
 use Springbot\Queue\Model\Queue;
