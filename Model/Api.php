@@ -166,6 +166,15 @@ class Api
     }
 
     /**
+     * @param string $subpath
+     * @return string
+     */
+    public function getGuestOffset()
+    {
+        return $this->scopeConfig->getValue('springbot/configuration/guest_offset');
+    }
+
+    /**
      * @param $apiToken
      * @return array
      */
