@@ -172,8 +172,10 @@ class Customer implements CustomerInterface
         $attributes = [];
         foreach ($query->fetchAll() as $attributeRow) {
             if ($attributeRow['value'] !== null) {
+                $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option_value')} WHERE store_id = {$this->storeId} AND option_id = {$attributeRow['value']}", ['customer_id' => $this->customerId]);
+                $result = $query->fetch();
                 $attribute = $this->attributeFactory->create();
-                $attribute->setValues($attributeRow['code'], $attributeRow['value']);
+                $attribute->setValues($attributeRow['code'], $result['value']);
                 $attributes[] = $attribute;
             }
         }
