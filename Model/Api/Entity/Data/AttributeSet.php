@@ -89,26 +89,52 @@ class AttributeSet implements AttributeSetInterface
 
         $attributes = [];
         foreach ($query->fetchAll() as $row) {
-            $optionQuery = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option')} eao
-                LEFT JOIN {$resource->getTableName('eav_attribute_option_value')} eaov
-                    ON (eao.option_id = eaov.option_id)
-                WHERE eao.attribute_id = :attribute_id
-            ", ['attribute_id' => $row['attribute_id']]);
+            if($row['attribute_code'] == "group_id") {
+                $attribute = $this->attributeFactory->create();
+                $attribute->setValues(
+                    $row['attribute_id'],
+                    $row['frontend_label'],
+                    $row['attribute_code'],
+                    $this->getCustomerGroupNames()
+                );
+            } else {
+                $optionQuery = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option')} eao
+                    LEFT JOIN {$resource->getTableName('eav_attribute_option_value')} eaov
+                        ON (eao.option_id = eaov.option_id)
+                    WHERE eao.attribute_id = :attribute_id
+                ", ['attribute_id' => $row['attribute_id']]);
 
-            $options = [];
-            foreach ($optionQuery->fetchAll() as $optionRow) {
-                $options[] = $optionRow['value'];
+                $options = [];
+                foreach ($optionQuery->fetchAll() as $optionRow) {
+                    $options[] = $optionRow['value'];
+                }
+
+                $attribute = $this->attributeFactory->create();
+                $attribute->setValues(
+                    $row['attribute_id'],
+                    $row['frontend_label'],
+                    $row['attribute_code'],
+                    $options
+                );
             }
-
-            $attribute = $this->attributeFactory->create();
-            $attribute->setValues(
-                $row['attribute_id'],
-                $row['frontend_label'],
-                $row['attribute_code'],
-                $options
-            );
             $attributes[] = $attribute;
         }
         return $attributes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerGroupNames()
+    {
+        $resource = $this->resourceConnection;
+        $conn = $resource->getConnection();
+        $select = $conn->select()
+            ->from([$resource->getTableName('customer_group')]);
+        $groupNames = [];
+        foreach ($conn->fetchAll($select) as $row) {
+            $groupNames[] = $row['customer_group_code'];
+        }
+        return $groupNames;
     }
 }

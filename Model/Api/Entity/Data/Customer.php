@@ -20,6 +20,7 @@ class Customer implements CustomerInterface
     public $firstName;
     public $lastName;
     public $email;
+    public $group_id;
     public $attributeSetId;
     public $hasPurchase;
     public $billingAddressId;
@@ -53,6 +54,7 @@ class Customer implements CustomerInterface
      * @param $firstName
      * @param $lastName
      * @param $email
+     * @param $group_id
      * @param $attributeSetId
      * @param $billingAddressId
      * @param $shippingAddressId
@@ -64,6 +66,7 @@ class Customer implements CustomerInterface
         $firstName,
         $lastName,
         $email,
+        $groupId,
         $attributeSetId,
         $billingAddressId,
         $shippingAddressId
@@ -74,6 +77,7 @@ class Customer implements CustomerInterface
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+        $this->groupId = $groupId;
         $this->attributeSetId = $attributeSetId;
         $this->billingAddressId = $billingAddressId;
         $this->shippingAddressId = $shippingAddressId;
@@ -109,6 +113,22 @@ class Customer implements CustomerInterface
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroupName()
+    {
+        $resource = $this->resourceConnection;
+        $conn = $resource->getConnection();
+        $select = $conn->select()
+            ->from([$resource->getTableName('customer_group')])
+            ->where('customer_group_id = ?', $this->groupId);
+        foreach ($conn->fetchAll($select) as $row) {
+            return $row['customer_group_code'];
+        }
+        return null;
     }
 
     /**
@@ -169,7 +189,15 @@ class Customer implements CustomerInterface
         ",
             ['entity_id' => $this->customerId]
         );
+
         $attributes = [];
+
+        if($this->groupId !== null) {
+            $attribute = $this->attributeFactory->create();
+            $attribute->setValues('group_id', $this->getGroupName());
+            $attributes[] = $attribute;
+        }
+
         foreach ($query->fetchAll() as $attributeRow) {
             if ($attributeRow['value'] !== null) {
                 $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option_value')} WHERE store_id = {$this->storeId} AND option_id = {$attributeRow['value']}", ['customer_id' => $this->customerId]);
@@ -179,6 +207,7 @@ class Customer implements CustomerInterface
                 $attributes[] = $attribute;
             }
         }
+		
         return $attributes;
     }
 
