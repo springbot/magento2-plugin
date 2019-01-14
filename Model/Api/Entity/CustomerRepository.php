@@ -75,6 +75,7 @@ class CustomerRepository extends AbstractRepository implements CustomerRepositor
             $row['firstname'],
             $row['lastname'],
             $row['email'],
+            $row['group_id'],
             $this->fetchCustomerAttributeSetId(),
             $row['default_billing'],
             $row['default_shipping']

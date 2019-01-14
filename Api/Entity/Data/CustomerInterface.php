@@ -33,6 +33,11 @@ interface CustomerInterface
     /**
      * @return int
      */
+    public function getGroupName();
+
+    /**
+     * @return int
+     */
     public function getAttributeSetId();
 
     /**
