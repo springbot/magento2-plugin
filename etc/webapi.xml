@@ -4,6 +4,18 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
 
     <!-- Begin instance endpoints -->
+    <route url="/V1/springbot/main/createcart" method="POST">
+        <service class="Springbot\Main\Api\CreateCartInterface" method="getCart"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V1/springbot/main/createcart" method="GET">
+        <service class="Springbot\Main\Api\CreateCartInterface" method="getCart"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
     <route url="/V1/springbot/main/log/retrieve" method="POST">
         <service class="Springbot\Main\Api\LogInterface" method="retrieve"/>
         <resources>

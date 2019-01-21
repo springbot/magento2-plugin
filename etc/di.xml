@@ -12,6 +12,7 @@
         </arguments>
     </type>
 
+    <preference for="Springbot\Main\Api\CreateCartInterface" type="Springbot\Main\Model\Api\CreateCart"/>
     <preference for="Springbot\Main\Api\AmazonInterface" type="Springbot\Main\Model\Api\Amazon"/>
     <preference for="Springbot\Main\Api\Amazon\CreatedOrderInterface" type="Springbot\Main\Model\Api\Amazon\CreatedOrder"/>
     <preference for="Springbot\Main\Api\Amazon\Order\AddressInterface" type="Springbot\Main\Model\Api\Amazon\Order\Address"/>
