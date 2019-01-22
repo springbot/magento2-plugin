@@ -199,15 +199,22 @@ class Customer implements CustomerInterface
         }
 
         foreach ($query->fetchAll() as $attributeRow) {
-            if ($attributeRow['value'] !== null) {
+            if (empty($attributeRow['code'])) {
+                continue;
+            }
+            if (ctype_digit($attributeRow['value']) && $attributeRow['value'] !== 0 && $attributeRow['value'] !== '0') {
                 $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option_value')} WHERE store_id = {$this->storeId} AND option_id = {$attributeRow['value']}", ['customer_id' => $this->customerId]);
                 $result = $query->fetch();
-                $attribute = $this->attributeFactory->create();
-                $attribute->setValues($attributeRow['code'], $result['value']);
-                $attributes[] = $attribute;
+                if ($result !== false) {
+                    $attributeRow['value'] = $result['value'];
+                }
             }
+            // $attributes[] = json_encode(["non int and 0" => '']);
+            $attribute = $this->attributeFactory->create();
+            $attribute->setValues($attributeRow['code'], $attributeRow['value']);
+            $attributes[] = $attribute;
         }
-		
+        
         return $attributes;
     }
 
