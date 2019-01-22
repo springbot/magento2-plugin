@@ -5,5 +5,8 @@
     <route id="springbot_update" frontName="springbot_update">
       <module name="Springbot_Main"/>
     </route>
+    <route id="springbot_createcart" frontName="springbot">
+      <module name="Springbot_Main"/>
+    </route>
   </router>
 </config>
