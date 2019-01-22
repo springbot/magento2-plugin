@@ -157,31 +157,31 @@ class Customer implements CustomerInterface
         $conn = $resource->getConnection();
         $query = $conn->query(
             "
-            SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value  AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_datetime')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_decimal')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_int')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_text')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_varchar')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
@@ -200,14 +200,22 @@ class Customer implements CustomerInterface
 
         foreach ($query->fetchAll() as $attributeRow) {
             if ($attributeRow['value'] !== null) {
-                $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option_value')} WHERE store_id = {$this->storeId} AND option_id = {$attributeRow['value']}", ['customer_id' => $this->customerId]);
-                $result = $query->fetch();
-                $attribute = $this->attributeFactory->create();
-                $attribute->setValues($attributeRow['code'], $result['value']);
-                $attributes[] = $attribute;
+                if ($attributeRow['backend_type'] == 'int') {
+                    $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option_value')} aov LEFT JOIN {$resource->getTableName('eav_attribute_option')} ao ON (aov.option_id = ao.option_id) WHERE aov.option_id = {$attributeRow['value']} AND ao.attribute_id = {$attributeRow['attributeId']}", ['customer_id' => $this->customerId]);
+                    $result = $query->fetch();
+                    if ($result['value'] !== null) {
+                        $attribute = $this->attributeFactory->create();
+                        $attribute->setValues($attributeRow['code'], $result['value']);
+                        $attributes[] = $attribute;
+                    }
+                } else {
+                    $attribute = $this->attributeFactory->create();
+                    $attribute->setValues($attributeRow['code'], $attributeRow['value']);
+                    $attributes[] = $attribute;
+                }
             }
         }
-		
+
         return $attributes;
     }
 
