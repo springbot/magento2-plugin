@@ -33,12 +33,10 @@ class createCart extends Action
     public function execute()
     {
         try {
-             if (!empty($this->cart->getQuote()->getID())) {
-                $out = ["cart_id" => $this->cart->getQuote()->getID()];
-            } else {
+             if (empty($this->cart->getQuote()->getID())) {
                 $this->cart->save();
-                $out = ["cart_id" => $this->cart->getQuote()->getID()];
             }
+            $out = ["cart_id" => $this->cart->getQuote()->getID()];
         } catch (Exception $e) {
              $out = ["error" => "Failed to generate new cart: {$e->getMessage()}"];
         } 
