@@ -199,6 +199,9 @@ class Customer implements CustomerInterface
         }
 
         foreach ($query->fetchAll() as $attributeRow) {
+            if (empty($attributeRow['code'])) {
+                continue;
+            }
             if ($attributeRow['value'] !== null) {
                 if ($attributeRow['backend_type'] == 'int') {
                     $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option_value')} aov LEFT JOIN {$resource->getTableName('eav_attribute_option')} ao ON (aov.option_id = ao.option_id) WHERE aov.option_id = {$attributeRow['value']} AND ao.attribute_id = {$attributeRow['attributeId']}", ['customer_id' => $this->customerId]);
