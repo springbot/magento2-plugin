@@ -1,10 +1,17 @@
 <img src="<?php echo $this->getApiUrl() ?>/magento2/pixel/view?guid=<?php echo $block->getStoreGuid() ?>&pageurl=<?php echo $block->getCurrentUrl() ?>&sku=<?php echo $block->getSku() ?>" style="position:absolute; visibility:hidden"></div>
 <script type="text/javascript">
     var _sbparams = _sbparams || [];
-    _sbparams.push({
-        'type': 'product',
-        'id': '<?php echo $block->getId() ?>',
-        'name': '<?php echo $block->getName() ?>',
-        'sku': '<?php echo $block->getSku() ?>'
-    });
+    if (_sbparams[0]) {
+        _sbparams[0].type = 'product';
+        _sbparams[0].id = '<?php echo $block->getId() ?>';
+        _sbparams[0].name = '<?php echo $block->getName() ?>';
+        _sbparams[0].sku = '<?php echo $block->getSku() ?>';
+    } else {
+        _sbparams.push({
+            'type': 'product',
+            'id': '<?php echo $block->getId() ?>',
+            'name': '<?php echo $block->getName() ?>',
+            'sku': '<?php echo $block->getSku() ?>'
+        });
+    }
 </script>
