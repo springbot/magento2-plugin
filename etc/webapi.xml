@@ -64,6 +64,12 @@
             <resource ref="Springbot_Main::api"/>
         </resources>
     </route>
+    <route url="/V1/springbot/main/modules/version" method="GET">
+        <service class="Springbot\Main\Api\ModulesInterface" method="getVersion"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
     <route url="/V1/springbot/main/stores" method="GET">
         <service class="Springbot\Main\Api\StoresInterface" method="getStores"/>
         <resources>
@@ -302,6 +308,12 @@
     </route>
     <route url="/V2/springbot/main/modules" method="GET">
         <service class="Springbot\Main\Api\ModulesInterface" method="getModules"/>
+        <resources>
+            <resource ref="Springbot_Main::api"/>
+        </resources>
+    </route>
+    <route url="/V2/springbot/main/modules/version" method="GET">
+        <service class="Springbot\Main\Api\ModulesInterface" method="getVersion"/>
         <resources>
             <resource ref="Springbot_Main::api"/>
         </resources>
