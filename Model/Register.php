@@ -153,7 +153,7 @@ class Register
                 return false;
             }
         } catch (\Throwable $e) {
-            return json_encode(var_export($e->getMessage(), true));
+            return json_encode($e->getMessage(), true);
         }
     }
 
