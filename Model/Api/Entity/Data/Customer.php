@@ -202,23 +202,18 @@ class Customer implements CustomerInterface
             if (empty($attributeRow['code'])) {
                 continue;
             }
-            if ($attributeRow['value'] !== null) {
-                if ($attributeRow['backend_type'] == 'int') {
-                    $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option_value')} aov LEFT JOIN {$resource->getTableName('eav_attribute_option')} ao ON (aov.option_id = ao.option_id) WHERE aov.option_id = {$attributeRow['value']} AND ao.attribute_id = {$attributeRow['attributeId']}", ['customer_id' => $this->customerId]);
-                    $result = $query->fetch();
-                    if ($result['value'] !== null) {
-                        $attribute = $this->attributeFactory->create();
-                        $attribute->setValues($attributeRow['code'], $result['value']);
-                        $attributes[] = $attribute;
-                    }
-                } else {
-                    $attribute = $this->attributeFactory->create();
-                    $attribute->setValues($attributeRow['code'], $attributeRow['value']);
-                    $attributes[] = $attribute;
+            if (ctype_digit($attributeRow['value']) && $attributeRow['value'] !== 0 && $attributeRow['value'] !== '0') {
+                $query = $conn->query("SELECT * FROM {$resource->getTableName('eav_attribute_option_value')} WHERE store_id = {$this->storeId} AND option_id = {$attributeRow['value']}", ['customer_id' => $this->customerId]);
+                $result = $query->fetch();
+                if ($result !== false) {
+                    $attributeRow['value'] = $result['value'];
                 }
             }
+            // $attributes[] = json_encode(["non int and 0" => '']);
+            $attribute = $this->attributeFactory->create();
+            $attribute->setValues($attributeRow['code'], $attributeRow['value']);
+            $attributes[] = $attribute;
         }
-
         return $attributes;
     }
 
