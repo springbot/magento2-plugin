@@ -37,25 +37,50 @@ class Oauth
      */
     public function create()
     {
-        $integration = $this->integrationService->findByName(self::name);
-        if ($integration->isEmpty()) {
-            $integration = $this->integrationService->create(
-                [
-                'name' => self::name,
-                'email' => self::email,
-                'status' => 1,
-                'all_resources' => 1,
-                ]
-            );
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $integrationFactory = $objectManager->get('Magento\Integration\Model\IntegrationFactory')->create();
+
+        $integration = $integrationFactory->load(self::name,'name');
+        $integrationExists = !$integration->isEmpty();
+        if ($integrationExists) {
+            // In some cases, the integration doesn't generate properly or entirely and may be missing the access token but still exist.
+            $token = $this->oauthService->getAccessToken($integration->getConsumerId());
+            if (empty($token)) {
+                return false;
+                // return 'empty access token for existing integration.';
+                // return $this->fix($integration);
+            }
+            return $token->getToken();
         }
 
-        if ($consumerId = $integration->getConsumerId()) {
-            $this->oauthService->createAccessToken($integration->getConsumerId());
-            $accessToken = $this->oauthService->getAccessToken($integration->getConsumerId());
-            if (! $accessToken->isEmpty()) {
-                return $accessToken->getToken();
-            }
-        }
-        return false;
+        $newIntegration = [
+            'name' => self::name,
+            'email' => self::email,
+            'status' => 1,
+            'all_resources' => 1,
+        ];
+
+        $integration = $integrationFactory->setData($newIntegration);
+        $integration->save();
+        $integrationId = $integration->getId();
+        $consumerName = 'Springbot';
+
+        $consumer = $this->oauthService->createConsumer(['name' => $consumerName]);
+        $consumerId = $consumer->getId();
+        $integration->setConsumerId($consumer->getId());
+        $integration->save();
+
+        $authrizeService = $objectManager->get('Magento\Integration\Model\AuthorizationService');
+        $authrizeService->grantAllPermissions($integrationId);
+
+        // Code to Activate and Authorize
+        $token = $objectManager->get('Magento\Integration\Model\Oauth\Token');
+        $uri = $token->createVerifierToken($consumerId);
+        $token->setType('access');
+        $token->save();
+        
+        $tokenOut = $this->oauthService->getAccessToken($consumerId)->getToken();
+
+        return $tokenOut;
     }
 }

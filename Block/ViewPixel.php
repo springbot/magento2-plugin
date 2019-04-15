@@ -78,6 +78,34 @@ class ViewPixel extends AbstractView
             return '';
         }
     }
+    
+    /**
+     * Return the SKU for the current product
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        if ($product = $this->getProduct()) {
+            return $product->getName();
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * Return the SKU for the current product
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        if ($product = $this->getProduct()) {
+            return $product->getId();
+        } else {
+            return '';
+        }
+    }
 
     /**
      * Return the GUID for the current store

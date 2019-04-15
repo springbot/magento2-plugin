@@ -157,31 +157,31 @@ class Customer implements CustomerInterface
         $conn = $resource->getConnection();
         $query = $conn->query(
             "
-            SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value  AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_datetime')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_decimal')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_int')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_text')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (ce.entity_id = :entity_id)
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.backend_type AS `backend_type`, ea.attribute_code AS `code`, eav.attribute_id  AS 'attributeId', eav.value AS 'value'
             FROM {$resource->getTableName('customer_entity')} ce
               LEFT JOIN {$resource->getTableName('customer_entity_varchar')} eav ON (ce.entity_id = eav.entity_id)
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
@@ -214,7 +214,6 @@ class Customer implements CustomerInterface
             $attribute->setValues($attributeRow['code'], $attributeRow['value']);
             $attributes[] = $attribute;
         }
-        
         return $attributes;
     }
 
