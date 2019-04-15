@@ -47,7 +47,7 @@ class Login extends Action
         $springbotPassword = $request->getParam('springbot-password');
         $registered = $this->register->registerAllStores($springbotEmail, $springbotPassword);
 
-        if ($registered) {
+        if ($registered === true) {
             return $this->_redirect('springbot/dashboard/connected');
         } else {
             // If response comes back 'unauthorized', redirect to the index page.
