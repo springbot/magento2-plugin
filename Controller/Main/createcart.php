@@ -37,7 +37,7 @@ class createCart extends Action
                 $this->cart->save();
             }
             $out = ["cart_id" => $this->cart->getQuote()->getID()];
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $out = ["error" => "Failed to generate new cart: {$e->getMessage()}"];
         } 
         
