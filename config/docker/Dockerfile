@@ -8,4 +8,6 @@ RUN apt-get update && apt-get install -y mysql-client
 
 COPY ./config/docker/* /springbot/
 
+RUN chmod +x /springbot/*.sh
+
 RUN su www-data -s /bin/bash -c 'composer require springbot/magento2-plugin'
