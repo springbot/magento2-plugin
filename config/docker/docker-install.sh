@@ -4,7 +4,8 @@
 
 # wait for mysql server to become available
 while ! mysqladmin ping -h"mysql" --silent; do
-    sleep 1
+    echo "waiting for mysql to become available.."
+    sleep 5
 done
 
 # create the database
@@ -25,3 +26,5 @@ su www-data -s /bin/bash -c 'php bin/magento cache:clean'
 mysql -h mysql -uspringbot -ppassword magento2 -e "INSERT INTO core_config_data (config_id, scope, scope_id, path, value) VALUES (NULL , 'default', '0', 'springbot/configuration/assets_domain', '$ASSETS_DOMAIN');"
 mysql -h mysql -uspringbot -ppassword magento2 -e "INSERT INTO core_config_data (config_id, scope, scope_id, path, value) VALUES (NULL , 'default', '0', 'springbot/configuration/app_url', '$APP_URL');"
 mysql -h mysql -uspringbot -ppassword magento2 -e "INSERT INTO core_config_data (config_id, scope, scope_id, path, value) VALUES (NULL , 'default', '0', 'springbot/configuration/api_url', '$ETL_URL');"
+
+touch /var/installed

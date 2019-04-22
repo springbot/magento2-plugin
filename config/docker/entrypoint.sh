@@ -7,8 +7,6 @@ if [ ! -f "/var/installed" ]; then
     # the install script needs the webserver to be running, so run it in the background
     /springbot/docker-install.sh &
 
-    touch /var/installed
-
 fi
 
 # run the webserver
