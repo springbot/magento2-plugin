@@ -142,7 +142,7 @@ class Category implements CategoryInterface
         $version = $this->productMetadata->getVersion();
         $edition = $this->productMetadata->getEdition();
 
-        if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
+        if ((in_array($edition, ['Enterprise', 'B2B'])) && version_compare($version, '2.1', '>=')) {
             $idColumnName = 'row_id';
         } else {
             $idColumnName = 'entity_id';
