@@ -172,7 +172,7 @@ class V2Product extends MagentoProduct implements V2ProductInterface
         $resource = $om->get('Magento\Framework\App\ResourceConnection');
         $version = $om->get('Magento\Framework\App\ProductMetadataInterface')->getVersion();
         $edition = $om->get('Magento\Framework\App\ProductMetadataInterface')->getEdition();
-        if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
+        if ((in_array($edition, ['Enterprise', 'B2B'])) && version_compare($version, '2.1', '>=')) {
             $idColumnName = 'row_id';
         } else {
             $idColumnName = 'entity_id';
@@ -287,7 +287,7 @@ class V2Product extends MagentoProduct implements V2ProductInterface
         $om = ObjectManager::getInstance();
         $version = $om->get('Magento\Framework\App\ProductMetadataInterface')->getVersion();
         $edition = $om->get('Magento\Framework\App\ProductMetadataInterface')->getEdition();
-        if (($edition === 'Enterprise') &&  version_compare($version, '2.1', '>=')) {
+        if ((in_array($edition, ['Enterprise', 'B2B'])) && version_compare($version, '2.1', '>=')) {
             return 'row_id';
         } else {
             return 'entity_id';
