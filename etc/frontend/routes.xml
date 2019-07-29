@@ -8,8 +8,5 @@
     <route id="springbot_createcart" frontName="springbot">
       <module name="Springbot_Main"/>
     </route>
-    <route id="springbot_product" frontName="springbot">
-      <module name="Springbot_Main"/>
-    </route>
   </router>
 </config>
