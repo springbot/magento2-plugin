@@ -47,17 +47,15 @@ class Data extends AbstractHelper
         $guid = $this->scopeConfig
             ->getValue('springbot/configuration/store_guid_' . $storeId);
 
-        if (empty($guid)) {
-            $baseUrl = $this->scopeConfig->getValue('web/unsecure/base_url');
-
-            $charid = strtoupper(md5($baseUrl . $storeId . $store->getName() . $store->getCode()));
-
-            $guid = substr($charid, 0, 8)  . '-'
-                  . substr($charid, 8, 4)  . '-'
-                  . substr($charid, 12, 4) . '-'
-                  . substr($charid, 16, 4) . '-'
-                  . substr($charid, 20, 12);
+        if (!empty($guid)) {
+            // $baseUrl = $this->scopeConfig->getValue('web/unsecure/base_url');
+            // $charid = strtoupper(md5($baseUrl . $storeId . $store->getName() . $store->getCode()));
+            // $guid = substr($charid, 0, 8)  . '-'
+            //       . substr($charid, 8, 4)  . '-'
+            //       . substr($charid, 12, 4) . '-'
+            //       . substr($charid, 16, 4) . '-'
+            //       . substr($charid, 20, 12);
+            return $guid;
         }
-        return $guid;
     }
 }
