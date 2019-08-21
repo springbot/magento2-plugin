@@ -50,7 +50,7 @@ class Data extends AbstractHelper
         if (empty($guid)) {
             $baseUrl = $this->scopeConfig->getValue('web/unsecure/base_url');
 
-            $charid = strtoupper(md5($baseUrl . $storeId . $store->getName() . $store->getCode()));
+            $charid = strtoupper(hash('sha256', $baseUrl . $storeId . $store->getName() . $store->getCode()));
 
             $guid = substr($charid, 0, 8)  . '-'
                   . substr($charid, 8, 4)  . '-'
