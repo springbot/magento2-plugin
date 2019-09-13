@@ -75,6 +75,30 @@ class EnhancedPixel extends Template
     }
 
     /**
+     * @return string
+     */
+    public function getIp()
+    {
+        if (!empty($_SERVER['REMOTE_ADDR'])) {
+            return $_SERVER['REMOTE_ADDR'];
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+            return $_SERVER['HTTP_USER_AGENT'];
+        } else {
+            return "";
+        }
+    }
+
+    /**
      * @return Order
      */
     public function getLastOrder()
