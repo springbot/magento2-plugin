@@ -1,6 +1,23 @@
 <script type="text/javascript">
     adroll_conversion_value_in_dollars = <?php echo $block->getConversionValueInDollars() ?>;
     adroll_custom_data = {"ORDER_ID": "<?php echo $block->getIncrementId() ?>"};
+
+    function getTransCookie() {
+      if (document.cookie.match('(^|;) ?__xlid=([^;]*)(;|$)')) {
+        transitivCookie = document.cookie.match('(^|;) ?__xlid=([^;]*)(;|$)')[2];
+      } else {
+        transitivCookie = null;
+      }
+      return transitivCookie;
+    }
+    
+    window._sb_conversion = {
+        id: <?php echo $block->getIncrementId() ?>,
+        total: <?php echo $block->getConversionValueInDollars() ?>,
+        ip: "<?php echo $block->getIp() ?>",
+        agent: "<?php echo $block->getUserAgent() ?>",
+        cookie: getTransCookie()
+    }
 </script>
 
 <img src="<?php echo $this->getApiUrl() ?>/magento2/pixel/success?guid=<?php echo $block->getStoreGuid() ?>&pageurl=<?php echo $block->getCurrentUrl() ?>" style="position:absolute; visibility:hidden"></div>
