@@ -4,13 +4,13 @@
     if (_sbparams[0]) {
         _sbparams[0].type = 'product';
         _sbparams[0].id = '<?php echo $block->getId() ?>';
-        _sbparams[0].name = '<?php echo $block->getName() ?>';
+        _sbparams[0].name = '<?php echo addslashes($block->getName()) ?>';
         _sbparams[0].sku = '<?php echo $block->getSku() ?>';
     } else {
         _sbparams.push({
             'type': 'product',
             'id': '<?php echo $block->getId() ?>',
-            'name': '<?php echo $block->getName() ?>',
+            'name': '<?php echo addslashes($block->getName()) ?>',
             'sku': '<?php echo $block->getSku() ?>'
         });
     }
