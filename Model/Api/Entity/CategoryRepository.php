@@ -54,7 +54,8 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
         $select = $conn->select()
             ->from(['cce' => $resource->getTableName('catalog_category_entity')])
             ->joinLeft(['ur' => $resource->getTableName('url_rewrite')], 'ur.entity_id = cce.entity_id')
-            ->where('entity_type = ?', 'category');
+            ->where('ur.entity_type = ?', 'category')
+            ->where('ur.store_id = ?', $storeId);
         $this->filterResults($select);
         $ret = [];
         foreach ($conn->fetchAll($select) as $row) {
@@ -75,7 +76,8 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
         $select = $conn->select()
             ->from(['cce' => $resource->getTableName('catalog_category_entity')])
             ->joinLeft(['ur' => $resource->getTableName('url_rewrite')], 'ur.entity_id = cce.entity_id')
-            ->where('cce.entity_id = ?', $categoryId);
+            ->where('cce.entity_id = ?', $categoryId)
+            ->where('ur.store_id = ?', $storeId);
         foreach ($conn->fetchAll($select) as $row) {
             return $this->createCategory($storeId, $row);
         }
