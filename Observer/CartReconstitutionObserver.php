@@ -9,6 +9,8 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\App\ResponseFactory;
+use Magento\Framework\UrlInterface;
 use Magento\Quote\Model\QuoteFactory;
 use Psr\Log\LoggerInterface;
 use Springbot\Main\Helper\Data as SpringbotHelper;
@@ -22,6 +24,8 @@ class CartReconstitutionObserver implements ObserverInterface
 {
     private $session;
     private $request;
+    private $response;
+    private $url;
     private $messageManager;
     private $springbotHelper;
     private $loggerInterface;
@@ -32,6 +36,7 @@ class CartReconstitutionObserver implements ObserverInterface
      * @param HttpRequest $request
      * @param ManagerInterface $messageManager
      * @param Session $session
+     * @param UrlInterface $url
      * @param QuoteFactory $quoteFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param SpringbotHelper $springbotHelper
@@ -39,6 +44,7 @@ class CartReconstitutionObserver implements ObserverInterface
      */
     public function __construct(
         HttpRequest $request,
+        UrlInterface $url,
         ManagerInterface $messageManager,
         Session $session,
         QuoteFactory $quoteFactory,
@@ -47,6 +53,7 @@ class CartReconstitutionObserver implements ObserverInterface
         LoggerInterface $loggerInterface
     ) {
         $this->request = $request;
+        $this->url = $url;
         $this->session = $session;
         $this->quoteFactory = $quoteFactory;
         $this->scopeConfig = $scopeConfig;
@@ -67,13 +74,15 @@ class CartReconstitutionObserver implements ObserverInterface
             if ($quoteId = $this->request->getParam('quote_id')) {
                 $suppliedSecurityHash = $this->request->getParam('sec_key');
                 $this->setQuote($quoteId, $suppliedSecurityHash);
+                $cartRedirect = $this->url->getUrl('checkout/cart');
+                $observer->getControllerAction()->getResponse()->setRedirect($cartRedirect);
             }
         } catch (LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
             $this->messageManager->addException($e, __('Cart Reconstitution error'));
         }
-        return;
+        return $this;
     }
 
     public function setQuote($quoteId, $suppliedSecurityHash)
