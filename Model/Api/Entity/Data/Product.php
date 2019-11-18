@@ -343,7 +343,7 @@ class Product implements ProductInterface
 
     private function loadAttributes()
     {
-	    $om = ObjectManager::getInstance();
+        $om = ObjectManager::getInstance();
         $idColumnName = $this->getIdColumnName();
         $resource = $this->connectionResource;
         $conn = $resource->getConnection();
