@@ -448,7 +448,7 @@ class Product implements ProductInterface
                             }
                         } catch (\Throwable $t) {
                             $sourceModel = $attributeRow['source_model'] ?? 'n/a';
-                            $this->logger->error("failed getting attribut test. source_model: {$sourceModel}. error:" . $t->getMessage());
+                            $this->logger->error("failed getting attribute test. source_model: {$sourceModel}. error:" . $t->getMessage());
                         }
                     }
             }
