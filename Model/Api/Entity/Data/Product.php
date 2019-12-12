@@ -2,17 +2,18 @@
 
 namespace Springbot\Main\Model\Api\Entity\Data;
 
+use Magento\Backend\Model\UrlInterface;
 use Magento\Catalog\Model\Product as MagentoProduct;
 use Magento\Catalog\Model\Product\Image as MagentoProductImage;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Backend\Model\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 use Springbot\Main\Api\Entity\Data\ProductInterface;
 use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Springbot\Main\Model\Api\Entity\Data\Product\ProductAttribute;
-use Magento\Framework\App\ProductMetadataInterface;
 
 /**
  * Class Product
@@ -65,6 +66,7 @@ class Product implements ProductInterface
      * @param \Magento\Backend\Model\UrlInterface $urlInterface
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param ProductMetadataInterface $productMetadata
+     * @param LoggerInterface $loggerInterface
      */
     public function __construct(
         ResourceConnection $connectionResource,
@@ -72,7 +74,8 @@ class Product implements ProductInterface
         StoreManagerInterface $storeManager,
         UrlInterface $urlInterface,
         ScopeConfigInterface $scopeConfig,
-        ProductMetadataInterface $productMetadata
+        ProductMetadataInterface $productMetadata,
+        LoggerInterface $loggerInterface
     ) {
 
         $this->productRepository = $productRepository;
@@ -81,6 +84,7 @@ class Product implements ProductInterface
         $this->urlInterface = $urlInterface;
         $this->scopeConfigInterface = $scopeConfig;
         $this->productMetadata = $productMetadata;
+        $this->logger = $loggerInterface;
     }
 
     /**
@@ -423,23 +427,28 @@ class Product implements ProductInterface
                     break;
                 default:
                     if ($value !== null) {
-                        if ($attributeRow['source_model'] && class_exists($attributeRow['source_model'])) {
-                            $sourceModel = $om->get($attributeRow['source_model']);
-                            $value = $sourceModel->getOptionText($attributeRow['value']);
-                            $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
-                        } else if ($attributeRow['backend_model']) {
-                            $eavModel = $om->create('Magento\Catalog\Model\ResourceModel\Eav\Attribute');
-                            $attr = $eavModel->load($attributeRow['attribute_id']);
-                            $selectedValues = $attr->getSource()->getOptionText($value);
-                            if (is_array($selectedValues)) {
-                                foreach ($selectedValues as $selectedValue) {
-                                    $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $selectedValue);
+                        try {
+                            if ($attributeRow['source_model'] && class_exists($attributeRow['source_model'])) {
+                                $sourceModel = $om->get($attributeRow['source_model']);
+                                $value = $sourceModel->getOptionText($attributeRow['value']);
+                                $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
+                            } else if ($attributeRow['backend_model']) {
+                                $eavModel = $om->create('Magento\Catalog\Model\ResourceModel\Eav\Attribute');
+                                $attr = $eavModel->load($attributeRow['attribute_id']);
+                                $selectedValues = $attr->getSource()->getOptionText($value);
+                                if (is_array($selectedValues)) {
+                                    foreach ($selectedValues as $selectedValue) {
+                                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $selectedValue);
+                                    }
+                                } else if (is_string($selectedValues)) {
+                                    $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $selectedValues);
                                 }
-                            } else if (is_string($selectedValues)) {
-                                $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $selectedValues);
+                            } else {
+                                $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
                             }
-                        } else {
-                            $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
+                        } catch (\Throwable $t) {
+                            $sourceModel = $attributeRow['source_model'] ?? 'n/a';
+                            $this->logger->error("failed getting attribut test. source_model: {$sourceModel}. error:" . $t->getMessage());
                         }
                     }
             }
