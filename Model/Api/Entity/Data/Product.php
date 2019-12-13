@@ -447,7 +447,11 @@ class Product implements ProductInterface
                                 $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
                             }
                         } catch (\Throwable $t) {
-                            $sourceModel = $attributeRow['source_model'] ?? 'n/a';
+                            if (isset($attributeRow['source_model'])) {
+                                $sourceModel = $attributeRow['source_model'];
+                            } else {
+                                $sourceModel = 'n/a';
+                            }
                             $this->logger->error("failed getting attribute test. source_model: {$sourceModel}. error:" . $t->getMessage());
                         }
                     }
