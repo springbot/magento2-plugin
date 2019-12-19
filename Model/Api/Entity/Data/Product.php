@@ -2,16 +2,18 @@
 
 namespace Springbot\Main\Model\Api\Entity\Data;
 
+use Magento\Backend\Model\UrlInterface;
 use Magento\Catalog\Model\Product as MagentoProduct;
 use Magento\Catalog\Model\Product\Image as MagentoProductImage;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Backend\Model\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 use Springbot\Main\Api\Entity\Data\ProductInterface;
 use Springbot\Main\Api\Entity\ProductRepositoryInterface;
 use Springbot\Main\Model\Api\Entity\Data\Product\ProductAttribute;
-use Magento\Framework\App\ProductMetadataInterface;
 
 /**
  * Class Product
@@ -64,6 +66,7 @@ class Product implements ProductInterface
      * @param \Magento\Backend\Model\UrlInterface $urlInterface
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param ProductMetadataInterface $productMetadata
+     * @param LoggerInterface $loggerInterface
      */
     public function __construct(
         ResourceConnection $connectionResource,
@@ -71,7 +74,8 @@ class Product implements ProductInterface
         StoreManagerInterface $storeManager,
         UrlInterface $urlInterface,
         ScopeConfigInterface $scopeConfig,
-        ProductMetadataInterface $productMetadata
+        ProductMetadataInterface $productMetadata,
+        LoggerInterface $loggerInterface
     ) {
 
         $this->productRepository = $productRepository;
@@ -80,6 +84,7 @@ class Product implements ProductInterface
         $this->urlInterface = $urlInterface;
         $this->scopeConfigInterface = $scopeConfig;
         $this->productMetadata = $productMetadata;
+        $this->logger = $loggerInterface;
     }
 
     /**
@@ -342,35 +347,36 @@ class Product implements ProductInterface
 
     private function loadAttributes()
     {
+        $om = ObjectManager::getInstance();
         $idColumnName = $this->getIdColumnName();
         $resource = $this->connectionResource;
         $conn = $resource->getConnection();
         $query = $conn->query("
-            SELECT ea.attribute_code AS `code`, eav.value  AS 'value'
+            SELECT ea.attribute_code AS `code`, eav.value  AS 'value', ea.source_model AS 'source_model', ea.backend_model AS 'backend_model', ea.attribute_id AS 'attribute_id'
             FROM {$resource->getTableName('catalog_product_entity')} cpe
               LEFT JOIN {$resource->getTableName('catalog_product_entity_datetime')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value', ea.source_model AS 'source_model', ea.backend_model AS 'backend_model', ea.attribute_id AS 'attribute_id'
             FROM {$resource->getTableName('catalog_product_entity')} cpe
               LEFT JOIN {$resource->getTableName('catalog_product_entity_decimal')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value', ea.source_model AS 'source_model', ea.backend_model AS 'backend_model', ea.attribute_id AS 'attribute_id'
             FROM {$resource->getTableName('catalog_product_entity')} cpe
               LEFT JOIN {$resource->getTableName('catalog_product_entity_int')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value', ea.source_model AS 'source_model', ea.backend_model AS 'backend_model', ea.attribute_id AS 'attribute_id'
             FROM {$resource->getTableName('catalog_product_entity')} cpe
               LEFT JOIN {$resource->getTableName('catalog_product_entity_text')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
             WHERE (cpe.{$idColumnName} = :{$idColumnName})
             UNION
-            SELECT ea.attribute_code AS `code`, eav.value AS 'value'
+            SELECT ea.attribute_code AS `code`, eav.value AS 'value', ea.source_model AS 'source_model', ea.backend_model AS 'backend_model', ea.attribute_id AS 'attribute_id'
             FROM {$resource->getTableName('catalog_product_entity')} cpe
               LEFT JOIN {$resource->getTableName('catalog_product_entity_varchar')} eav ON (cpe.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
@@ -421,8 +427,33 @@ class Product implements ProductInterface
                     break;
                 default:
                     if ($value !== null) {
-                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
-                        ;
+                        try {
+                            if ($attributeRow['source_model'] && class_exists($attributeRow['source_model'])) {
+                                $sourceModel = $om->get($attributeRow['source_model']);
+                                $value = $sourceModel->getOptionText($attributeRow['value']);
+                                $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
+                            } else if ($attributeRow['backend_model']) {
+                                $eavModel = $om->create('Magento\Catalog\Model\ResourceModel\Eav\Attribute');
+                                $attr = $eavModel->load($attributeRow['attribute_id']);
+                                $selectedValues = $attr->getSource()->getOptionText($value);
+                                if (is_array($selectedValues)) {
+                                    foreach ($selectedValues as $selectedValue) {
+                                        $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $selectedValue);
+                                    }
+                                } else if (is_string($selectedValues)) {
+                                    $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $selectedValues);
+                                }
+                            } else {
+                                $this->productAttributes[] = new ProductAttribute($attributeRow['code'], $value);
+                            }
+                        } catch (\Throwable $t) {
+                            if (isset($attributeRow['source_model'])) {
+                                $sourceModel = $attributeRow['source_model'];
+                            } else {
+                                $sourceModel = 'n/a';
+                            }
+                            $this->logger->error("failed getting attribute test. source_model: {$sourceModel}. error:" . $t->getMessage());
+                        }
                     }
             }
         }
