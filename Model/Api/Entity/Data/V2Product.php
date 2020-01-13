@@ -229,7 +229,7 @@ class V2Product extends MagentoProduct implements V2ProductInterface
     {
         $attributes = [];
         foreach (parent::getCustomAttributes() as $customAttribute) {
-            $attributes[] = new ProductAttribute($customAttribute->getAttributeCode(), $customAttribute->getValue());
+            $attributes[] = new ProductAttribute($customAttribute->getAttributeCode(), $this->getResource()->getAttribute($customAttribute->getAttributeCode())->getFrontend()->getValue($this));
         }
         return $attributes;
     }
