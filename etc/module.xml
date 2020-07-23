@@ -2,5 +2,5 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Springbot_Main" setup_version="1.9.6"/>
+    <module name="Springbot_Main" setup_version="1.9.7"/>
 </config>
