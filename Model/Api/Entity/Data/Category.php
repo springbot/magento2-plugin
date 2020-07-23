@@ -155,31 +155,36 @@ class Category implements CategoryInterface
             FROM {$resource->getTableName('catalog_category_entity')} cce
               LEFT JOIN {$resource->getTableName('catalog_category_entity_datetime')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.{$idColumnName} = :{$idColumnName})
+              LEFT JOIN {$resource->getTableName('url_rewrite')} ur ON (ur.entity_id = cce.entity_id)
+            WHERE ur.store_id = {$this->storeId} AND (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$resource->getTableName('catalog_category_entity')} cce
               LEFT JOIN {$resource->getTableName('catalog_category_entity_decimal')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.{$idColumnName} = :{$idColumnName})
+              LEFT JOIN {$resource->getTableName('url_rewrite')} ur ON (ur.entity_id = cce.entity_id)
+            WHERE ur.store_id = {$this->storeId} AND (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$resource->getTableName('catalog_category_entity')} cce
               LEFT JOIN {$resource->getTableName('catalog_category_entity_int')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.{$idColumnName} = :{$idColumnName})
+              LEFT JOIN {$resource->getTableName('url_rewrite')} ur ON (ur.entity_id = cce.entity_id)
+            WHERE ur.store_id = {$this->storeId} AND (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$resource->getTableName('catalog_category_entity')} cce
               LEFT JOIN {$resource->getTableName('catalog_category_entity_text')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.{$idColumnName} = :{$idColumnName})
+              LEFT JOIN {$resource->getTableName('url_rewrite')} ur ON (ur.entity_id = cce.entity_id)
+            WHERE ur.store_id = {$this->storeId} AND (cce.{$idColumnName} = :{$idColumnName})
             UNION
             SELECT ea.attribute_code AS `code`, eav.value AS 'value'
             FROM {$resource->getTableName('catalog_category_entity')} cce
               LEFT JOIN {$resource->getTableName('catalog_category_entity_varchar')} eav ON (cce.{$idColumnName} = eav.{$idColumnName})
               LEFT JOIN {$resource->getTableName('eav_attribute')} ea ON (eav.attribute_id = ea.attribute_id)
-            WHERE (cce.{$idColumnName} = :{$idColumnName});
+              LEFT JOIN {$resource->getTableName('url_rewrite')} ur ON (ur.entity_id = cce.entity_id)
+            WHERE ur.store_id = {$this->storeId} AND (cce.{$idColumnName} = :{$idColumnName});
         ", [$idColumnName => $this->categoryId]);
 
         foreach ($query->fetchAll() as $attributeRow) {
