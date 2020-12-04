@@ -4,7 +4,7 @@ FROM alexcheng/magento2:latest
 
 WORKDIR /var/www/html
 
-RUN apt-get update && apt-get install -y mysql-client
+RUN apt-get update && apt-get install -y default-mysql-client
 
 COPY ./config/docker/* /springbot/
 
