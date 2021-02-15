@@ -11,7 +11,6 @@ use Psr\Log\LoggerInterface;
 use Springbot\Main\Model\Handler\CustomerHandler;
 use Springbot\Main\Model\Handler\OrderHandler;
 use Springbot\Main\Model\Handler\GuestHandler;
-use Springbot\Main\Model\SpringbotTrackable;
 use Springbot\Main\Model\SpringbotOrderRedirect;
 use Springbot\Queue\Model\Queue;
 
@@ -29,7 +28,6 @@ class OrderSaveAfterObserver implements ObserverInterface
      * @param Queue                  $queue
      * @param SpringbotOrderRedirect $orderRedirect
      * @param CookieManagerInterface $cookieManager
-     * @param SpringbotTrackable     $springbotTrackable
      * @param Http                   $request
      */
     public function __construct(
@@ -37,7 +35,6 @@ class OrderSaveAfterObserver implements ObserverInterface
         Queue $queue,
         SpringbotOrderRedirect $orderRedirect,
         CookieManagerInterface $cookieManager,
-        SpringbotTrackable $springbotTrackable,
         Http $request
     ) {
 
@@ -45,7 +42,6 @@ class OrderSaveAfterObserver implements ObserverInterface
         $this->queue = $queue;
         $this->orderRedirect = $orderRedirect;
         $this->cookieManager = $cookieManager;
-        $this->springbotTrackable = $springbotTrackable;
         $this->request = $request;
     }
 
@@ -66,7 +62,6 @@ class OrderSaveAfterObserver implements ObserverInterface
                     $this->orderRedirect->insert($orderId, $redirect);
                 }
             }
-            $this->springbotTrackable->insert(null, $orderId, 'order_user_agent', $this->request->getHeader('User-Agent'));
             $this->queue->scheduleJob(OrderHandler::class, 'handle', [$order->getStoreId(), $orderId]);
             if ($order->getCustomerIsGuest()) {
                 $this->queue->scheduleJob(GuestHandler::class, 'handle', [$order->getStoreId(), $orderId]);

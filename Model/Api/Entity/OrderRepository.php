@@ -78,11 +78,6 @@ class OrderRepository extends AbstractRepository implements OrderRepositoryInter
         }
     }
 
-    public function create($storeId, $customer, $address, $quote, $items, $marketplaces)
-    {
-        return $this->orderBuilder->buildOrder($storeId, $customer, $address, $quote, $items, $marketplaces);
-    }
-
     private function createOrder($storeId, $row)
     {
         $order = $this->orderFactory->create();
