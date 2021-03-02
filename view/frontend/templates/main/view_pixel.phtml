@@ -1,4 +1,3 @@
-<img src="<?php echo $this->getApiUrl() ?>/magento2/pixel/view?guid=<?php echo $block->getStoreGuid() ?>&pageurl=<?php echo urlencode($block->getCurrentUrl()) ?>&sku=<?php echo $block->getSku() ?>" style="position:absolute; visibility:hidden"></div>
 <script type="text/javascript">
     var _sbparams = _sbparams || [];
     if (_sbparams[0]) {
@@ -14,4 +13,14 @@
             'sku': '<?php echo $block->getSku() ?>'
         });
     }
+
+    window.addEventListener('load', function(event) {
+      var pixelContainer = document.createElement("div");
+      var pixel = document.createElement("IMG");
+      pixel.setAttribute("style", "height: 1px; width: 1px; position:absolute; visibility:hidden");
+      pixel.setAttribute("src", "<?php echo $this->getApiUrl() ?>/pixel/view?guid=<?php echo $block->getStoreGuid() ?>&sku=<?php echo $block->getSku() ?>&product_id=<?php echo $this->getId() ?>&pageurl=<?php echo urlencode($block->getCurrentUrl()) ?>&uuid="+SB.util.uuid());
+      pixel.className = 'sb-pixel';
+      pixelContainer.appendChild(pixel);
+      document.body.appendChild(pixelContainer);
+    });
 </script>
