@@ -407,25 +407,11 @@ class Order implements OrderInterface
 
     public function getCartUserAgent()
     {
-        return $this->fetchTrackable('quote_id', $this->quoteId, 'cart_user_agent');
+        return "";
     }
 
     public function getOrderUserAgent()
     {
-        return $this->fetchTrackable('order_id', $this->orderId, 'order_user_agent');
-    }
-
-    private function fetchTrackable($column, $value, $type)
-    {
-        $resource = $this->resourceConnection;
-        $conn = $resource->getConnection();
-        $select = $conn->select()
-            ->from([$resource->getTableName('springbot_trackable')])
-            ->where($column . ' = ?', $value)
-            ->where('type = ?', $type)
-            ->order('id', 'DESC');
-        foreach ($conn->fetchAll($select) as $row) {
-            return $row['value'];
-        }
+        return "";
     }
 }

@@ -165,7 +165,7 @@ class Cart implements CartInterface
      */
     public function getCartUserAgent()
     {
-        return $this->fetchTrackable('quote_id', $this->cartId, 'cart_user_agent');
+        return "";
     }
 
     /**
@@ -240,20 +240,5 @@ class Cart implements CartInterface
             $row['product_type']
         );
          return $item;
-    }
-
-
-    private function fetchTrackable($column, $value, $type)
-    {
-        $resource = $this->resourceConnection;
-        $conn = $resource->getConnection();
-        $select = $conn->select()
-            ->from([$resource->getTableName('springbot_trackable')])
-            ->where($column . ' = ?', $value)
-            ->where('type = ?', $type)
-            ->order('id', 'DESC');
-        foreach ($conn->fetchAll($select) as $row) {
-            return $row['value'];
-        }
     }
 }

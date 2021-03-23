@@ -22,14 +22,4 @@ interface OrderRepositoryInterface
      */
     public function getFromId($storeId, $orderId);
 
-    /**
-     * @param int                                                         $storeId
-     * @param \Magento\Customer\Api\Data\CustomerInterface                $customer
-     * @param \Magento\Customer\Api\Data\AddressInterface                 $address
-     * @param \Magento\Quote\Api\Data\CartInterface                       $quote
-     * @param \Magento\Quote\Api\Data\CartItemInterface[]                 $items
-     * @param \Springbot\Main\Api\Entity\Data\Order\MarketplacesInterface $marketplaces
-     * @return \Springbot\Main\Api\Entity\Data\OrderInterface
-     */
-    public function create($storeId, $customer, $address, $quote, $items, $marketplaces);
 }
