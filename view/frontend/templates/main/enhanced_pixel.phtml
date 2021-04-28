@@ -1,5 +1,6 @@
 <script type="text/javascript">
-    adroll_conversion_value_in_dollars = <?php echo $block->getConversionValueInDollars() ?>;
+    adroll_conversion_value = <?php echo $block->getConversionValueInDollars() ?>;
+    adroll_currency = <?php echo $block->getOrderCurrencyCode() ?>;
     adroll_custom_data = {"ORDER_ID": "<?php echo $block->getIncrementId() ?>"};
 
     function getTransCookie() {
@@ -10,7 +11,7 @@
       }
       return transitivCookie;
     }
-    
+
     window._sb_conversion = {
         id: <?php echo $block->getIncrementId() ?>,
         total: <?php echo $block->getConversionValueInDollars() ?>,

@@ -74,6 +74,15 @@ class EnhancedPixel extends Template
         return $this->getLastOrder()->getIncrementId();
     }
 
+
+    /**
+     * @return string
+     */
+    public function getOrderCurrencyCode()
+    {
+        return $this->getLastOrder()->getOrderCurrencyCode();
+    }
+
     /**
      * @return string
      */
