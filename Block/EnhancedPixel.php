@@ -74,7 +74,6 @@ class EnhancedPixel extends Template
         return $this->getLastOrder()->getIncrementId();
     }
 
-
     /**
      * @return string
      */
